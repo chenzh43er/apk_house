@@ -14,43 +14,45 @@
     <link rel="stylesheet" href="./Public/Css/lch-office.css"/>
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-    <script src="./Public/Js/googleAdv.js"></script>
-    <script src="./Public/Js/gtm-loader.js"></script>
+<!--    <script src="./Public/Js/googleAdv.js"></script>-->
+<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
+    <script src="./Public/Js/googleAds.js"></script>
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
-    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+<!--    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>-->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
+            crossorigin="anonymous"></script>
+<!--    <script>-->
+<!--        window.location.href = "./language.html";-->
+<!--    </script>-->
 
-    <script>
-        window.location.href = "./language.html";
-    </script>
+<!--    <script>-->
+<!--        window.googletag = window.googletag || {cmd: []};-->
+<!--        googletag.cmd.push(function() {-->
 
-    <script>
-        window.googletag = window.googletag || {cmd: []};
-        googletag.cmd.push(function() {
+<!--            var mapping = googletag.sizeMapping()-->
+<!--                .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
+<!--                .addSize([768, 0], [[300, 250]])   // 平板宽度 >=768 使用 300x250-->
+<!--                .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
+<!--                .build();-->
 
-            var mapping = googletag.sizeMapping()
-                .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90
-                .addSize([768, 0], [[300, 250]])   // 平板宽度 >=768 使用 300x250
-                .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250
-                .build();
-
-            googletag.defineSlot('/23284785848/house_index/house_index1', [[750, 300], [300, 250], 'fluid'], 'div-gpt-ad-1752434042868-0')
-                .defineSizeMapping(mapping)
-                .addService(googletag.pubads());
+<!--            googletag.defineSlot('/23284785848/house_index/house_index1', [[750, 300], [300, 250], 'fluid'], 'div-gpt-ad-1752434042868-0')-->
+<!--                .defineSizeMapping(mapping)-->
+<!--                .addService(googletag.pubads());-->
 
 
-            googletag.pubads().enableSingleRequest();
-            googletag.enableServices();
-        });
-    </script>
+<!--            googletag.pubads().enableSingleRequest();-->
+<!--            googletag.enableServices();-->
+<!--        });-->
+<!--    </script>-->
 
-    <script>
-        window.googletag = window.googletag || {cmd: []};
-        googletag.cmd.push(function() {
-            googletag.defineSlot('/23284785848/house_index/house_index_atuo', ['fluid'], 'div-gpt-ad-1752472114404-0').addService(googletag.pubads());
-            googletag.pubads().enableSingleRequest();
-            googletag.enableServices();
-        });
-    </script>
+<!--    <script>-->
+<!--        window.googletag = window.googletag || {cmd: []};-->
+<!--        googletag.cmd.push(function() {-->
+<!--            googletag.defineSlot('/23284785848/house_index/house_index_atuo', ['fluid'], 'div-gpt-ad-1752472114404-0').addService(googletag.pubads());-->
+<!--            googletag.pubads().enableSingleRequest();-->
+<!--            googletag.enableServices();-->
+<!--        });-->
+<!--    </script>-->
 
 </head>
 <body aria-hidden="false" style="">
@@ -458,7 +460,7 @@
                     if (entry.isIntersecting) {
                         loadListAdv_Test(entry.target);
                         obs.unobserve(entry.target);
-                        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752434042868-0'); });
+                        // googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752434042868-0'); });
                     }
                 });
             }, {
@@ -473,7 +475,12 @@
 
     function loadListAdv_Test(el) {
         // 插入 <ins> HTML
-        el.innerHTML = returnIndex_adv1();
+        el.innerHTML = returnIndex_adv1_ADS();
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.error("AdSense push error", e);
+        }
     }
 </script>
 

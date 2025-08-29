@@ -307,3 +307,43 @@ function returnResult_adv5_ADS(){
      data-ad-format="auto"
      data-full-width-responsive="true"></ins>`
 }
+
+function returnPost_adv1_ADS(){
+    return `<!-- post_adv1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2289697662900935"
+     data-ad-slot="3898606078"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>`
+}
+
+function returnPost_adv2_ADS(){
+    return `<!-- post_adv2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2289697662900935"
+     data-ad-slot="5008507760"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>`
+}
+
+function returnPost_adv3_ADS(){
+    return `<!-- post_adv3 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2289697662900935"
+     data-ad-slot="6948792317"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>`
+}
+
+function returnIndex_adv1_ADS(){
+    return `<!-- index_adv1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2289697662900935"
+     data-ad-slot="7281633109"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>`
+}
