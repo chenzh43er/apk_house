@@ -16,7 +16,7 @@ function isMobile() {
 }
 
 function returnWebStr(){
-    return "Freerentinghouse.info"
+    return "Apkintelligence.com"
 }
 
 function loadScript(src, callback) {
@@ -36,3 +36,4 @@ function loadScript(src, callback) {
 
     document.head.appendChild(script); // 插入到 `head` 中
 }
+

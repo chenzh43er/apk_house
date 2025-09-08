@@ -18,7 +18,8 @@
           crossorigin="anonymous"></script>
 
 
-  <script src="./Public/Js/googleAds.js"></script>
+<!--  <script src="./Public/Js/googleAds.js"></script>-->
+  <script src="./Public/Js/googleAds_Test.js"></script>
   <link rel="icon" href="./Public/Images/icon.png" type="image/png">
   <style>
     .select-state {
@@ -94,6 +95,12 @@
   <div class="detail-left" style="height: auto !important;" data-eusoft-scrollable-element="1" >
     <div id = "postPage"></div>
     <div id = "bottom_div"></div>
+
+    <div class="detail-page" id = "next_page">
+      <a class="next_a2" href="/posts/section-8-pays-for-your-rental-costs/2/">
+        <span class="next_p">Next Page</span>
+      </a>
+    </div>
 
     <div class="most-read detail_most-read">
       <h2 class="common-tit">More On This Topic</h2>
@@ -329,12 +336,16 @@
 
     const lang = getLangFromPath()
     let langPostUrl = ""
+    let nextStr = ""
     if(lang == "de"){
       langPostUrl = "./Public/Js/post/postName.js"
+      nextStr = "Nächste Seite";
     }else if(lang == "us"){
       langPostUrl = "./Public/Js/post/postName_us.js"
+      nextStr = "next page"
     }else {
       langPostUrl = "./Public/Js/post/postName.js"
+      nextStr = "next page"
     }
 
     loadScript(langPostUrl, function () {
@@ -401,6 +412,22 @@
         });
         observer.observe(adv3);
       }
+
+      // 假设 URL 里是这种形式: ?url=10020
+      // const params = new URLSearchParams(window.location.search);
+      // 如果要 +1 就这样
+      let newPostid = parseInt(postId) + 1;
+      console.log("newPostid:", newPostid); // 10001
+
+      if(newPostid == 10021){
+        newPostid = 10000
+      }
+
+      document.getElementById("next_page").innerHTML = `
+      <a class="next_a2" href="./post.html?postid=${newPostid}">
+        <span class="next_p">${nextStr}</span>
+      </a>`
+
     });
   });
 

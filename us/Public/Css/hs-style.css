@@ -405,7 +405,7 @@ footer p {
 }
 
 .wrapper {
-    width: 1070px;
+    width: 1200px;
     padding: 0 16px;
     margin: 0 auto;
     position: relative;
@@ -1330,7 +1330,7 @@ select:not(:-internal-list-box) {
     display: inline-block;
 }
 .detail-right {
-    width: 290px;
+    width: 300px;
     margin-left: 47px;
     display: inline-block;
     vertical-align: top;

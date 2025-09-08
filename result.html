@@ -15,7 +15,8 @@
 <!--    <script src="./Public/Js/googleAdv.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
 
-    <script src="./Public/Js/googleAds.js"></script>
+<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
@@ -180,11 +181,11 @@
 <body>
 
 <!-- /23284785848/house_result/result_auto -->
-<div id='div-gpt-ad-1752655817696-0'>
-    <script>
-        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752655817696-0'); });
-    </script>
-</div>
+<!--<div id='div-gpt-ad-1752655817696-0'>-->
+<!--    <script>-->
+<!--        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752655817696-0'); });-->
+<!--    </script>-->
+<!--</div>-->
 
 <header data-eusoft-scrollable-element="1" id = "header">
 </header>
@@ -444,8 +445,10 @@
 
                     if (index == 0) {
                         html += `
-                <li class="statelists-imgli" id = "right_adv">
+                <li class="statelists-imgli">
+                    <div id = "right_adv">
                         ${returnAdvWord()}
+                    </div>
                 </li>`
                     }
                 });
@@ -504,7 +507,7 @@
                 display_state = 'Berlin'; // 或你希望的默认值
             }
 
-            const {data, error} = await fetchRandomHousesByState(display_state, 5);
+            const {data, error} = await fetchRandomHousesByState(display_state, 9);
 
             if (error) {
                 console.error("获取房源数据失败：", error.message);

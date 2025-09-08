@@ -16,7 +16,7 @@ function isMobile() {
 }
 
 function returnWebStr(){
-    return "Freerentinghouse.info"
+    return "Apkintelligence.com"
 }
 
 function loadScript(src, callback) {
@@ -35,20 +35,5 @@ function loadScript(src, callback) {
     };
 
     document.head.appendChild(script); // 插入到 `head` 中
-
-    const bottom_div = document.getElementById('bottom_div')
-    if (bottom_div) {
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadPost_adv2(entry.target);
-                    obs.unobserve(entry.target);
-                    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752991223651-0'); });
-                }
-            });
-        }, {
-            rootMargin: '5px',
-        });
-        observer.observe(bottom_div);
-    }
 }
+

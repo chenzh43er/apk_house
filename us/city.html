@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Freerentinghouse.info City</title>
+    <title>apkintelligence.com</title>
     <meta name="description"
           content="UsLowCostHousing provides information on all lists of Affordable Housing in Alaska. Find the best one near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
@@ -16,6 +16,7 @@
 <!--    <script src="./Public/Js/googleAdv.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <script src="./Public/Js/googleAds.js"></script>
+    <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
@@ -100,6 +101,9 @@
         }
 
     </style>
+    <script>
+        document.title = "apkintelligence.com"
+    </script>
 
 </head>
 
@@ -678,8 +682,8 @@
                 for (let i = 0; i < 3; i++) {
                     let postId = 10002 + i
 
-                    let imgStr = post[postId].mainImg
-                    let title = post[postId].title
+                    let imgStr = postTITLE[postId].mainImg
+                    let title = postTITLE[postId].title
                     asideStr += `<li>
         <div class="most-box">
           <a href="./post.html?postid=${postId}" class="href-item"></a>
@@ -905,7 +909,7 @@ ${item.display_city}</div></div>
                     if (entry.isIntersecting) {
                         loadCity_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752506290569-0'); });
+                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752506290569-0'); });
                     }
                 });
             }, {

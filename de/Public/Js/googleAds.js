@@ -231,7 +231,7 @@ function returnForm_adv2_ADS(){
 function returnForm_adv3_ADS(){
     return `<!-- form_adv3 -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:inline-block;min-height: 250px;width: auto !important;"
      data-ad-client="ca-pub-2289697662900935"
      data-ad-slot="1042623852"
      data-ad-format="auto"
@@ -241,7 +241,7 @@ function returnForm_adv3_ADS(){
 function returnForm_adv4_ADS(){
     return `<!-- form_adv4 -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:inline-block;min-height: 250px;width: auto !important;"
      data-ad-client="ca-pub-2289697662900935"
      data-ad-slot="3795143229"
      data-ad-format="auto"
@@ -279,7 +279,7 @@ function returnResult_adv2_ADS(){
 }
 
 function returnResult_adv3_ADS(){
-    return `<!-- result_adv3 -->
+    return `<!-- result_adv3 x-->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-2289697662900935"
@@ -331,7 +331,7 @@ function returnPost_adv2_ADS(){
 function returnPost_adv3_ADS(){
     return `<!-- post_adv3 -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:inline-block;min-height: 250px;width: auto !important;"
      data-ad-client="ca-pub-2289697662900935"
      data-ad-slot="6948792317"
      data-ad-format="auto"

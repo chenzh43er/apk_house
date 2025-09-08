@@ -16,7 +16,8 @@
 <!--    <script src="./Public/Js/googleAdv.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
 
-    <script src="./Public/Js/googleAds.js"></script>
+<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
@@ -691,8 +692,8 @@
                 for (let i = 0; i < 3; i++) {
                     let postId = 10002 + i
 
-                    let imgStr = post[postId].mainImg
-                    let title = post[postId].title
+                    let imgStr = postTITLE[postId].mainImg
+                    let title = postTITLE[postId].title
                     asideStr += `<li>
         <div class="most-box">
           <a href="./post.html?postid=${postId}" class="href-item"></a>
@@ -913,7 +914,7 @@
                     if (entry.isIntersecting) {
                         loadDistrict_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752510859141-0'); });
+                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752510859141-0'); });
                     }
                 });
             }, {
