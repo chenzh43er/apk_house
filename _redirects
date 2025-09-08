@@ -1,1 +1,2 @@
-/:state/city   /city.html?state=:state   200
+/:state/city    /city.html?state=:state    200
+/city           /city.html                 200
