@@ -1,0 +1,33 @@
+<!-- 列表 -->
+<a href="./Alabama/city" class="state-link">Alabama</a>
+
+<div id="content"></div>
+
+<script>
+    function loadCity(stateName) {
+        fetch(`./city.html?state=${stateName}`)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('content').innerHTML = html;
+            });
+    }
+
+    // 点击链接
+    document.querySelectorAll('.state-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const stateName = link.textContent.trim();
+            history.pushState({state: stateName}, '', `./${stateName}/city`);
+            loadCity(stateName);
+        });
+    });
+
+    // 页面刷新或直接访问
+    const match = location.pathname.match(/^\/([^\/]+)\/city$/);
+    if (match) loadCity(match[1]);
+
+    // 前进/后退
+    window.addEventListener('popstate', e => {
+        if(e.state && e.state.state) loadCity(e.state.state);
+    });
+</script>
