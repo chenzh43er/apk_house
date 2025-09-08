@@ -337,17 +337,17 @@
         document.getElementById('select-state').innerHTML = innerStr;
 
 
-        const links = document.querySelectorAll('.state-link');
-        links.forEach(link => {
-            const textEl = link.querySelector('.text-wrapper');
-            if (!textEl) return; // 防止找不到
-            const stateName = textEl.textContent.trim();
-
-            if (stateName) {
-                link.dataset.state = stateName; // 保存州名
-                link.href = `/${stateName}/city`; // 注意这里改成绝对路径
-            }
-        });
+        // const links = document.querySelectorAll('.state-link');
+        // links.forEach(link => {
+        //     const textEl = link.querySelector('.text-wrapper');
+        //     if (!textEl) return; // 防止找不到
+        //     const stateName = textEl.textContent.trim();
+        //
+        //     if (stateName) {
+        //         link.dataset.state = stateName; // 保存州名
+        //         link.href = `/${stateName}/city`; // 注意这里改成绝对路径
+        //     }
+        // });
 
         document.body.style.display = "block";
 
