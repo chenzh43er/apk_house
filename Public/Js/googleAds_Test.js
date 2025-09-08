@@ -364,7 +364,7 @@ function returnPost_adv2_ADS(){
 function returnPost_adv3_ADS(){
     return `<!-- post_adv3 -->
 <ins class="adsbygoogle"
-     style="display:inline-block;min-height: 250px;width: auto !important;"
+     style="display:block"
      data-ad-client="ca-pub-2289697662900935"
      data-ad-slot="6948792317"
      data-ad-format="auto"
