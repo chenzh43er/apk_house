@@ -322,7 +322,7 @@
         let innerStr = '';
         data.forEach((item,index) => {
             innerStr += `<li>
-                <a href="./city.html?state=${item.display_state}"><div class = "selectLidiv">
+                <a href="./city.html?state=${item.display_state}" class="state-link"><div class = "selectLidiv">
                 <div class="text-wrapper">
                     ${item.display_state}
                     </div>
@@ -336,6 +336,23 @@
 
         document.getElementById('select-state').innerHTML = innerStr;
 
+        const links = document.querySelectorAll('.state-link');
+        links.forEach(link => {
+            const stateName = link.querySelector('.text-wrapper').innerText.trim();
+
+            // 显示美观 URL
+            link.setAttribute('data-state', stateName); // 保存州名
+            link.href = `./${stateName}/city`; // 用户看到的路径
+
+            // 点击时重定向到原始 city.html?state=州名
+            // link.addEventListener('click', function(e) {
+            //     e.preventDefault(); // 阻止默认跳转
+            //     const state = this.getAttribute('data-state');
+            //     window.location.href = `./city.html?state=${state}`;
+            // });
+        });
+
+
         document.body.style.display = "block";
 
         const observer = new IntersectionObserver((entries, obs) => {
@@ -347,6 +364,22 @@
             });
         }, { rootMargin: '5px' });
         document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
+        });
+
+        const links = document.querySelectorAll('.state-link');
+        links.forEach(link => {
+            const stateName = link.querySelector('.text-wrapper').innerText.trim();
+
+            // 显示美观 URL
+            link.setAttribute('data-state', stateName); // 保存州名
+            link.href = `./${stateName}/city`; // 用户看到的路径
+
+            // // 点击时重定向到原始 city.html?state=州名
+            // link.addEventListener('click', function(e) {
+            //     e.preventDefault(); // 阻止默认跳转
+            //     const state = this.getAttribute('data-state');
+            //     window.location.href = `./city.html?state=${state}`;
+            // });
         });
     });
 </script>
