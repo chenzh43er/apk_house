@@ -336,22 +336,18 @@
 
         document.getElementById('select-state').innerHTML = innerStr;
 
+
         const links = document.querySelectorAll('.state-link');
         links.forEach(link => {
-            const stateName = link.querySelector('.text-wrapper').innerText.trim();
+            const textEl = link.querySelector('.text-wrapper');
+            if (!textEl) return; // 防止找不到
+            const stateName = textEl.textContent.trim();
 
-            // 显示美观 URL
-            link.setAttribute('data-state', stateName); // 保存州名
-            link.href = `./${stateName}/city`; // 用户看到的路径
-
-            // 点击时重定向到原始 city.html?state=州名
-            // link.addEventListener('click', function(e) {
-            //     e.preventDefault(); // 阻止默认跳转
-            //     const state = this.getAttribute('data-state');
-            //     window.location.href = `./city.html?state=${state}`;
-            // });
+            if (stateName) {
+                link.dataset.state = stateName; // 保存州名
+                link.href = `/${stateName}/city`; // 注意这里改成绝对路径
+            }
         });
-
 
         document.body.style.display = "block";
 
@@ -364,22 +360,6 @@
             });
         }, { rootMargin: '5px' });
         document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
-        });
-
-        const links = document.querySelectorAll('.state-link');
-        links.forEach(link => {
-            const stateName = link.querySelector('.text-wrapper').innerText.trim();
-
-            // 显示美观 URL
-            link.setAttribute('data-state', stateName); // 保存州名
-            link.href = `./${stateName}/city`; // 用户看到的路径
-
-            // // 点击时重定向到原始 city.html?state=州名
-            // link.addEventListener('click', function(e) {
-            //     e.preventDefault(); // 阻止默认跳转
-            //     const state = this.getAttribute('data-state');
-            //     window.location.href = `./city.html?state=${state}`;
-            // });
         });
     });
 </script>

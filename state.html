@@ -336,18 +336,6 @@
 
         document.getElementById('select-state').innerHTML = innerStr;
 
-        document.body.style.display = "block";
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadState_adv3(entry.target);
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { rootMargin: '5px' });
-        document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
-        });
 
         const links = document.querySelectorAll('.state-link');
         links.forEach(link => {
@@ -359,6 +347,19 @@
                 link.dataset.state = stateName; // 保存州名
                 link.href = `/${stateName}/city`; // 注意这里改成绝对路径
             }
+        });
+
+        document.body.style.display = "block";
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadState_adv3(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '5px' });
+        document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
         });
     });
 </script>
