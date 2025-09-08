@@ -20,6 +20,19 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const url = new URL(window.location.href);
+
+            // 如果现在在 /city?state=Alabama
+            if (url.pathname === "/city" && url.searchParams.has("state")) {
+                const state = url.searchParams.get("state");
+                // 修改地址栏，不刷新页面
+                window.history.replaceState({}, "", `/${state}/city`);
+            }
+        });
+    </script>
+
 
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <style>
