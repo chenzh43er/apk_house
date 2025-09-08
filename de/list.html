@@ -350,7 +350,7 @@
 <header data-eusoft-scrollable-element="1" id = "header">
 </header>
 
-<main class="wrapper contents no-sidebar" style="height: auto !important; min-height: 0px !important;">
+<main class="wrapper contents no-sidebar" style="height: auto !important; min-height: 0px !important;" id = "region-selector">
     <div class="detail-left" style="height: auto !important;" data-eusoft-scrollable-element="1">
 
         <div class="adswp" style="height: auto !important;" data-eusoft-scrollable-element="1" id="list_adv1">
@@ -623,6 +623,11 @@
 
         document.getElementById('total').innerText = totalCount;
 
+        if(totalCount<5){
+            document.getElementById("adv_sticky").innerHTML = ''
+            document.getElementById('adv_sticky').style.height = '0px'
+        }
+
         let html = '';
         let advIndex = 0;
 
@@ -769,6 +774,7 @@
 
         // 仅第一页监听广告懒加载 + 缓存
         observeAdsOnFirstPageOnly(pageNumber);
+
     }
 
     // 初始化分页
@@ -1038,9 +1044,6 @@
                         if (entry.isIntersecting) {
                             loadList_adv3(entry.target);
                             obs.unobserve(entry.target);
-                            // googletag.cmd.push(function () {
-                            //     googletag.display('div-gpt-ad-1752566092488-0');
-                            // });
                         }
                     });
                 }, {
