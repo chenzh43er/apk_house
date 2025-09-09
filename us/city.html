@@ -794,13 +794,13 @@ ${item.display_city}</div></div>
 
         // 优先取 ?state= 参数
         if (url.searchParams.has("state")) {
-            return url.searchParams.get("state");
+            return decodeURIComponent(url.searchParams.get("state"));
         }
-        // 如果没有参数，再从 /xx/Alabama/city 这种路径提取
-        // 例如 /de/Alabama/city → 提取 Alabama
+
+        // 如果没有参数，再从 /xx/Alabama/city 或 /xx/Baden-Württemberg/city 这种路径提取
         const match = url.pathname.match(/\/([^/]+)\/city$/);
         if (match) {
-            return match[1]; // 动态获取 city 前面的参数，比如 "Alabama"
+            return decodeURIComponent(match[1]); // 解码 URL 编码
         }
 
         return null;
