@@ -5,7 +5,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="/apk_house/" />
+    <base href="/" />
     <title>apkintelligence.com</title>
     <meta name="description"
           content="UsLowCostHousing provides information on all lists of Affordable Housing in Alaska. Find the best one near you.">
@@ -20,6 +20,26 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
+    <script>
+        const lang = getLangFromPath()
+        //console.log(lang)
+        if(lang == "de"){
+            const base = document.querySelector('base');
+            base.href = '/de/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de/');
+        }else if(lang == "us"){
+            const base = document.querySelector('base');
+            base.href = '/us/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/us/');
+        }else{
+            const base = document.querySelector('base');
+            base.href = '/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/');
+        }
+    </script>
 
 
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
@@ -806,11 +826,11 @@ ${item.display_city}</div></div>
         if (url.searchParams.has("state")) {
             return url.searchParams.get("state");
         }
-
-        // 如果没有参数，再从 /Alabama/city 这种路径提取
-        const match = url.pathname.match(/^\/([^/]+)\/city$/);
+        // 如果没有参数，再从 /xx/Alabama/city 这种路径提取
+        // 例如 /de/Alabama/city → 提取 Alabama
+        const match = url.pathname.match(/\/([^/]+)\/city$/);
         if (match) {
-            return match[1]; // "Alabama"
+            return match[1]; // 动态获取 city 前面的参数，比如 "Alabama"
         }
 
         return null;

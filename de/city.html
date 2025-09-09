@@ -21,10 +21,24 @@
             crossorigin="anonymous"></script>
 
     <script>
-        const base = document.querySelector('base');
-        base.href = '/de/'; // 绝对路径形式
-        // 或者使用相对路径
-        base.setAttribute('href', '/de/');
+        const lang = getLangFromPath()
+        //console.log(lang)
+        if(lang == "de"){
+            const base = document.querySelector('base');
+            base.href = '/de/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de/');
+        }else if(lang == "us"){
+            const base = document.querySelector('base');
+            base.href = '/us/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/us/');
+        }else{
+            const base = document.querySelector('base');
+            base.href = '/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/');
+        }
     </script>
 
 
