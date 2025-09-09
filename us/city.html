@@ -635,21 +635,17 @@
 <script src="./Public/Js/jquery-3.0.0.min.js"></script>
 
 <script>
+    const lang = getLangFromPath(); // 统一声明一次
+
     // 加载 header
     fetch('./header.html')
         .then(res => res.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
 
-            const lang = getLangFromPath()
-            //console.log(lang)
             if(lang == "de"){
                 document.getElementById("lang_index").innerText="Startseite"
-            }else if(lang == "us")
-            {
-                document.getElementById("lang_index").innerText="HOME"
-            }else
-            {
+            }else{
                 document.getElementById("lang_index").innerText="HOME"
             }
         });
@@ -661,72 +657,49 @@
             document.getElementById('footer').innerHTML = data;
         });
 
-    const lang = getLangFromPath()
-    let langAside = "./aside.html"
-    //console.log(lang)
-    if(lang == "de"){
-        langAside = "./aside.html"
-    }else if(lang == "us"){
-        langAside = "./asideUS.html"
-    }else{
-        langAside = "./asideUS.html"
-    }
-
+    // aside 路径选择
+    let langAside = (lang == "de") ? "./aside.html" : "./asideUS.html";
 
     fetch(langAside)
         .then(res => res.text())
         .then(data => {
             document.getElementById('asidePage').innerHTML = data;
-            const lang = getLangFromPath()
-            //console.log(lang)
+
             if(lang == "de"){
                 document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
-            }else if(lang == "us")
-            {
-                document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
-            }else
-            {
+            }else{
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }
 
-            let langPostUrl = ""
-            if(lang == "de"){
-                langPostUrl = "./Public/Js/post/postName.js"
-            }else if(lang == "us"){
-                langPostUrl = "./Public/Js/post/postName_us.js"
-            }else {
-                langPostUrl = "./Public/Js/post/postName.js"
-            }
+            let langPostUrl = (lang == "de")
+                ? "./Public/Js/post/postName.js"
+                : "./Public/Js/post/postName_us.js";
 
             loadScript(langPostUrl, function () {
-                let asideStr = ``
+                let asideStr = ``;
                 for (let i = 0; i < 3; i++) {
-                    let postId = 10002 + i
-
-                    let imgStr = postTITLE[postId].mainImg
-                    let title = postTITLE[postId].title
+                    let postId = 10002 + i;
+                    let imgStr = postTITLE[postId].mainImg;
+                    let title = postTITLE[postId].title;
                     asideStr += `<li>
-        <div class="most-box">
-          <a href="./post.html?postid=${postId}" class="href-item"></a>
-          <img src="${imgStr}"
-               alt="section-8-pays-for-your-rental-costs" class="most-img">
-          <h5 class="most-tit">${title}</h5>
-          <div class="most-bottom">
-            <p class="most-content" data-eusoft-scrollable-element="1">RSteigende Mieten? Section 8 hilft Senioren, Geringverdienern und Menschen mit Behinderung bei Mietkosten.
-            </p>
-          </div>
-        </div>
-      </li>`
+                    <div class="most-box">
+                        <a href="./post.html?postid=${postId}" class="href-item"></a>
+                        <img src="${imgStr}" alt="section-8-pays-for-your-rental-costs" class="most-img">
+                        <h5 class="most-tit">${title}</h5>
+                        <div class="most-bottom">
+                            <p class="most-content" data-eusoft-scrollable-element="1">RSteigende Mieten? Section 8 hilft Senioren, Geringverdienern und Menschen mit Behinderung bei Mietkosten.</p>
+                        </div>
+                    </div>
+                </li>`;
                     if(i==0){
                         asideStr += `<li>
-        <div id="aside_adv" style="text-align: center">
-        </div>
-      </li>`
+                        <div id="aside_adv" style="text-align: center"></div>
+                    </li>`;
                     }
                 }
-                document.getElementById("asideTitle").innerHTML = asideStr
+                document.getElementById("asideTitle").innerHTML = asideStr;
 
-                const aside_adv = document.getElementById('aside_adv')
+                const aside_adv = document.getElementById('aside_adv');
                 if (aside_adv) {
                     const observer = new IntersectionObserver((entries, obs) => {
                         entries.forEach(entry => {
@@ -735,13 +708,12 @@
                                 obs.unobserve(entry.target);
                             }
                         });
-                    }, {
-                        rootMargin: '5px',
-                    });
+                    }, { rootMargin: '5px' });
                     observer.observe(aside_adv);
                 }
             });
         });
+
 </script>
 <script type="module">
     const lang = getLangFromPath()
