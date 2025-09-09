@@ -21,6 +21,25 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
+    <script>
+        if(getLangFromPath() == "de"){
+            const base = document.querySelector('base');
+            base.href = '/de/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de/');
+        }else if(getLangFromPath() == "us"){
+            const base = document.querySelector('base');
+            base.href = '/us/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/us/');
+        }else{
+            const base = document.querySelector('base');
+            base.href = '/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/');
+        }
+    </script>
+
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <style>
         .select-state {
@@ -750,8 +769,9 @@
         const { fetchDistrictsByCity } = module;
 
     const params = new URLSearchParams(window.location.search);
-    const display_state = params.get('state');
-    const display_city = params.get('city');
+    // const display_state = params.get('state');
+    // const display_city = params.get('city');
+    const { state: display_state, city: display_city } = getStateAndCityFromUrl();
 
     document.getElementById("state_label").innerText = display_state
     document.getElementById("city_label").innerText = display_city
@@ -807,6 +827,34 @@
         }
     });
     });
+
+    function getStateAndCityFromUrl() {
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+
+        let state = null;
+        let city = null;
+
+        // 优先取 ?state= 和 ?city= 参数
+        if (params.has("state")) {
+            state = decodeURIComponent(params.get("state"));
+        }
+        if (params.has("city")) {
+            city = decodeURIComponent(params.get("city"));
+        }
+
+        // 如果没有参数，再从路径 /xx/State/City 或 /xx/State/city 提取
+        // 匹配 /xx/State/City 或 /xx/State/city
+        const pathMatch = url.pathname.match(/^\/[^/]+\/([^/]+)(?:\/([^/]+))?$/);
+        if (pathMatch) {
+            if (!state) state = decodeURIComponent(pathMatch[1]);
+            if (!city && pathMatch[2] && pathMatch[2].toLowerCase() !== "city") {
+                city = decodeURIComponent(pathMatch[2]);
+            }
+        }
+
+        return { state, city };
+    }
 </script>
 
 <script>

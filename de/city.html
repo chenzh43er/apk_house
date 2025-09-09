@@ -744,7 +744,7 @@
         let innerStr = '';
         data.forEach((item,index)  => {
             innerStr += `<li>
-<a href="./district.html?state=${display_state}&city=${item.display_city}">
+<a href="./district.html?state=${display_state}&city=${item.display_city}" class="state-link">
 <div class = "selectLidiv">
 <div class="text-wrapper">
 ${item.display_city}</div></div>
@@ -754,6 +754,28 @@ ${item.display_city}</div></div>
                 innerStr += `<li class = "divider-wrap state_advClass"><div>${returnAdvWord()}</div></li>`
             }
         });
+
+        const links = document.querySelectorAll('.state-link');
+        links.forEach(link => {
+            const textEl = link.querySelector('.text-wrapper');
+            if (!textEl) return; // 防止找不到
+
+            const stateName = textEl.textContent.trim();
+            const cityName = link.dataset.city; // 假设每个 link 已经有 data-city 属性
+            if (stateName && cityName) {
+                link.dataset.state = stateName; // 保存州名
+                link.dataset.city = cityName;   // 保存城市名
+
+                if(lang == "de"){
+                    link.href = `/de/${stateName}/${cityName}/district`; // 德语路径
+                } else if(lang == "us"){
+                    link.href = `/us/${stateName}/${cityName}/district`; // 美式路径
+                } else{
+                    link.href = `/${stateName}/${cityName}/district`; // 默认路径
+                }
+            }
+        });
+
 
         if(data.length < 12){
             document.getElementById("ddr_adv").innerHTML = returnAdvWord()
