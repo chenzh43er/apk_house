@@ -755,7 +755,7 @@
 
 
     const params = new URLSearchParams(window.location.search);
-    const display_state = params.get('state');  // "Tom"
+    const display_state = getStateFromUrl();  // "Tom"
 
     const {data, error} = await fetchCitiesByState(display_state);
 
@@ -810,6 +810,23 @@ ${item.display_city}</div></div>
         }
     });
     });
+
+    function getStateFromUrl() {
+        const url = new URL(window.location.href);
+
+        // 优先取 ?state= 参数
+        if (url.searchParams.has("state")) {
+            return url.searchParams.get("state");
+        }
+
+        // 如果没有参数，再从 /Alabama/city 这种路径提取
+        const match = url.pathname.match(/^\/([^/]+)\/city$/);
+        if (match) {
+            return match[1]; // "Alabama"
+        }
+
+        return null;
+    }
 
 </script>
 
