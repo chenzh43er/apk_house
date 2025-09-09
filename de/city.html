@@ -818,11 +818,11 @@ ${item.display_city}</div></div>
         if (url.searchParams.has("state")) {
             return url.searchParams.get("state");
         }
-
-        // 如果没有参数，再从 /Alabama/city 这种路径提取
-        const match = url.pathname.match(/^\/([^/]+)\/city$/);
+        // 如果没有参数，再从 /xx/Alabama/city 这种路径提取
+        // 例如 /de/Alabama/city → 提取 Alabama
+        const match = url.pathname.match(/\/([^/]+)\/city$/);
         if (match) {
-            return match[1]; // "Alabama"
+            return match[1]; // 动态获取 city 前面的参数，比如 "Alabama"
         }
 
         return null;
