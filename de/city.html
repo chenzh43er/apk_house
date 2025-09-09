@@ -21,14 +21,12 @@
             crossorigin="anonymous"></script>
 
     <script>
-        const lang = getLangFromPath()
-        //console.log(lang)
-        if(lang == "de"){
+        if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
             base.href = '/de/'; // 绝对路径形式
             // 或者使用相对路径
             base.setAttribute('href', '/de/');
-        }else if(lang == "us"){
+        }else if(getLangFromPath() == "us"){
             const base = document.querySelector('base');
             base.href = '/us/'; // 绝对路径形式
             // 或者使用相对路径
