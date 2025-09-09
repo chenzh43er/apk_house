@@ -5,7 +5,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="/" />
+    <base href="/apk_house/" />
     <title>apkintelligence.com</title>
     <meta name="description"
           content="UsLowCostHousing provides information on all lists of Affordable Housing in Alaska. Find the best one near you.">
@@ -20,18 +20,6 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const url = new URL(window.location.href);
-
-            // 如果现在在 /city?state=Alabama
-            if (url.pathname === "/city" && url.searchParams.has("state")) {
-                const state = url.searchParams.get("state");
-                // 修改地址栏，不刷新页面
-                window.history.replaceState({}, "", `/${state}/city`);
-            }
-        });
-    </script>
 
 
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">

@@ -21,16 +21,10 @@
             crossorigin="anonymous"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const url = new URL(window.location.href);
-
-            // 如果现在在 /city?state=Alabama
-            if (url.pathname === "/city" && url.searchParams.has("state")) {
-                const state = url.searchParams.get("state");
-                // 修改地址栏，不刷新页面
-                window.history.replaceState({}, "", `/${state}/city`);
-            }
-        });
+        const base = document.querySelector('base');
+        base.href = '/de/'; // 绝对路径形式
+        // 或者使用相对路径
+        base.setAttribute('href', '/de/');
     </script>
 
 
