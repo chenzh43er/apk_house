@@ -1,8 +1,6 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
-
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -23,6 +21,10 @@
 
     <base href="/" />
     <script>
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
             base.href = '/de/'; // 绝对路径形式

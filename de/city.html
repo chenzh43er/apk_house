@@ -21,6 +21,10 @@
             crossorigin="anonymous"></script>
     <base href="/" />
     <script>
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
             base.href = '/de/'; // 绝对路径形式
