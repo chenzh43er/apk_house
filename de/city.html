@@ -5,7 +5,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <base href="/" />
     <title>apkintelligence.com</title>
     <meta name="description"
           content="UsLowCostHousing provides information on all lists of Affordable Housing in Alaska. Find the best one near you.">
@@ -19,6 +19,19 @@
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const url = new URL(window.location.href);
+
+            // 如果现在在 /city?state=Alabama
+            if (url.pathname === "/city" && url.searchParams.has("state")) {
+                const state = url.searchParams.get("state");
+                // 修改地址栏，不刷新页面
+                window.history.replaceState({}, "", `/${state}/city`);
+            }
+        });
+    </script>
 
 
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
@@ -742,7 +755,7 @@
 
 
     const params = new URLSearchParams(window.location.search);
-    const display_state = params.get('state');  // "Tom"
+    const display_state = getStateFromUrl();  // "Tom"
 
     const {data, error} = await fetchCitiesByState(display_state);
 
@@ -797,6 +810,23 @@ ${item.display_city}</div></div>
         }
     });
     });
+
+    function getStateFromUrl() {
+        const url = new URL(window.location.href);
+
+        // 优先取 ?state= 参数
+        if (url.searchParams.has("state")) {
+            return url.searchParams.get("state");
+        }
+
+        // 如果没有参数，再从 /Alabama/city 这种路径提取
+        const match = url.pathname.match(/^\/([^/]+)\/city$/);
+        if (match) {
+            return match[1]; // "Alabama"
+        }
+
+        return null;
+    }
 
 </script>
 
