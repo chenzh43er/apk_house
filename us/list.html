@@ -711,12 +711,15 @@
                 picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
             }
 
-
+            let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
             const serverPic = picURL + house.mainpic + "/";
             const picsObj = JSON.parse(house.pics_jsonStr || "[]");
             if(lang == "de") {
+
+                detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                     html += `
-            <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}">
+            <a href="${detail_href}">
                 <li class="statelists-imgli">
                     <div class="statelists-link">
                         <div class="imgli-box">
@@ -742,8 +745,11 @@
                 </li>
             </a>`;
             }else if(lang == "us"){
+
+                detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                 html += `
-            <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}">
+            <a href="${detail_href}">
                 <li class="statelists-imgli">
                     <div class="statelists-link">
                         <div class="imgli-box">
@@ -769,8 +775,11 @@
                 </li>
             </a>`;
             }else{
+
+                detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                 html += `
-            <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}">
+            <a href="${detail_href}">
                 <li class="statelists-imgli">
                     <div class="statelists-link">
                         <div class="imgli-box">
@@ -808,6 +817,21 @@
 
         // 面包屑路径
         if (display_district && display_city && display_state) {
+
+            let city_href = `./district.html?state=${display_state}&city=${display_city}`
+            let state_href = `./city.html?state=${display_state}`
+            if(lang == "de"){
+                city_href = `/de/${display_state}/${display_city}/district`; // 德语路径
+                state_href = `/de/${display_state}/city`
+            } else if(lang == "us"){
+                city_href = `/us/${display_state}/${display_city}/district`; // 美式路径
+                state_href = `/us/${display_state}/city`
+            } else{
+                city_href = `/${display_state}/${display_city}/district`; // 默认路径
+                state_href = `/${display_state}/city`
+            }
+
+
             document.getElementById("locate_search").innerHTML = `
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <a href="./state.html" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
@@ -817,14 +841,14 @@
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="./city.html?state=${display_state}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${state_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
                     <i itemprop="name">${display_city}</i>
                 </a>
                 <meta itemprop="position" content="2">
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="./district.html?state=${display_state}&city=${display_city}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${city_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
                     <i itemprop="name">${display_district}</i>
                 </a>
                 <meta itemprop="position" content="3">
@@ -932,10 +956,16 @@
                 data.forEach((house, index) => {
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
+
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
                     if(lang == "de"){
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                     html += `<li>
         <div class="most-box">
-          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+          <a href="${detail_href}" class="href-item"></a>
           <img src="${serverPic + (picsObj[0] || '')}"
                alt="section-8-pays-for-your-rental-costs" class="most-img">
           <h5 class="most-tit">${house.name}</h5>
@@ -946,9 +976,12 @@
           <h5 class="most-tit">${house.price} € Kaltmiete zzgl. NK</h5>
         </div>
       </li>`}else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
         <div class="most-box">
-          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+          <a href="${detail_href}" class="href-item"></a>
           <img src="${serverPic + (picsObj[0] || '')}"
                alt="section-8-pays-for-your-rental-costs" class="most-img">
           <h5 class="most-tit">${house.name}</h5>
@@ -960,9 +993,12 @@
         </div>
       </li>`
                     }else{
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
         <div class="most-box">
-          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+          <a href="${detail_href}" class="href-item"></a>
           <img src="${serverPic + (picsObj[0] || '')}"
                alt="section-8-pays-for-your-rental-costs" class="most-img">
           <h5 class="most-tit">${house.name}</h5>
