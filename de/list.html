@@ -616,13 +616,35 @@
         container.appendChild(createButton('»', currentPage + 1, false, currentPage === maxPage));
     }
 
-    function goToPage(page) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('page', page);
-        window.location.href = url.toString();
-    }
+    // function goToPage(page) {
+    //     const url = new URL(window.location.href);
+    //     url.searchParams.set('page', page);
+    //     window.location.href = url.toString();
+    // }
 
-    // 获取总数
+        function goToPage(page) {
+            const url = new URL(window.location.href);
+            // 分解路径
+            const parts = url.pathname.split('/').filter(Boolean); // 去掉空字符串
+
+            // 假设原路径最后不是 list
+            // 移除原来的 page/list，如果存在
+            if (parts.length >= 2 && parts[parts.length - 1] === 'list') {
+                parts.pop(); // 移除 list
+                parts.pop(); // 移除 page
+            }
+
+            // 添加新的 page 和 list
+            parts.push(page);
+            parts.push('list');
+
+            // 构造新的 pathname
+            url.pathname = '/' + parts.join('/');
+            window.location.href = url.toString();
+        }
+
+
+        // 获取总数
     const { count: totalCount, error: countError } = await countHouses(display_state, display_city, display_district);
     if (countError) {
         console.error('统计数量失败:', countError);
