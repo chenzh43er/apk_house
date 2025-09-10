@@ -535,6 +535,15 @@
     const pageSize = 6;
     const container = document.getElementById('paginationContainer');
 
+    function createButton(label, page, isActive = false, isDisabled = false) {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        if (isActive) btn.classList.add('active');
+        if (isDisabled) btn.disabled = true;
+        btn.onclick = () => goToPage(page);
+        return btn;
+    }
+
         function getStateCityDistrictPageFromUrl() {
             const url = new URL(window.location.href);
             const params = url.searchParams;
@@ -558,7 +567,6 @@
 
             return { state, city, district, page };
         }
-
 
     function createEllipsis() {
         const span = document.createElement('span');
