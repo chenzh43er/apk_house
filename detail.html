@@ -666,6 +666,17 @@
         fetchDataUrl = "./Public/Js/dataGet_us.js"
     }
 
+    function getHouseIdFromUrl() {
+        const url = new URL(window.location.href);
+        const segments = url.pathname.split("/").filter(Boolean);
+
+        // 倒数第二段是 houseId（最后一段是 "detail"）
+        if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "detail") {
+            return decodeURIComponent(segments[segments.length - 2]);
+        }
+        return null;
+    }
+
     import(fetchDataUrl).then(async module => {
         const lang = getLangFromPath()
         let picURL = ""
@@ -699,8 +710,10 @@
 
         const {fetchDataById} = module;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const houseId = urlParams.get('id');
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const houseId = urlParams.get('id');
+
+        const houseId = getHouseIdFromUrl()
 
         const {data, error} = await fetchDataById(houseId);
 
