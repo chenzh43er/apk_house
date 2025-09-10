@@ -530,44 +530,31 @@
     // const display_district = params.get('district');
     // const currentPage = Math.max(1, parseInt(params.get('page')) || 1);
     const { state: display_state, city: display_city, district: display_district, page: currentPage } = getStateCityDistrictPageFromUrl();
+
+
     const pageSize = 6;
     const container = document.getElementById('paginationContainer');
-
-    function createButton(label, page, isActive = false, isDisabled = false) {
-        const btn = document.createElement('button');
-        btn.textContent = label;
-        if (isActive) btn.classList.add('active');
-        if (isDisabled) btn.disabled = true;
-        btn.onclick = () => goToPage(page);
-        return btn;
-    }
 
         function getStateCityDistrictPageFromUrl() {
             const url = new URL(window.location.href);
             const params = url.searchParams;
 
-            let state = null;
-            let city = null;
-            let district = null;
-            let page = null;
+            let state = params.get("state") ? decodeURIComponent(params.get("state")) : null;
+            let city = params.get("city") ? decodeURIComponent(params.get("city")) : null;
+            let district = params.get("district") ? decodeURIComponent(params.get("district")) : null;
+            let page = params.get("page") ? parseInt(params.get("page"), 10) : null;
 
-            // 1️⃣ 优先取参数
-            if (params.has("state")) state = decodeURIComponent(params.get("state"));
-            if (params.has("city")) city = decodeURIComponent(params.get("city"));
-            if (params.has("district")) district = decodeURIComponent(params.get("district"));
-            if (params.has("page")) page = decodeURIComponent(params.get("page"));
-
-            // 2️⃣ 如果没有参数，从路径提取
+            // 如果没有参数，再从路径提取
             const segments = url.pathname.split("/").filter(Boolean);
-            // 例如:
-            // /de/Bayern/Altusried/North/2
-            // → ["de","Bayern","Altusried","North","2"]
+            // 例如 /de/Bayern/Altusried/North/2 → ["de","Bayern","Altusried","North","2"]
 
-            // index 0 可能是语言码 (de/us)，所以从 index 1 开始
             if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
             if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
             if (!district && segments.length >= 4) district = decodeURIComponent(segments[3]);
-            if (!page && segments.length >= 5) page = decodeURIComponent(segments[4]);
+            if (!page && segments.length >= 5) page = parseInt(segments[4], 10);
+
+            // 强制整形，并保证最小为1
+            page = Number.isNaN(page) ? 1 : Math.max(1, page);
 
             return { state, city, district, page };
         }
