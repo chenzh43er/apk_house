@@ -1,10 +1,31 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
-
+    <base href="/de/" />
+    <script>
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
+        if(getLangFromPath() == "de"){
+            const base = document.querySelector('base');
+            base.href = '/de'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de');
+        }else if(getLangFromPath() == "us"){
+            const base = document.querySelector('base');
+            base.href = '/us'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/us');
+        }else{
+            const base = document.querySelector('base');
+            base.href = '/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/');
+        }
+    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Freerentinghouse.info List</title>
     <meta name="description"
           content="UsLowCostHousing provides 26 sources of Affordable Housing in Alaska, Anchorage near you.">
@@ -22,8 +43,6 @@
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
-
-
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <style>
 
@@ -505,11 +524,12 @@
     import(fetchDataUrl).then(async module => {
         const { fetchData , countHouses} = module;
 
-    const params = new URLSearchParams(window.location.search);
-    const display_state = params.get('state');
-    const display_city = params.get('city');
-    const display_district = params.get('district');
-    const currentPage = Math.max(1, parseInt(params.get('page')) || 1);
+    // const params = new URLSearchParams(window.location.search);
+    // const display_state = params.get('state');
+    // const display_city = params.get('city');
+    // const display_district = params.get('district');
+    // const currentPage = Math.max(1, parseInt(params.get('page')) || 1);
+    const { state: display_state, city: display_city, district: display_district, page: currentPage } = getStateCityDistrictPageFromUrl();
     const pageSize = 6;
     const container = document.getElementById('paginationContainer');
 
@@ -521,6 +541,37 @@
         btn.onclick = () => goToPage(page);
         return btn;
     }
+
+        function getStateCityDistrictPageFromUrl() {
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+
+            let state = null;
+            let city = null;
+            let district = null;
+            let page = null;
+
+            // 1️⃣ 优先取参数
+            if (params.has("state")) state = decodeURIComponent(params.get("state"));
+            if (params.has("city")) city = decodeURIComponent(params.get("city"));
+            if (params.has("district")) district = decodeURIComponent(params.get("district"));
+            if (params.has("page")) page = decodeURIComponent(params.get("page"));
+
+            // 2️⃣ 如果没有参数，从路径提取
+            const segments = url.pathname.split("/").filter(Boolean);
+            // 例如:
+            // /de/Bayern/Altusried/North/2
+            // → ["de","Bayern","Altusried","North","2"]
+
+            // index 0 可能是语言码 (de/us)，所以从 index 1 开始
+            if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
+            if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
+            if (!district && segments.length >= 4) district = decodeURIComponent(segments[3]);
+            if (!page && segments.length >= 5) page = decodeURIComponent(segments[4]);
+
+            return { state, city, district, page };
+        }
+
 
     function createEllipsis() {
         const span = document.createElement('span');
