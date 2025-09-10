@@ -843,9 +843,9 @@
             city = decodeURIComponent(params.get("city"));
         }
 
-        // 如果没有参数，再从路径 /xx/State/City 或 /xx/State/city 提取
-        // 匹配 /xx/State/City 或 /xx/State/city
-        const pathMatch = url.pathname.match(/^\/[^/]+\/([^/]+)(?:\/([^/]+))?$/);
+        // 如果没有参数，再从路径 /xx/State/City[/district] 提取
+        // 例如 /de/Bayern/Altusried/district
+        const pathMatch = url.pathname.match(/^\/[^/]+\/([^/]+)(?:\/([^/]+))(?:\/district)?$/);
         if (pathMatch) {
             if (!state) state = decodeURIComponent(pathMatch[1]);
             if (!city && pathMatch[2] && pathMatch[2].toLowerCase() !== "city") {
