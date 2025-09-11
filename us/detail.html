@@ -666,15 +666,24 @@
         fetchDataUrl = "./Public/Js/dataGet_us.js"
     }
 
-    function getHouseIdFromUrl() {
+    function getStateCityDistrictHouseIdFromUrl() {
         const url = new URL(window.location.href);
         const segments = url.pathname.split("/").filter(Boolean);
 
-        // 倒数第二段是 houseId（最后一段是 "detail"）
+        let state = null;
+        let city = null;
+        let district = null;
+        let houseId = null;
+
+        if (segments.length >= 2) state = decodeURIComponent(segments[1]);
+        if (segments.length >= 3) city = decodeURIComponent(segments[2]);
+        if (segments.length >= 4) district = decodeURIComponent(segments[3]);
+
         if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "detail") {
-            return decodeURIComponent(segments[segments.length - 2]);
+            houseId = decodeURIComponent(segments[segments.length - 2]);
         }
-        return null;
+
+        return { state, city, district, houseId };
     }
 
     import(fetchDataUrl).then(async module => {
@@ -713,7 +722,7 @@
         // const urlParams = new URLSearchParams(window.location.search);
         // const houseId = urlParams.get('id');
 
-        const houseId = getHouseIdFromUrl()
+        const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
 
         const {data, error} = await fetchDataById(houseId);
 
@@ -767,7 +776,17 @@
                 </div>
             `
 
-            const urlGet = "state=" + data.display_state + "&city=" + data.display_city + "&district=" + data.display_district
+            //state, city, district, houseId
+
+            let urlGet = "state=" + data.display_state + "&city=" + data.display_city + "&district=" + data.display_district
+
+            if(lang == "de"){
+                urlGet = `/de/${state}/${city}/${district}/1/list`; // 德语路径
+            } else if(lang == "us"){
+                urlGet = `/us/${state}/${city}/${district}/1/list`; // 美式路径
+            } else{
+                urlGet = `/${state}/${city}/${district}/1/list`; // 默认路径
+            }
 
 
             $('.info').html(innerDetailHtml)
@@ -805,8 +824,9 @@
 
             document.getElementById('titleMessage').innerText = data.name
             //document.getElementById('cdkeyMessage').innerText = "Key:" + data.cdkey
-            document.getElementById('backlast').href = "./list.html?" + urlGet
 
+            // document.getElementById('backlast').href = "./list.html?" + urlGet
+            document.getElementById('backlast').href = urlGet
 
             const mqqhtmlLink = window.location.href;
 
@@ -917,6 +937,12 @@
             let display_city = urlParams.get('city');
             let display_district = urlParams.get('district');
 
+            const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+            display_state = state
+            display_city = city
+            display_district = district
+
+
             // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
             if (!display_state) {
                 display_state = 'Berlin'; // 或你希望的默认值
@@ -947,10 +973,15 @@
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -961,9 +992,12 @@
                     </div>
                   </li>`;
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -974,9 +1008,12 @@
                     </div>
                   </li>`;
                     }else{
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -1071,6 +1108,11 @@
             let display_city = urlParams.get('city');
             let display_district = urlParams.get('district');
 
+            const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+            display_state = state
+            display_city = city
+            display_district = district
+
             // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
             if (!display_state) {
                 display_state = 'Berlin'; // 或你希望的默认值
@@ -1100,7 +1142,14 @@
 
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
+
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
                       <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
@@ -1114,6 +1163,9 @@
                     </div>
                   </li>`;
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
                       <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
@@ -1127,6 +1179,9 @@
                     </div>
                   </li>`;
                     }else{
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
                       <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
@@ -1176,13 +1231,27 @@
 
 <script>
     function toForm(){
-        const urlParams = new URLSearchParams(window.location.search);
-        let display_state = urlParams.get('state');
-        let display_city = urlParams.get('city');
-        let display_district = urlParams.get('district');
-        const id = urlParams.get('id');
+        // const urlParams = new URLSearchParams(window.location.search);
+        // let display_state = urlParams.get('state');
+        // let display_city = urlParams.get('city');
+        // let display_district = urlParams.get('district');
+        // const id = urlParams.get('id');
 
-        window.location.href = `./form.html?id=${id}&state=${display_state}&city=${display_city}&district=${display_district}`;
+        const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+
+        const lang = getLangFromPath()
+
+        let form_href = `./form.html?id=${id}&state=${display_state}&city=${display_city}&district=${display_district}`
+
+        if(lang == "de"){
+            form_href = `/de/${state}/${city}/${district}/houseId/form`; // 德语路径
+        } else if(lang == "us"){
+            form_href = `/us/${state}/${city}/${district}/houseId/form`; // 美式路径
+        } else{
+            form_href = `/${state}/${city}/${district}/houseId/form`; // 默认路径
+        }
+
+        window.location.href = form_href;
     }
 </script>
 
