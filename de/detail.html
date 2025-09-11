@@ -7,6 +7,27 @@
             const pathSegments = window.location.pathname.split('/');
             return pathSegments[1]; // 假设语言代码总是在第一个路径段
         }
+
+        function getStateCityDistrictHouseIdFromUrl() {
+            const url = new URL(window.location.href);
+            const segments = url.pathname.split("/").filter(Boolean);
+
+            let state = null;
+            let city = null;
+            let district = null;
+            let houseId = null;
+
+            if (segments.length >= 2) state = decodeURIComponent(segments[1]);
+            if (segments.length >= 3) city = decodeURIComponent(segments[2]);
+            if (segments.length >= 4) district = decodeURIComponent(segments[3]);
+
+            if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "detail") {
+                houseId = decodeURIComponent(segments[segments.length - 2]);
+            }
+
+            return { state, city, district, houseId };
+        }
+
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
             base.href = '/de'; // 绝对路径形式
