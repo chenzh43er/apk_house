@@ -424,34 +424,41 @@
 </script>
 <script>
     function submitForm() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id');
-        let display_state = urlParams.get('state');
-        let display_city = urlParams.get('city');
-        let display_district = urlParams.get('district');
+        // const urlParams = new URLSearchParams(window.location.search);
+        // const id = urlParams.get('id');
+        // let display_state = urlParams.get('state');
+        // let display_city = urlParams.get('city');
+        // let display_district = urlParams.get('district');
 
         const name = $('#name').val();
         const email = $('#email').val();
         const message = $('#message').val();
-
+        const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
 
         const lang = getLangFromPath()
         let alertMessage = ""
+        let result_href = ``
+
         if(lang == "de"){
             alertMessage = "Bitte erst nach vollständiger Angabe absenden."
+            result_href = `/de/${state}/${city}/${district}/${houseId}/result`
         }else if(lang == "us")
         {
             alertMessage = "Please complete all fields before submitting.";
+            result_href = `/us/${state}/${city}/${district}/${houseId}/result`
         }else
         {
             alertMessage = "Please complete all fields before submitting.";
+            result_href = `/${state}/${city}/${district}/${houseId}/result`
         }
 
 
         if(name.length == 0 || email.length == 0 || message.length == 0){
             alert(alertMessage)
         }else{
-            window.location.href = `./result.html?id=${id}&state=${display_state}&city=${display_city}&district=${display_district}`;
+            // window.location.href = `./result.html?id=${id}&state=${display_state}&city=${display_city}&district=${display_district}`;
+
+            window.location.href = result_href;
         }
     }
 </script>
@@ -510,11 +517,15 @@
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -525,9 +536,12 @@
                     </div>
                   </li>`;
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -538,9 +552,12 @@
                     </div>
                   </li>`;
                     }else{
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -637,11 +654,16 @@
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                         <div class="most-box">
-                          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                          <a href="${detail_href}" class="href-item"></a>
                           <img src="${serverPic + (picsObj[0] || '')}"
                                alt="section-8-pays-for-your-rental-costs" class="most-img">
                           <h5 class="most-tit">${house.name}</h5>
@@ -653,9 +675,12 @@
                       </li>`;
 
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                         <div class="most-box">
-                          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                          <a href="${detail_href}" class="href-item"></a>
                           <img src="${serverPic + (picsObj[0] || '')}"
                                alt="section-8-pays-for-your-rental-costs" class="most-img">
                           <h5 class="most-tit">${house.name}</h5>
@@ -666,9 +691,12 @@
                         </div>
                       </li>`;
                     }else {
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                         <div class="most-box">
-                          <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                          <a href="${detail_href}" class="href-item"></a>
                           <img src="${serverPic + (picsObj[0] || '')}"
                                alt="section-8-pays-for-your-rental-costs" class="most-img">
                           <h5 class="most-tit">${house.name}</h5>
