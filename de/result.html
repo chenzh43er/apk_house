@@ -1,9 +1,51 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
+    <base href="/de/" />
+    <script>
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
+
+        function getStateCityDistrictHouseIdFromUrl() {
+            const url = new URL(window.location.href);
+            const segments = url.pathname.split("/").filter(Boolean);
+
+            let state = null;
+            let city = null;
+            let district = null;
+            let houseId = null;
+
+            if (segments.length >= 2) state = decodeURIComponent(segments[1]);
+            if (segments.length >= 3) city = decodeURIComponent(segments[2]);
+            if (segments.length >= 4) district = decodeURIComponent(segments[3]);
+
+            if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "form") {
+                houseId = decodeURIComponent(segments[segments.length - 2]);
+            }
+
+            return { state, city, district, houseId };
+        }
+        if(getLangFromPath() == "de"){
+            const base = document.querySelector('base');
+            base.href = '/de'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de');
+        }else if(getLangFromPath() == "us"){
+            const base = document.querySelector('base');
+            base.href = '/us'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/us');
+        }else{
+            const base = document.querySelector('base');
+            base.href = '/'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/');
+        }
+    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Freerentinghouse.info Result</title>
     <meta name="description"
           content="Find detailed information on Chugach View, including address, phone number, services, and more.">
@@ -14,12 +56,10 @@
     <script src="./Public/Js/common.js"></script>
 <!--    <script src="./Public/Js/googleAdv.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
-
 <!--    <script src="./Public/Js/googleAds.js"></script>-->
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
             crossorigin="anonymous"></script>
-
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <style>
         .adswp{
@@ -400,11 +440,17 @@
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -416,9 +462,13 @@
                   </li>`;
 
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -429,9 +479,13 @@
                     </div>
                   </li>`;
                     }else {
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -531,11 +585,16 @@
                     const serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
+                    let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
+
+
                     if(lang == "de") {
+
+                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -547,9 +606,12 @@
                   </li>`;
 
                     }else if(lang == "us"){
+
+                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -560,9 +622,12 @@
                     </div>
                   </li>`;
                     }else{
+
+                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
