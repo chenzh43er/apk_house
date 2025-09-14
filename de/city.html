@@ -1,6 +1,6 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 <head>
-    <base href="/de/" />
+    <base href="https://apkintelligence.com/de/"/>
     <script>
         function getLangFromPath() {
             const pathSegments = window.location.pathname.split('/');
@@ -23,26 +23,26 @@
         //     base.setAttribute('href', '/');
         // }
 
-        function setBaseHref() {
-            const base = document.querySelector('base');
-            const lang = getLangFromPath();
-
-            // 判断是不是 Safari（包含 iOS 和 macOS Safari，排除 Chrome）
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-            let href = '/';
-            if (lang === "de") {
-                href = isSafari ? `${window.location.origin}/de/` : '/de/';
-            } else if (lang === "us") {
-                href = isSafari ? `${window.location.origin}/us/` : '/us/';
-            } else {
-                href = isSafari ? `${window.location.origin}/` : '/';
-            }
-
-            base.setAttribute('href', href);
-        }
-
-        setBaseHref();
+        // function setBaseHref() {
+        //     const base = document.querySelector('base');
+        //     const lang = getLangFromPath();
+        //
+        //     // 判断是不是 Safari（包含 iOS 和 macOS Safari，排除 Chrome）
+        //     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        //
+        //     let href = '/';
+        //     if (lang === "de") {
+        //         href = isSafari ? `${window.location.origin}/de/` : '/de/';
+        //     } else if (lang === "us") {
+        //         href = isSafari ? `${window.location.origin}/us/` : '/us/';
+        //     } else {
+        //         href = isSafari ? `${window.location.origin}/` : '/';
+        //     }
+        //
+        //     base.setAttribute('href', href);
+        // }
+        //
+        // setBaseHref();
     </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
