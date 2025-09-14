@@ -833,14 +833,30 @@
 
     function returnToList(){
 
-        const urlParams = new URLSearchParams(window.location.search);
+        // const urlParams = new URLSearchParams(window.location.search);
+        //
+        // let display_state = urlParams.get('state');
+        // let display_city = urlParams.get('city');
+        // let display_district = urlParams.get('district');
 
-        let display_state = urlParams.get('state');
-        let display_city = urlParams.get('city');
-        let display_district = urlParams.get('district');
+        const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+        const lang = getLangFromPath()
+        let list_href = ``
+
+        if(lang == "de"){
+            list_href = `/de/${state}/${city}/${district}/1/list`
+        }else if(lang == "us")
+        {
+            list_href = `/us/${state}/${city}/${district}/1/list`
+        }else
+        {
+            list_href = `/${state}/${city}/${district}/1/list`
+        }
 
 
-        window.location.href = `./list.html?state=${display_state}&city=${display_city}&district=${display_district}`;
+        // window.location.href = `./list.html?state=${display_state}&city=${display_city}&district=${display_district}`;
+
+        window.location.href = list_href;
     }
 </script>
 
