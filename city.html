@@ -6,22 +6,43 @@
             const pathSegments = window.location.pathname.split('/');
             return pathSegments[1]; // 假设语言代码总是在第一个路径段
         }
-        if(getLangFromPath() == "de"){
+        // if(getLangFromPath() == "de"){
+        //     const base = document.querySelector('base');
+        //     base.href = '/de'; // 绝对路径形式
+        //     // 或者使用相对路径
+        //     base.setAttribute('href', '/de');
+        // }else if(getLangFromPath() == "us"){
+        //     const base = document.querySelector('base');
+        //     base.href = '/us'; // 绝对路径形式
+        //     // 或者使用相对路径
+        //     base.setAttribute('href', '/us');
+        // }else{
+        //     const base = document.querySelector('base');
+        //     base.href = '/'; // 绝对路径形式
+        //     // 或者使用相对路径
+        //     base.setAttribute('href', '/');
+        // }
+
+        function setBaseHref() {
             const base = document.querySelector('base');
-            base.href = '/de'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/de');
-        }else if(getLangFromPath() == "us"){
-            const base = document.querySelector('base');
-            base.href = '/us'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/us');
-        }else{
-            const base = document.querySelector('base');
-            base.href = '/'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/');
+            const lang = getLangFromPath();
+
+            // 判断是不是 Safari（包含 iOS 和 macOS Safari，排除 Chrome）
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+            let href = '/';
+            if (lang === "de") {
+                href = isSafari ? `${window.location.origin}/de/` : '/de/';
+            } else if (lang === "us") {
+                href = isSafari ? `${window.location.origin}/us/` : '/us/';
+            } else {
+                href = isSafari ? `${window.location.origin}/` : '/';
+            }
+
+            base.setAttribute('href', href);
         }
+
+        setBaseHref();
     </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
