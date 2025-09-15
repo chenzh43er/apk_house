@@ -589,7 +589,7 @@
 
 
 
-        <div style="margin: 30px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <div style="margin: 30px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); @media (max-width: 600px) {padding: 0px;}">
             <ul class="suggestHouseUl" id = "down_list">
             </ul>
         </div>
@@ -1178,7 +1178,7 @@
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -1194,7 +1194,7 @@
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
@@ -1210,7 +1210,7 @@
 
                         html += `<li>
                     <div class="most-box">
-                      <a href="./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}" class="href-item"></a>
+                      <a href="${detail_href}" class="href-item"></a>
                       <img src="${serverPic + (picsObj[0] || '')}"
                            alt="section-8-pays-for-your-rental-costs" class="most-img">
                       <h5 class="most-tit">${house.name}</h5>
