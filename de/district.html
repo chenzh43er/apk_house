@@ -753,16 +753,18 @@
 </script>
 <script type="module">
 
+    function resolveUrl(path) {
+        return new URL(path, window.location.origin).href;
+    }
+
     const lang = getLangFromPath()
     let fetchDataUrl = ""
-    if(lang == "de"){
-        fetchDataUrl = "./Public/Js/dataGet.js"
-    }else if(lang == "us")
-    {
-        fetchDataUrl = "./Public/Js/dataGet_us.js"
-    }else
-    {
-        fetchDataUrl = "./Public/Js/dataGet.js"
+    if(lang === "de"){
+        fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+    }else if(lang === "us"){
+        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else{
+        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
     }
 
     import(fetchDataUrl).then(async module => {
