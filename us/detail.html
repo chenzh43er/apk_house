@@ -96,6 +96,16 @@
 
 </head>
 <style>
+
+    .underListDiv{
+        max-width: 728px;
+        margin:auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
     .modal {
         display: none;
         position: fixed;
@@ -221,6 +231,9 @@
     @media screen and (min-width: 500px) {
         .suggestHouseUl {
             grid-template-columns: repeat(2, 1fr);
+        }
+        .underListDiv{
+            padding: 0px;
         }
     }
 
@@ -589,7 +602,7 @@
 
 
 
-        <div style="margin: 30px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); @media (max-width: 600px) {padding: 0px;}">
+        <div class="underListDiv">
             <ul class="suggestHouseUl" id = "down_list">
             </ul>
         </div>
