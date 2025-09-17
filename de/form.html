@@ -505,6 +505,11 @@
             let display_city = urlParams.get('city');
             let display_district = urlParams.get('district');
 
+            const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+            display_state = state
+            display_city = city
+            display_district = district
+
             // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
             if (!display_state) {
                 display_state = 'Berlin'; // 或你希望的默认值
@@ -645,6 +650,11 @@
             let display_state = urlParams.get('state');
             let display_city = urlParams.get('city');
             let display_district = urlParams.get('district');
+
+            const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
+            display_state = state
+            display_city = city
+            display_district = district
 
             // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
             if (!display_state) {
