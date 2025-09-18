@@ -378,11 +378,11 @@
             if (stateName) {
                 link.dataset.state = stateName; // 保存州名
                 if(lang == "de"){
-                    link.href = `/de/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/de/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }else if(lang == "us"){
-                    link.href = `/us/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/us/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }else{
-                    link.href = `/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }
             }
         });
