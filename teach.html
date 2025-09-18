@@ -751,7 +751,7 @@
 
             document.getElementById("lang_find").innerText = "Find affordable housing";
 
-            document.getElementById("lang_price").innerText = "Starting from €300/month";
+            document.getElementById("lang_price").innerText = "Starting from $300/month";
 
             document.getElementById("lang_click").innerHTML = `Click here`;
 
@@ -943,8 +943,20 @@
 
 <script>
     function handleClick() {
+
+        const lang = getLangFromPath()
+        let link_href = ``
+        if(lang == "de"){
+            link_href = `/de/teach/state`; // 注意这里改成绝对路径
+        }else if(lang == "us"){
+            link_href = `/us/teach/state`; // 注意这里改成绝对路径
+        }else{
+            link_href = `/teach/state`; // 注意这里改成绝对路径
+        }
+
         //alert("按钮被点击！");
-        window.location.href = "./state.html"
+        // window.location.href = "./state.html"
+        window.location.href = link_href
     }
 </script>
 
