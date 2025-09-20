@@ -1288,11 +1288,11 @@
         let form_href = `./form.html?id=${houseId}&state=${state}&city=${city}&district=${district}`
 
         if(lang == "de"){
-            form_href = `/de/${state}/${city}/${district}/${houseId}/form`; // 德语路径
+            form_href = `/de/teach/state/${state}/${city}/${district}/${houseId}/form`; // 德语路径
         } else if(lang == "us"){
-            form_href = `/us/${state}/${city}/${district}/${houseId}/form`; // 美式路径
+            form_href = `/us/teach/state/${state}/${city}/${district}/${houseId}/form`; // 美式路径
         } else{
-            form_href = `/${state}/${city}/${district}/${houseId}/form`; // 默认路径
+            form_href = `/teach/state/${state}/${city}/${district}/${houseId}/form`; // 默认路径
         }
 
         window.location.href = form_href;
