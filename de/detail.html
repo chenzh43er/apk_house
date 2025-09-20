@@ -10,23 +10,36 @@
 
         function getStateCityDistrictHouseIdFromUrl() {
             const url = new URL(window.location.href);
-            const segments = url.pathname.split("/").filter(Boolean);
+            const path = url.pathname;
+
+            // 正则：兼容 /de/... 和 /us/teach/state/...
+            const regex = /^\/(?:de\/([^/]+)\/([^/]+)\/([^/]+)|us\/teach\/state\/([^/]+)\/([^/]+)\/([^/]+))\/([^/]+)\/detail$/;
+
+            const match = path.match(regex);
 
             let state = null;
             let city = null;
             let district = null;
             let houseId = null;
 
-            if (segments.length >= 2) state = decodeURIComponent(segments[1]);
-            if (segments.length >= 3) city = decodeURIComponent(segments[2]);
-            if (segments.length >= 4) district = decodeURIComponent(segments[3]);
-
-            if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "detail") {
-                houseId = decodeURIComponent(segments[segments.length - 2]);
+            if (match) {
+                if (match[1]) {
+                    // /de/:state/:city/:district/:houseId/detail
+                    state = decodeURIComponent(match[1]);
+                    city = decodeURIComponent(match[2]);
+                    district = decodeURIComponent(match[3]);
+                } else {
+                    // /us/teach/state/:state/:city/:district/:houseId/detail
+                    state = decodeURIComponent(match[4]);
+                    city = decodeURIComponent(match[5]);
+                    district = decodeURIComponent(match[6]);
+                }
+                houseId = decodeURIComponent(match[7]);
             }
 
             return { state, city, district, houseId };
         }
+
 
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
@@ -719,23 +732,36 @@
 
     function getStateCityDistrictHouseIdFromUrl() {
         const url = new URL(window.location.href);
-        const segments = url.pathname.split("/").filter(Boolean);
+        const path = url.pathname;
+
+        // 正则：兼容 /de/... 和 /us/teach/state/...
+        const regex = /^\/(?:de\/([^/]+)\/([^/]+)\/([^/]+)|us\/teach\/state\/([^/]+)\/([^/]+)\/([^/]+))\/([^/]+)\/detail$/;
+
+        const match = path.match(regex);
 
         let state = null;
         let city = null;
         let district = null;
         let houseId = null;
 
-        if (segments.length >= 2) state = decodeURIComponent(segments[1]);
-        if (segments.length >= 3) city = decodeURIComponent(segments[2]);
-        if (segments.length >= 4) district = decodeURIComponent(segments[3]);
-
-        if (segments.length >= 2 && segments[segments.length - 1].toLowerCase() === "detail") {
-            houseId = decodeURIComponent(segments[segments.length - 2]);
+        if (match) {
+            if (match[1]) {
+                // /de/:state/:city/:district/:houseId/detail
+                state = decodeURIComponent(match[1]);
+                city = decodeURIComponent(match[2]);
+                district = decodeURIComponent(match[3]);
+            } else {
+                // /us/teach/state/:state/:city/:district/:houseId/detail
+                state = decodeURIComponent(match[4]);
+                city = decodeURIComponent(match[5]);
+                district = decodeURIComponent(match[6]);
+            }
+            houseId = decodeURIComponent(match[7]);
         }
 
         return { state, city, district, houseId };
     }
+
 
     import(fetchDataUrl).then(async module => {
         const lang = getLangFromPath()
