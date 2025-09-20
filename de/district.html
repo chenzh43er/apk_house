@@ -872,8 +872,17 @@
         // 2️⃣ 如果没有参数，再从路径里提取
         const path = url.pathname;
 
-        // 情况 A: /de/Bayern/Altusried[/district]
-        let match = path.match(/^\/[^/]+\/([^/]+)\/([^/]+)(?:\/district)?$/);
+        /**
+         * 通用匹配：
+         * - /de/Bayern/Altusried
+         * - /de/Bayern/Altusried/district
+         * - /us/teach/state/Alabama/Dale County
+         * - /us/teach/state/Alabama/Dale County/district
+         */
+        const match = path.match(
+            /^\/(?:de|us\/teach\/state)\/([^/]+)\/([^/]+)(?:\/district)?$/
+        );
+
         if (match) {
             if (!state) state = decodeURIComponent(match[1]);
             if (!city && match[2] && match[2].toLowerCase() !== "city") {
@@ -881,15 +890,9 @@
             }
         }
 
-        // 情况 B: /us/teach/state/Alabama/Dale%20County[/district]
-        match = path.match(/^\/us\/teach\/state\/([^/]+)\/([^/]+)(?:\/district)?$/);
-        if (match) {
-            if (!state) state = decodeURIComponent(match[1]);
-            if (!city) city = decodeURIComponent(match[2]);
-        }
-
         return { state, city };
     }
+
 
 </script>
 
