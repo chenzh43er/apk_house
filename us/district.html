@@ -861,32 +861,24 @@
         let state = null;
         let city = null;
 
-        // 1️⃣ 优先取 ?state= 和 ?city= 参数
-        if (params.has("state")) {
-            state = decodeURIComponent(params.get("state"));
-        }
-        if (params.has("city")) {
-            city = decodeURIComponent(params.get("city"));
-        }
+        // 优先取 query 参数
+        if (params.has("state")) state = decodeURIComponent(params.get("state"));
+        if (params.has("city"))  city  = decodeURIComponent(params.get("city"));
 
-        // 2️⃣ 如果没有参数，再从路径里提取
-        const path = url.pathname;
+        // 如果 query 没给，再尝试从路径提取
+        if (!state || !city) {
+            const path = url.pathname;
 
-        /**
-         * 通用匹配：
-         * - /de/Bayern/Altusried
-         * - /de/Bayern/Altusried/district
-         * - /us/teach/state/Alabama/Dale County
-         * - /us/teach/state/Alabama/Dale County/district
-         */
-        const match = path.match(
-            /^\/(?:de|us\/teach\/state)\/([^/]+)\/([^/]+)(?:\/district)?$/
-        );
+            // 支持三种开头：
+            //  - /de/:state/:city[/district]
+            //  - /de/teach/state/:state/:city[/district]
+            //  - /us/teach/state/:state/:city[/district]
+            const regex = /^\/(?:(?:de\/teach\/state)|(?:us\/teach\/state)|de)\/([^/]+)\/([^/]+)(?:\/district)?\/?$/i;
+            const m = path.match(regex);
 
-        if (match) {
-            if (!state) state = decodeURIComponent(match[1]);
-            if (!city && match[2] && match[2].toLowerCase() !== "city") {
-                city = decodeURIComponent(match[2]);
+            if (m) {
+                if (!state) state = decodeURIComponent(m[1]);
+                if (!city && m[2] && m[2].toLowerCase() !== "city") city = decodeURIComponent(m[2]);
             }
         }
 
