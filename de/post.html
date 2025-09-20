@@ -55,8 +55,20 @@
       }
     }
 
-    .morePostDiv li{
+    .morePostDiv li {
       width: 32.33333% !important;
+    }
+
+    @media screen and (max-width: 500px) {
+
+      .morePostDiv li {
+        width:100% !important;
+      }
+
+      .morePostDiv {
+        grid-template-columns: repeat(1, 1fr);
+        display: grid;
+      }
     }
   </style>
 
