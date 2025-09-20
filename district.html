@@ -861,7 +861,7 @@
         let state = null;
         let city = null;
 
-        // 优先取 ?state= 和 ?city= 参数
+        // 1️⃣ 优先取 ?state= 和 ?city= 参数
         if (params.has("state")) {
             state = decodeURIComponent(params.get("state"));
         }
@@ -869,18 +869,28 @@
             city = decodeURIComponent(params.get("city"));
         }
 
-        // 如果没有参数，再从路径 /xx/State/City[/district] 提取
-        // 例如 /de/Bayern/Altusried/district
-        const pathMatch = url.pathname.match(/^\/[^/]+\/([^/]+)(?:\/([^/]+))(?:\/district)?$/);
-        if (pathMatch) {
-            if (!state) state = decodeURIComponent(pathMatch[1]);
-            if (!city && pathMatch[2] && pathMatch[2].toLowerCase() !== "city") {
-                city = decodeURIComponent(pathMatch[2]);
+        // 2️⃣ 如果没有参数，再从路径里提取
+        const path = url.pathname;
+
+        // 情况 A: /de/Bayern/Altusried[/district]
+        let match = path.match(/^\/[^/]+\/([^/]+)\/([^/]+)(?:\/district)?$/);
+        if (match) {
+            if (!state) state = decodeURIComponent(match[1]);
+            if (!city && match[2] && match[2].toLowerCase() !== "city") {
+                city = decodeURIComponent(match[2]);
             }
+        }
+
+        // 情况 B: /us/teach/state/Alabama/Dale%20County[/district]
+        match = path.match(/^\/us\/teach\/state\/([^/]+)\/([^/]+)(?:\/district)?$/);
+        if (match) {
+            if (!state) state = decodeURIComponent(match[1]);
+            if (!city) city = decodeURIComponent(match[2]);
         }
 
         return { state, city };
     }
+
 </script>
 
 <script>
