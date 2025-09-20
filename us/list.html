@@ -573,7 +573,7 @@
             const segments = url.pathname.split("/").filter(Boolean);
 
             if (segments.length > 0) {
-                if (segments[0] === "us" && segments[1] === "teach" && segments[2] === "state") {
+                if ((segments[0] === "us"||segments[0] === "de") && segments[1] === "teach" && segments[2] === "state") {
                     // 结构: /us/teach/state/:state/:city/:district/:page/list
                     if (!state && segments.length >= 4) state = decodeURIComponent(segments[3]);
                     if (!city && segments.length >= 5) city = decodeURIComponent(segments[4]);
