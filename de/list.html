@@ -569,22 +569,41 @@
             let district = params.get("district") ? decodeURIComponent(params.get("district")) : null;
             let page = params.get("page") ? parseInt(params.get("page"), 10) : null;
 
-            // 如果没有参数，再从路径提取
+            // 拆分路径
             const segments = url.pathname.split("/").filter(Boolean);
-            // 例如 /de/Bayern/Altusried/North/2 → ["de","Bayern","Altusried","North","2"]
 
-            if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
-            if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
-            if (!district && segments.length >= 4) district = decodeURIComponent(segments[3]);
-            if (!page && segments.length >= 5) page = parseInt(segments[4], 10);
+            if (segments.length > 0) {
+                if (segments[0] === "us" && segments[1] === "teach" && segments[2] === "state") {
+                    // 结构: /us/teach/state/:state/:city/:district/:page/list
+                    if (!state && segments.length >= 4) state = decodeURIComponent(segments[3]);
+                    if (!city && segments.length >= 5) city = decodeURIComponent(segments[4]);
+                    if (!district && segments.length >= 6 && segments[5] !== "list") {
+                        district = decodeURIComponent(segments[5]);
+                    }
+                    if (!page && segments.length >= 7 && !isNaN(segments[6])) {
+                        page = parseInt(segments[6], 10);
+                    }
+                } else {
+                    // 老格式: /de/:state/:city/:district/:page
+                    if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
+                    if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
+                    if (!district && segments.length >= 4 && !isNaN(segments[3]) === false) {
+                        district = decodeURIComponent(segments[3]);
+                    }
+                    if (!page && segments.length >= 5 && !isNaN(segments[4])) {
+                        page = parseInt(segments[4], 10);
+                    }
+                }
+            }
 
-            // 强制整形，并保证最小为1
+            // 强制整形，保证最小为 1
             page = Number.isNaN(page) ? 1 : Math.max(1, page);
 
             return { state, city, district, page };
         }
 
-    function createEllipsis() {
+
+        function createEllipsis() {
         const span = document.createElement('span');
         span.className = 'ellipsis';
         span.textContent = '...';
@@ -936,20 +955,39 @@
         let district = params.get("district") ? decodeURIComponent(params.get("district")) : null;
         let page = params.get("page") ? parseInt(params.get("page"), 10) : null;
 
-        // 如果没有参数，再从路径提取
+        // 拆分路径
         const segments = url.pathname.split("/").filter(Boolean);
-        // 例如 /de/Bayern/Altusried/North/2 → ["de","Bayern","Altusried","North","2"]
 
-        if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
-        if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
-        if (!district && segments.length >= 4) district = decodeURIComponent(segments[3]);
-        if (!page && segments.length >= 5) page = parseInt(segments[4], 10);
+        if (segments.length > 0) {
+            if (segments[0] === "us" && segments[1] === "teach" && segments[2] === "state") {
+                // 结构: /us/teach/state/:state/:city/:district/:page/list
+                if (!state && segments.length >= 4) state = decodeURIComponent(segments[3]);
+                if (!city && segments.length >= 5) city = decodeURIComponent(segments[4]);
+                if (!district && segments.length >= 6 && segments[5] !== "list") {
+                    district = decodeURIComponent(segments[5]);
+                }
+                if (!page && segments.length >= 7 && !isNaN(segments[6])) {
+                    page = parseInt(segments[6], 10);
+                }
+            } else {
+                // 老格式: /de/:state/:city/:district/:page
+                if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
+                if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
+                if (!district && segments.length >= 4 && !isNaN(segments[3]) === false) {
+                    district = decodeURIComponent(segments[3]);
+                }
+                if (!page && segments.length >= 5 && !isNaN(segments[4])) {
+                    page = parseInt(segments[4], 10);
+                }
+            }
+        }
 
-        // 强制整形，并保证最小为1
+        // 强制整形，保证最小为 1
         page = Number.isNaN(page) ? 1 : Math.max(1, page);
 
         return { state, city, district, page };
     }
+
 
 
     const lang = getLangFromPath()
