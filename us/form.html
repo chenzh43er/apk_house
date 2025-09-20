@@ -469,15 +469,15 @@
 
         if(lang == "de"){
             alertMessage = "Bitte erst nach vollständiger Angabe absenden."
-            result_href = `/de/${state}/${city}/${district}/${houseId}/result`
+            result_href = `/de/teach/state/${state}/${city}/${district}/${houseId}/result`
         }else if(lang == "us")
         {
             alertMessage = "Please complete all fields before submitting.";
-            result_href = `/us/${state}/${city}/${district}/${houseId}/result`
+            result_href = `/us/teach/state/${state}/${city}/${district}/${houseId}/result`
         }else
         {
             alertMessage = "Please complete all fields before submitting.";
-            result_href = `/${state}/${city}/${district}/${houseId}/result`
+            result_href = `/teach/state/${state}/${city}/${district}/${houseId}/result`
         }
 
 
@@ -557,7 +557,7 @@
 
                     if(lang == "de") {
 
-                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -573,7 +573,7 @@
                   </li>`;
                     }else if(lang == "us"){
 
-                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -589,7 +589,7 @@
                   </li>`;
                     }else{
 
-                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -702,7 +702,7 @@
 
                     if(lang == "de") {
 
-                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                         <div class="most-box">
@@ -719,7 +719,7 @@
 
                     }else if(lang == "us"){
 
-                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                         <div class="most-box">
@@ -735,7 +735,7 @@
                       </li>`;
                     }else {
 
-                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                         <div class="most-box">

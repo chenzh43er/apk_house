@@ -801,11 +801,11 @@
             let link_href = `./list.html?state=${display_state}&city=${display_city}&district=${item.display_district}`
 
             if(lang == "de"){
-                link_href = `/de/${display_state}/${display_city}/${item.display_district}/1/list`; // 德语路径
+                link_href = `/de/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 德语路径
             } else if(lang == "us"){
-                link_href = `/us/${display_state}/${display_city}/${item.display_district}/1/list`; // 美式路径
+                link_href = `/us/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 美式路径
             } else{
-                link_href = `/${display_state}/${display_city}/${item.display_district}/1/list`; // 默认路径
+                link_href = `/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 默认路径
             }
 
             innerStr += `

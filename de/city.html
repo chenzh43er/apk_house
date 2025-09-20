@@ -758,11 +758,11 @@
             let link_href = `./district.html?state=${display_state}&city=${item.display_city}`
 
                         if(lang == "de"){
-                            link_href = `/de/${display_state}/${item.display_city}/district`; // 德语路径
+                            link_href = `/de/teach/state/${display_state}/${item.display_city}/district`; // 德语路径
                         } else if(lang == "us"){
-                            link_href = `/us/${display_state}/${item.display_city}/district`; // 美式路径
+                            link_href = `/us/teach/state/${display_state}/${item.display_city}/district`; // 美式路径
                         } else{
-                            link_href = `/${display_state}/${item.display_city}/district`; // 默认路径
+                            link_href = `/teach/state/${display_state}/${item.display_city}/district`; // 默认路径
                         }
 
                 innerStr += `<li>

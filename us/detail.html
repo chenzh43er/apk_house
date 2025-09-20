@@ -832,11 +832,11 @@
             let urlGet = "state=" + data.display_state + "&city=" + data.display_city + "&district=" + data.display_district
 
             if(lang == "de"){
-                urlGet = `/de/${state}/${city}/${district}/1/list`; // 德语路径
+                urlGet = `/de/teach/state/${state}/${city}/${district}/1/list`; // 德语路径
             } else if(lang == "us"){
-                urlGet = `/us/${state}/${city}/${district}/1/list`; // 美式路径
+                urlGet = `/us/teach/state/${state}/${city}/${district}/1/list`; // 美式路径
             } else{
-                urlGet = `/${state}/${city}/${district}/1/list`; // 默认路径
+                urlGet = `/teach/state/${state}/${city}/${district}/1/list`; // 默认路径
             }
 
 
@@ -1030,7 +1030,7 @@
 
                     if(lang == "de") {
 
-                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -1046,7 +1046,7 @@
                   </li>`;
                     }else if(lang == "us"){
 
-                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -1062,7 +1062,7 @@
                   </li>`;
                     }else{
 
-                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -1204,7 +1204,7 @@
 
                     if(lang == "de") {
 
-                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -1220,7 +1220,7 @@
                   </li>`;
                     }else if(lang == "us"){
 
-                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -1236,7 +1236,7 @@
                   </li>`;
                     }else{
 
-                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">

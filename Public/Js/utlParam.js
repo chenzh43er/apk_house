@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
 
     // 指定要传递的参数名列表（可扩展）
-    const keysToKeep = ['token', 'source'];
+    const keysToKeep = ['token', 'source', 'campaign', 'content', 'country', 'keyword', 'lang', 'medium'];
 
     // 提取所有需要保留的参数
     const preservedParams = new URLSearchParams();

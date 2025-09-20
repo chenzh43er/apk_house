@@ -732,7 +732,7 @@
             const picsObj = JSON.parse(house.pics_jsonStr || "[]");
             if(lang == "de") {
 
-                detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                     html += `
             <a href="${detail_href}">
@@ -762,7 +762,7 @@
             </a>`;
             }else if(lang == "us"){
 
-                detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                 html += `
             <a href="${detail_href}">
@@ -792,7 +792,7 @@
             </a>`;
             }else{
 
-                detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                 html += `
             <a href="${detail_href}">
@@ -837,14 +837,14 @@
             let city_href = `./district.html?state=${display_state}&city=${display_city}`
             let state_href = `./city.html?state=${display_state}`
             if(lang == "de"){
-                city_href = `/de/${display_state}/${display_city}/district`; // 德语路径
-                state_href = `/de/${display_state}/city`
+                city_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
+                state_href = `/de/teach/state/${display_state}/city`
             } else if(lang == "us"){
-                city_href = `/us/${display_state}/${display_city}/district`; // 美式路径
-                state_href = `/us/${display_state}/city`
+                city_href = `/us/teach/state/${display_state}/${display_city}/district`; // 美式路径
+                state_href = `/us/teach/state/${display_state}/city`
             } else{
-                city_href = `/${display_state}/${display_city}/district`; // 默认路径
-                state_href = `/${display_state}/city`
+                city_href = `/teach/state/${display_state}/${display_city}/district`; // 默认路径
+                state_href = `/teach/state/${display_state}/city`
             }
 
 
@@ -927,6 +927,31 @@
         return new URL(path, window.location.origin).href;
     }
 
+    function getStateCityDistrictPageFromUrl() {
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+
+        let state = params.get("state") ? decodeURIComponent(params.get("state")) : null;
+        let city = params.get("city") ? decodeURIComponent(params.get("city")) : null;
+        let district = params.get("district") ? decodeURIComponent(params.get("district")) : null;
+        let page = params.get("page") ? parseInt(params.get("page"), 10) : null;
+
+        // 如果没有参数，再从路径提取
+        const segments = url.pathname.split("/").filter(Boolean);
+        // 例如 /de/Bayern/Altusried/North/2 → ["de","Bayern","Altusried","North","2"]
+
+        if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
+        if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
+        if (!district && segments.length >= 4) district = decodeURIComponent(segments[3]);
+        if (!page && segments.length >= 5) page = parseInt(segments[4], 10);
+
+        // 强制整形，并保证最小为1
+        page = Number.isNaN(page) ? 1 : Math.max(1, page);
+
+        return { state, city, district, page };
+    }
+
+
     const lang = getLangFromPath()
     let fetchDataUrl = ""
     if(lang === "de"){
@@ -943,12 +968,13 @@
 
         async function init() {
             const urlParams = new URLSearchParams(window.location.search);
-            let display_state = urlParams.get('state');
-
-            // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
-            if (!display_state) {
-                display_state = 'Berlin'; // 或你希望的默认值
-            }
+            // let display_state = urlParams.get('state');
+            //
+            // // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
+            // if (!display_state) {
+            //     display_state = 'Berlin'; // 或你希望的默认值
+            // }
+            const { state: display_state, city: display_city, district: display_district, page: currentPage } = getStateCityDistrictPageFromUrl();
 
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
@@ -981,7 +1007,7 @@
 
                     if(lang == "de"){
 
-                        detail_href = `/de/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/de/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                     html += `<li>
         <div class="most-box">
@@ -997,7 +1023,7 @@
         </div>
       </li>`}else if(lang == "us"){
 
-                        detail_href = `/us/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
         <div class="most-box">
@@ -1014,7 +1040,7 @@
       </li>`
                     }else{
 
-                        detail_href = `/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
         <div class="most-box">
