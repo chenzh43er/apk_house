@@ -78,4 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
             lastHref = window.location.href;
         }
     }, 50);
+
+    // ===== 安全跳转函数 =====
+    // 页面内部按钮或函数使用 safeNavigate(url)
+    window.safeNavigate = function(url) {
+        const fullUrl = appendParams(url);
+        window.location.href = fullUrl;
+    };
+
 });
