@@ -37,3 +37,4 @@ function loadScript(src, callback) {
     document.head.appendChild(script); // 插入到 `head` 中
 }
 
+window.onscroll = null;
