@@ -618,7 +618,7 @@
                                                             style="transform: translateY(-1px) rotate(180deg); fill: #1173eb">
                 <use xlink:href="#icon-clinic-button"></use>
             </svg><span id = "lang_back">Back to List</span></a>
-            <a href="javascript:;" onclick="toForm()"
+            <a href="javascript:;" id="toForm">
                class="next-clinic-btn next-clinic-blue" data-eusoft-scrollable-element="1"><svg
                     class="icon-clinic-button">
                 <use xlink:href="#icon-clinic-button"></use>
@@ -1281,12 +1281,6 @@
 </script>
 
 <script>
-    function toForm(){
-        // const urlParams = new URLSearchParams(window.location.search);
-        // let display_state = urlParams.get('state');
-        // let display_city = urlParams.get('city');
-        // let display_district = urlParams.get('district');
-        // const id = urlParams.get('id');
 
         const { state, city, district, houseId } = getStateCityDistrictHouseIdFromUrl();
 
@@ -1302,8 +1296,8 @@
             form_href = `/teach/state/${state}/${city}/${district}/${houseId}/form`; // 默认路径
         }
 
-        window.location.href = form_href;
-    }
+        document.getElementById("toForm").href = form_href
+
 </script>
 
 <script>
