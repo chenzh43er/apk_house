@@ -492,7 +492,7 @@
 
                 <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                         <span class="bread-crumbs-icon">/</span>
-                        <a href="./state.html" itemprop="item" class="cur-bread-crumbs">
+                        <a href="./state.html" itemprop="item" class="cur-bread-crumbs" id = "toState">
                             <i itemprop="name" id = "lang_item2">Affordable Housing</i>
                         </a>
                         <meta itemprop="position" content="2">
@@ -1075,23 +1075,40 @@
 
                 if (display_district && display_city && display_state) {
                     //console.log("ALL")
+                    let state_href = ``
+                    let city_href = ``
+                    let dis_href = ``
+                    if(lang == "de"){
+                        state_href = `/de/teach/state`; // 注意这里改成绝对路径
+                        city_href = `/de/teach/state/${display_state}/city`; // 注意这里改成绝对路径
+                        dis_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
+                    }else if(lang == "us"){
+                        state_href = `/us/teach/state`; // 注意这里改成绝对路径
+                        city_href = `/ys/teach/state/${display_state}/city`; // 注意这里改成绝对路径
+                        dis_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
+                    }else{
+                        state_href = `/teach/state`; // 注意这里改成绝对路径
+                        city_href = `/teach/state/${display_state}/city`; // 注意这里改成绝对路径
+                        dis_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
+                    }
+                    document.getElementById("toState").href = state_href
 
                     document.getElementById("locate_search").innerHTML = `<span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="./state.html" itemprop="item" class="cur-bread-crumbs" >
+                        <a href="${state_href}" itemprop="item" class="cur-bread-crumbs" >
                             <i itemprop="name" style="color: #1174eb;">${display_state}</i>
                         </a>
                         <meta itemprop="position" content="1">
                     </span>
                     <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                         <span class="bread-crumbs-icon">/</span>
-                        <a href="./city.html?state=${display_state}" itemprop="item" class="cur-bread-crumbs">
+                        <a href="${city_href}" itemprop="item" class="cur-bread-crumbs">
                             <i itemprop="name" style="color: #1174eb;">${display_city}</i>
                         </a>
                         <meta itemprop="position" content="2">
                     </span>
                     <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
                         <span class="bread-crumbs-icon">/</span>
-                        <a href="./district.html?state=${display_state}&city=${display_city}" itemprop="item" class="cur-bread-crumbs">
+                        <a href="${dis_href}" itemprop="item" class="cur-bread-crumbs">
                             <i itemprop="name" style="color: #1174eb;">${display_district}</i>
                         </a>
                         <meta itemprop="position" content="2">
