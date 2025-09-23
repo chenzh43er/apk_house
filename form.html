@@ -488,6 +488,8 @@
             result_href = `/teach/state/${state}/${city}/${district}/${houseId}/result`
         }
 
+        result_href = appendParams(result_href);
+
 
         if(name.length == 0 || email.length == 0 || message.length == 0){
             alert(alertMessage)

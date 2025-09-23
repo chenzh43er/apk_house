@@ -865,6 +865,9 @@
             //document.getElementById('cdkeyMessage').innerText = "Key:" + data.cdkey
 
             // document.getElementById('backlast').href = "./list.html?" + urlGet
+
+            urlGet = appendParams(urlGet);
+
             document.getElementById('backlast').href = urlGet
 
             const mqqhtmlLink = window.location.href;

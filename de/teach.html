@@ -964,6 +964,9 @@
         }else{
             link_href = `/teach/state`; // 注意这里改成绝对路径
         }
+
+        link_href = appendParams(link_href);
+
         document.getElementById("lang_click").href = link_href
 
         //alert("按钮被点击！");
