@@ -293,9 +293,19 @@
 
                     let imgStr = postTITLE[postId].mainImg
                     let title = postTITLE[postId].title
+
+                    let post_href = ``
+                    if(lang == "de"){
+                        post_href = `/de/post/${postId}/1`
+                    }else if(lang == "us"){
+                        post_href = `/us/post/${postId}/1`
+                    }else {
+                        post_href = `/post/${postId}/1`
+                    }
+
                     asideStr += `<li>
         <div class="most-box">
-          <a href="./post.html?postid=${postId}" class="href-item"></a>
+          <a href="${post_href}" class="href-item"></a>
           <img src="${imgStr}"
                alt="section-8-pays-for-your-rental-costs" class="most-img">
           <h5 class="most-tit">${title}</h5>
