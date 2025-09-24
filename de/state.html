@@ -289,7 +289,7 @@
             loadScript(langPostUrl, function () {
                 let asideStr = ``
                 for (let i = 0; i < 3; i++) {
-                    let postId = 10002 + i
+                    let postId = 10004 + i
 
                     let imgStr = postTITLE[postId].mainImg
                     let title = postTITLE[postId].title
@@ -335,7 +335,7 @@
 
 <script type="module">
     const lang = getLangFromPath()
-
+    
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }

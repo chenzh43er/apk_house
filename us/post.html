@@ -1,9 +1,51 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
+  <base href="/de/" />
+  <script>
+    function getLangFromPath() {
+      const pathSegments = window.location.pathname.split('/');
+      return pathSegments[1]; // 假设语言代码总是在第一个路径段
+    }
+    if(getLangFromPath() == "de"){
+      const base = document.querySelector('base');
+      base.href = '/de'; // 绝对路径形式
+      // 或者使用相对路径
+      base.setAttribute('href', '/de');
+    }else if(getLangFromPath() == "us"){
+      const base = document.querySelector('base');
+      base.href = '/us'; // 绝对路径形式
+      // 或者使用相对路径
+      base.setAttribute('href', '/us');
+    }else{
+      const base = document.querySelector('base');
+      base.href = '/'; // 绝对路径形式
+      // 或者使用相对路径
+      base.setAttribute('href', '/');
+    }
+
+    function getPostIdAndPageFromUrl() {
+      const url = new URL(window.location.href);
+      const path = url.pathname;
+
+      // 正则，匹配 /de/post/:postId/:page 或 /us/post/:postId/:page
+      const regex = /^\/(?:de|us)\/post\/([^/]+)\/(\d+)\/?$/i;
+
+      const match = path.match(regex);
+
+      let postId = null;
+      let page = null;
+
+      if (match) {
+        postId = decodeURIComponent(match[1]);
+        page = parseInt(match[2], 10);
+      }
+
+      return { postId, page };
+    }
+  </script>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Freerentinghouse.info Post</title>
   <meta name="description"
         content="UsLowCostHousing offers you the easiest and fastest way to find Affordable Housing near you.">
@@ -213,8 +255,10 @@
             }
 
             let langPostUrl = ""
+            let post_href = ``
             if(lang == "de"){
               langPostUrl = "./Public/Js/post/postName.js"
+
             }else if(lang == "us"){
               langPostUrl = "./Public/Js/post/postName_us.js"
             }else {
@@ -226,11 +270,19 @@
               for (let i = 0; i < 3; i++) {
                 let postId = 10002 + i
 
+                if(lang == "de"){
+                  post_href = `/de/post/${postId}/1`
+                }else if(lang == "us"){
+                  post_href = `/us/post/${postId}/1`
+                }else {
+                  post_href = `/post/${postId}/1`
+                }
+
                 let imgStr = postTITLE[postId].mainImg
                 let title = postTITLE[postId].title
                 asideStr += `<li>
         <div class="most-box">
-          <a href="./post.html?postid=${postId}" class="href-item"></a>
+          <a href="${post_href}" class="href-item"></a>
           <img src="${imgStr}"
                alt="section-8-pays-for-your-rental-costs" class="most-img">
           <h5 class="most-tit">${title}</h5>
@@ -242,9 +294,9 @@
       </li>`
                 if(i==0){
                   asideStr += `<li>
-        <div id="aside_adv" style="text-align: center">
-        </div>
-      </li>`
+                    <div id="aside_adv" style="text-align: center">
+                    </div>
+                  </li>`
                 }
               }
               document.getElementById("asideTitle").innerHTML = asideStr
@@ -256,10 +308,18 @@
                 let imgStr = postTITLE[postid].mainImg
                 let title = postTITLE[postid].title
 
+                if(lang == "de"){
+                  post_href = `/de/post/${postId}/1`
+                }else if(lang == "us"){
+                  post_href = `/us/post/${postId}/1`
+                }else {
+                  post_href = `/post/${postId}/1`
+                }
+
                 moreTopicStr += `
                 <li>
           <div class="most-box">
-            <a href="./post.html?postid=${postid}" class="href-item"></a>
+            <a href="${post_href}" class="href-item"></a>
             <img loading="lazy" src="${imgStr}" alt="differences-between-section-8-and-low-income-housing" class="most-img">
             <h5 class="most-tit">${title}</h5>
             <div class="most-bottom">
@@ -375,30 +435,127 @@
 
       const params = new URLSearchParams(window.location.search);
 
-      const postId = params.get('postid'); // "John"
+      // const postId = params.get('postid'); // "John"
+      // let page = parseInt(params.get('page')) || 1;
 
-      const result = postTITLE[postId].html
-      ////console.log(result)
+      let { postId, page } = getPostIdAndPageFromUrl();
 
-      const titleDiv = `<div class="title_box" data-eusoft-scrollable-element="1">
-                <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-                    <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="/" itemprop="item"><i itemprop="name">Home</i></a>
-                        <meta itemprop="position" content="1">
-                    </span>
+      console.log("postId =", postId); // 10004
+      console.log("page   =", page);   // 1
 
-                    <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <span class="bread-crumbs-icon">/</span>
-                        <a href="#" itemprop="item" class="cur-bread-crumbs">
-                            <i itemprop="name">Affordable Housing</i>
-                        </a>
-                        <meta itemprop="position" content="2">
-                    </span>
 
-                </div>
-            </div>`
+      let thisPost = postTITLE[postId]
 
-      document.getElementById("postPage").innerHTML = titleDiv + result
+      const size = Object.keys(thisPost).length; //
+
+      if(size<4){
+          const result = postTITLE[postId].html
+          ////console.log(result)
+
+          const titleDiv = `<div class="title_box" data-eusoft-scrollable-element="1">
+                  <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                      <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                          <a href="/" itemprop="item"><i itemprop="name">Home</i></a>
+                          <meta itemprop="position" content="1">
+                      </span>
+
+                      <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                          <span class="bread-crumbs-icon">/</span>
+                          <a href="#" itemprop="item" class="cur-bread-crumbs">
+                              <i itemprop="name">Affordable Housing</i>
+                          </a>
+                          <meta itemprop="position" content="2">
+                      </span>
+
+                  </div>
+              </div>`
+
+          document.getElementById("postPage").innerHTML = titleDiv + result
+
+          let newPostid = parseInt(postId) + 1;
+          console.log("newPostid:", newPostid); // 10001
+          if(newPostid == 10021){
+            newPostid = 10000
+          }
+
+          let post_href = ``
+        if(lang == "de"){
+          post_href = `/de/post/${newPostid}/1`
+        }else if(lang == "us"){
+          post_href = `/us/post/${newPostid}/1`
+        }else {
+          post_href = `/post/${newPostid}/1`
+        }
+
+          document.getElementById("next_page").innerHTML = `
+        <a class="next_a2" href="${post_href}" id="nextpage">
+          <span class="next_p">${nextStr}</span>
+        </a>`
+      }else{
+        const resultTemp = postTITLE[postId]
+        let result = resultTemp[page].html
+
+        const titleDiv = `<div class="title_box" data-eusoft-scrollable-element="1">
+                  <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+                      <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                          <a href="/" itemprop="item"><i itemprop="name">Home</i></a>
+                          <meta itemprop="position" content="1">
+                      </span>
+
+                      <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                          <span class="bread-crumbs-icon">/</span>
+                          <a href="#" itemprop="item" class="cur-bread-crumbs">
+                              <i itemprop="name">Affordable Housing</i>
+                          </a>
+                          <meta itemprop="position" content="2">
+                      </span>
+
+                  </div>
+              </div>`
+        document.getElementById("postPage").innerHTML = titleDiv + result
+
+        if(page<3){
+          page = page+1
+          let post_href = ``
+          if(lang == "de"){
+            post_href = `/de/post/${postId}/${page}`
+          }else if(lang == "us"){
+            post_href = `/us/post/${postId}/${page}`
+          }else {
+            post_href = `/post/${postId}/${page}`
+          }
+          document.getElementById("next_page").innerHTML = `
+        <a class="next_a2" href="${post_href}" id="nextpage">
+          <span class="next_p">${nextStr}</span>
+        </a>`
+        }else{
+          let newPostid = parseInt(postId) + 1;
+          console.log("newPostid:", newPostid); // 10001
+          if(newPostid == 10021){
+            newPostid = 10000
+          }
+          let post_href = ``
+          if(lang == "de"){
+            post_href = `/de/post/${newPostid}/1`
+          }else if(lang == "us"){
+            post_href = `/us/post/${newPostid}/1`
+          }else {
+            post_href = `/post/${newPostid}/1`
+          }
+          document.getElementById("next_page").innerHTML = `
+          <a class="next_a2" href="${post_href}" id="nextpage">
+            <span class="next_p">${nextStr}</span>
+          </a>`
+        }
+      }
+
+      // if(thisPost.get){
+      //
+      // }
+
+
+
+
 
       //titleReturn
       document.title = `${returnWebStr()} Post.`;
@@ -439,17 +596,10 @@
       // 假设 URL 里是这种形式: ?url=10020
       // const params = new URLSearchParams(window.location.search);
       // 如果要 +1 就这样
-      let newPostid = parseInt(postId) + 1;
-      console.log("newPostid:", newPostid); // 10001
 
-      if(newPostid == 10021){
-        newPostid = 10000
-      }
 
-      document.getElementById("next_page").innerHTML = `
-      <a class="next_a2" href="./post.html?postid=${newPostid}" id="nextpage">
-        <span class="next_p">${nextStr}</span>
-      </a>`
+
+
 
     });
   });
