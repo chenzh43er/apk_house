@@ -94,7 +94,7 @@ const postTITLE = {
         "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>A Guide To The HUD Emergency Housing Voucher Program</h1><div id=\"adv3\"></div>\n\n<p>The HUD Emergency Housing Voucher (EHV) Program aims to assist families and individuals experiencing homelessness or at risk of losing their homes. It provides eligible households with access to safe, stable, and affordable housing and supportive services. Here are some things you need to know about this program.</p><img alt=\"A Guide To The HUD Emergency Housing Voucher Program_1\" class=\"old_img\" src=\"./Public/Images/postImg/a-guide-to-the-hud-emergency-housing-voucher-program_1.webp\"/>\n</div>",
         "mainImg": "./Public/Images/postImg/a-guide-to-the-hud-emergency-housing-voucher-program_1.webp"
     },
-    "10004" : {
+    "10005" : {
         "1": {
             "title": "Free Housing Just For You!",
             "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Free Housing Just For You!</h1><div id=\"adv3\"></div>\n\n<p>Medicaid has now extended its benefits to cover housing. However, these benefits can differ widely from state to state and program to program, so it's crucial to get familiar with Medicaid first.</p>\n<img alt=\"Free Housing Just For You!_1\" class=\"old_img\" src=\"./Public/Images/postImg/free-housing-just-for-you_1.webp\"/>\n</div>",
@@ -116,7 +116,7 @@ const postTITLE = {
         "mainImg": "./Public/Images/postImg/free-housing-just-for-you_1.webp",
         "title": "Free Housing Just For You!"
     },
-    "10005" : {
+    "10004" : {
         "1": {
             "title": "Quick Ways To Get Low-Income Housing",
             "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Quick Ways To Get Low-Income Housing</h1><div id=\"adv3\"></div>\n\n<p>Are you going through a tough time in finding affordable housing? If you're, try these 3 programs listed below, which can help you find a suitable home quickly.</p>\n<h4>1. HUD Programs</h4>\n<p>Firstly, you can seek help from the U.S. Department of Housing and Urban Development (HUD). This program provides secure and quality housing for low-income, elderly and people with a disability. </p>\n<img alt=\"Quick Ways To Get Low-Income Housing_1\" class=\"old_img\" src=\"./Public/Images/postImg/quick-ways-to-get-low-income-housing_1.webp\"/>\n</div>",
