@@ -1,28 +1,33 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 <head>
-    <base href="/de/" />
-    <script>
-        function getLangFromPath() {
-            const pathSegments = window.location.pathname.split('/');
-            return pathSegments[1]; // 假设语言代码总是在第一个路径段
-        }
-        if(getLangFromPath() == "de"){
-            const base = document.querySelector('base');
-            base.href = '/de'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/de');
-        }else if(getLangFromPath() == "us"){
-            const base = document.querySelector('base');
-            base.href = '/us'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/us');
-        }else{
-            const base = document.querySelector('base');
-            base.href = '/'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/');
-        }
-    </script>
+<!--    <base href="/de/" />-->
+<!--    <script>-->
+<!--        function getLangFromPath() {-->
+<!--            const pathSegments = window.location.pathname.split('/');-->
+<!--            return pathSegments[1]; // 假设语言代码总是在第一个路径段-->
+<!--        }-->
+<!--        if(getLangFromPath() == "de"){-->
+<!--            const base = document.querySelector('base');-->
+<!--            base.href = '/de'; // 绝对路径形式-->
+<!--            // 或者使用相对路径-->
+<!--            base.setAttribute('href', '/de');-->
+<!--        }else if(getLangFromPath() == "us"){-->
+<!--            const base = document.querySelector('base');-->
+<!--            base.href = '/us'; // 绝对路径形式-->
+<!--            // 或者使用相对路径-->
+<!--            base.setAttribute('href', '/us');-->
+<!--        }else if(getLangFromPath() == "de-ch-at"){-->
+<!--            const base = document.querySelector('base');-->
+<!--            base.href = '/us'; // 绝对路径形式-->
+<!--            // 或者使用相对路径-->
+<!--            base.setAttribute('href', '/de-ch-at');-->
+<!--        }else{-->
+<!--            const base = document.querySelector('base');-->
+<!--            base.href = '/'; // 绝对路径形式-->
+<!--            // 或者使用相对路径-->
+<!--            base.setAttribute('href', '/');-->
+<!--        }-->
+<!--    </script>-->
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
     <link rel="preconnect" href="https://tpc.googlesyndication.com">
@@ -739,6 +744,9 @@
 
 </script>
 <script type="module">
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
+
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }
@@ -748,8 +756,26 @@
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else  if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {
@@ -925,10 +951,11 @@
             document.getElementById("statePic").src = "./Public/Images/amSPic.png"
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
-        }else
+        }else if(lang == "de-ch-at")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
 
+            document.getElementById("lang_state").innerText = "Select state";
             document.getElementById("lang_city").innerText = "Select city";
             document.getElementById("lang_district").innerText = "Select district";
             document.getElementById("lang_apartment").innerText = "Select apartment";
@@ -948,15 +975,75 @@
     1. HUD housing<br>
     2. Social housing<br>
     3. Section 8 housing<br>
-    4. Housing with low-income tax credits<br>
+    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
     5. Other types of affordable housing
     <div></div>
 </p>`;
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
+
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }
+
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
+        }
+        else{
+            document.getElementById("title_find").innerText = "Find affordable housing";
 
+            document.getElementById("lang_state").innerText = "Select state";
+            document.getElementById("lang_city").innerText = "Select city";
+            document.getElementById("lang_district").innerText = "Select district";
+            document.getElementById("lang_apartment").innerText = "Select apartment";
+
+            document.getElementById("lang_how1").innerText = "Affordable housing is available at subsidized prices for low-income individuals thanks to government subsidies and incentives. Monthly rent starts at just €300, which is significantly below the usual market rate!";
+
+            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
+    Find affordable housing for:<br>
+    1. Seniors<br>
+    2. People with disabilities<br>
+    3. Homeless individuals<br>
+    4. Single mothers<br>
+    5. Low-income families<br>
+    6. Other groups of people<br><br>
+
+    Our affordable housing options include:<br>
+    1. HUD housing<br>
+    2. Social housing<br>
+    3. Section 8 housing<br>
+    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
+    5. Other types of affordable housing
+    <div></div>
+</p>`;
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }
+
+            document.getElementById("conPic").style.width = "64px"
+            document.getElementById("statePic").style.width = "64px"
         }
     });
 </script>

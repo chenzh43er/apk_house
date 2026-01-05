@@ -1,58 +1,35 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
-    <base href="/de/" />
-    <script>
-        function getLangFromPath() {
-            const pathSegments = window.location.pathname.split('/');
-            return pathSegments[1]; // 假设语言代码总是在第一个路径段
-        }
-
-        function getStateCityDistrictHouseIdFromUrl() {
-            const url = new URL(window.location.href);
-            const path = url.pathname;
-
-            // 通用正则
-            const regex = /^\/(?:(?:de\/teach\/state)|(?:us\/teach\/state)|de)\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/(detail|form|result)$/;
-
-            const match = path.match(regex);
-
-            let state = null;
-            let city = null;
-            let district = null;
-            let houseId = null;
-            let action = null;
-
-            if (match) {
-                state = decodeURIComponent(match[1]);
-                city = decodeURIComponent(match[2]);
-                district = decodeURIComponent(match[3]);
-                houseId = decodeURIComponent(match[4]);
-                action = match[5]; // detail / form / result
-            }
-
-            return { state, city, district, houseId, action };
-        }
-
-
-
-        if(getLangFromPath() == "de"){
-            const base = document.querySelector('base');
-            base.href = '/de'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/de');
-        }else if(getLangFromPath() == "us"){
-            const base = document.querySelector('base');
-            base.href = '/us'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/us');
-        }else{
-            const base = document.querySelector('base');
-            base.href = '/'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/');
-        }
-    </script>
+<!--    <base href="/de/" />-->
+    <!--            <base href="/de/" />-->
+    <!--            <script>-->
+    <!--                function getLangFromPath() {-->
+    <!--                    const pathSegments = window.location.pathname.split('/');-->
+    <!--                    return pathSegments[1]; // 假设语言代码总是在第一个路径段-->
+    <!--                }-->
+    <!--                if(getLangFromPath() == "de"){-->
+    <!--                    const base = document.querySelector('base');-->
+    <!--                    base.href = '/de'; // 绝对路径形式-->
+    <!--                    // 或者使用相对路径-->
+    <!--                    base.setAttribute('href', '/de');-->
+    <!--                }else if(getLangFromPath() == "us"){-->
+    <!--                    const base = document.querySelector('base');-->
+    <!--                    base.href = '/us'; // 绝对路径形式-->
+    <!--                    // 或者使用相对路径-->
+    <!--                    base.setAttribute('href', '/us');-->
+    <!--                }else if(getLangFromPath() == "de-ch-at"){-->
+    <!--                    const base = document.querySelector('base');-->
+    <!--                    base.href = '/us'; // 绝对路径形式-->
+    <!--                    // 或者使用相对路径-->
+    <!--                    base.setAttribute('href', '/de-ch-at');-->
+    <!--                }else{-->
+    <!--                    const base = document.querySelector('base');-->
+    <!--                    base.href = '/'; // 绝对路径形式-->
+    <!--                    // 或者使用相对路径-->
+    <!--                    base.setAttribute('href', '/');-->
+    <!--                }-->
+    <!--            </script>-->
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
     <link rel="preconnect" href="https://tpc.googlesyndication.com">
@@ -509,15 +486,36 @@
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }
+
     const lang = getLangFromPath()
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
 
     let fetchDataUrl = ""
     if(lang === "de"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else  if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {

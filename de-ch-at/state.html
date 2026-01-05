@@ -17,6 +17,11 @@
 <!--            base.href = '/us'; // 绝对路径形式-->
 <!--            // 或者使用相对路径-->
 <!--            base.setAttribute('href', '/us');-->
+<!--        }else if(getLangFromPath() == "de-ch-at"){-->
+<!--            const base = document.querySelector('base');-->
+<!--            base.href = '/us'; // 绝对路径形式-->
+<!--            // 或者使用相对路径-->
+<!--            base.setAttribute('href', '/de-ch-at');-->
 <!--        }else{-->
 <!--            const base = document.querySelector('base');-->
 <!--            base.href = '/'; // 绝对路径形式-->
@@ -217,23 +222,21 @@
         </div>
 
         <div class="country-container">
-            <div class="country-item" onclick="selectCountry(this)">
+            <div class="country-item" data-country="de" onclick="selectCountry(this)">
                 <span class="flag">🇩🇪</span>
                 <span class="country-name">Deutschland</span>
             </div>
 
-            <div class="country-item" onclick="selectCountry(this)">
+            <div class="country-item" data-country="ch" onclick="selectCountry(this)">
                 <span class="flag">🇨🇭</span>
                 <span class="country-name">Schweiz</span>
             </div>
 
-            <div class="country-item" onclick="selectCountry(this)">
+            <div class="country-item" data-country="at" onclick="selectCountry(this)">
                 <span class="flag">🇦🇹</span>
                 <span class="country-name">Österreich</span>
             </div>
         </div>
-
-
 
         <div class="select-text">
             <div class="select-box select-now">
@@ -411,7 +414,9 @@
 
 <script type="module">
     const lang = getLangFromPath()
-    
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
+
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }
@@ -421,8 +426,26 @@
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else  if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {
@@ -482,8 +505,20 @@
 </script>
 
 <script>
+
+    function selectCountry(el) {
+        const country = el.dataset.country; // de / ch / at
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('country', country);
+
+        // 自我跳转
+        window.location.href = url.toString();
+    }
+
     $(document).ready(function () {
         const lang = getLangFromPath()
+        const params = new URLSearchParams(window.location.search);
         //console.log(lang)
         if(lang == "de"){
             document.getElementById("title_find").innerText="Bezahlbaren Wohnraum finden"
@@ -577,12 +612,27 @@
     5. Other types of affordable housing
     <div></div>
 </p>`;
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
+
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }
 
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
-        }else{
+        }
+        else{
             document.getElementById("title_find").innerText = "Find affordable housing";
 
             document.getElementById("lang_state").innerText = "Select state";
@@ -609,8 +659,21 @@
     5. Other types of affordable housing
     <div></div>
 </p>`;
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }
 
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
