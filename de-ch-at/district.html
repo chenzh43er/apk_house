@@ -904,29 +904,34 @@
         let state = null;
         let city = null;
 
-        // 优先取 query 参数
+        // 1️⃣ 优先取 query 参数
         if (params.has("state")) state = decodeURIComponent(params.get("state"));
         if (params.has("city"))  city  = decodeURIComponent(params.get("city"));
 
-        // 如果 query 没给，再尝试从路径提取
+        // 2️⃣ 如果 query 没给，再从路径提取
         if (!state || !city) {
             const path = url.pathname;
 
-            // 支持三种开头：
-            //  - /de/:state/:city[/district]
-            //  - /de/teach/state/:state/:city[/district]
-            //  - /us/teach/state/:state/:city[/district]
-            const regex = /^\/(?:(?:de\/teach\/state)|(?:us\/teach\/state)|de)\/([^/]+)\/([^/]+)(?:\/district)?\/?$/i;
+            // 支持：
+            // - /de/:state/:city
+            // - /de-ch-at/:state/:city
+            // - /de/teach/state/:state/:city
+            // - /de-ch-at/teach/state/:state/:city
+            // - /us/teach/state/:state/:city
+            const regex =
+                /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)\/([^/]+)(?:\/district)?\/?$/i;
+
             const m = path.match(regex);
 
             if (m) {
                 if (!state) state = decodeURIComponent(m[1]);
-                if (!city && m[2] && m[2].toLowerCase() !== "city") city = decodeURIComponent(m[2]);
+                if (!city)  city  = decodeURIComponent(m[2]);
             }
         }
 
         return { state, city };
     }
+
 
 
 </script>
