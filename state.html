@@ -241,7 +241,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -260,7 +260,7 @@
     }else if(lang == "us"){
         langAside = "./asideUS.html"
     }else{
-        langAside = "./asideUS.html"
+        langAside = "./aside.html"
     }
 
 
@@ -277,7 +277,7 @@
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }else
             {
-                document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
+                document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
             }
 
             let langPostUrl = ""
@@ -303,7 +303,7 @@
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
                     }else {
-                        post_href = `/post/${postId}/1`
+                        post_href = `/de/post/${postId}/1`
                     }
 
                     asideStr += `<li>
@@ -398,7 +398,7 @@
                 }else if(lang == "us"){
                     link.href = `/us/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }else{
-                    link.href = `/teach/state/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/de-ch-at/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }
             }
         });
@@ -453,7 +453,8 @@
 
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
-        }else if(lang == "us")
+        }
+        else if(lang == "us")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
 

@@ -307,7 +307,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -326,7 +326,7 @@
     }else if(lang == "us"){
         langAside = "./asideUS.html"
     }else{
-        langAside = "./asideUS.html"
+        langAside = "./aside.html"
     }
 
 
@@ -343,7 +343,7 @@
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }else
             {
-                document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
+                document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
             }
 
             let langPostUrl = ""
@@ -369,7 +369,7 @@
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
                     }else {
-                        post_href = `/post/${postId}/1`
+                        post_href = `/de-ch-at/post/${postId}/1`
                     }
 
                     asideStr += `<li>
