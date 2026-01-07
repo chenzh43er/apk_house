@@ -986,7 +986,7 @@
         }
         else{
             document.getElementById("title_find").innerText = "Find affordable housing";
-            
+
             document.getElementById("lang_city").innerText = "Select city";
             document.getElementById("lang_district").innerText = "Select district";
             document.getElementById("lang_apartment").innerText = "Select apartment";
@@ -1056,51 +1056,6 @@
         document.title = `${returnWebStr()} City.`;
     })
 </script>
-
-<!--<script>-->
-
-<!--    function loadCity_adv1(el){-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnCity_adv1();-->
-<!--    }-->
-
-<!--    function loadCity_adv2(el){-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnCity_adv2();-->
-<!--    }-->
-
-<!--    function loadCity_adv3(el) {-->
-<!--        // 已加载就跳过-->
-<!--        if (el.dataset.loaded === '1') return;-->
-
-<!--        // 清空旧内容（确保广告位置干净）-->
-<!--        el.innerHTML = '';-->
-
-<!--        // 生成唯一 ID-->
-<!--        const uniqueId = `div-gpt-advtestAdv_2-${Date.now()}-${Math.floor(Math.random() * 1000)}`;-->
-<!--        el.id = uniqueId;-->
-
-<!--        // 标记已加载-->
-<!--        el.dataset.loaded = '1';-->
-
-<!--        // 定义广告并展示-->
-<!--        googletag.cmd.push(function () {-->
-
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])      // PC端视口宽度 >= 1024，使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])        // 移动端（默认），使用 300x250-->
-<!--                .build();-->
-
-<!--            // googletag.defineSlot('/23284785848/mqqht/loadTestAdv_2', ['fluid'], uniqueId)-->
-<!--            //     .addService(googletag.pubads());-->
-<!--            googletag.defineSlot('/23284785848/house_address3/city_adv3', ['fluid'], uniqueId)-->
-<!--                .defineSizeMapping(mapping).addService(googletag.pubads());-->
-
-
-<!--            googletag.display(uniqueId);-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 <script>
 
