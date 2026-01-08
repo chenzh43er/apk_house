@@ -3,17 +3,18 @@
 <head>
     <base href="/de/" />
     <script>
-        function getLangFromPath() {
-            const pathSegments = window.location.pathname.split('/');
-            return pathSegments[1]; // 假设语言代码总是在第一个路径段
-        }
-
         function getStateCityDistrictHouseIdFromUrl() {
             const url = new URL(window.location.href);
             const path = url.pathname;
 
-            // 通用正则
-            const regex = /^\/(?:(?:de\/teach\/state)|(?:us\/teach\/state)|de)\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/(detail|form|result)$/;
+            // 支持：
+            // - /de/:state/:city/:district/:houseId/detail
+            // - /de-ch-at/:state/:city/:district/:houseId/detail
+            // - /de/teach/state/:state/:city/:district/:houseId/detail
+            // - /de-ch-at/teach/state/:state/:city/:district/:houseId/detail
+            // - /us/teach/state/:state/:city/:district/:houseId/detail
+            const regex =
+                /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/detail$/i;
 
             const match = path.match(regex);
 
@@ -21,21 +22,22 @@
             let city = null;
             let district = null;
             let houseId = null;
-            let action = null;
 
             if (match) {
                 state = decodeURIComponent(match[1]);
                 city = decodeURIComponent(match[2]);
                 district = decodeURIComponent(match[3]);
                 houseId = decodeURIComponent(match[4]);
-                action = match[5]; // detail / form / result
             }
 
-            return { state, city, district, houseId, action };
+            return { state, city, district, houseId };
         }
 
 
-
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
             base.href = '/de'; // 绝对路径形式
@@ -46,6 +48,11 @@
             base.href = '/us'; // 绝对路径形式
             // 或者使用相对路径
             base.setAttribute('href', '/us');
+        }else if(getLangFromPath() == "de-ch-at"){
+            const base = document.querySelector('base');
+            base.href = '/us'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de-ch-at');
         }else{
             const base = document.querySelector('base');
             base.href = '/'; // 绝对路径形式
@@ -450,7 +457,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -485,6 +492,10 @@
         {
             alertMessage = "Please complete all fields before submitting.";
             result_href = `/us/teach/state/${state}/${city}/${district}/${houseId}/result`
+        }else if(lang == "de-ch-at")
+        {
+            alertMessage = "Bitte erst nach vollständiger Angabe absenden."
+            result_href = `/de-ch-at/teach/state/${state}/${city}/${district}/${houseId}/result`
         }else
         {
             alertMessage = "Please complete all fields before submitting.";
@@ -509,15 +520,36 @@
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }
+
     const lang = getLangFromPath()
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
 
     let fetchDataUrl = ""
     if(lang === "de"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {
@@ -553,13 +585,34 @@
                 data.forEach((house, index) => {
 
                     const lang = getLangFromPath()
+                    const params = new URLSearchParams(window.location.search);
+                    const country = params.get('country');
+
                     let picURL = ""
                     if(lang == "de"){
                         picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     }else if(lang == "us"){
                         picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                    }else if(lang === "de-ch-at"){
+                        if(country == "de"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+                        }else if(country == "ch"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+                        }else if(country == "at"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+                        }else{
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+                        }
                     }else{
-                        picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                        if(country == "de"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+                        }else if(country == "ch"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+                        }else if(country == "at"){
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+                        }else{
+                            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+                        }
                     }
 
 
@@ -587,6 +640,22 @@
                     }else if(lang == "us"){
 
                         detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+                        html += `<li>
+                    <div class="most-box">
+                      <a href="${detail_href}" class="href-item"></a>
+                      <img src="${serverPic + (picsObj[0] || '')}"
+                           alt="section-8-pays-for-your-rental-costs" class="most-img">
+                      <h5 class="most-tit">${house.name}</h5>
+                      <div class="most-bottom">
+                        <p class="most-content" data-eusoft-scrollable-element="1">${house.location}</p>
+                      </div>
+                      <h5 class="most-tit">${house.price} /month</h5>
+                    </div>
+                  </li>`;
+                    }else if(lang == "de-ch-at"){
+
+                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -662,8 +731,26 @@
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {
@@ -696,14 +783,35 @@
             $(document).ready(function () {
                 let html = ``;
 
+                const params = new URLSearchParams(window.location.search);
+                const country = params.get('country');
+
                 const lang = getLangFromPath()
                 let picURL = ""
                 if(lang == "de"){
                     picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
                     picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                }else if(lang == "de-ch-at"){
+                    if(country == "de"){
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }else if(country == "at"){
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    }else if(country == "ch"){
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    }else{
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }else{
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                    if(country == "de"){
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }else if(country == "at"){
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    }else if(country == "ch"){
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    }else{
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }
 
                 data.forEach((house,index) => {
@@ -733,6 +841,22 @@
                     }else if(lang == "us"){
 
                         detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+                        html += `<li>
+                        <div class="most-box">
+                          <a href="${detail_href}" class="href-item"></a>
+                          <img src="${serverPic + (picsObj[0] || '')}"
+                               alt="section-8-pays-for-your-rental-costs" class="most-img">
+                          <h5 class="most-tit">${house.name}</h5>
+                          <div class="most-bottom">
+                            <p class="most-content" data-eusoft-scrollable-element="1">${house.location}</p>
+                          </div>
+                          <h5 class="most-tit">${house.price} /month</h5>
+                        </div>
+                      </li>`;
+                    }else if(lang == "de-ch-at"){
+
+                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                         <div class="most-box">
@@ -815,6 +939,12 @@
             document.getElementById("lang_beizhu").innerText = "Leave a message here.";
             document.getElementById("lang_submit").innerText = "Send contact request";
             document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
+        }else if(lang == "de-ch-at")
+        {
+            document.getElementById("lang_name").innerText="Vollständiger Name"
+            document.getElementById("lang_beizhu").innerText="Hinterlassen Sie hier eine Nachricht."
+            document.getElementById("lang_submit").innerText="Kontaktanfrage senden"
+            document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
         }else
         {
             document.getElementById("lang_name").innerText = "Full name";
