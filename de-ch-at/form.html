@@ -725,6 +725,9 @@
 
     const lang = getLangFromPath()
     let fetchDataUrl = ""
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
+
     if(lang === "de"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
