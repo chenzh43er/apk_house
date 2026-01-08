@@ -509,7 +509,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -600,35 +600,59 @@
             // 拆分路径
             const segments = url.pathname.split("/").filter(Boolean);
 
+            // 德语语言集合（以后好维护）
+            const deLangs = ["de", "de-ch-at"];
+
             if (segments.length > 0) {
-                if ((segments[0] === "us"||segments[0] === "de") && segments[1] === "teach" && segments[2] === "state") {
-                    // 结构: /us/teach/state/:state/:city/:district/:page/list
+                const lang = segments[0];
+
+                // 新结构: /{lang}/teach/state/:state/:city/:district/:page/list
+                if (
+                    (lang === "us" || deLangs.includes(lang)) &&
+                    segments[1] === "teach" &&
+                    segments[2] === "state"
+                ) {
                     if (!state && segments.length >= 4) state = decodeURIComponent(segments[3]);
                     if (!city && segments.length >= 5) city = decodeURIComponent(segments[4]);
-                    if (!district && segments.length >= 6 && segments[5] !== "list") {
+
+                    if (
+                        !district &&
+                        segments.length >= 6 &&
+                        segments[5] !== "list" &&
+                        isNaN(segments[5])
+                    ) {
                         district = decodeURIComponent(segments[5]);
                     }
+
                     if (!page && segments.length >= 7 && !isNaN(segments[6])) {
                         page = parseInt(segments[6], 10);
                     }
-                } else {
-                    // 老格式: /de/:state/:city/:district/:page
+                }
+                // 老结构: /de/:state/:city/:district/:page
+                else if (deLangs.includes(lang)) {
                     if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                     if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
-                    if (!district && segments.length >= 4 && !isNaN(segments[3]) === false) {
+
+                    if (
+                        !district &&
+                        segments.length >= 4 &&
+                        isNaN(segments[3])
+                    ) {
                         district = decodeURIComponent(segments[3]);
                     }
+
                     if (!page && segments.length >= 5 && !isNaN(segments[4])) {
                         page = parseInt(segments[4], 10);
                     }
                 }
             }
 
-            // 强制整形，保证最小为 1
+            // 强制整形，最小为 1
             page = Number.isNaN(page) ? 1 : Math.max(1, page);
 
             return { state, city, district, page };
         }
+
 
 
         function createEllipsis() {
@@ -765,11 +789,24 @@
         data.forEach((house, index) => {
 
             const lang = getLangFromPath()
+            const params = new URLSearchParams(window.location.search);
+            const country = params.get('country');
+
             let picURL = ""
             if(lang == "de"){
                 picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
             }else if(lang == "us"){
                 picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+            }else if(lang == "de-ch-at"){
+                if(country == "de"){
+                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                }else if(country == "at"){
+                    picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                }else if(country == "ch"){
+                    picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                }else{
+                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                }
             }else{
                 picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
             }
@@ -807,7 +844,8 @@
                     </div>
                 </li>
             </a>`;
-            }else if(lang == "us"){
+            }
+            else if(lang == "us"){
 
                 detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
@@ -837,7 +875,38 @@
                     </div>
                 </li>
             </a>`;
-            }else{
+            }else if(lang == "de-ch-at"){
+
+                detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+                html += `
+            <a href="${detail_href}">
+                <li class="statelists-imgli">
+                    <div class="statelists-link">
+                        <div class="imgli-box">
+                            <img src="${serverPic + (picsObj[0] || '')}" alt="${house.name}" class="most-img">
+                        </div>
+                        <div class="statelists-right">
+                            <div class="statetitle">${house.name}</div>
+                            <div class="state-address">${house.location}</div>
+                            <div class="state-address">${house.ver}</div>
+                            <div class="state-address">${house.statetype}</div>
+                            <div class="state-address">
+                                <span>${house.room} bed</span>
+                                <span>${house.area} sqft</span>
+                                <span>${house.loft} bathroom</span>
+                            </div>
+                            <div class="most-bottom">
+                                <div class="most-left">
+                                    ${house.price} /month
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </a>`;
+            }
+            else{
 
                 detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
@@ -886,6 +955,9 @@
             if(lang == "de"){
                 city_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
                 state_href = `/de/teach/state/${display_state}/city`
+            } else if(lang == "de-ch-at"){
+                city_href = `/de-ch-at/teach/state/${display_state}/${display_city}/district`; // 美式路径
+                state_href = `/de-ch-at/teach/state/${display_state}/city`
             } else if(lang == "us"){
                 city_href = `/us/teach/state/${display_state}/${display_city}/district`; // 美式路径
                 state_href = `/us/teach/state/${display_state}/city`
@@ -986,24 +1058,46 @@
         // 拆分路径
         const segments = url.pathname.split("/").filter(Boolean);
 
+        // ✅ 德语语言集合
+        const deLangs = ["de", "de-ch-at"];
+
         if (segments.length > 0) {
-            if ((segments[0] === "us"||segments[0] === "de") && segments[1] === "teach" && segments[2] === "state") {
-                // 结构: /us/teach/state/:state/:city/:district/:page/list
+            const lang = segments[0];
+
+            if (
+                (lang === "us" || deLangs.includes(lang)) &&
+                segments[1] === "teach" &&
+                segments[2] === "state"
+            ) {
+                // 结构: /{lang}/teach/state/:state/:city/:district/:page/list
                 if (!state && segments.length >= 4) state = decodeURIComponent(segments[3]);
                 if (!city && segments.length >= 5) city = decodeURIComponent(segments[4]);
-                if (!district && segments.length >= 6 && segments[5] !== "list") {
+
+                if (
+                    !district &&
+                    segments.length >= 6 &&
+                    segments[5] !== "list" &&
+                    isNaN(segments[5])
+                ) {
                     district = decodeURIComponent(segments[5]);
                 }
+
                 if (!page && segments.length >= 7 && !isNaN(segments[6])) {
                     page = parseInt(segments[6], 10);
                 }
-            } else {
-                // 老格式: /de/:state/:city/:district/:page
+            } else if (deLangs.includes(lang)) {
+                // 老格式: /de 或 /de-ch-at /:state/:city/:district/:page
                 if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                 if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
-                if (!district && segments.length >= 4 && !isNaN(segments[3]) === false) {
+
+                if (
+                    !district &&
+                    segments.length >= 4 &&
+                    isNaN(segments[3])
+                ) {
                     district = decodeURIComponent(segments[3]);
                 }
+
                 if (!page && segments.length >= 5 && !isNaN(segments[4])) {
                     page = parseInt(segments[4], 10);
                 }
@@ -1018,14 +1112,36 @@
 
 
 
+
     const lang = getLangFromPath()
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
+
     let fetchDataUrl = ""
     if(lang === "de"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }
     }
 
 
@@ -1053,14 +1169,35 @@
 
                 let html = ``
 
+                const params = new URLSearchParams(window.location.search);
+                const country = params.get('country');
                 const lang = getLangFromPath()
+
                 let picURL = ""
                 if(lang == "de"){
                     picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
                     picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                }else if(lang == "de-ch-at"){
+                    if(country == "de"){
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }else if(country == "at"){
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    }else if(country == "ch"){
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    }else{
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }else{
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                    if(country == "de"){
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }else if(country == "at"){
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    }else if(country == "ch"){
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    }else{
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }
 
 
@@ -1087,7 +1224,8 @@
           </div>
           <h5 class="most-tit">${house.price} € Kaltmiete zzgl. NK</h5>
         </div>
-      </li>`}else if(lang == "us"){
+      </li>`}
+                    else if(lang == "us"){
 
                         detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
@@ -1104,7 +1242,25 @@
           <h5 class="most-tit">${house.price} /month</h5>
         </div>
       </li>`
-                    }else{
+                    }else if(lang == "de-ch-at"){
+
+                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+                        html += `<li>
+        <div class="most-box">
+          <a href="${detail_href}" class="href-item"></a>
+          <img src="${serverPic + (picsObj[0] || '')}"
+               alt="section-8-pays-for-your-rental-costs" class="most-img">
+          <h5 class="most-tit">${house.name}</h5>
+          <div class="most-bottom">
+            <p class="most-content" data-eusoft-scrollable-element="1"> ${house.location}
+            </p>
+          </div>
+          <h5 class="most-tit">${house.price} /month</h5>
+        </div>
+      </li>`
+                    }
+                    else{
 
                         detail_href = `/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
@@ -1175,7 +1331,7 @@
 
             document.getElementById("lang_item2").innerText="Bezahlbare Wohnungen"
 
-        }else if(lang == "de")
+        }else if(lang == "de" || lang == "de-ch-at")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
             document.getElementById("total_text").innerText = "Apartments nearby";
