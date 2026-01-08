@@ -367,7 +367,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -504,8 +504,26 @@
                     picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
                     picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                }else if(lang == "de-ch-at") {
+                    if (country == "de") {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    } else if (country == "at") {
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    } else if (country == "ch") {
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    } else {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }else{
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                    if (country == "de") {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    } else if (country == "at") {
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    } else if (country == "ch") {
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    } else {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }
 
                 data.forEach((house, index) => {
@@ -536,6 +554,23 @@
                     }else if(lang == "us"){
 
                         detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+
+                        html += `<li>
+                    <div class="most-box">
+                      <a href="${detail_href}" class="href-item"></a>
+                      <img src="${serverPic + (picsObj[0] || '')}"
+                           alt="section-8-pays-for-your-rental-costs" class="most-img">
+                      <h5 class="most-tit">${house.name}</h5>
+                      <div class="most-bottom">
+                        <p class="most-content" data-eusoft-scrollable-element="1">${house.location}</p>
+                      </div>
+                      <h5 class="most-tit">${house.price} /month</h5>
+                    </div>
+                  </li>`;
+                    }else if(lang == "de-ch-at"){
+
+                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
 
                         html += `<li>
@@ -677,8 +712,26 @@
                     picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
                     picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                }else if(lang == "de-ch-at") {
+                    if (country == "de") {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    } else if (country == "at") {
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    } else if (country == "ch") {
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    } else {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }else{
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
+                    if (country == "de") {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    } else if (country == "at") {
+                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
+                    } else if (country == "ch") {
+                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
+                    } else {
+                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
+                    }
                 }
 
                 data.forEach((house, index) => {
@@ -708,6 +761,22 @@
                     }else if(lang == "us"){
 
                         detail_href = `/us/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+
+                        html += `<li>
+                    <div class="most-box">
+                      <a href="${detail_href}" class="href-item"></a>
+                      <img src="${serverPic + (picsObj[0] || '')}"
+                           alt="section-8-pays-for-your-rental-costs" class="most-img">
+                      <h5 class="most-tit">${house.name}</h5>
+                      <div class="most-bottom">
+                        <p class="most-content" data-eusoft-scrollable-element="1">${house.location}</p>
+                      </div>
+                      <h5 class="most-tit">${house.price} /month</h5>
+                    </div>
+                  </li>`;
+                    }else if(lang == "de-ch-at"){
+
+                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
 
                         html += `<li>
                     <div class="most-box">
@@ -790,6 +859,11 @@
             document.getElementById("lang_succeed").innerText = "Successfully submitted";
             document.getElementById("lang_back").innerText = "Back to homepage";
             document.getElementById("aside_text").innerText="Affordable Housing Advisory Service"
+        }else if(lang == "de-ch-at")
+        {
+            document.getElementById("lang_succeed").innerText="Erfolgreich eingereicht"
+            document.getElementById("lang_back").innerText="Zurück zur Startseite"
+            document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
         }else
         {
             document.getElementById("lang_succeed").innerText = "Successfully submitted";
@@ -955,6 +1029,9 @@
         }else if(lang == "us")
         {
             list_href = `/us/teach/state/${state}/${city}/${district}/1/list`
+        }else if(lang == "de-ch-at")
+        {
+            list_href = `/de-ch-at/teach/state/${state}/${city}/${district}/1/list`
         }else
         {
             list_href = `/teach/state/${state}/${city}/${district}/1/list`
