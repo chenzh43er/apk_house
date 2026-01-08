@@ -3,6 +3,37 @@
 <head>
                 <base href="/de/" />
                 <script>
+                    function getStateCityDistrictHouseIdFromUrl() {
+                        const url = new URL(window.location.href);
+                        const path = url.pathname;
+
+                        // 支持：
+                        // - /de/:state/:city/:district/:houseId/detail
+                        // - /de-ch-at/:state/:city/:district/:houseId/detail
+                        // - /de/teach/state/:state/:city/:district/:houseId/detail
+                        // - /de-ch-at/teach/state/:state/:city/:district/:houseId/detail
+                        // - /us/teach/state/:state/:city/:district/:houseId/detail
+                        const regex =
+                            /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/detail$/i;
+
+                        const match = path.match(regex);
+
+                        let state = null;
+                        let city = null;
+                        let district = null;
+                        let houseId = null;
+
+                        if (match) {
+                            state = decodeURIComponent(match[1]);
+                            city = decodeURIComponent(match[2]);
+                            district = decodeURIComponent(match[3]);
+                            houseId = decodeURIComponent(match[4]);
+                        }
+
+                        return { state, city, district, houseId };
+                    }
+
+
                     function getLangFromPath() {
                         const pathSegments = window.location.pathname.split('/');
                         return pathSegments[1]; // 假设语言代码总是在第一个路径段
