@@ -8,14 +8,9 @@
                         const url = new URL(window.location.href);
                         const path = url.pathname;
 
-                        // 支持：
-                        // - /de/:state/:city/:district/:houseId/detail
-                        // - /de-ch-at/:state/:city/:district/:houseId/detail
-                        // - /de/teach/state/:state/:city/:district/:houseId/detail
-                        // - /de-ch-at/teach/state/:state/:city/:district/:houseId/detail
-                        // - /us/teach/state/:state/:city/:district/:houseId/detail
+                        // 通用正则（支持 de / de-ch-at / us）
                         const regex =
-                            /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/detail$/i;
+                            /^\/(?:(?:(?:de|de-ch-at)\/teach\/state)|(?:us\/teach\/state)|(?:de|de-ch-at))\/([^/]+)\/([^/]+)\/([^/]+)\/([^/]+)\/(detail|form|result)$/i;
 
                         const match = path.match(regex);
 
@@ -23,18 +18,20 @@
                         let city = null;
                         let district = null;
                         let houseId = null;
+                        let action = null;
 
                         if (match) {
                             state = decodeURIComponent(match[1]);
                             city = decodeURIComponent(match[2]);
                             district = decodeURIComponent(match[3]);
                             houseId = decodeURIComponent(match[4]);
+                            action = match[5]; // detail / form / result
                         }
 
-                        return { state, city, district, houseId };
+                        return { state, city, district, houseId, action };
                     }
 
-
+                    
                     function getLangFromPath() {
                         const pathSegments = window.location.pathname.split('/');
                         return pathSegments[1]; // 假设语言代码总是在第一个路径段
