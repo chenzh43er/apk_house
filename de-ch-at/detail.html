@@ -858,7 +858,10 @@
 
             const picsObj = JSON.parse(data.pics_jsonStr);
 
-            const serverPic = picURL + data.mainpic + "/"
+            let serverPic = picURL + data.mainpic + "/"
+            if(country == "at" || country == "ch"){
+                serverPic = picURL
+            }
 
             if (picsObj.length === 1) {
                 $('.img-box').html(`<img class="provided-img" src="${serverPic + picsObj[0]}">`)
@@ -1082,8 +1085,12 @@
 
 
                 data.forEach((house, index) => {
-                    const serverPic = picURL + house.mainpic + "/";
+                    let serverPic = picURL + house.mainpic + "/";
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
+
+                    if(country == "at" || country == "ch"){
+                        serverPic = picURL
+                    }
 
                     let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
 
@@ -1332,7 +1339,11 @@
                         }
                     }
 
-                    const serverPic = picURL + house.mainpic + "/";
+                    let serverPic = picURL + house.mainpic + "/";
+                    if(country == "at" || country == "ch"){
+                        serverPic = picURL
+                    }
+
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
                     let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`

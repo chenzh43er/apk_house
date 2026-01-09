@@ -812,7 +812,13 @@
             }
 
             let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
-            const serverPic = picURL + house.mainpic + "/";
+            let serverPic = picURL + house.mainpic + "/";
+
+            if(country == "at" || country == "ch"){
+                serverPic = picURL
+            }
+
+
             const picsObj = JSON.parse(house.pics_jsonStr || "[]");
             if(lang == "de") {
 
@@ -1203,7 +1209,11 @@
 
 
                 data.forEach((house, index) => {
-                    const serverPic = picURL + house.mainpic + "/";
+                    let serverPic = picURL + house.mainpic + "/";
+                    if(country == "at" || country == "ch"){
+                        serverPic = picURL
+                    }
+
                     const picsObj = JSON.parse(house.pics_jsonStr || "[]");
 
                     let detail_href = `./detail.html?id=${house.id}&state=${house.display_state}&city=${house.display_city}&district=${house.display_district}`
