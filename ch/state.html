@@ -307,7 +307,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -319,14 +319,14 @@
         });
 
     const lang = getLangFromPath()
-    let langAside = "./aside.html"
+    let langAside = "/aside.html"
     //console.log(lang)
     if(lang == "de"){
-        langAside = "./aside.html"
+        langAside = "/aside.html"
     }else if(lang == "us"){
-        langAside = "./asideUS.html"
+        langAside = "/asideUS.html"
     }else{
-        langAside = "./asideUS.html"
+        langAside = "/aside.html"
     }
 
 
@@ -343,7 +343,7 @@
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }else
             {
-                document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
+                document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
             }
 
             let langPostUrl = ""
@@ -369,7 +369,7 @@
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
                     }else {
-                        post_href = `/post/${postId}/1`
+                        post_href = `/de-ch-at/post/${postId}/1`
                     }
 
                     asideStr += `<li>
@@ -434,7 +434,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }else{
         if(country == "de"){
@@ -444,7 +444,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }
 
@@ -484,7 +484,7 @@
                 }else if(lang == "us"){
                     link.href = `/us/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }else{
-                    link.href = `/teach/state/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/de-ch-at/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }
             }
         });
@@ -625,8 +625,8 @@
                 document.getElementById("conPic").src = "./Public/Images/atPic.png"
                 document.getElementById("statePic").src = "./Public/Images/atCity.png"
             }else{
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
             }
 
             document.getElementById("conPic").style.width = "64px"
@@ -671,8 +671,8 @@
                 document.getElementById("conPic").src = "./Public/Images/atPic.png"
                 document.getElementById("statePic").src = "./Public/Images/atCity.png"
             }else{
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
             }
 
             document.getElementById("conPic").style.width = "64px"

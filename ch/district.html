@@ -678,7 +678,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -690,14 +690,14 @@
         });
 
     const lang = getLangFromPath()
-    let langAside = "./aside.html"
+    let langAside = "/aside.html"
     //console.log(lang)
     if(lang == "de"){
-        langAside = "./aside.html"
+        langAside = "/aside.html"
     }else if(lang == "us"){
-        langAside = "./asideUS.html"
+        langAside = "/asideUS.html"
     }else{
-        langAside = "./asideUS.html"
+        langAside = "/aside.html"
     }
 
 
@@ -707,7 +707,7 @@
             document.getElementById('asidePage').innerHTML = data;
             const lang = getLangFromPath()
             //console.log(lang)
-            if(lang == "de"){
+            if(lang == "de" || lang == "de-ch-at"){
                 document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
             }else if(lang == "us")
             {
@@ -718,7 +718,7 @@
             }
 
             let langPostUrl = ""
-            if(lang == "de"){
+            if(lang == "de" || lang == "de-ch-at"){
                 langPostUrl = "./Public/Js/post/postName.js"
             }else if(lang == "us"){
                 langPostUrl = "./Public/Js/post/postName_us.js"
@@ -739,6 +739,8 @@
                         post_href = `/de/post/${postId}/1`
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
+                    }else if(lang == "de-ch-at"){
+                        post_href = `/de-ch-at/post/${postId}/1`
                     }else {
                         post_href = `/post/${postId}/1`
                     }
@@ -804,7 +806,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }else{
         if(country == "de"){
@@ -814,7 +816,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }
 
@@ -843,6 +845,8 @@
                 link_href = `/de/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 德语路径
             } else if(lang == "us"){
                 link_href = `/us/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 美式路径
+            } else if(lang == "de-ch-at"){
+                link_href = `/de-ch-at/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 美式路径
             } else{
                 link_href = `/teach/state/${display_state}/${display_city}/${item.display_district}/1/list`; // 默认路径
             }
@@ -900,29 +904,34 @@
         let state = null;
         let city = null;
 
-        // 优先取 query 参数
+        // 1️⃣ 优先取 query 参数
         if (params.has("state")) state = decodeURIComponent(params.get("state"));
         if (params.has("city"))  city  = decodeURIComponent(params.get("city"));
 
-        // 如果 query 没给，再尝试从路径提取
+        // 2️⃣ 如果 query 没给，再从路径提取
         if (!state || !city) {
             const path = url.pathname;
 
-            // 支持三种开头：
-            //  - /de/:state/:city[/district]
-            //  - /de/teach/state/:state/:city[/district]
-            //  - /us/teach/state/:state/:city[/district]
-            const regex = /^\/(?:(?:de\/teach\/state)|(?:us\/teach\/state)|de)\/([^/]+)\/([^/]+)(?:\/district)?\/?$/i;
+            // 支持：
+            // - /de/:state/:city
+            // - /de-ch-at/:state/:city
+            // - /de/teach/state/:state/:city
+            // - /de-ch-at/teach/state/:state/:city
+            // - /us/teach/state/:state/:city
+            const regex =
+                /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)\/([^/]+)(?:\/district)?\/?$/i;
+
             const m = path.match(regex);
 
             if (m) {
                 if (!state) state = decodeURIComponent(m[1]);
-                if (!city && m[2] && m[2].toLowerCase() !== "city") city = decodeURIComponent(m[2]);
+                if (!city)  city  = decodeURIComponent(m[2]);
             }
         }
 
         return { state, city };
     }
+
 
 
 </script>
@@ -985,6 +994,49 @@
 </p>`;
             document.getElementById("conPic").src = "./Public/Images/amPic.png"
             document.getElementById("statePic").src = "./Public/Images/amSPic.png"
+            document.getElementById("conPic").style.width = "64px"
+            document.getElementById("statePic").style.width = "64px"
+        }else if(lang == "de-ch-at"){
+            document.getElementById("title_find").innerText="Bezahlbaren Wohnraum finden"
+
+            document.getElementById("lang_district").innerText="Bezirk auswählen"
+            document.getElementById("lang_apartment").innerText="Wohnung auswählen"
+
+            document.getElementById("lang_how1").innerText="Bezahlbarer Wohnraum ist dank staatlicher Fördermittel und Anreize für einkommensschwache Personen zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 €, was deutlich unter dem üblichen Marktpreis liegt!"
+            document.getElementById("lang_how2").innerHTML=`<p class="how-to" id="lang_how2">
+    Finden Sie bezahlbaren Wohnraum für:<br>
+    1. Senioren<br>
+    2. Menschen mit Behinderung<br>
+    3. Obdachlose<br>
+    4. Alleinerziehende Mütter<br>
+    5. Familien mit geringem Einkommen<br>
+    6. Andere Personengruppen<br><br>
+
+    Unser Angebot an bezahlbarem Wohnraum umfasst:<br>
+    1. HUD-Wohnungen<br>
+    2. Sozialwohnungen<br>
+    3. Wohnungen mit Section-8-Förderung<br>
+    4. Wohnungen mit Steuergutschrift für einkommensschwache Haushalte<br>
+    5. Weitere Arten von bezahlbarem Wohnraum
+    <div></div>
+</p>`
+
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }
+
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
         }else
@@ -1075,49 +1127,6 @@
         }
     }
 </script>
-
-<!--<script>-->
-
-<!--    function loadDistrict_adv1(el){-->
-<!--        el.innerHTML = returnDistrict_adv1();-->
-<!--    }-->
-
-<!--    function loadDistrict_adv2(el){-->
-<!--        el.innerHTML = returnDistrict_adv2();-->
-<!--    }-->
-
-<!--    function loadDistrict_adv3(el) {-->
-<!--        // 已加载就跳过-->
-<!--        if (el.dataset.loaded === '1') return;-->
-
-<!--        // 清空旧内容（确保广告位置干净）-->
-<!--        el.innerHTML = '';-->
-
-<!--        // 生成唯一 ID-->
-<!--        const uniqueId = `div-gpt-advtestAdv_2-${Date.now()}-${Math.floor(Math.random() * 1000)}`;-->
-<!--        el.id = uniqueId;-->
-
-<!--        // 标记已加载-->
-<!--        el.dataset.loaded = '1';-->
-
-<!--        // 定义广告并展示-->
-<!--        googletag.cmd.push(function () {-->
-
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])      // PC端视口宽度 >= 1024，使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])        // 移动端（默认），使用 300x250-->
-<!--                .build();-->
-
-<!--            // googletag.defineSlot('/23284785848/mqqht/loadTestAdv_2', ['fluid'], uniqueId)-->
-<!--            //     .addService(googletag.pubads());-->
-<!--            googletag.defineSlot('/23284785848/house_address3/district_adv3', ['fluid'], uniqueId)-->
-<!--                .defineSizeMapping(mapping).addService(googletag.pubads());-->
-
-
-<!--            googletag.display(uniqueId);-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 </body>
 

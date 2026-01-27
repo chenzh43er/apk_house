@@ -17,6 +17,11 @@
             base.href = '/us'; // 绝对路径形式
             // 或者使用相对路径
             base.setAttribute('href', '/us');
+        }else if(getLangFromPath() == "de-ch-at"){
+            const base = document.querySelector('base');
+            base.href = '/us'; // 绝对路径形式
+            // 或者使用相对路径
+            base.setAttribute('href', '/de-ch-at');
         }else{
             const base = document.querySelector('base');
             base.href = '/'; // 绝对路径形式
@@ -139,6 +144,50 @@
 
 
     </style>
+
+    <style>
+        .country-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .country-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1 1 100%; /* 默认移动端：一行一个 */
+            box-sizing: border-box;
+        }
+
+        .country-item.active {
+            border-color: #1677ff;
+            background: #e6f0ff;
+        }
+
+        .flag {
+            font-size: 28px;
+            margin-right: 12px;
+        }
+
+        .country-name {
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* 桌面端：每行三个 */
+        @media(min-width: 768px) {
+            .country-item {
+                flex: 1 1 calc(33.333% - 8px); /* 每行 3 个，减去 gap 的一半 */
+            }
+        }
+    </style>
 </head>
 
 <body aria-hidden="false" style="display: none">
@@ -170,6 +219,23 @@
         </div>
         <div style="text-align: center" id="state_adv1">
             Advertise
+        </div>
+
+        <div class="country-container">
+            <div class="country-item" data-country="de" onclick="selectCountry(this)">
+                <span class="flag">🇩🇪</span>
+                <span class="country-name">Deutschland</span>
+            </div>
+
+            <div class="country-item" data-country="ch" onclick="selectCountry(this)">
+                <span class="flag">🇨🇭</span>
+                <span class="country-name">Schweiz</span>
+            </div>
+
+            <div class="country-item" data-country="at" onclick="selectCountry(this)">
+                <span class="flag">🇦🇹</span>
+                <span class="country-name">Österreich</span>
+            </div>
         </div>
 
         <div class="select-text">
@@ -241,7 +307,7 @@
                 document.getElementById("lang_index").innerText="HOME"
             }else
             {
-                document.getElementById("lang_index").innerText="HOME"
+                document.getElementById("lang_index").innerText="Startseite"
             }
         });
 
@@ -253,14 +319,14 @@
         });
 
     const lang = getLangFromPath()
-    let langAside = "./aside.html"
+    let langAside = "/aside.html"
     //console.log(lang)
     if(lang == "de"){
-        langAside = "./aside.html"
+        langAside = "/aside.html"
     }else if(lang == "us"){
-        langAside = "./asideUS.html"
+        langAside = "/asideUS.html"
     }else{
-        langAside = "./asideUS.html"
+        langAside = "/aside.html"
     }
 
 
@@ -277,7 +343,7 @@
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }else
             {
-                document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
+                document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
             }
 
             let langPostUrl = ""
@@ -303,7 +369,7 @@
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
                     }else {
-                        post_href = `/post/${postId}/1`
+                        post_href = `/de-ch-at/post/${postId}/1`
                     }
 
                     asideStr += `<li>
@@ -348,7 +414,9 @@
 
 <script type="module">
     const lang = getLangFromPath()
-    
+    const params = new URLSearchParams(window.location.search);
+    const country = params.get('country');
+
     function resolveUrl(path) {
         return new URL(path, window.location.origin).href;
     }
@@ -358,8 +426,26 @@
         fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
     }else if(lang === "us"){
         fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+    }else  if(lang === "de-ch-at"){
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }
     }else{
-        fetchDataUrl = resolveUrl("/Public/Js/dataGet_us.js")
+        if(country == "de"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }else if(country == "ch"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+        }else if(country == "at"){
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
+        }else{
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
+        }
     }
 
     import(fetchDataUrl).then(async module => {
@@ -398,7 +484,7 @@
                 }else if(lang == "us"){
                     link.href = `/us/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }else{
-                    link.href = `/teach/state/${stateName}/city`; // 注意这里改成绝对路径
+                    link.href = `/de-ch-at/teach/state/${stateName}/city`; // 注意这里改成绝对路径
                 }
             }
         });
@@ -419,8 +505,20 @@
 </script>
 
 <script>
+
+    function selectCountry(el) {
+        const country = el.dataset.country; // de / ch / at
+
+        const url = new URL(window.location.href);
+        url.searchParams.set('country', country);
+
+        // 自我跳转
+        window.location.href = url.toString();
+    }
+
     $(document).ready(function () {
         const lang = getLangFromPath()
+        const params = new URLSearchParams(window.location.search);
         //console.log(lang)
         if(lang == "de"){
             document.getElementById("title_find").innerText="Bezahlbaren Wohnraum finden"
@@ -453,7 +551,8 @@
 
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"
-        }else if(lang == "us")
+        }
+        else if(lang == "us")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
 
@@ -484,7 +583,8 @@
             document.getElementById("conPic").src = "./Public/Images/amPic.png"
             document.getElementById("statePic").src = "./Public/Images/amSPic.png"
 
-        }else
+        }
+        else if(lang == "de-ch-at")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
 
@@ -512,8 +612,68 @@
     5. Other types of affordable housing
     <div></div>
 </p>`;
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
+
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }
+
+            document.getElementById("conPic").style.width = "64px"
+            document.getElementById("statePic").style.width = "64px"
+        }
+        else{
+            document.getElementById("title_find").innerText = "Find affordable housing";
+
+            document.getElementById("lang_state").innerText = "Select state";
+            document.getElementById("lang_city").innerText = "Select city";
+            document.getElementById("lang_district").innerText = "Select district";
+            document.getElementById("lang_apartment").innerText = "Select apartment";
+
+            document.getElementById("lang_how1").innerText = "Affordable housing is available at subsidized prices for low-income individuals thanks to government subsidies and incentives. Monthly rent starts at just €300, which is significantly below the usual market rate!";
+
+            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
+    Find affordable housing for:<br>
+    1. Seniors<br>
+    2. People with disabilities<br>
+    3. Homeless individuals<br>
+    4. Single mothers<br>
+    5. Low-income families<br>
+    6. Other groups of people<br><br>
+
+    Our affordable housing options include:<br>
+    1. HUD housing<br>
+    2. Social housing<br>
+    3. Section 8 housing<br>
+    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
+    5. Other types of affordable housing
+    <div></div>
+</p>`;
+            const country = params.get('country');     // "123"
+
+            if(country == "de"){
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }else if (country == "ch"){
+                document.getElementById("conPic").src = "./Public/Images/chPic.png"
+                document.getElementById("statePic").src = "./Public/Images/chCity.png"
+            }else if (country == "at"){
+                document.getElementById("conPic").src = "./Public/Images/atPic.png"
+                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+            }else{
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
+            }
 
             document.getElementById("conPic").style.width = "64px"
             document.getElementById("statePic").style.width = "64px"

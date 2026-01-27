@@ -677,8 +677,8 @@
 
     // aside 路径选择
     const langAside = ["de", "de-ch-at"].includes(lang)
-        ? "./aside.html"
-        : "./asideUS.html";
+        ? "/aside.html"
+        : "/asideUS.html";
 
     fetch(langAside)
         .then(res => res.text())

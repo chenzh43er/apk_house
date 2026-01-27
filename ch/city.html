@@ -661,7 +661,7 @@
         .then(data => {
             document.getElementById('header').innerHTML = data;
 
-            if(lang == "de"){
+            if(lang == "de" || lang == "de-ch-at"){
                 document.getElementById("lang_index").innerText="Startseite"
             }else{
                 document.getElementById("lang_index").innerText="HOME"
@@ -676,7 +676,9 @@
         });
 
     // aside 路径选择
-    let langAside = (lang == "de") ? "./aside.html" : "./asideUS.html";
+    const langAside = ["de", "de-ch-at"].includes(lang)
+        ? "/aside.html"
+        : "/asideUS.html";
 
     fetch(langAside)
         .then(res => res.text())
@@ -685,11 +687,13 @@
 
             if(lang == "de"){
                 document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
+            }else if(lang == "de-ch-at"){
+                document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
             }else{
                 document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             }
 
-            let langPostUrl = (lang == "de")
+            const langPostUrl = ["de", "de-ch-at"].includes(lang)
                 ? "./Public/Js/post/postName.js"
                 : "./Public/Js/post/postName_us.js";
 
@@ -706,7 +710,7 @@
                     }else if(lang == "us"){
                         post_href = `/us/post/${postId}/1`
                     }else {
-                        post_href = `/post/${postId}/1`
+                        post_href = `/de-ch-at/post/${postId}/1`
                     }
 
                     asideStr += `<li>
@@ -764,7 +768,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }else{
         if(country == "de"){
@@ -774,7 +778,7 @@
         }else if(country == "at"){
             fetchDataUrl = resolveUrl("/Public/Js/dataGet_at.js")
         }else{
-            fetchDataUrl = resolveUrl("/Public/Js/dataGet_ch.js")
+            fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
         }
     }
 
@@ -800,6 +804,8 @@
                             link_href = `/de/teach/state/${display_state}/${item.display_city}/district`; // 德语路径
                         } else if(lang == "us"){
                             link_href = `/us/teach/state/${display_state}/${item.display_city}/district`; // 美式路径
+                        } else if(lang == "de-ch-at"){
+                            link_href = `/de-ch-at/teach/state/${display_state}/${item.display_city}/district`; // 美式路径
                         } else{
                             link_href = `/teach/state/${display_state}/${item.display_city}/district`; // 默认路径
                         }
@@ -847,26 +853,6 @@
             });
             observer.observe(ddr_adv);
         }
-
-        // const links = document.querySelectorAll('.state-link');
-        // links.forEach(link => {
-        //     const textEl = link.querySelector('.selectLidiv').querySelector('.text-wrapper');
-        //     if (!textEl) return; // 防止找不到
-        //     const stateName = link.dataset.state;
-        //     const cityName = link.dataset.city; // 假设每个 link 已经有 data-city 属性
-        //     if (stateName && cityName) {
-        //         link.dataset.state = stateName; // 保存州名
-        //         link.dataset.city = cityName;   // 保存城市名
-        //
-        //         if(lang == "de"){
-        //             link.href = `/de/${stateName}/${cityName}/district`; // 德语路径
-        //         } else if(lang == "us"){
-        //             link.href = `/us/${stateName}/${cityName}/district`; // 美式路径
-        //         } else{
-        //             link.href = `/${stateName}/${cityName}/district`; // 默认路径
-        //         }
-        //     }
-        // });
     });
     });
 
@@ -955,7 +941,6 @@
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
 
-            document.getElementById("lang_state").innerText = "Select state";
             document.getElementById("lang_city").innerText = "Select city";
             document.getElementById("lang_district").innerText = "Select district";
             document.getElementById("lang_apartment").innerText = "Select apartment";
@@ -992,8 +977,8 @@
                 document.getElementById("conPic").src = "./Public/Images/atPic.png"
                 document.getElementById("statePic").src = "./Public/Images/atCity.png"
             }else{
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
             }
 
             document.getElementById("conPic").style.width = "64px"
@@ -1002,7 +987,6 @@
         else{
             document.getElementById("title_find").innerText = "Find affordable housing";
 
-            document.getElementById("lang_state").innerText = "Select state";
             document.getElementById("lang_city").innerText = "Select city";
             document.getElementById("lang_district").innerText = "Select district";
             document.getElementById("lang_apartment").innerText = "Select apartment";
@@ -1038,8 +1022,8 @@
                 document.getElementById("conPic").src = "./Public/Images/atPic.png"
                 document.getElementById("statePic").src = "./Public/Images/atCity.png"
             }else{
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
+                document.getElementById("conPic").src = "./Public/Images/dePic.png"
+                document.getElementById("statePic").src = "./Public/Images/statePic.png"
             }
 
             document.getElementById("conPic").style.width = "64px"
@@ -1072,51 +1056,6 @@
         document.title = `${returnWebStr()} City.`;
     })
 </script>
-
-<!--<script>-->
-
-<!--    function loadCity_adv1(el){-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnCity_adv1();-->
-<!--    }-->
-
-<!--    function loadCity_adv2(el){-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnCity_adv2();-->
-<!--    }-->
-
-<!--    function loadCity_adv3(el) {-->
-<!--        // 已加载就跳过-->
-<!--        if (el.dataset.loaded === '1') return;-->
-
-<!--        // 清空旧内容（确保广告位置干净）-->
-<!--        el.innerHTML = '';-->
-
-<!--        // 生成唯一 ID-->
-<!--        const uniqueId = `div-gpt-advtestAdv_2-${Date.now()}-${Math.floor(Math.random() * 1000)}`;-->
-<!--        el.id = uniqueId;-->
-
-<!--        // 标记已加载-->
-<!--        el.dataset.loaded = '1';-->
-
-<!--        // 定义广告并展示-->
-<!--        googletag.cmd.push(function () {-->
-
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])      // PC端视口宽度 >= 1024，使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])        // 移动端（默认），使用 300x250-->
-<!--                .build();-->
-
-<!--            // googletag.defineSlot('/23284785848/mqqht/loadTestAdv_2', ['fluid'], uniqueId)-->
-<!--            //     .addService(googletag.pubads());-->
-<!--            googletag.defineSlot('/23284785848/house_address3/city_adv3', ['fluid'], uniqueId)-->
-<!--                .defineSizeMapping(mapping).addService(googletag.pubads());-->
-
-
-<!--            googletag.display(uniqueId);-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 <script>
 
