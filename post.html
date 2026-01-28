@@ -199,6 +199,12 @@
 <script src="./Public/Js/jquery-3.0.0.min.js"></script>
 
 <script>
+
+  function getLangFromPath() {
+    const pathSegments = window.location.pathname.split('/');
+    return pathSegments[1]; // 第一个路径段是语言
+  }
+
   // 加载 header
   fetch('./header.html')
           .then(res => res.text())
