@@ -108,49 +108,5 @@ const postTITLE = {
         "title": "A Guide To The HUD Emergency Housing Voucher Program",
         "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>A Guide To The HUD Emergency Housing Voucher Program</h1><div id=\"adv3\"></div>\n\n<p>The HUD Emergency Housing Voucher (EHV) Program aims to assist families and individuals experiencing homelessness or at risk of losing their homes. It provides eligible households with access to safe, stable, and affordable housing and supportive services. Here are some things you need to know about this program.</p><img alt=\"A Guide To The HUD Emergency Housing Voucher Program_1\" class=\"old_img\" src=\"./Public/Images/postImg/a-guide-to-the-hud-emergency-housing-voucher-program_1.webp\"/>\n</div>",
         "mainImg": "./Public/Images/postImg/a-guide-to-the-hud-emergency-housing-voucher-program_1.webp"
-    },
-    "10005" : {
-        "1": {
-            "title": "Free Housing Just For You!",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Free Housing Just For You!</h1><div id=\"adv3\"></div>\n\n<p>Medicaid has now extended its benefits to cover housing. However, these benefits can differ widely from state to state and program to program, so it's crucial to get familiar with Medicaid first.</p>\n<img alt=\"Free Housing Just For You!_1\" class=\"old_img\" src=\"./Public/Images/postImg/free-housing-just-for-you_1.webp\"/>\n</div>",
-            "mainImg": "./Public/Images/postImg/free-housing-just-for-you_1.webp"
-        },
-        "2": {
-            "title": "Free Housing Just For You!",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Free Housing Just For You!</h1><div id=\"adv3\"></div>\n\n<h4>1. Housing As Health Care</h4>\n<p>Housing is increasingly being seen as essential to health care. A stable home enhances health by supporting better medication management, reducing illness exposure, fostering healthy living, and aiding mental health recovery. It also reduces stress, which can worsen many health conditions.</p>\n<img alt=\"Free Housing Just For You!_1\" class=\"old_img\" src=\"./Public/Images/postImg/free-housing-just-for-you_2.webp\"/>\n</div>",
-            "mainImg": "./Public/Images/postImg/free-housing-just-for-you_2.webp"
-        },
-        "3": {
-            "title": "Free Housing Just For You!",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Free Housing Just For You!</h1><div id=\"adv3\"></div>\n\n<h4>2. Reasons For Using Medicaid</h4>\n<p>In some states, stable housing has led to decreased emergency room visits and shorter hospital stays, resulting in Medicaid savings. Consequently, more states are now using Medicaid funds to ensure housing stability.</p>\n<img alt=\"Free Housing Just For You!_1\" class=\"old_img\" src=\"./Public/Images/postImg/free-housing-just-for-you_3.webp\"/>\n</div>",
-            "mainImg": "./Public/Images/postImg/free-housing-just-for-you_3.webp"
-        },
-        "page": {
-            "number":3
-        },
-        "mainImg": "./Public/Images/postImg/free-housing-just-for-you_1.webp",
-        "title": "Free Housing Just For You!"
-    },
-    "10004" : {
-        "1": {
-            "title": "Quick Ways To Get Low-Income Housing",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Quick Ways To Get Low-Income Housing</h1><div id=\"adv3\"></div>\n\n<p>Are you going through a tough time in finding affordable housing? If you're, try these 3 programs listed below, which can help you find a suitable home quickly.</p>\n<h4>1. HUD Programs</h4>\n<p>Firstly, you can seek help from the U.S. Department of Housing and Urban Development (HUD). This program provides secure and quality housing for low-income, elderly and people with a disability. </p>\n<img alt=\"Quick Ways To Get Low-Income Housing_1\" class=\"old_img\" src=\"./Public/Images/postImg/quick-ways-to-get-low-income-housing_1.webp\"/>\n</div>",
-            "mainImg": "./Public/Images/postImg/quick-ways-to-get-low-income-housing_1.webp"
-        },
-        "2": {
-            "title": "Quick Ways To Get Low-Income Housing",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Quick Ways To Get Low-Income Housing</h1><div id=\"adv3\"></div>\n\n<h4>2. CoC Programs</h4>\n<p>Secondly, Continuum of Care (CoC) is also a fine choice for you. This program runs through non-profit organizations but is funded by HUD. It provides funding for people who are homeless or in transition due to a disaster. <img alt=\"Quick Ways To Get Low-Income Housing_1\" class=\"old_img\" src=\"./Public/Images/postImg/quick-ways-to-get-low-income-housing_2.webp\"/>\n</p></div>",
-            "mainImg": "./Public/Images/postImg/quick-ways-to-get-low-income-housing_2.webp"
-        },
-        "3": {
-            "title": "Quick Ways To Get Low-Income Housing",
-            "html": "<div class=\"article\" style=\"height: auto !important;\">\n<h1>Quick Ways To Get Low-Income Housing</h1><div id=\"adv3\"></div>\n\n<h4>3. Rapid Rehousing Program</h4>\n<p>Except for HUD and CoC programs, Rapid Rehousing Program will also help you find low-income housing fast, with a period usually within 30-60 days. Besides, this program is easier to meet requirements than the other two. It is readily available for people who are homeless or nearly homeless.</p>\n<img alt=\"Quick Ways To Get Low-Income Housing_1\" class=\"old_img\" src=\"./Public/Images/postImg/quick-ways-to-get-low-income-housing_3.webp\"/>\n</div>",
-            "mainImg": "./Public/Images/postImg/quick-ways-to-get-low-income-housing_3.webp"
-        },
-        "page": {
-            "number":3
-        },
-        "mainImg": "./Public/Images/postImg/quick-ways-to-get-low-income-housing_1.webp",
-        "title": "Quick Ways To Get Low-Income Housing"
     }
 };
