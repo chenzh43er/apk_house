@@ -221,7 +221,7 @@
             Advertise
         </div>
 
-        <div class="country-container">
+        <div class="country-container" id = "country-container">
             <div class="country-item" data-country="de" onclick="selectCountry(this)">
                 <span class="flag">🇩🇪</span>
                 <span class="country-name">Deutschland</span>
@@ -554,6 +554,8 @@
         }
         else if(lang == "us")
         {
+            document.getElementById("country-container").style.display = "none"
+
             document.getElementById("title_find").innerText = "Find affordable housing";
 
             document.getElementById("lang_state").innerText = "Select state";
