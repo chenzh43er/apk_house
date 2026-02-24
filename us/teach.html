@@ -1,31 +1,44 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
-    <link rel="preconnect" href="https://tpc.googlesyndication.com">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Freerentinghouse.info Teach
-    </title>
-    <meta name="description"
-          content="UsLowCostHousing offers you the easiest and fastest way to find Affordable Housing near you.">
-    <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
-    <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
-    <script src="./Public/Js/utlParam.js"></script>
-    <script src="./Public/Js/common.js"></script>
-    <script src="./Public/Js/googleAds_Test.js"></script>
-    <link rel="icon" href="./Public/Images/icon.png" type="image/png">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
-                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Freerentinghouse.info Teach</title>
+    <meta name="description" content="UsLowCostHousing offers you the easiest and fastest way to find Affordable Housing near you.">
+
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+
+    <link rel="preload" href="./Public/Css/hs-style.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="./Public/Css/lch-office.css" as="style" onload="this.rel='stylesheet'">
+
+    <link rel="preload" href="./Public/Images/icon.png" as="image">
+    <link rel="icon" href="./Public/Images/icon.png">
+
+    <script defer src="./Public/Js/utlParam.js"></script>
+    <script defer src="./Public/Js/common.js"></script>
+    <script defer src="./Public/Js/googleAds_Test.js"></script>
+
+    <script>
+        window.addEventListener('load',function(){
+            var gtm=document.createElement('script');
+            gtm.src='https://www.googletagmanager.com/gtm.js?id=GTM-KKQT4KF4';
+            gtm.async=true;
+            document.head.appendChild(gtm);
+
+            var ads=document.createElement('script');
+            ads.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935';
+            ads.async=true;
+            ads.crossOrigin='anonymous';
+            document.head.appendChild(ads);
+        });
+
+        function getLangFromPath() {
+            const pathSegments = window.location.pathname.split('/');
+            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+        }
+    </script>
+
     <style>
         .loc-btn{
             font-weight: bold !important;
