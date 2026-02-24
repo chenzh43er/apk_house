@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="/Public/Css/hs-style.css">
         <link rel="stylesheet" href="/Public/Css/lch-office.css">
     </noscript>
-    
+
     <link rel="preload" href="./Public/Images/icon.png" as="image">
     <link rel="icon" href="./Public/Images/icon.png">
 
@@ -70,7 +70,7 @@
     </style>
 </head>
 
-<body aria-hidden="false">
+<body aria-hidden="false" style="display: none" id = "mainBody">
 
 <header data-eusoft-scrollable-element="1" id = "header">
 </header>
@@ -690,6 +690,19 @@
             link_href = `/teach/state`; // 注意这里改成绝对路径
         }
         document.getElementById("lang_click").href = link_href
+
+        const img = document.getElementById("statePic");
+        const mainBody = document.getElementById("mainBody");
+
+// 图片加载成功
+        img.addEventListener("load", () => {
+            mainBody.style.display = "block";
+        });
+
+// （可选）图片加载失败
+        img.addEventListener("error", () => {
+            console.warn("图片加载失败");
+        });
     });
 </script>
 
