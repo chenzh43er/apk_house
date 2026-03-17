@@ -36,6 +36,14 @@
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
+
+    <script>
+        window.onload = function() {
+            document.body.style.visibility = "visible";
+        }
+    </script>
+
+
     <!-- End Google Tag Manager -->
     <style>
         .loc-btn{
@@ -63,7 +71,7 @@
     </style>
 </head>
 
-<body aria-hidden="false">
+<body aria-hidden="false" style="visibility: hidden">
 
 <!--&lt;!&ndash; /23284785848/teach/teach_auto &ndash;&gt;-->
 <!--<div id='div-gpt-ad-1752695436101-0'>-->
@@ -829,6 +837,13 @@
         }
         document.getElementById("lang_click").href = link_href
     });
+
+
+    const conPic = document.getElementById("conPic");
+
+    conPic.onload = function () {
+      console.log("图片加载完成");
+    };
 </script>
 
 <script>
@@ -871,32 +886,6 @@
         document.title = `${returnWebStr()} Teach.`;
     })
 </script>
-
-<!--<script>-->
-<!--    function loadTeach_adv(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnTeach_adv();-->
-<!--        googletag.cmd.push(function() {-->
-<!--            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752473662406-0'); });-->
-<!--        });-->
-<!--    }-->
-
-<!--    function loadTeach_adv2(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnTeach_adv2();-->
-<!--        googletag.cmd.push(function() {-->
-<!--            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752822337408-0'); });-->
-<!--        });-->
-<!--    }-->
-
-<!--    function loadTeach_adv3(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnTeach_adv3();-->
-<!--        googletag.cmd.push(function() {-->
-<!--            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753259195340-0'); });-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 <script>
     function loadTeach_adv(el) {

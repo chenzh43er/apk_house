@@ -6,13 +6,18 @@ const LANG = LANGS.join("|");
  */
 function rewrite(request, targetPath, params = {}) {
   const url = new URL(request.url);
-  const targetUrl = new URL(${url.origin}${targetPath});
+  const targetUrl = new URL(`${url.origin}${targetPath}`);
 
   for (const [key, value] of Object.entries(params)) {
-    targetUrl.searchParams.set(key, decodeURIComponent(value));
+    try {
+      targetUrl.searchParams.set(key, decodeURIComponent(value));
+    } catch {
+      targetUrl.searchParams.set(key, value);
+    }
   }
 
-  return fetch(new Request(targetUrl, request));
+  // 继承原 request 属性（method / headers / body）
+  return fetch(new Request(targetUrl.toString(), request));
 }
 
 export default {
@@ -20,25 +25,27 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
-    // 1️⃣ 静态资源透传（高性能）
+    // 1️⃣ 静态资源透传
     if (
-      /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map)$/i.test(pathname) ||
+      /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map|json|xml|mp4|avif)$/i.test(pathname) ||
       pathname.startsWith("/Public/") ||
       pathname.startsWith("/Assets/")
     ) {
       return fetch(request);
     }
 
-    // 2️⃣ result: /:lang/teach/state/:state/:city/:district/:id/result
-    let m = pathname.match(
+    let m;
+
+    // 2️⃣ result
+    m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/result$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/result$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state, city, district, id] = m;
-      return rewrite(request, /${lang}/result, {
+      return rewrite(request, `/${lang}/result`, {
         id,
         state,
         city,
@@ -46,16 +53,16 @@ export default {
       });
     }
 
-    // 3️⃣ form: /:lang/teach/state/:state/:city/:district/:id/form
+    // 3️⃣ form
     m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/form$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/form$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state, city, district, id] = m;
-      return rewrite(request, /${lang}/form, {
+      return rewrite(request, `/${lang}/form`, {
         id,
         state,
         city,
@@ -63,16 +70,16 @@ export default {
       });
     }
 
-    // 4️⃣ detail: /:lang/teach/state/:state/:city/:district/:id/detail
+    // 4️⃣ detail
     m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/detail$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/detail$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state, city, district, id] = m;
-      return rewrite(request, /${lang}/detail, {
+      return rewrite(request, `/${lang}/detail`, {
         id,
         state,
         city,
@@ -80,16 +87,16 @@ export default {
       });
     }
 
-    // 5️⃣ list: /:lang/teach/state/:state/:city/:district/:page/list
+    // 5️⃣ list
     m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/(\\d+)\\/list$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/(\\d+)\\/list$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state, city, district, page] = m;
-      return rewrite(request, /${lang}/list, {
+      return rewrite(request, `/${lang}/list`, {
         state,
         city,
         district,
@@ -97,51 +104,57 @@ export default {
       });
     }
 
-    // 6️⃣ district: /:lang/teach/state/:state/:city/district
+    // 6️⃣ district
     m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/district$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/district$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state, city] = m;
-      return rewrite(request, /${lang}/district, {
+      return rewrite(request, `/${lang}/district`, {
         state,
         city
       });
     }
 
-    // 7️⃣ city: /:lang/teach/state/:state/city
+    // 7️⃣ city
     m = pathname.match(
       new RegExp(
-        ^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/city$,
+        `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/city$`,
         "i"
       )
     );
     if (m) {
       const [, lang, state] = m;
-      return rewrite(request, /${lang}/city, {
+      return rewrite(request, `/${lang}/city`, {
         state
       });
     }
 
-    // 8️⃣ teach root: /:lang/teach/state
+    // 8️⃣ teach root
     m = pathname.match(
-      new RegExp(^\\/(${LANG})\\/teach\\/state$, "i")
+      new RegExp(
+        `^\\/(${LANG})\\/teach\\/state$`,
+        "i"
+      )
     );
     if (m) {
       const [, lang] = m;
-      return rewrite(request, /${lang}/state);
+      return rewrite(request, `/${lang}/state`);
     }
 
-    // 9️⃣ post: /:lang/post/:postid/:page
+    // 9️⃣ post
     m = pathname.match(
-      new RegExp(^\\/(${LANG})\\/post\\/(\\d+)\\/(\\d+)$, "i")
+      new RegExp(
+        `^\\/(${LANG})\\/post\\/(\\d+)\\/(\\d+)$`,
+        "i"
+      )
     );
     if (m) {
       const [, , postid, page] = m;
-      return rewrite(request, /post, {
+      return rewrite(request, `/post`, {
         postid,
         page
       });
