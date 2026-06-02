@@ -188,13 +188,6 @@
     </article>
 </main>
 
-<div class="article-sticky-bar" id="sticky-bar" aria-hidden="true">
-    <a class="article-sticky-bar__btn js-teach-link" href="./teach.html">
-        <svg viewBox="0 0 511.982 511.982" aria-hidden="true"><path d="m507.6 4.462c-4.302-4.311-10.78-5.59-16.393-3.237l-482.008 202.009c-5.997 2.513-9.691 8.61-9.146 15.094s5.205 11.877 11.537 13.352l210.007 48.914c4.057.945 7.229 4.104 8.191 8.157l50.219 211.636c1.498 6.314 6.884 10.949 13.347 11.483.415.034.828.051 1.239.051 5.989 0 11.458-3.588 13.809-9.187l202.408-481.859c2.359-5.616 1.091-12.102-3.21-16.413z"/></svg>
-        Find Housing Near Me
-    </a>
-</div>
-
 <footer id="footer"></footer>
 
 <script>
@@ -233,21 +226,6 @@
         var url = new URL('./teach.html', window.location.href).href;
         window.location.href = typeof appendParams === 'function' ? appendParams(url) : url;
     }
-
-    (function initStickyBar() {
-        var bar = document.getElementById('sticky-bar');
-        var hero = document.querySelector('.article-hero');
-        if (!bar || !hero) return;
-
-        function updateBar() {
-            var show = window.scrollY > hero.offsetHeight * 0.6;
-            bar.classList.toggle('is-visible', show);
-            bar.setAttribute('aria-hidden', show ? 'false' : 'true');
-        }
-
-        window.addEventListener('scroll', updateBar, { passive: true });
-        updateBar();
-    })();
 </script>
 
 </body>

@@ -349,69 +349,7 @@
     color: var(--article-muted);
 }
 
-/* Sticky mobile bar */
-.article-sticky-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 900;
-    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
-    background: rgba(255, 255, 255, 0.96);
-    border-top: 1px solid rgba(17, 116, 235, 0.12);
-    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
-    transform: translateY(100%);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
-    backdrop-filter: blur(10px);
-}
-
-.article-sticky-bar.is-visible {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-}
-
-.article-sticky-bar__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 14px 20px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-    text-decoration: none;
-    background: var(--article-gold);
-    border-radius: 30px;
-    box-shadow: 0 4px 16px rgba(245, 182, 9, 0.4);
-    -webkit-tap-highlight-color: transparent;
-}
-
-.article-sticky-bar__btn svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-    flex-shrink: 0;
-}
-
-.article-sticky-bar__btn:active {
-    background: var(--article-gold-dark);
-}
-
-@media screen and (min-width: 769px) {
-    .article-sticky-bar {
-        display: none;
-    }
-}
-
 @media screen and (max-width: 768px) {
-    .article-body {
-        padding-bottom: 88px;
-    }
-
     .article-figure__overlay {
         opacity: 1;
         align-items: flex-end;
