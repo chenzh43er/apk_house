@@ -37,6 +37,20 @@ function loadScript(src, callback) {
     document.head.appendChild(script); // 插入到 `head` 中
 }
 
+function ensureSupabase() {
+    if (globalThis.supabase) return Promise.resolve();
+    if (!globalThis._supabaseLoading) {
+        globalThis._supabaseLoading = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = '/Public/Js/supabase.min.js';
+            script.onload = resolve;
+            script.onerror = () => reject(new Error('Failed to load supabase.min.js'));
+            document.head.appendChild(script);
+        });
+    }
+    return globalThis._supabaseLoading;
+}
+
 window.onscroll = null;
 
 const keysToKeep = ['token','source','campaign','content','country','keyword','lang','medium'];

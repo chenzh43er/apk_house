@@ -1,4 +1,4 @@
-<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
             <base href="/de/" />
@@ -565,7 +565,7 @@
     }
 
 
-    import(fetchDataUrl).then(async module => {
+    ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
         const { fetchData , countHouses} = module;
 
     // const params = new URLSearchParams(window.location.search);
@@ -1151,7 +1151,7 @@
     }
 
 
-    import(fetchDataUrl).then(async module => {
+    ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
         const {fetchRandomHousesByState} = module;
 
         async function init() {

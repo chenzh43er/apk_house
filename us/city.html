@@ -1,4 +1,4 @@
-<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 <head>
     <base href="/de/" />
     <script>
@@ -782,7 +782,7 @@
         }
     }
 
-    import(fetchDataUrl).then(async module => {
+    ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
         const { fetchCitiesByState } = module;
 
 
