@@ -1,18 +1,7 @@
-# Cloudflare Worker：URL 路由 + Supabase 代理
-# 账户：Chjgfjjyghjhggg@gmail.com
-name = "billowing-leaf-30ae"
-main = "worker/worker.js"
-compatibility_date = "2026-03-17"
-account_id = "0e70af17109f26d0d034bab33006f59e"
-
-# Pages 静态站点（项目根目录即站点根）
+# Cloudflare Pages 静态站点（Git 集成读取此文件）
+name = "apk-house"
 pages_build_output_dir = "."
-
-# 自定义域名路由
-routes = [
-  { pattern = "apkintelligence.com/*", zone_name = "apkintelligence.com" },
-  { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
-]
+compatibility_date = "2026-03-17"
 
 [observability]
 enabled = true

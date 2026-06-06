@@ -6,10 +6,10 @@
     "dev": "wrangler pages dev . --port 8787",
     "dev:static": "npx --yes serve -l 8788 .",
     "check": "wrangler check",
-    "deploy:worker": "wrangler deploy",
+    "deploy:worker": "wrangler deploy --config wrangler.worker.toml",
     "deploy:pages": "wrangler pages deploy . --project-name=apk-house --branch=main",
     "deploy": "npm run deploy:pages && npm run deploy:worker",
-    "tail": "wrangler tail billowing-leaf-30ae",
+    "tail": "wrangler tail billowing-leaf-30ae --config wrangler.worker.toml",
     "whoami": "wrangler whoami"
   },
   "devDependencies": {

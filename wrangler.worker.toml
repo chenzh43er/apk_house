@@ -1,0 +1,14 @@
+# Cloudflare Worker：自定义域名路由 + Supabase 代理（CLI 单独部署）
+# 账户：Chjgfjjyghjhggg@gmail.com
+name = "billowing-leaf-30ae"
+main = "worker/worker.js"
+compatibility_date = "2026-03-17"
+account_id = "0e70af17109f26d0d034bab33006f59e"
+
+routes = [
+  { pattern = "apkintelligence.com/*", zone_name = "apkintelligence.com" },
+  { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
+]
+
+[observability]
+enabled = true
