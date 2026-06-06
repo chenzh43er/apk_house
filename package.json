@@ -1,0 +1,17 @@
+{
+  "name": "apk_house",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev --remote --port 8787",
+    "dev:local": "wrangler pages dev . --live-reload --port 8788",
+    "check": "wrangler check",
+    "deploy:worker": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy . --project-name=apk-house --branch=main",
+    "deploy": "npm run deploy:pages && npm run deploy:worker",
+    "tail": "wrangler tail billowing-leaf-30ae",
+    "whoami": "wrangler whoami"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules/**
+.wrangler/**
+worker/**
+.git/**
+.idea/**
+.cursor/**
+package.json
+package-lock.json
+wrangler.toml
