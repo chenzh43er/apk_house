@@ -2,8 +2,9 @@
   "name": "apk_house",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev --remote --port 8787",
-    "dev:local": "wrangler pages dev . --live-reload --port 8788",
+    "predev": "npx --yes kill-port 8787",
+    "dev": "wrangler pages dev . --port 8787",
+    "dev:static": "npx --yes serve -l 8788 .",
     "check": "wrangler check",
     "deploy:worker": "wrangler deploy",
     "deploy:pages": "wrangler pages deploy . --project-name=apk-house --branch=main",

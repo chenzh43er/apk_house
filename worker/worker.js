@@ -1,10 +1,15 @@
 const LANGS = ["de", "us", "de-ch-at"];
 const LANG = LANGS.join("|");
 
-/**
- * URL rewrite helper
- */
-function rewrite(request, targetPath, params = {}) {
+/** 本地 Pages dev 用 ASSETS；线上 Zone Worker 用 fetch 回源 Pages */
+function passThrough(request, env) {
+  if (env.ASSETS) {
+    return env.ASSETS.fetch(request);
+  }
+  return fetch(request);
+}
+
+function rewrite(request, targetPath, params, env) {
   const url = new URL(request.url);
   const targetUrl = new URL(`${url.origin}${targetPath}`);
 
@@ -12,12 +17,9 @@ function rewrite(request, targetPath, params = {}) {
     targetUrl.searchParams.set(key, decodeURIComponent(value));
   }
 
-  return fetch(new Request(targetUrl, request));
+  return passThrough(new Request(targetUrl, request), env);
 }
 
-/**
- * Supabase multi-origin router
- */
 function getSupabaseOrigin(lang) {
   if (lang === "us") {
     return "https://uoxzcftzwemdrmcmhuhb.supabase.co";
@@ -37,9 +39,6 @@ function getSupabaseOrigin(lang) {
   }
 }
 
-/**
- * Supabase proxy
- */
 async function supabaseProxy(request, lang, ctx) {
   const origin = getSupabaseOrigin(lang);
   const url = new URL(request.url);
@@ -85,7 +84,7 @@ export default {
       pathname.startsWith("/Public/") ||
       pathname.startsWith("/Assets/")
     ) {
-      return fetch(request);
+      return passThrough(request, env);
     }
 
     let m = pathname.match(
@@ -101,7 +100,7 @@ export default {
         state,
         city,
         district
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -117,7 +116,7 @@ export default {
         state,
         city,
         district
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -133,7 +132,7 @@ export default {
         state,
         city,
         district
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -149,7 +148,7 @@ export default {
         city,
         district,
         page
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -163,7 +162,7 @@ export default {
       return rewrite(request, `/${lang}/district`, {
         state,
         city
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -176,7 +175,7 @@ export default {
       const [, lang, state] = m;
       return rewrite(request, `/${lang}/city`, {
         state
-      });
+      }, env);
     }
 
     m = pathname.match(
@@ -184,7 +183,7 @@ export default {
     );
     if (m) {
       const [, lang] = m;
-      return rewrite(request, `/${lang}/state`);
+      return rewrite(request, `/${lang}/state`, {}, env);
     }
 
     m = pathname.match(
@@ -195,9 +194,9 @@ export default {
       return rewrite(request, `/post`, {
         postid,
         page
-      });
+      }, env);
     }
 
-    return fetch(request);
+    return passThrough(request, env);
   }
 };

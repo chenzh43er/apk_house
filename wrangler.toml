@@ -8,10 +8,7 @@ account_id = "0e70af17109f26d0d034bab33006f59e"
 # Pages 静态站点（项目根目录即站点根）
 pages_build_output_dir = "."
 
-[assets]
-directory = "."
-
-# 自定义域名路由（freerentinghouse.info 若不在本账户，请单独在 Dashboard 配置）
+# 自定义域名路由
 routes = [
   { pattern = "apkintelligence.com/*", zone_name = "apkintelligence.com" },
   { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
