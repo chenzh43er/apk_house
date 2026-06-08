@@ -39,6 +39,43 @@ function getSupabaseOrigin(lang) {
   }
 }
 
+const CDN_BUCKETS = {
+  us: "HOUSEUS",
+  de: "HOUSEPIC",
+  at: "HOUSEAT",
+  ch: "HOUSECH",
+};
+
+async function r2ImageProxy(request, env, ctx) {
+  const url = new URL(request.url);
+  const match = url.pathname.match(/^\/cdn\/(us|de|at|ch)\/(.+)$/);
+  if (!match) return null;
+
+  const [, region, key] = match;
+  const bucket = env[CDN_BUCKETS[region]];
+  if (!bucket) return new Response("R2 binding missing", { status: 503 });
+
+  try {
+    const cache = caches.default;
+    let res = await cache.match(request);
+    if (res) return res;
+
+    const object = await bucket.get(key);
+    if (!object) return new Response("Not Found", { status: 404 });
+
+    const headers = new Headers();
+    object.writeHttpMetadata(headers);
+    headers.set("Cache-Control", "public, max-age=31536000, immutable");
+    headers.set("Access-Control-Allow-Origin", "*");
+
+    res = new Response(object.body, { headers });
+    ctx.waitUntil(cache.put(request, res.clone()));
+    return res;
+  } catch (err) {
+    return new Response(`R2 error: ${err?.message || err}`, { status: 502 });
+  }
+}
+
 async function supabaseProxy(request, lang, ctx) {
   const origin = getSupabaseOrigin(lang);
   const url = new URL(request.url);
@@ -70,6 +107,11 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const pathname = url.pathname;
+
+    if (pathname.startsWith("/cdn/")) {
+      const imageRes = await r2ImageProxy(request, env, ctx);
+      if (imageRes) return imageRes;
+    }
 
     const apiMatch = pathname.match(
       new RegExp(`^\\/(${LANG})\\/(rest|rpc|storage|auth)`, "i")

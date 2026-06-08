@@ -1,0 +1,16 @@
+# 复制为 rclone.conf 并填入 API Token（不要提交到 git）
+# 在 Cloudflare Dashboard → R2 → Manage R2 API Tokens 分别创建
+
+[r2-source]
+type = s3
+provider = Cloudflare
+access_key_id = <UBEATOR_ACCESS_KEY_ID>
+secret_access_key = <UBEATOR_SECRET_ACCESS_KEY>
+endpoint = https://892acd09257ee1251aca55e5a6f9946e.r2.cloudflarestorage.com
+
+[r2-target]
+type = s3
+provider = Cloudflare
+access_key_id = <CHJGF_ACCESS_KEY_ID>
+secret_access_key = <CHJGF_SECRET_ACCESS_KEY>
+endpoint = https://0e70af17109f26d0d034bab33006f59e.r2.cloudflarestorage.com

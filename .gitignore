@@ -2,3 +2,8 @@ node_modules/
 .wrangler/
 .dev.vars
 *.log
+scripts/r2-migrate/rclone.conf
+scripts/r2-migrate/.r2-migrate-active.conf
+scripts/r2-migrate/sync.log
+scripts/r2-migrate/sync.log.bak
+scripts/r2-migrate/migrate-at-ch.log

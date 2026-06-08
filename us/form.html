@@ -553,14 +553,7 @@
                 data.forEach((house, index) => {
 
                     const lang = getLangFromPath()
-                    let picURL = ""
-                    if(lang == "de"){
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }else if(lang == "us"){
-                        picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                    }else{
-                        picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                    }
+                    const picURL = getPicURL(lang)
 
 
                     const serverPic = picURL + house.mainpic + "/";
@@ -697,14 +690,7 @@
                 let html = ``;
 
                 const lang = getLangFromPath()
-                let picURL = ""
-                if(lang == "de"){
-                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                }else if(lang == "us"){
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                }else{
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                }
+                const picURL = getPicURL(lang)
 
                 data.forEach((house,index) => {
                     const serverPic = picURL + house.mainpic + "/";

@@ -78,6 +78,7 @@
     <link rel="preconnect" href="https://tpc.googlesyndication.com">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>apkintelligence.com Result</title>
     <meta name="description"
           content="Find detailed information on Chugach View, including address, phone number, services, and more.">
@@ -511,30 +512,20 @@
                 let html = ``;
 
                 const lang = getLangFromPath()
-                let picURL = ""
+                const picURL = getPicURL(lang)
                 if(lang == "de"){
-                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
                 }else if(lang == "de-ch-at") {
                     if (country == "de") {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     } else if (country == "at") {
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
                     } else if (country == "ch") {
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
                     } else {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     }
                 }else{
                     if (country == "de") {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     } else if (country == "at") {
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
                     } else if (country == "ch") {
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
                     } else {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     }
                 }
 
@@ -587,7 +578,7 @@
                   </li>`;
                     }else if(lang == "de-ch-at"){
 
-                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = withCountryQuery(`/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`, country)
 
 
                         html += `<li>
@@ -724,30 +715,20 @@
                 let html = ``;
 
                 const lang = getLangFromPath()
-                let picURL = ""
+                const picURL = getPicURL(lang)
                 if(lang == "de"){
-                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                 }else if(lang == "us"){
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
                 }else if(lang == "de-ch-at") {
                     if (country == "de") {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     } else if (country == "at") {
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
                     } else if (country == "ch") {
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
                     } else {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     }
                 }else{
                     if (country == "de") {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     } else if (country == "at") {
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
                     } else if (country == "ch") {
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
                     } else {
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
                     }
                 }
 
@@ -798,7 +779,7 @@
                   </li>`;
                     }else if(lang == "de-ch-at"){
 
-                        detail_href = `/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`
+                        detail_href = withCountryQuery(`/de-ch-at/teach/state/${house.display_state}/${house.display_city}/${house.display_district}/${house.id}/detail`, country)
 
                         html += `<li>
                     <div class="most-box">

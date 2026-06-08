@@ -2,6 +2,27 @@
 name = "apk-house"
 pages_build_output_dir = "."
 compatibility_date = "2026-03-17"
+account_id = "0e70af17109f26d0d034bab33006f59e"
+
+[[r2_buckets]]
+binding = "HOUSEUS"
+bucket_name = "houseus"
+remote = true
+
+[[r2_buckets]]
+binding = "HOUSEPIC"
+bucket_name = "housepic"
+remote = true
+
+[[r2_buckets]]
+binding = "HOUSEAT"
+bucket_name = "houseat"
+remote = true
+
+[[r2_buckets]]
+binding = "HOUSECH"
+bucket_name = "housech"
+remote = true
 
 [observability]
 enabled = true

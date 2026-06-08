@@ -584,12 +584,8 @@
                     const params = new URLSearchParams(window.location.search);
                     const country = params.get('country');
 
-                    let picURL = ""
-                    if(lang == "de"){
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }else if(lang == "us"){
-                        picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                    }else if(lang === "de-ch-at"){
+                    const picURL = getPicURL(lang, country)
+                    if(lang == "de"){                    }else if(lang == "us"){                    }else if(lang === "de-ch-at"){
                         if(country == "de"){
                             fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
                         }else if(country == "ch"){
@@ -783,31 +779,11 @@
                 const country = params.get('country');
 
                 const lang = getLangFromPath()
-                let picURL = ""
-                if(lang == "de"){
-                    picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                }else if(lang == "us"){
-                    picURL = "https://pub-215afa075d9f4c2591b63e17c784fb0b.r2.dev/"
-                }else if(lang == "de-ch-at"){
-                    if(country == "de"){
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }else if(country == "at"){
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
-                    }else if(country == "ch"){
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
-                    }else{
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }
+                const picURL = getPicURL(lang, country)
+                if(lang == "de"){                }else if(lang == "us"){                }else if(lang == "de-ch-at"){
+                    if(country == "de"){                    }else if(country == "at"){                    }else if(country == "ch"){                    }else{                    }
                 }else{
-                    if(country == "de"){
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }else if(country == "at"){
-                        picURL = "https://pub-3f962bb7a4294160be9aef39a7f9bb0d.r2.dev/images/"
-                    }else if(country == "ch"){
-                        picURL = "https://pub-834cbbaa1aca47e4acfd71e2b2fd5251.r2.dev/images/"
-                    }else{
-                        picURL = "https://pub-57bc773ebbc24ef1be9f0d6d9681b286.r2.dev/"
-                    }
+                    if(country == "de"){                    }else if(country == "at"){                    }else if(country == "ch"){                    }else{                    }
                 }
 
                 data.forEach((house,index) => {
