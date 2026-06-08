@@ -142,39 +142,66 @@
         </section>
 
         <section class="article-tool" aria-labelledby="tool-title">
-            <div class="article-tool__pattern" aria-hidden="true"></div>
             <div class="article-tool__inner">
                 <div class="article-tool__main">
                     <span class="article-tool__label">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
                         Interactive Tool
                     </span>
-                    <h2 class="article-tool__title" id="tool-title">State Housing Verification &amp; Mapping Tool</h2>
-                    <p class="article-tool__desc">Instantly access verified affordable housing guides, active program checklists, and rental listings tailored to your region.</p>
+                    <h2 class="article-tool__title" id="tool-title"><span class="article-tool__title-accent">State</span> Housing Verification &amp; Mapping Tool</h2>
+                    <p class="article-tool__desc">Find verified affordable housing programs, open waiting lists, and rental listings in your area.</p>
                     <ul class="article-tool__features">
                         <li>
-                            <span class="article-tool__feature-icon">1</span>
-                            <span>Verify programs in your state</span>
+                            <span class="article-tool__feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5.5V11c0 5.25 3.5 10 8 11.5 4.5-1.5 8-6.25 8-11.5V5.5L12 2z"/><path d="m9 12 2 2 4-4.5"/></svg>
+                            </span>
+                            <div class="article-tool__feature-text">
+                                <strong>Verify programs in your state</strong>
+                                <span>Get up-to-date program details and eligibility info.</span>
+                            </div>
                         </li>
                         <li>
-                            <span class="article-tool__feature-icon">2</span>
-                            <span>Check open waiting lists</span>
+                            <span class="article-tool__feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="2.5"/><circle cx="15" cy="8" r="2.5"/><path d="M5.5 18c0-2.5 2.2-4 3.5-4s3.5 1.5 3.5 4"/><path d="M12 18c0-2.5 2.2-4 3.5-4s3.5 1.5 3.5 4"/></svg>
+                            </span>
+                            <div class="article-tool__feature-text">
+                                <strong>Check open waiting lists</strong>
+                                <span>See which properties are currently accepting applications.</span>
+                            </div>
                         </li>
                         <li>
-                            <span class="article-tool__feature-icon">3</span>
-                            <span>Browse local rental listings</span>
+                            <span class="article-tool__feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5"/><path d="M6.5 10v9.5h11V10"/></svg>
+                            </span>
+                            <div class="article-tool__feature-text">
+                                <strong>Browse local rental listings</strong>
+                                <span>Explore affordable rentals that fit your needs.</span>
+                            </div>
                         </li>
                     </ul>
                 </div>
 
-                <div class="article-tool__panel">
-                    <p class="article-tool__price">As low as <strong>$300/mo</strong></p>
-                    <form class="article-tool__form" id="housing-tool-form" action="./teach/state" method="get">
-                        <button type="submit" class="article-tool__btn">
-                            <svg class="article-tool__btn-icon" viewBox="0 0 511.982 511.982" aria-hidden="true"><path d="m507.6 4.462c-4.302-4.311-10.78-5.59-16.393-3.237l-482.008 202.009c-5.997 2.513-9.691 8.61-9.146 15.094s5.205 11.877 11.537 13.352l210.007 48.914c4.057.945 7.229 4.104 8.191 8.157l50.219 211.636c1.498 6.314 6.884 10.949 13.347 11.483.415.034.828.051 1.239.051 5.989 0 11.458-3.588 13.809-9.187l202.408-481.859c2.359-5.616 1.091-12.102-3.21-16.413z"/></svg>
-                            <span>Find Housing Near Me</span>
+                <div class="article-tool__panel js-teach-link" role="link" tabindex="0" aria-label="Find housing near you">
+                    <span class="article-tool__panel-label">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        Affordable Options
+                    </span>
+                    <div class="article-tool__panel-top">
+                        <div class="article-tool__price-block">
+                            <p class="article-tool__price-label">Affordable options starting from</p>
+                            <p class="article-tool__price"><strong>$300</strong><span class="article-tool__price-unit">&nbsp;/mo*</span></p>
+                            <p class="article-tool__price-note">*Based on local income-qualified programs</p>
+                        </div>
+                        <div class="article-tool__illustration" aria-hidden="true">
+                            <img src="./Public/Images/article-tool-house.svg" alt="" width="220" height="140" loading="lazy" decoding="async">
+                        </div>
+                    </div>
+                    <form class="article-tool__form" id="housing-tool-form" action="./teach/state" method="get" aria-hidden="true">
+                        <span class="article-tool__btn">
+                            <svg class="article-tool__btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                            <span>Find Housing Near You</span>
                             <svg class="article-tool__btn-arrow" viewBox="0 0 492 409.31" aria-hidden="true"><path d="M484.14,185.54,306.46,7.86a27,27,0,0,0-38.08,0L252.24,24a26.77,26.77,0,0,0-7.86,19,27.31,27.31,0,0,0,7.86,19.27L355.9,166.18H26.58A26.27,26.27,0,0,0,0,192.66v22.81c0,14.85,11.73,27.65,26.58,27.65h330.5L252.25,347.58a26.67,26.67,0,0,0,0,37.81l16.13,16.09a27,27,0,0,0,38.08,0L484.14,223.76a27.16,27.16,0,0,0,0-38.22Z"/></svg>
-                        </button>
+                        </span>
                     </form>
                     <ul class="article-tool__badges">
                         <li>Free to use</li>
@@ -182,6 +209,14 @@
                         <li>Updated data</li>
                     </ul>
                 </div>
+
+                <footer class="article-tool__footer">
+                    <p class="article-tool__secure">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        Your information is secure and never shared.
+                    </p>
+                    <a class="article-tool__learn-more" href="./privacy.html" onclick="event.stopPropagation()">Learn more <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg></a>
+                </footer>
             </div>
         </section>
 
@@ -210,15 +245,16 @@
             if (yearEl) yearEl.textContent = new Date().getFullYear();
         });
 
-    document.getElementById('housing-tool-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        goToTeach();
-    });
-
     document.querySelectorAll('.js-teach-link').forEach(function (el) {
         el.addEventListener('click', function (e) {
             e.preventDefault();
             goToTeach();
+        });
+        el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToTeach();
+            }
         });
     });
 

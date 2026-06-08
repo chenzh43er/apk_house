@@ -1,7 +1,7 @@
-# 从本地目录补传 CH 缺失图片到 housech
+# 对比 Supabase CH 列表与 R2 housech，从本地补传缺失图片
 param(
     [string]$LocalDir = "D:\pythonProject\pythonProject\house_ch\images",
-    [string]$RetryLog = (Join-Path $PSScriptRoot "migrate-at-ch-retry.log"),
+    [string]$TargetBucket = "housech",
     [int]$Parallel = 16,
     [switch]$DryRun
 )
@@ -9,22 +9,69 @@ param(
 $ErrorActionPreference = "Stop"
 $Rclone = "C:\rclone\rclone.exe"
 $Cfg = Join-Path $PSScriptRoot ".r2-migrate-active.conf"
-$TargetBucket = "housech"
 
 if (-not (Test-Path $LocalDir)) {
-    throw "本地目录不存在: $LocalDir"
-}
-if (-not (Test-Path $RetryLog)) {
-    throw "补传日志不存在: $RetryLog"
+    throw "Local dir not found: $LocalDir"
 }
 
+function Get-UniqueImageNames {
+    param($Url, $Key, $Table = "house_ger")
+    $names = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    $offset = 0
+    $pageSize = 1000
+    while ($true) {
+        $uri = "$Url/rest/v1/${Table}?select=pics_jsonStr&limit=$pageSize&offset=$offset"
+        $headers = @{
+            apikey = $Key
+            Authorization = "Bearer $Key"
+        }
+        $rows = Invoke-RestMethod -Uri $uri -Headers $headers
+        if (-not $rows -or $rows.Count -eq 0) { break }
+        foreach ($row in $rows) {
+            if (-not $row.pics_jsonStr) { continue }
+            try {
+                $pics = $row.pics_jsonStr | ConvertFrom-Json
+                foreach ($p in $pics) {
+                    if ($p) { [void]$names.Add([string]$p) }
+                }
+            } catch {}
+        }
+        if ($rows.Count -lt $pageSize) { break }
+        $offset += $pageSize
+    }
+    return $names
+}
+
+function Get-ExistingImageNames {
+    param([string]$Bucket)
+    $existing = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    $lines = @(& $Rclone --config $Cfg lsf "r2-target:${Bucket}" --recursive --files-only 2>$null)
+    foreach ($line in $lines) {
+        if ($line -match '^images/(.+)$') {
+            [void]$existing.Add($Matches[1])
+        }
+    }
+    return ,$existing
+}
+
+Write-Host "=== Supabase CH list ===" -ForegroundColor Cyan
+$chNames = Get-UniqueImageNames `
+    -Url "https://yioqqdprzzeqrlwfyqov.supabase.co" `
+    -Key "sb_publishable_4Rhk--WUKJFTeEDjwveyjg_kaIPxlDa"
+Write-Host "Supabase CH: $($chNames.Count)"
+
+Write-Host "=== Scan R2 $TargetBucket ===" -ForegroundColor Cyan
+$existing = Get-ExistingImageNames -Bucket $TargetBucket
+Write-Host "R2 existing: $($existing.Count)"
+
 $missing = [System.Collections.Generic.List[string]]::new()
-Get-Content $RetryLog -Encoding UTF8 | ForEach-Object {
-    if ($_ -match '^FAIL:\s*(.+)$') {
-        [void]$missing.Add($Matches[1].Trim())
+foreach ($name in $chNames) {
+    if ([string]::IsNullOrWhiteSpace($name)) { continue }
+    if (-not $existing.Contains($name)) {
+        [void]$missing.Add($name)
     }
 }
-Write-Host "日志中缺失文件: $($missing.Count)" -ForegroundColor Cyan
+Write-Host "R2 missing: $($missing.Count)" -ForegroundColor Cyan
 
 $todo = [System.Collections.Generic.List[string]]::new()
 $noLocal = 0
@@ -34,18 +81,24 @@ foreach ($name in $missing) {
         [void]$todo.Add($name)
     } else {
         $noLocal++
+        Write-Host "not in local: $name" -ForegroundColor DarkYellow
     }
 }
-Write-Host "本地可补传: $($todo.Count)  本地也没有: $noLocal" -ForegroundColor Cyan
+Write-Host "local upload: $($todo.Count)  not in local: $noLocal" -ForegroundColor Cyan
 
 if ($todo.Count -eq 0) {
-    Write-Host "没有可上传的文件" -ForegroundColor Yellow
+    if ($missing.Count -eq 0) {
+        Write-Host "housech complete, nothing to upload" -ForegroundColor Green
+    } else {
+        Write-Host "R2 missing $($missing.Count) files but none found in local dir" -ForegroundColor Yellow
+    }
     exit 0
 }
 
 if ($DryRun) {
-    $todo | Select-Object -First 10 | ForEach-Object { Write-Host "[dry-run] $_ -> r2-target:${TargetBucket}/images/$_" }
-    if ($todo.Count -gt 10) { Write-Host "[dry-run] ... and $($todo.Count - 10) more" }
+    foreach ($n in $todo) {
+        Write-Host ('[dry-run] ' + $n + ' -> r2-target:' + $TargetBucket + '/images/' + $n)
+    }
     exit 0
 }
 
@@ -79,9 +132,8 @@ try {
                 [void]$handles.Remove($item)
                 $done++
                 if ($code -eq 0) { $ok++ } else { $fail++; Write-Host "FAIL: $($item.Name)" -ForegroundColor Yellow }
-                if ($done % 200 -eq 0) {
-                    $pct = [math]::Round(100 * $done / $total, 1)
-                    Write-Host "  progress: $done/$total ($pct%) ok=$ok fail=$fail"
+                if ($done % 50 -eq 0 -or $done -eq $total) {
+                    Write-Host "  progress: $done/$total ok=$ok fail=$fail"
                 }
             }
             if ($handles.Count -ge $Parallel -and $completed.Count -eq 0) {
@@ -102,9 +154,8 @@ try {
             [void]$handles.Remove($item)
             $done++
             if ($code -eq 0) { $ok++ } else { $fail++; Write-Host "FAIL: $($item.Name)" -ForegroundColor Yellow }
-            if ($done % 200 -eq 0) {
-                $pct = [math]::Round(100 * $done / $total, 1)
-                Write-Host "  progress: $done/$total ($pct%) ok=$ok fail=$fail"
+            if ($done % 50 -eq 0 -or $done -eq $total) {
+                Write-Host "  progress: $done/$total ok=$ok fail=$fail"
             }
         }
     }
@@ -113,4 +164,4 @@ try {
     $pool.Dispose()
 }
 
-Write-Host "完成: ok=$ok fail=$fail noLocal=$noLocal totalMissing=$($missing.Count)" -ForegroundColor Green
+Write-Host "done: ok=$ok fail=$fail noLocal=$noLocal r2Missing=$($missing.Count) supabaseTotal=$($chNames.Count)" -ForegroundColor Green

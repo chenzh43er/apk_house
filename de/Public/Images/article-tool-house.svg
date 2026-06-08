@@ -1,0 +1,94 @@
+<svg viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs>
+    <linearGradient id="atool-roof" x1="110" y1="34" x2="110" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9BBCE0"/>
+      <stop offset="1" stop-color="#7AA3CC"/>
+    </linearGradient>
+    <linearGradient id="atool-roof-side" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#94B8DB"/>
+      <stop offset="1" stop-color="#7A9FC8"/>
+    </linearGradient>
+    <linearGradient id="atool-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#EEF3FA"/>
+      <stop offset="1" stop-color="#DDE8F4"/>
+    </linearGradient>
+    <linearGradient id="atool-wall-mid" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#E2EBF6"/>
+      <stop offset="1" stop-color="#CEDCED"/>
+    </linearGradient>
+    <linearGradient id="atool-glass" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#6E94BE"/>
+      <stop offset="1" stop-color="#5278A6"/>
+    </linearGradient>
+    <linearGradient id="atool-tree" x1="30" y1="58" x2="30" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B8E4D6"/>
+      <stop offset="1" stop-color="#95D4C0"/>
+    </linearGradient>
+    <g id="atool-win">
+      <rect width="25" height="18" rx="1.2" fill="url(#atool-glass)"/>
+      <rect x="1.5" y="1.5" width="22" height="4" rx="0.8" fill="#fff" fill-opacity=".22"/>
+      <path d="M12.5 0v18M0 9h25" stroke="#C8DCF0" stroke-width=".85" stroke-opacity=".9"/>
+    </g>
+    <g id="atool-attic">
+      <rect width="9" height="9" rx="1" fill="url(#atool-glass)"/>
+      <rect x="1.2" y="1.2" width="6.6" height="2.2" rx=".5" fill="#fff" fill-opacity=".2"/>
+      <path d="M4.5 0v9M0 4.5h9" stroke="#C8DCF0" stroke-width=".65"/>
+    </g>
+  </defs>
+
+  <!-- soft ground shadow -->
+  <ellipse cx="110" cy="121" rx="58" ry="4" fill="#00338d" fill-opacity=".04"/>
+
+  <!-- clouds -->
+  <path d="M38 34c0-5 4-9 9-9 3 0 5.5 1.4 7 3.6 1.2-1.6 3.1-2.6 5.2-2.6 3.7 0 6.7 3 6.7 6.7 0 .4 0 .8-.1 1.2 2.1.8 3.6 2.8 3.6 5.1 0 3-2.4 5.4-5.4 5.4H43.4c-3 0-5.4-2.4-5.4-5.4 0-2.2 1.3-4.1 3.2-5z" fill="#E0F0EA"/>
+  <path d="M154 30c0-4.5 3.6-8.1 8.1-8.1 2.7 0 5.1 1.3 6.6 3.3 1.1-1.5 2.9-2.4 4.8-2.4 3.4 0 6.1 2.7 6.1 6.1 0 .3 0 .7-.1 1 1.9.7 3.3 2.5 3.3 4.6 0 2.7-2.2 4.9-4.9 4.9h-17.4c-2.7 0-4.9-2.2-4.9-4.9 0-2 1.2-3.7 2.9-4.5z" fill="#E8F5F1"/>
+
+  <!-- tree -->
+  <line x1="30" y1="118" x2="30" y2="100" stroke="#8FA8B5" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="30" cy="72" r="14" fill="url(#atool-tree)"/>
+  <circle cx="24" cy="80" r="9" fill="#AAD9C9" fill-opacity=".85"/>
+  <circle cx="36" cy="79" r="8" fill="#AAD9C9" fill-opacity=".75"/>
+  <line x1="30" y1="64" x2="30" y2="100" stroke="#8FA8B5" stroke-width=".9" stroke-linecap="round" stroke-opacity=".55"/>
+
+  <!-- foundation -->
+  <rect x="60" y="116" width="100" height="3" rx="1" fill="#C5D6E8"/>
+
+  <!-- house body -->
+  <rect x="62" y="78" width="36" height="38" rx="1" fill="url(#atool-wall)"/>
+  <rect x="122" y="78" width="36" height="38" rx="1" fill="url(#atool-wall)"/>
+  <rect x="92" y="56" width="36" height="60" rx="1" fill="url(#atool-wall-mid)"/>
+
+  <!-- roofs -->
+  <rect x="62" y="68" width="36" height="10" rx=".5" fill="url(#atool-roof-side)"/>
+  <rect x="122" y="68" width="36" height="10" rx=".5" fill="url(#atool-roof-side)"/>
+  <path d="M92 68 110 32 128 68V78H92V68Z" fill="url(#atool-roof)"/>
+
+  <!-- side windows -->
+  <use href="#atool-win" x="67.5" y="81"/>
+  <use href="#atool-win" x="67.5" y="102"/>
+  <use href="#atool-win" x="127.5" y="81"/>
+  <use href="#atool-win" x="127.5" y="102"/>
+
+  <!-- attic window -->
+  <use href="#atool-attic" x="105.5" y="44"/>
+
+  <!-- arched center window -->
+  <path d="M99.5 86V78.5a10.5 10.5 0 0 1 21 0V86Z" fill="url(#atool-glass)"/>
+  <path d="M102 83.5h16" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-opacity=".18"/>
+  <path d="M110 67.5v18.5M99.5 78.5h21" stroke="#C8DCF0" stroke-width=".85" stroke-opacity=".9"/>
+
+  <!-- door -->
+  <rect x="103" y="95" width="14" height="21" rx="1.2" fill="url(#atool-glass)"/>
+  <path d="M110 97v17" stroke="#C8DCF0" stroke-width=".75" stroke-opacity=".75"/>
+  <rect x="104.5" y="97" width="5.5" height="7" rx=".6" fill="#fff" fill-opacity=".12"/>
+  <circle cx="114.5" cy="106" r="1.2" fill="#D8E8F6"/>
+
+  <!-- porch step -->
+  <rect x="101" y="116" width="18" height="2.5" rx=".8" fill="#B8CBE0"/>
+
+  <!-- bushes (layered) -->
+  <ellipse cx="46" cy="126" rx="20" ry="6" fill="#B8DECF" fill-opacity=".7"/>
+  <ellipse cx="110" cy="128" rx="50" ry="7" fill="#A8D5C4" fill-opacity=".65"/>
+  <ellipse cx="176" cy="126" rx="18" ry="5.5" fill="#B8DECF" fill-opacity=".7"/>
+  <ellipse cx="110" cy="129" rx="42" ry="4" fill="#C8E6DC" fill-opacity=".85"/>
+</svg>
