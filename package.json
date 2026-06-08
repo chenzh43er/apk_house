@@ -16,7 +16,8 @@
     "cf:security": "node scripts/cloudflare-security-setup.mjs",
     "cf:security:dry-run": "node scripts/cloudflare-security-setup.mjs --dry-run",
     "cf:ads-bypass": "node scripts/cloudflare-ads-txt-bypass.mjs",
-    "cf:ads-bypass:dry-run": "node scripts/cloudflare-ads-txt-bypass.mjs --dry-run"
+    "cf:ads-bypass:dry-run": "node scripts/cloudflare-ads-txt-bypass.mjs --dry-run",
+    "cf:apply-ads-fix": "node scripts/cloudflare-apply-ads-fix.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.98.0"

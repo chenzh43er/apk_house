@@ -51,6 +51,44 @@ const CDN_BUCKETS = {
   ch: "HOUSECH",
 };
 
+const ADS_TXT_BODY =
+  "google.com, pub-2289697662900935, DIRECT, f08c47fec0942fa0\n";
+
+const ROBOTS_TXT_BODY = `User-agent: *
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://apkintelligence.com/sitemap.xml
+`;
+
+function serveCrawlerFile(pathname) {
+  if (pathname === "/ads.txt") {
+    return new Response(ADS_TXT_BODY, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=86400",
+      },
+    });
+  }
+  if (pathname === "/robots.txt") {
+    return new Response(ROBOTS_TXT_BODY, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "public, max-age=86400",
+      },
+    });
+  }
+  return null;
+}
+
 async function r2ImageProxy(request, env, ctx) {
   const url = new URL(request.url);
   const match = url.pathname.match(/^\/cdn\/(us|de|at|ch)\/(.+)$/);
@@ -113,10 +151,9 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
-    // AdSense 验证文件：优先回源，不经过 traffic-guard
-    if (pathname === "/ads.txt" || pathname === "/robots.txt") {
-      return passThrough(request, env, pathname);
-    }
+    // AdSense / SEO 关键文件：Worker 直接返回，不经过 traffic-guard
+    const crawlerFile = serveCrawlerFile(pathname);
+    if (crawlerFile) return crawlerFile;
 
     const blocked = evaluateTrafficGuard(request);
     if (blocked) return blocked;

@@ -1,15 +1,12 @@
 #!/usr/bin/env node
 /**
- * 确保 Google / AdSense 爬虫能访问 ads.txt 与 robots.txt。
+ * Super Bot Fight Mode (Pro/Business) 无法完全关闭时的 ads.txt 放行方案。
  *
- * 背景：免费版 Bot Fight Mode 不在 Ruleset Engine 内，WAF Skip 无法绕过它。
- * 本脚本会：
- *   1. 关闭 Bot Fight Mode（改由 Worker traffic-guard.js 防护 HTML）
- *   2. 添加 WAF Skip 规则（ads.txt / robots.txt / cf.client.bot）
- *   3. 添加 Configuration Rule（对上述路径关闭 BIC、降低 Security Level）
+ * 原因：SBFM 的「静态资源保护」会保护 .txt 文件（含 ads.txt / robots.txt）。
+ * 解决：WAF Skip 规则跳过 SBFM 阶段 + Configuration Rule 降低 BIC。
  *
- * 凭证：CLOUDFLARE_API_TOKEN 或 wrangler login 后的 OAuth
- * 所需权限：Zone Settings:Edit + Zone WAF:Edit + Config Rules:Edit
+ * 所需权限：Zone WAF Edit + Config Rules Edit + Zone Read
+ * （不需要 Zone Settings Edit，无需关闭 SBFM）
  *
  * 用法：
  *   node scripts/cloudflare-ads-txt-bypass.mjs
@@ -53,7 +50,7 @@ async function cf(path, init = {}) {
   const token = getApiToken();
   if (!token) {
     throw new Error(
-      "缺少 CLOUDFLARE_API_TOKEN。请创建 Token（Zone Settings:Edit + Zone WAF:Edit + Config Rules:Edit）或运行 wrangler login"
+      "缺少 CLOUDFLARE_API_TOKEN。请创建 Token（Zone WAF:Edit + Config Rules:Edit + Zone:Read）"
     );
   }
 
@@ -82,15 +79,6 @@ async function getZoneId() {
   return zone.id;
 }
 
-async function setZoneSetting(zoneId, settingId, value) {
-  console.log(`→ Zone 设置 ${settingId} = ${JSON.stringify(value)}`);
-  if (dryRun) return;
-  await cf(`/zones/${zoneId}/settings/${settingId}`, {
-    method: "PATCH",
-    body: JSON.stringify({ value }),
-  });
-}
-
 async function upsertPhaseRule(zoneId, phase, descriptor) {
   const ruleset = await cf(
     `/zones/${zoneId}/rulesets/phases/${phase}/entrypoint`
@@ -105,7 +93,6 @@ async function upsertPhaseRule(zoneId, phase, descriptor) {
   if (idx >= 0) {
     rules = existing.map((r, i) => (i === idx ? { ...r, ...rule } : r));
   } else if (phase === "http_request_firewall_custom") {
-    // Skip 规则放最前，优先于 block 规则
     rules = [rule, ...existing];
   } else {
     rules = [...existing, rule];
@@ -127,28 +114,33 @@ async function upsertPhaseRule(zoneId, phase, descriptor) {
 }
 
 async function main() {
-  console.log(`ads.txt / robots.txt 放行配置 — ${ZONE_NAME}${dryRun ? " (dry-run)" : ""}\n`);
+  console.log(
+    `SBFM ads.txt 放行 — ${ZONE_NAME}${dryRun ? " (dry-run)" : ""}\n`
+  );
+  console.log(
+    "说明：Super Bot Fight Mode 在 Pro/Business 套餐无法完全关闭，"
+  );
+  console.log("      通过 WAF Skip 跳过 SBFM 阶段来放行 ads.txt。\n");
 
   const zoneId = await getZoneId();
   console.log(`Zone ID: ${zoneId}\n`);
 
-  // 免费 Bot Fight Mode 无法用 Skip 绕过，必须关闭；HTML 由 Worker traffic-guard 保护
-  await setZoneSetting(zoneId, "bot_fight_mode", "off");
-
-  // WAF Skip：verified bot + ads.txt + robots.txt
   await upsertPhaseRule(zoneId, "http_request_firewall_custom", {
     ref: "ads_txt_bypass_skip",
-    description: "Skip security for ads.txt, robots.txt, verified bots",
+    description: "Skip SBFM for ads.txt, robots.txt, verified bots",
     expression: BYPASS_EXPR,
     action: "skip",
     action_parameters: {
-      products: ["bic", "securityLevel", "uaBlock", "waf"],
-      phases: ["http_request_sbfm", "http_ratelimit", "http_request_firewall_managed"],
+      products: ["bic", "securityLevel", "uaBlock"],
+      phases: [
+        "http_request_sbfm",
+        "http_ratelimit",
+        "http_request_firewall_managed",
+      ],
     },
     logging: { enabled: false },
   });
 
-  // Configuration Rule：对 ads.txt / robots.txt 关闭 BIC、降低安全级别
   await upsertPhaseRule(zoneId, "http_config_settings", {
     ref: "ads_txt_bypass_config",
     description: "Low security for ads.txt and robots.txt",
@@ -163,21 +155,23 @@ async function main() {
 
   console.log("\n完成。请验证：");
   console.log("  curl.exe -sI https://apkintelligence.com/ads.txt");
-  console.log("  curl.exe -sI https://apkintelligence.com/robots.txt");
-  console.log("  期望 HTTP/1.1 200（不再是 403 Challenge）");
+  console.log("\n若仍 403，请在 Dashboard 额外操作：");
+  console.log("  Security → Settings → Super Bot Fight Mode");
+  console.log("  → Static resource protection = Off");
+  console.log("  → Verified bots = Allow");
 }
 
 main().catch((err) => {
   console.error("\n失败:", err.message || err);
-  if (err.status === 403 || String(err.message).includes("Authentication")) {
+  if (
+    err.status === 403 ||
+    String(err.message).includes("Authentication") ||
+    String(err.message).includes("Unauthorized")
+  ) {
     console.error(`
-需要更高权限的 API Token：
-  1. 打开 https://dash.cloudflare.com/profile/api-tokens
-  2. 创建 Custom Token，权限：
-     - Zone > Zone Settings > Edit
-     - Zone > Zone WAF > Edit
-     - Zone > Config Rules > Edit
-     - Zone > Zone > Read
+需要 API Token（只需 WAF + Config Rules 权限，无需关闭 SBFM）：
+  1. https://dash.cloudflare.com/profile/api-tokens → Create Token
+  2. 权限：Zone WAF Edit、Config Rules Edit、Zone Read
   3. 运行：
      $env:CLOUDFLARE_API_TOKEN="你的token"
      node scripts/cloudflare-ads-txt-bypass.mjs
