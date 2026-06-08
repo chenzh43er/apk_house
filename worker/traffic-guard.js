@@ -85,6 +85,11 @@ export function evaluateTrafficGuard(request) {
 
   const pathname = new URL(request.url).pathname;
 
+  // AdSense / SEO 关键文件，永不拦截
+  if (pathname === "/ads.txt" || pathname === "/robots.txt") {
+    return null;
+  }
+
   if (isStaticOrApiPath(pathname)) {
     return null;
   }

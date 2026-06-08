@@ -14,7 +14,9 @@
     "tail": "wrangler tail billowing-leaf-30ae --config wrangler.worker.toml",
     "whoami": "wrangler whoami",
     "cf:security": "node scripts/cloudflare-security-setup.mjs",
-    "cf:security:dry-run": "node scripts/cloudflare-security-setup.mjs --dry-run"
+    "cf:security:dry-run": "node scripts/cloudflare-security-setup.mjs --dry-run",
+    "cf:ads-bypass": "node scripts/cloudflare-ads-txt-bypass.mjs",
+    "cf:ads-bypass:dry-run": "node scripts/cloudflare-ads-txt-bypass.mjs --dry-run"
   },
   "devDependencies": {
     "wrangler": "^4.98.0"

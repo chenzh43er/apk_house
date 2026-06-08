@@ -113,6 +113,11 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
+    // AdSense 验证文件：优先回源，不经过 traffic-guard
+    if (pathname === "/ads.txt" || pathname === "/robots.txt") {
+      return passThrough(request, env, pathname);
+    }
+
     const blocked = evaluateTrafficGuard(request);
     if (blocked) return blocked;
 

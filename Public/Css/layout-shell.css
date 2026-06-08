@@ -40,6 +40,17 @@ body.page-language #region-selector.region-selector {
     min-height: 0;
 }
 
+/* Region selector is the site home — no HOME nav item */
+body.page-language .nav ul .cor-category {
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+    body.page-language .hd-menu-btn {
+        display: none;
+    }
+}
+
 .cl:after {
     display: block;
     clear: both;
