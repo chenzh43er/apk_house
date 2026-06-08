@@ -10,6 +10,7 @@
     "deploy:pages": "wrangler pages deploy . --project-name=apk-house --branch=main",
     "deploy": "npm run deploy:pages && npm run deploy:worker",
     "inline-layout": "node scripts/inline-header-footer.mjs",
+    "optimize-assets": "node scripts/optimize-assets.mjs",
     "tail": "wrangler tail billowing-leaf-30ae --config wrangler.worker.toml",
     "whoami": "wrangler whoami"
   },

@@ -171,10 +171,26 @@ function removeFetchBlock(content, url) {
   return content;
 }
 
+const LAYOUT_CSS = [
+  '<link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">',
+  '<link rel="stylesheet" href="./Public/Css/lch-office.css">',
+];
+
+function ensureLayoutCss(content) {
+  if (content.includes("hs-style.css")) return content;
+  const iconMatch = content.match(/(\s*<link\s+rel="icon"[^>]*>\s*)/i);
+  if (iconMatch) {
+    return content.replace(iconMatch[1], "\n" + LAYOUT_CSS.join("\n") + iconMatch[1]);
+  }
+  const headClose = content.indexOf("</head>");
+  if (headClose === -1) return content;
+  return content.slice(0, headClose) + LAYOUT_CSS.join("\n") + "\n" + content.slice(headClose);
+}
+
 function inlineTags(content, headerFrag, footerFrag) {
   if (content.includes("fetch('./header.html')") || content.includes('fetch("./header.html")')) {
     content = content.replace(
-      /(<header\b[^>]*\bid\s*=\s*["']header["'][^>]*>)\s*(<\/header>)/i,
+      /(<header\b(?=[^>]*\bid\s*=\s*["']header["'])[^>]*>)\s*(<\/header>)/i,
       `$1\n${headerFrag}\n$2`
     );
   }
@@ -221,6 +237,7 @@ function processFile(filePath, fragmentsByLocale) {
   content = inlineTags(content, fragments.header, fragments.footer);
   content = removeFetchBlock(content, "./header.html");
   content = removeFetchBlock(content, "./footer.html");
+  content = ensureLayoutCss(content);
 
   if (content !== original) {
     fs.writeFileSync(filePath, content, "utf8");

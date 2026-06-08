@@ -108,6 +108,12 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
+    if (pathname === "/language.html" || pathname === "/index.html") {
+      const target = new URL("/", request.url);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
+    }
+
     if (pathname.startsWith("/cdn/")) {
       const imageRes = await r2ImageProxy(request, env, ctx);
       if (imageRes) return imageRes;

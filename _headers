@@ -1,0 +1,14 @@
+/Public/Css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Public/Js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Public/Fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Public/svg/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/Public/Images/*
+  Cache-Control: public, max-age=2592000

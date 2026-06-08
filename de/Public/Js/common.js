@@ -75,6 +75,50 @@ function appendParams(url) {
     }
 }
 
+function buildFormHref(state, city, district, houseId, lang) {
+    if (!lang) {
+        lang = getLangFromPath();
+    }
+
+    let formHref = `./form.html?id=${encodeURIComponent(houseId || "")}&state=${encodeURIComponent(state || "")}&city=${encodeURIComponent(city || "")}&district=${encodeURIComponent(district || "")}`;
+
+    if (lang === "de") {
+        formHref = `/de/teach/state/${state}/${city}/${district}/${houseId}/form`;
+    } else if (lang === "us") {
+        formHref = `/us/teach/state/${state}/${city}/${district}/${houseId}/form`;
+    } else if (lang === "de-ch-at") {
+        formHref = `/de-ch-at/teach/state/${state}/${city}/${district}/${houseId}/form`;
+    } else {
+        formHref = `/teach/state/${state}/${city}/${district}/${houseId}/form`;
+    }
+
+    return formHref;
+}
+
+function bindDetailToFormLink(state, city, district, houseId, lang) {
+    const toFormEl = document.getElementById("toForm");
+    if (!toFormEl) {
+        return;
+    }
+
+    const href = appendParams(buildFormHref(state, city, district, houseId, lang));
+    toFormEl.href = href;
+    toFormEl.dataset.formHref = href;
+
+    if (toFormEl.dataset.formBound === "1") {
+        return;
+    }
+    toFormEl.dataset.formBound = "1";
+
+    toFormEl.addEventListener("click", function (e) {
+        const current = this.getAttribute("href") || "";
+        if (current === "javascript:;" || current === "#" || current.startsWith("javascript:")) {
+            e.preventDefault();
+            window.location.href = this.dataset.formHref || href;
+        }
+    });
+}
+
 /** 页面内嵌图片走 /cdn/；本地 dev R2 未绑定时回退到已部署 Pages 的 CDN 代理 */
 function isLocalDev() {
     const h = window.location.hostname;
