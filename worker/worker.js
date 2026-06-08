@@ -1,12 +1,17 @@
+import { applySecurityHeaders, evaluateTrafficGuard } from "./traffic-guard.js";
+
 const LANGS = ["de", "us", "de-ch-at"];
 const LANG = LANGS.join("|");
 
 /** 本地 Pages dev 用 ASSETS；线上 Zone Worker 用 fetch 回源 Pages */
-function passThrough(request, env) {
+async function passThrough(request, env, pathname) {
+  let res;
   if (env.ASSETS) {
-    return env.ASSETS.fetch(request);
+    res = await env.ASSETS.fetch(request);
+  } else {
+    res = await fetch(request);
   }
-  return fetch(request);
+  return applySecurityHeaders(res, pathname || new URL(request.url).pathname);
 }
 
 function rewrite(request, targetPath, params, env) {
@@ -17,7 +22,7 @@ function rewrite(request, targetPath, params, env) {
     targetUrl.searchParams.set(key, decodeURIComponent(value));
   }
 
-  return passThrough(new Request(targetUrl, request), env);
+  return passThrough(new Request(targetUrl, request), env, targetPath);
 }
 
 function getSupabaseOrigin(lang) {
@@ -108,6 +113,9 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
+    const blocked = evaluateTrafficGuard(request);
+    if (blocked) return blocked;
+
     if (pathname === "/language.html" || pathname === "/index.html") {
       const target = new URL("/", request.url);
       target.search = url.search;
@@ -132,7 +140,7 @@ export default {
       pathname.startsWith("/Public/") ||
       pathname.startsWith("/Assets/")
     ) {
-      return passThrough(request, env);
+      return passThrough(request, env, pathname);
     }
 
     let m = pathname.match(
@@ -245,6 +253,6 @@ export default {
       }, env);
     }
 
-    return passThrough(request, env);
+    return passThrough(request, env, pathname);
   }
 };

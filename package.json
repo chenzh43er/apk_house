@@ -12,7 +12,9 @@
     "inline-layout": "node scripts/inline-header-footer.mjs",
     "optimize-assets": "node scripts/optimize-assets.mjs",
     "tail": "wrangler tail billowing-leaf-30ae --config wrangler.worker.toml",
-    "whoami": "wrangler whoami"
+    "whoami": "wrangler whoami",
+    "cf:security": "node scripts/cloudflare-security-setup.mjs",
+    "cf:security:dry-run": "node scripts/cloudflare-security-setup.mjs --dry-run"
   },
   "devDependencies": {
     "wrangler": "^4.98.0"
