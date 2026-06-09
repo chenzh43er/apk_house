@@ -2,8 +2,13 @@
 /**
  * 一键修复 ads.txt / robots.txt 被 Cloudflare Challenge 拦截。
  *
- * 用法：
+ * 用法（API Token）：
  *   $env:CLOUDFLARE_API_TOKEN="你的token"
+ *   node scripts/cloudflare-apply-ads-fix.mjs
+ *
+ * 用法（Global API Key + 账号邮箱）：
+ *   $env:CLOUDFLARE_API_EMAIL="you@example.com"
+ *   $env:CLOUDFLARE_API_KEY="你的global-api-key"
  *   node scripts/cloudflare-apply-ads-fix.mjs
  *
  * Token 创建：https://dash.cloudflare.com/profile/api-tokens
@@ -35,28 +40,41 @@ function readWranglerOAuthToken() {
   return null;
 }
 
-async function promptToken() {
+function getAuthHeaders() {
+  const email = process.env.CLOUDFLARE_API_EMAIL?.trim();
+  const globalKey = process.env.CLOUDFLARE_API_KEY?.trim();
+  if (email && globalKey) {
+    return {
+      "X-Auth-Email": email,
+      "X-Auth-Key": globalKey,
+    };
+  }
+
+  const token =
+    process.env.CLOUDFLARE_API_TOKEN?.trim() ||
+    readWranglerOAuthToken() ||
+    null;
+  if (token) {
+    return { Authorization: `Bearer ${token}` };
+  }
+
+  return null;
+}
+
+async function promptCredentials() {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question("请粘贴 CLOUDFLARE_API_TOKEN 后回车: ", (t) => {
-      rl.close();
-      resolve(t.trim());
-    });
-  });
+  const ask = (q) =>
+    new Promise((resolve) => rl.question(q, (answer) => resolve(answer.trim())));
+  const token = await ask("请粘贴 CLOUDFLARE_API_TOKEN 后回车: ");
+  rl.close();
+  return token ? { Authorization: `Bearer ${token}` } : null;
 }
 
-async function getToken() {
-  if (process.env.CLOUDFLARE_API_TOKEN) return process.env.CLOUDFLARE_API_TOKEN;
-  const oauth = readWranglerOAuthToken();
-  if (oauth) return oauth;
-  return promptToken();
-}
-
-async function cf(token, path, init = {}) {
+async function cf(authHeaders, path, init = {}) {
   const res = await fetch(`${API}${path}`, {
     ...init,
     headers: {
-      Authorization: `Bearer ${token}`,
+      ...authHeaders,
       "Content-Type": "application/json",
       ...(init.headers || {}),
     },
@@ -70,33 +88,58 @@ async function cf(token, path, init = {}) {
   return data.result;
 }
 
-async function setZoneSetting(token, zoneId, id, value) {
+async function setZoneSetting(authHeaders, zoneId, id, value) {
   console.log(`→ ${id} = ${JSON.stringify(value)}`);
-  await cf(token, `/zones/${zoneId}/settings/${id}`, {
+  await cf(authHeaders, `/zones/${zoneId}/settings/${id}`, {
     method: "PATCH",
     body: JSON.stringify({ value }),
   });
 }
 
-async function upsertPhaseRule(token, zoneId, phase, descriptor) {
-  const ruleset = await cf(
-    token,
-    `/zones/${zoneId}/rulesets/phases/${phase}/entrypoint`
-  );
+async function upsertPhaseRule(authHeaders, zoneId, phase, descriptor) {
+  let ruleset;
+  try {
+    ruleset = await cf(
+      authHeaders,
+      `/zones/${zoneId}/rulesets/phases/${phase}/entrypoint`
+    );
+  } catch (e) {
+    const missingEntrypoint =
+      e.code === 10003 || String(e.message).includes("10003");
+    if (!missingEntrypoint) throw e;
+    console.log(`→ ${phase}: 创建 entrypoint ruleset`);
+    ruleset = await cf(authHeaders, `/zones/${zoneId}/rulesets`, {
+      method: "POST",
+      body: JSON.stringify({
+        name: "default",
+        kind: "zone",
+        phase,
+        rules: [],
+      }),
+    });
+  }
   const existing = ruleset.rules || [];
   const idx = existing.findIndex(
     (r) => r.ref === descriptor.ref || r.description === descriptor.description
   );
-  const rule = { ...descriptor, enabled: true };
+  const buildRule = (base) => ({
+    ...base,
+    description: descriptor.description,
+    expression: descriptor.expression,
+    action: descriptor.action,
+    action_parameters: descriptor.action_parameters,
+    logging: descriptor.logging ?? base.logging,
+    enabled: true,
+  });
   const rules =
     idx >= 0
-      ? existing.map((r, i) => (i === idx ? { ...r, ...rule } : r))
+      ? existing.map((r, i) => (i === idx ? buildRule(r) : r))
       : phase === "http_request_firewall_custom"
-        ? [rule, ...existing]
-        : [...existing, rule];
+        ? [buildRule({ ref: descriptor.ref }), ...existing]
+        : [...existing, buildRule({ ref: descriptor.ref })];
 
   console.log(`→ ${phase}: "${descriptor.description}" (${idx >= 0 ? "更新" : "新增"})`);
-  await cf(token, `/zones/${zoneId}/rulesets/${ruleset.id}`, {
+  await cf(authHeaders, `/zones/${zoneId}/rulesets/${ruleset.id}`, {
     method: "PUT",
     body: JSON.stringify({
       name: ruleset.name,
@@ -132,15 +175,20 @@ async function verifyAdsTxt() {
 async function main() {
   console.log(`Cloudflare ads.txt 一键修复 — ${ZONE_NAME}\n`);
 
-  let token = await getToken();
-  if (!token) {
-    console.error("需要 API Token。打开: https://dash.cloudflare.com/profile/api-tokens");
+  let authHeaders = getAuthHeaders();
+  if (!authHeaders) {
+    authHeaders = await promptCredentials();
+  }
+  if (!authHeaders) {
+    console.error(
+      "需要 CLOUDFLARE_API_TOKEN，或 CLOUDFLARE_API_EMAIL + CLOUDFLARE_API_KEY"
+    );
     process.exit(1);
   }
 
   let zoneId;
   try {
-    const zones = await cf(token, `/zones?name=${ZONE_NAME}`);
+    const zones = await cf(authHeaders, `/zones?name=${ZONE_NAME}`);
     zoneId = zones.find((z) => z.name === ZONE_NAME)?.id;
     if (!zoneId) throw new Error("找不到 zone");
     console.log(`Zone ID: ${zoneId}\n`);
@@ -169,10 +217,10 @@ async function main() {
     throw e;
   }
 
-  await setZoneSetting(token, zoneId, "security_level", "essentially_off");
-  await setZoneSetting(token, zoneId, "browser_check", "off");
+  await setZoneSetting(authHeaders, zoneId, "security_level", "essentially_off");
+  await setZoneSetting(authHeaders, zoneId, "browser_check", "off");
 
-  await upsertPhaseRule(token, zoneId, "http_request_firewall_custom", {
+  await upsertPhaseRule(authHeaders, zoneId, "http_request_firewall_custom", {
     ref: "ads_txt_bypass_skip",
     description: "Skip security for ads.txt, robots.txt, verified bots",
     expression: BYPASS_EXPR,
@@ -184,11 +232,12 @@ async function main() {
         "http_ratelimit",
         "http_request_firewall_managed",
       ],
+      ruleset: "current",
     },
     logging: { enabled: false },
   });
 
-  await upsertPhaseRule(token, zoneId, "http_config_settings", {
+  await upsertPhaseRule(authHeaders, zoneId, "http_config_settings", {
     ref: "ads_txt_bypass_config",
     description: "Low security for ads.txt and robots.txt",
     expression:
