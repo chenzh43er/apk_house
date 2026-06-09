@@ -1,38 +1,139 @@
-/**
- * billowing-leaf-30ae — apkintelligence.com 统一边缘 Worker
- *
- * 功能模块（按请求处理顺序）：
- *  1. SEO/AdSense 爬虫文件（ads.txt、robots.txt）
- *  2. 流量清洗（bot / scraper 拦截，见 traffic-guard.js）
- *  3. 首页重定向（/index.html、/language.html → /）
- *  4. R2 CDN 图片代理（/cdn/{region}/...）
- *  5. Supabase API 反向代理（/{lang}/rest|rpc|storage|auth）
- *  6. 静态资源透传（CSS/JS/图片/Public/Assets）
- *  7. SEO 友好 URL 重写（teach/state 路径 → 实际 HTML 页面）
- *  8. 文章路径重写（/{lang}/post/{id}/{page} → /post）
- *  9. 默认透传（其余 HTML 页面回源 Pages，附加安全响应头）
- */
+var __defProp = Object.defineProperty;
+var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-import { applySecurityHeaders, evaluateTrafficGuard } from "./traffic-guard.js";
+// worker/traffic-guard.js
+var GOOD_BOT_UA = /googlebot|adsbot-google|mediapartners-google|bingbot|applebot|duckduckbot|yandexbot|facebookexternalhit|twitterbot|linkedinbot|slackbot|discordbot|whatsapp|telegrambot/i;
+var BAD_BOT_UA = /headless|phantomjs|puppeteer|selenium|playwright|webdriver|python-requests|python-urllib|scrapy|httpclient|java\/|libwww|wget|curl\/|httpx|go-http-client|axios\/|node-fetch|postman|insomnia|semrush|ahrefsbot|mj12bot|dotbot|petalbot|bytespider|gptbot|claudebot|ccbot/i;
+var AD_SENSITIVE_RE = /\/(?:form|result)(?:\.html)?$|\/teach\/state\/[^/]+\/[^/]+\/[^/]+\/[^/]+\/(?:form|result)$/i;
+function isStaticOrApiPath(pathname) {
+  return pathname.startsWith("/cdn/") || pathname.startsWith("/Public/") || pathname.startsWith("/Assets/") || /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map|txt|xml)$/i.test(pathname) || /^\/(?:de|us|de-ch-at)\/(?:rest|rpc|storage|auth)/i.test(pathname);
+}
+__name(isStaticOrApiPath, "isStaticOrApiPath");
+function isHtmlPage(pathname) {
+  if (pathname === "/" || pathname === "/index.html" || pathname === "/language.html") {
+    return true;
+  }
+  if (isStaticOrApiPath(pathname)) return false;
+  if (/\.html$/i.test(pathname)) return true;
+  return !/\.[a-z0-9]+$/i.test(pathname);
+}
+__name(isHtmlPage, "isHtmlPage");
+function isAdSensitivePage(pathname) {
+  return AD_SENSITIVE_RE.test(pathname);
+}
+__name(isAdSensitivePage, "isAdSensitivePage");
+function getUserAgent(request) {
+  return request.headers.get("User-Agent") || "";
+}
+__name(getUserAgent, "getUserAgent");
+function isGoodBot(request) {
+  const ua = getUserAgent(request);
+  if (GOOD_BOT_UA.test(ua)) return true;
+  const cf = request.cf;
+  if (cf?.botManagement?.verifiedBot) return true;
+  return false;
+}
+__name(isGoodBot, "isGoodBot");
+function isBadBot(request) {
+  const ua = getUserAgent(request);
+  if (!ua.trim()) return true;
+  if (BAD_BOT_UA.test(ua)) return true;
+  const cf = request.cf;
+  const score = cf?.botManagement?.score;
+  if (typeof score === "number" && score <= 10) return true;
+  return false;
+}
+__name(isBadBot, "isBadBot");
+function hasSuspiciousSignals(request) {
+  const accept = request.headers.get("Accept") || "";
+  const ua = getUserAgent(request);
+  if (isAdSensitivePage(new URL(request.url).pathname)) {
+    if (!accept.includes("text/html") && !isGoodBot(request)) {
+      return true;
+    }
+    if (/bot|crawl|spider/i.test(ua) && !isGoodBot(request)) {
+      return true;
+    }
+  }
+  return false;
+}
+__name(hasSuspiciousSignals, "hasSuspiciousSignals");
+function evaluateTrafficGuard(request) {
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    return null;
+  }
+  const pathname = new URL(request.url).pathname;
+  if (pathname === "/ads.txt" || pathname === "/robots.txt") {
+    return null;
+  }
+  if (isStaticOrApiPath(pathname)) {
+    return null;
+  }
+  if (!isHtmlPage(pathname)) {
+    return null;
+  }
+  if (isGoodBot(request)) {
+    return null;
+  }
+  if (isBadBot(request)) {
+    return blockResponse("bot", request);
+  }
+  if (hasSuspiciousSignals(request)) {
+    return blockResponse("suspicious", request);
+  }
+  return null;
+}
+__name(evaluateTrafficGuard, "evaluateTrafficGuard");
+function blockResponse(reason, request) {
+  const pathname = new URL(request.url).pathname;
+  console.log(
+    JSON.stringify({
+      event: "traffic_guard_block",
+      reason,
+      path: pathname,
+      ua: getUserAgent(request).slice(0, 160),
+      ip: request.headers.get("CF-Connecting-IP"),
+      country: request.cf?.country,
+      botScore: request.cf?.botManagement?.score ?? null
+    })
+  );
+  return new Response("Forbidden", {
+    status: 403,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow"
+    }
+  });
+}
+__name(blockResponse, "blockResponse");
+function applySecurityHeaders(response, pathname) {
+  const headers = new Headers(response.headers);
+  if (!isStaticOrApiPath(pathname)) {
+    headers.set("X-Content-Type-Options", "nosniff");
+    headers.set("X-Frame-Options", "SAMEORIGIN");
+    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    headers.set("Permissions-Policy", "interest-cohort=()");
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+__name(applySecurityHeaders, "applySecurityHeaders");
 
-/** 支持的语言前缀，用于路由匹配与 Supabase 分流 */
-const LANGS = ["de", "us", "de-ch-at"];
-const LANG = LANGS.join("|");
-
-/** R2 区域 → Wrangler binding 名称映射 */
-const CDN_BUCKETS = {
+// worker/worker.js
+var LANGS = ["de", "us", "de-ch-at"];
+var LANG = LANGS.join("|");
+var CDN_BUCKETS = {
   us: "HOUSEUS",
   de: "HOUSEPIC",
   at: "HOUSEAT",
-  ch: "HOUSECH",
+  ch: "HOUSECH"
 };
-
-/** AdSense 验证文件内容（Worker 直接返回，不经 Pages） */
-const ADS_TXT_BODY =
-  "google.com, pub-2289697662900935, DIRECT, f08c47fec0942fa0\n";
-
-/** robots.txt：允许搜索引擎与 Google 广告爬虫抓取全站 */
-const ROBOTS_TXT_BODY = `User-agent: *
+var ADS_TXT_BODY = "google.com, pub-2289697662900935, DIRECT, f08c47fec0942fa0\n";
+var ROBOTS_TXT_BODY = `User-agent: *
 Allow: /
 
 User-agent: AdsBot-Google
@@ -46,11 +147,6 @@ Allow: /
 
 Sitemap: https://apkintelligence.com/sitemap.xml
 `;
-
-/**
- * 静态资源 / HTML 回源 Pages，并为 HTML 响应附加安全头。
- * 本地 dev 使用 ASSETS binding；线上 Zone Worker 通过 fetch 回源。
- */
 async function passThrough(request, env, pathname) {
   let res;
   if (env.ASSETS) {
@@ -60,95 +156,70 @@ async function passThrough(request, env, pathname) {
   }
   return applySecurityHeaders(res, pathname || new URL(request.url).pathname);
 }
-
-/**
- * SEO 友好 URL → 实际页面路径的内部重写。
- * 保留原始 query string，将路径参数展开为 searchParams。
- */
+__name(passThrough, "passThrough");
 function rewrite(request, targetPath, params, env) {
   const url = new URL(request.url);
   const targetUrl = new URL(`${url.origin}${targetPath}`);
-
   for (const [key, value] of Object.entries(params)) {
     targetUrl.searchParams.set(key, decodeURIComponent(value));
   }
-
   return passThrough(new Request(targetUrl, request), env, targetPath);
 }
-
-/**
- * 按语言选择 Supabase 后端 origin。
- * de-ch-at 在三个实例间随机负载均衡。
- */
+__name(rewrite, "rewrite");
 function getSupabaseOrigin(lang) {
   if (lang === "us") {
     return "https://uoxzcftzwemdrmcmhuhb.supabase.co";
   }
-
   if (lang === "de-ch-at") {
     const list = [
       "https://aabogtftiapiwehgmezt.supabase.co",
       "https://yioqqdprzzeqrlwfyqov.supabase.co",
-      "https://zxvflhunzznslxzqreih.supabase.co",
+      "https://zxvflhunzznslxzqreih.supabase.co"
     ];
     return list[Math.floor(Math.random() * list.length)];
   }
-
   if (lang === "de") {
     return "https://aabogtftiapiwehgmezt.supabase.co";
   }
 }
-
-/**
- * 直接返回 ads.txt / robots.txt，确保 AdSense 与 SEO 爬虫不被拦截或回源失败。
- * @returns {Response | null}
- */
+__name(getSupabaseOrigin, "getSupabaseOrigin");
 function serveCrawlerFile(pathname) {
   if (pathname === "/ads.txt") {
     return new Response(ADS_TXT_BODY, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "public, max-age=86400",
-      },
+        "Cache-Control": "public, max-age=86400"
+      }
     });
   }
   if (pathname === "/robots.txt") {
     return new Response(ROBOTS_TXT_BODY, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "public, max-age=86400",
-      },
+        "Cache-Control": "public, max-age=86400"
+      }
     });
   }
   return null;
 }
-
-/**
- * R2 图片 CDN 代理：/cdn/{us|de|at|ch}/{key}
- * 命中 Cloudflare Cache API 缓存，未命中则从对应 R2 bucket 读取。
- */
+__name(serveCrawlerFile, "serveCrawlerFile");
 async function r2ImageProxy(request, env, ctx) {
   const url = new URL(request.url);
   const match = url.pathname.match(/^\/cdn\/(us|de|at|ch)\/(.+)$/);
   if (!match) return null;
-
   const [, region, key] = match;
   const bucket = env[CDN_BUCKETS[region]];
   if (!bucket) return new Response("R2 binding missing", { status: 503 });
-
   try {
     const cache = caches.default;
     let res = await cache.match(request);
     if (res) return res;
-
     const object = await bucket.get(key);
     if (!object) return new Response("Not Found", { status: 404 });
-
     const headers = new Headers();
     object.writeHttpMetadata(headers);
     headers.set("Cache-Control", "public, max-age=31536000, immutable");
     headers.set("Access-Control-Allow-Origin", "*");
-
     res = new Response(object.body, { headers });
     ctx.waitUntil(cache.put(request, res.clone()));
     return res;
@@ -156,64 +227,44 @@ async function r2ImageProxy(request, env, ctx) {
     return new Response(`R2 error: ${err?.message || err}`, { status: 502 });
   }
 }
-
-/**
- * Supabase REST/RPC/Storage/Auth 反向代理：/{lang}/rest|rpc|storage|auth/...
- * GET 请求缓存 60 秒；写操作直接透传。
- */
+__name(r2ImageProxy, "r2ImageProxy");
 async function supabaseProxy(request, lang, ctx) {
   const origin = getSupabaseOrigin(lang);
   const url = new URL(request.url);
-
   const path = url.pathname.replace(new RegExp(`^/${lang}`), "");
   const target = origin + path + url.search;
-
   const newReq = new Request(target, request);
   newReq.headers.delete("host");
-
   if (request.method === "GET") {
     const cache = caches.default;
     let res = await cache.match(request);
     if (res) return res;
-
     res = await fetch(newReq);
     res = new Response(res.body, res);
     res.headers.set("Cache-Control", "public, max-age=60");
-
     ctx.waitUntil(cache.put(request, res.clone()));
     return res;
   }
-
   return fetch(newReq);
 }
-
-export default {
+__name(supabaseProxy, "supabaseProxy");
+var worker_default = {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const pathname = url.pathname;
-
-    // ── 1. SEO / AdSense 爬虫文件（优先返回，不经过流量清洗） ──
     const crawlerFile = serveCrawlerFile(pathname);
     if (crawlerFile) return crawlerFile;
-
-    // ── 2. 流量清洗：拦截 bot / scraper 对 HTML 页面的访问 ──
     const blocked = evaluateTrafficGuard(request);
     if (blocked) return blocked;
-
-    // ── 3. 首页规范化重定向 ──
     if (pathname === "/language.html" || pathname === "/index.html") {
       const target = new URL("/", request.url);
       target.search = url.search;
       return Response.redirect(target.toString(), 301);
     }
-
-    // ── 4. R2 CDN 图片代理 ──
     if (pathname.startsWith("/cdn/")) {
       const imageRes = await r2ImageProxy(request, env, ctx);
       if (imageRes) return imageRes;
     }
-
-    // ── 5. Supabase API 反向代理 ──
     const apiMatch = pathname.match(
       new RegExp(`^\\/(${LANG})\\/(rest|rpc|storage|auth)`, "i")
     );
@@ -221,19 +272,9 @@ export default {
       const lang = apiMatch[1];
       return supabaseProxy(request, lang, ctx);
     }
-
-    // ── 6. 静态资源透传 ──
-    if (
-      /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map)$/i.test(pathname) ||
-      pathname.startsWith("/Public/") ||
-      pathname.startsWith("/Assets/")
-    ) {
+    if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map)$/i.test(pathname) || pathname.startsWith("/Public/") || pathname.startsWith("/Assets/")) {
       return passThrough(request, env, pathname);
     }
-
-    // ── 7. SEO 友好 URL 重写（teach/state 层级路径） ──
-
-    // /{lang}/teach/state/{state}/{city}/{district}/{id}/result → /{lang}/result?id=...
     let m = pathname.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/result$`,
@@ -244,8 +285,6 @@ export default {
       const [, lang, state, city, district, id] = m;
       return rewrite(request, `/${lang}/result`, { id, state, city, district }, env);
     }
-
-    // /{lang}/teach/state/{state}/{city}/{district}/{id}/form → /{lang}/form?id=...
     m = pathname.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/form$`,
@@ -256,8 +295,6 @@ export default {
       const [, lang, state, city, district, id] = m;
       return rewrite(request, `/${lang}/form`, { id, state, city, district }, env);
     }
-
-    // /{lang}/teach/state/{state}/{city}/{district}/{id}/detail → /{lang}/detail?id=...
     m = pathname.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/detail$`,
@@ -268,8 +305,6 @@ export default {
       const [, lang, state, city, district, id] = m;
       return rewrite(request, `/${lang}/detail`, { id, state, city, district }, env);
     }
-
-    // /{lang}/teach/state/{state}/{city}/{district}/{page}/list → /{lang}/list?...
     m = pathname.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/(\\d+)\\/list$`,
@@ -280,8 +315,6 @@ export default {
       const [, lang, state, city, district, page] = m;
       return rewrite(request, `/${lang}/list`, { state, city, district, page }, env);
     }
-
-    // /{lang}/teach/state/{state}/{city}/district → /{lang}/district?state=...&city=...
     m = pathname.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/district$`,
@@ -292,8 +325,6 @@ export default {
       const [, lang, state, city] = m;
       return rewrite(request, `/${lang}/district`, { state, city }, env);
     }
-
-    // /{lang}/teach/state/{state}/city → /{lang}/city?state=...
     m = pathname.match(
       new RegExp(`^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/city$`, "i")
     );
@@ -301,15 +332,11 @@ export default {
       const [, lang, state] = m;
       return rewrite(request, `/${lang}/city`, { state }, env);
     }
-
-    // /{lang}/teach/state → /{lang}/state
     m = pathname.match(new RegExp(`^\\/(${LANG})\\/teach\\/state$`, "i"));
     if (m) {
       const [, lang] = m;
       return rewrite(request, `/${lang}/state`, {}, env);
     }
-
-    // ── 8. 文章路径重写：/{lang}/post/{postid}/{page} → /post?postid=...&page=... ──
     m = pathname.match(
       new RegExp(`^\\/(${LANG})\\/post\\/(\\d+)\\/(\\d+)$`, "i")
     );
@@ -317,8 +344,10 @@ export default {
       const [, , postid, page] = m;
       return rewrite(request, "/post", { postid, page }, env);
     }
-
-    // ── 9. 默认透传：其余 HTML 页面回源 Pages ──
     return passThrough(request, env, pathname);
-  },
+  }
 };
+export {
+  worker_default as default
+};
+//# sourceMappingURL=worker.js.map

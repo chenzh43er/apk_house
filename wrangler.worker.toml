@@ -1,9 +1,22 @@
-# Cloudflare Worker：自定义域名路由 + Supabase 代理（CLI 单独部署）
+# Cloudflare Worker：apkintelligence.com 统一入口（流量清洗 + 路由 + R2 + Supabase）
 # 账户：Chjgfjjyghjhggg@gmail.com
 name = "billowing-leaf-30ae"
 main = "worker/worker.js"
 compatibility_date = "2026-03-17"
 account_id = "0e70af17109f26d0d034bab33006f59e"
+
+# 禁用 esbuild 打包，直接上传源文件以保留注释（Dashboard 可见）
+no_bundle = true
+
+routes = [
+  { pattern = "apkintelligence.com/*", zone_name = "apkintelligence.com" },
+  { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
+]
+
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js"]
+fallthrough = true
 
 [[r2_buckets]]
 binding = "HOUSEUS"

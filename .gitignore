@@ -1,5 +1,7 @@
 node_modules/
 .wrangler/
+dist-worker-bundle/
+dist-no-bundle/
 .dev.vars
 *.log
 scripts/r2-migrate/rclone.conf
