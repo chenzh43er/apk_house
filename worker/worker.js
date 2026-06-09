@@ -1,4 +1,4 @@
-import { applySecurityHeaders, evaluateTrafficGuard } from "./traffic-guard.js";
+import { applySecurityHeaders } from "./traffic-guard.js";
 
 const LANGS = ["de", "us", "de-ch-at"];
 const LANG = LANGS.join("|");
@@ -151,12 +151,8 @@ export default {
     const url = new URL(request.url);
     const pathname = url.pathname;
 
-    // AdSense / SEO 关键文件：Worker 直接返回，不经过 traffic-guard
     const crawlerFile = serveCrawlerFile(pathname);
     if (crawlerFile) return crawlerFile;
-
-    const blocked = evaluateTrafficGuard(request);
-    if (blocked) return blocked;
 
     if (pathname === "/language.html" || pathname === "/index.html") {
       const target = new URL("/", request.url);
