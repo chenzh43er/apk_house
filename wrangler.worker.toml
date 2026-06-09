@@ -13,11 +13,6 @@ routes = [
   { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
 ]
 
-[[rules]]
-type = "ESModule"
-globs = ["**/*.js"]
-fallthrough = true
-
 [[r2_buckets]]
 binding = "HOUSEUS"
 bucket_name = "houseus"
