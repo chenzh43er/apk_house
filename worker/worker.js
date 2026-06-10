@@ -26,7 +26,7 @@ const GOOD_BOT_UA =
 
 /** 已知恶意 / 自动化工具 User-Agent 黑名单 */
 const BAD_BOT_UA =
-  /headless|phantomjs|puppeteer|selenium|playwright|webdriver|python-requests|python-urllib|scrapy|httpclient|java\/|libwww|wget|curl\/|httpx|go-http-client|axios\/|node-fetch|postman|insomnia|semrush|ahrefsbot|mj12bot|dotbot|petalbot|bytespider|gptbot|claudebot|ccbot/i;
+  /headless|phantomjs|puppeteer|selenium|playwright|webdriver|python-requests|python-urllib|scrapy|httpclient|java\/|libwww|wget|curl\/|httpx|go-http-client|axios\/|node-fetch|postman|insomnia|semrush|ahrefsbot|mj12bot|dotbot|petalbot|bytespider|gptbot|claudebot|ccbot|aiohttp|okhttp|perl|ruby|mechanize|beautifulsoup|masscan|zgrab|nikto|sqlmap/i;
 
 /** 含 AdSense 的敏感页面路径（form / result 页） */
 const AD_SENSITIVE_RE =
