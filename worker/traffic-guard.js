@@ -1,31 +1,99 @@
-const DEFAULTS = {
-  // 短时间同 IP 高并发访问
+/**
+ * 边缘流量防护模块（可被 worker.js 引用，或与 worker.js 内联逻辑保持同步）
+ *
+ * 目标：减少 bot / scraper 对带 AdSense 的 HTML 页面访问，同时放行：
+ *  - 搜索引擎与广告爬虫（Googlebot、AdsBot 等）
+ *  - 静态资源、API 请求、ads.txt / robots.txt
+ */
+
+const RATE_LIMIT = {
   ipWindowMs: 60_000,
   ipBurstLimit: 20,
-  // 同 UA 高频访问
   uaWindowMs: 60_000,
   uaBurstLimit: 80,
-  // 同 IP 访问广告页过快
   adWindowMs: 120_000,
   adBurstLimit: 8,
-  // 同 IP / UA 扫描多个州/城市/地区 URL
   geoWindowMs: 180_000,
-  geoBurstLimit: 12,
+  geoDistinctLimit: 12,
 };
 
-const state = {
+const rateState = {
   ip: new Map(),
   ua: new Map(),
   ad: new Map(),
   geo: new Map(),
 };
 
+/** 可信爬虫 User-Agent 白名单（含 Google 广告/搜索/验证爬虫） */
+const GOOD_BOT_UA =
+  /googlebot|adsbot-google|mediapartners-google|google-inspectiontool|storebot-google|googleother|feedfetcher-google|google-safety|bingbot|applebot|duckduckbot|yandexbot|facebookexternalhit|twitterbot|linkedinbot|slackbot|discordbot|whatsapp|telegrambot/i;
+
 /** 已知恶意 / 自动化工具 User-Agent 黑名单 */
 const BAD_BOT_UA =
-  /headless|phantomjs|puppeteer|selenium|playwright|webdriver|python-requests|python-urllib|aiohttp|okhttp|perl|ruby|mechanize|beautifulsoup|masscan|zgrab|nikto|sqlmap|scrapy|httpclient|java\/|libwww|wget|curl\/|httpx|go-http-client|axios\/|node-fetch|postman|insomnia|semrush|ahrefsbot|mj12bot|dotbot|petalbot|bytespider|gptbot|claudebot|ccbot/i;
+  /headless|phantomjs|puppeteer|selenium|playwright|webdriver|python-requests|python-urllib|scrapy|httpclient|java\/|libwww|wget|curl\/|httpx|go-http-client|axios\/|node-fetch|postman|insomnia|semrush|ahrefsbot|mj12bot|dotbot|petalbot|bytespider|gptbot|claudebot|ccbot|aiohttp|okhttp|perl|ruby|mechanize|beautifulsoup|masscan|zgrab|nikto|sqlmap/i;
+
+const LANG_SEGMENT = "(?:de|us|de-ch-at)";
+const AD_PAGE_NAMES = "(?:form|result|list|detail|state|city|district|teach|post|home)";
+
+function isStaticOrApiPath(pathname) {
+  return (
+    pathname.startsWith("/cdn/") ||
+    pathname.startsWith("/Public/") ||
+    pathname.startsWith("/Assets/") ||
+    /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map|txt|xml)$/i.test(pathname) ||
+    new RegExp(`^\\/${LANG_SEGMENT}\\/(?:rest|rpc|storage|auth)`, "i").test(pathname)
+  );
+}
+
+function isHtmlPage(pathname) {
+  if (pathname === "/" || pathname === "/index.html" || pathname === "/language.html") {
+    return true;
+  }
+  if (isStaticOrApiPath(pathname)) return false;
+  if (/\.html$/i.test(pathname)) return true;
+  return !/\.[a-z0-9]+$/i.test(pathname);
+}
+
+/** 判断是否为含 AdSense 的页面 */
+export function isAdPage(pathname) {
+  if (pathname === "/" || pathname === "/index.html" || pathname === "/post") {
+    return true;
+  }
+  if (new RegExp(`^\\/${LANG_SEGMENT}\\/${AD_PAGE_NAMES}(?:\\.html)?$`, "i").test(pathname)) {
+    return true;
+  }
+  if (new RegExp(`^\\/${AD_PAGE_NAMES}(?:\\.html)?$`, "i").test(pathname)) {
+    return true;
+  }
+  if (
+    new RegExp(
+      `^\\/${LANG_SEGMENT}\\/teach\\/state\\/[^/]+\\/[^/]+\\/[^/]+\\/[^/]+\\/(?:form|result|detail|list)$`,
+      "i"
+    ).test(pathname)
+  ) {
+    return true;
+  }
+  if (
+    new RegExp(
+      `^\\/${LANG_SEGMENT}\\/teach\\/state\\/[^/]+\\/[^/]+\\/[^/]+\\/\\d+\\/list$`,
+      "i"
+    ).test(pathname)
+  ) {
+    return true;
+  }
+  if (new RegExp(`^\\/${LANG_SEGMENT}\\/post\\/\\d+\\/\\d+$`, "i").test(pathname)) {
+    return true;
+  }
+  return false;
+}
+
+function getUserAgent(request) {
+  return request.headers.get("User-Agent") || "";
+}
 
 function getClientIp(request) {
   return (
+    request.headers.get("CF-Connecting-IP") ||
     request.headers.get("cf-connecting-ip") ||
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown"
@@ -33,7 +101,39 @@ function getClientIp(request) {
 }
 
 function getClientUa(request) {
-  return (request.headers.get("user-agent") || "").slice(0, 180).trim() || "unknown";
+  return getUserAgent(request).slice(0, 180).trim() || "unknown";
+}
+
+function isGoodBot(request) {
+  const ua = getUserAgent(request);
+  if (GOOD_BOT_UA.test(ua)) return true;
+  if (request.cf?.botManagement?.verifiedBot) return true;
+  return false;
+}
+
+function isBadBot(request) {
+  const ua = getUserAgent(request);
+  if (!ua.trim()) return true;
+  if (BAD_BOT_UA.test(ua)) return true;
+  const score = request.cf?.botManagement?.score;
+  if (typeof score === "number" && score <= 10) return true;
+  return false;
+}
+
+function hasSuspiciousSignals(request, pathname) {
+  if (!isAdPage(pathname)) return false;
+
+  const accept = request.headers.get("Accept") || "";
+  const ua = getUserAgent(request);
+
+  if (!accept.includes("text/html") && !accept.includes("application/xhtml+xml")) {
+    return true;
+  }
+  if (/bot|crawl|spider/i.test(ua) && !isGoodBot(request)) {
+    return true;
+  }
+
+  return false;
 }
 
 function keyStat(map, key, windowMs) {
@@ -47,127 +147,172 @@ function keyStat(map, key, windowMs) {
   return entry;
 }
 
-function cleanupMap(map, windowMs) {
+function trackDistinctGeo(ip, geo, windowMs) {
+  const key = `geo:${ip}`;
+  const now = Date.now();
+  let entry = rateState.geo.get(key);
+  if (!entry || now - entry.start >= windowMs) {
+    entry = { start: now, seen: new Set() };
+    rateState.geo.set(key, entry);
+  }
+  entry.seen.add(geo);
+  return entry.seen.size;
+}
+
+function cleanupRateMap(map, windowMs) {
   const now = Date.now();
   for (const [key, entry] of map.entries()) {
     if (now - entry.start >= windowMs * 2) map.delete(key);
   }
 }
 
-function isHtmlNavigation(request) {
-  const accept = request.headers.get("accept") || "";
-  return accept.includes("text/html") || accept.includes("application/xhtml+xml");
-}
-
-function isAdPage(pathname) {
-  return /\/(ad|ads|advert|advertisement|banner|sponsor)(\/|$)/i.test(pathname);
+function cleanupGeoRateMap(windowMs) {
+  const now = Date.now();
+  for (const [key, entry] of rateState.geo.entries()) {
+    if (now - entry.start >= windowMs * 2) rateState.geo.delete(key);
+  }
 }
 
 function geoFingerprint(pathname) {
-  const m = pathname.match(/^\/(de|us|de-ch-at)\/teach\/state\/([^/]+)\/([^/]+)\/([^/]+)\//i);
+  const m = pathname.match(
+    new RegExp(`^\\/(${LANG_SEGMENT})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/`, "i")
+  );
   if (!m) return null;
   return [m[1].toLowerCase(), m[2].toLowerCase(), m[3].toLowerCase()].join("|");
 }
 
-export function evaluateTrafficGuard(request) {
-  const url = new URL(request.url);
-  const pathname = url.pathname;
-
-  // 静态资源、API 和爬虫文件不做频控，避免误伤
-  if (
-    /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff2?|ttf|eot|map|txt|xml)$/i.test(pathname) ||
-    pathname.startsWith("/cdn/") ||
-    /^\/(de|us|de-ch-at)\/(rest|rpc|storage|auth)\//i.test(pathname)
-  ) {
-    return null;
-  }
-
-  // 只对 HTML 导航做重点管控
-  if (!isHtmlNavigation(request)) return null;
-
+function evaluateRateLimit(request, pathname) {
   const ip = getClientIp(request);
   const ua = getClientUa(request);
-  const ipKey = `ip:${ip}`;
-  const uaKey = `ua:${ua}`;
-
-  const ipStat = keyStat(state.ip, ipKey, DEFAULTS.ipWindowMs);
-  const uaStat = keyStat(state.ua, uaKey, DEFAULTS.uaWindowMs);
-
   let risk = 0;
   const reasons = [];
 
-  if (ipStat.count > DEFAULTS.ipBurstLimit) {
+  const ipStat = keyStat(rateState.ip, `ip:${ip}`, RATE_LIMIT.ipWindowMs);
+  const uaStat = keyStat(rateState.ua, `ua:${ua}`, RATE_LIMIT.uaWindowMs);
+
+  if (ipStat.count > RATE_LIMIT.ipBurstLimit) {
     risk += 3;
     reasons.push("ip_burst");
   }
-  if (uaStat.count > DEFAULTS.uaBurstLimit) {
+  if (uaStat.count > RATE_LIMIT.uaBurstLimit) {
     risk += 2;
     reasons.push("ua_burst");
   }
 
   const geo = geoFingerprint(pathname);
   if (geo) {
-    const geoStat = keyStat(state.geo, `geo:${ip}:${geo}`, DEFAULTS.geoWindowMs);
-    if (geoStat.count > DEFAULTS.geoBurstLimit) {
+    const distinctGeos = trackDistinctGeo(ip, geo, RATE_LIMIT.geoWindowMs);
+    if (distinctGeos > RATE_LIMIT.geoDistinctLimit) {
       risk += 3;
       reasons.push("geo_scan");
     }
   }
 
   if (isAdPage(pathname)) {
-    const adStat = keyStat(state.ad, `ad:${ip}`, DEFAULTS.adWindowMs);
-    if (adStat.count > DEFAULTS.adBurstLimit) {
+    const adStat = keyStat(rateState.ad, `ad:${ip}`, RATE_LIMIT.adWindowMs);
+    if (adStat.count > RATE_LIMIT.adBurstLimit) {
       risk += 2;
       reasons.push("ad_page_burst");
     }
   }
 
-  cleanupMap(state.ip, DEFAULTS.ipWindowMs);
-  cleanupMap(state.ua, DEFAULTS.uaWindowMs);
-  cleanupMap(state.geo, DEFAULTS.geoWindowMs);
-  cleanupMap(state.ad, DEFAULTS.adWindowMs);
+  cleanupRateMap(rateState.ip, RATE_LIMIT.ipWindowMs);
+  cleanupRateMap(rateState.ua, RATE_LIMIT.uaWindowMs);
+  cleanupRateMap(rateState.ad, RATE_LIMIT.adWindowMs);
+  cleanupGeoRateMap(RATE_LIMIT.geoWindowMs);
 
-  if (risk >= 5) {
-    return new Response("Forbidden", {
-      status: 403,
-      headers: {
-        "Cache-Control": "no-store",
-        "Content-Type": "text/plain; charset=utf-8",
-        "X-Traffic-Guard": reasons.join(","),
-      },
-    });
+  return { risk, reasons };
+}
+
+function blockResponse(reason, request) {
+  const pathname = new URL(request.url).pathname;
+  console.log(
+    JSON.stringify({
+      event: "traffic_guard_block",
+      reason,
+      path: pathname,
+      ua: getUserAgent(request).slice(0, 160),
+      ip: getClientIp(request),
+      country: request.cf?.country,
+      botScore: request.cf?.botManagement?.score ?? null,
+    })
+  );
+
+  return new Response("Forbidden", {
+    status: 403,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+      "X-Traffic-Guard": reason,
+    },
+  });
+}
+
+/**
+ * 流量清洗主入口。
+ * @returns {Response | null} 403 拦截响应，或 null 表示放行
+ */
+export function evaluateTrafficGuard(request) {
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    return null;
   }
 
+  const pathname = new URL(request.url).pathname;
+
+  if (pathname === "/ads.txt" || pathname === "/robots.txt") {
+    return null;
+  }
+
+  if (isStaticOrApiPath(pathname)) {
+    return null;
+  }
+
+  if (!isHtmlPage(pathname)) {
+    return null;
+  }
+
+  if (isGoodBot(request)) {
+    return null;
+  }
+
+  if (isBadBot(request)) {
+    return blockResponse("bot", request);
+  }
+
+  if (hasSuspiciousSignals(request, pathname)) {
+    return blockResponse("suspicious", request);
+  }
+
+  const { risk, reasons } = evaluateRateLimit(request, pathname);
   if (risk >= 3) {
-    // 中风险不直接 403：返回低价值页面，减少广告曝光和资源消耗
-    return new Response(
-      "<html><head><meta name=\"robots\" content=\"noindex,nofollow\"></head><body><h1>Access limited</h1></body></html>",
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "text/html; charset=utf-8",
-          "Cache-Control": "no-store",
-          "X-Traffic-Guard": reasons.join(","),
-        },
-      }
-    );
+    return blockResponse(reasons.join(","), request);
   }
 
   return null;
 }
 
+/** 为 HTML 响应附加安全响应头 */
 export function applySecurityHeaders(response, pathname) {
-  const res = new Response(response.body, response);
-  const isHtml = /\.(html?)$/i.test(pathname || "") || res.headers.get("Content-Type")?.includes("text/html");
+  const headers = new Headers(response.headers);
+  const isHtml =
+    /\.html?$/i.test(pathname || "") ||
+    headers.get("Content-Type")?.includes("text/html");
 
-  res.headers.set("X-Content-Type-Options", "nosniff");
-  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.headers.set("X-Frame-Options", "SAMEORIGIN");
-  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-
-  if (isHtml) {
-    res.headers.set("Cache-Control", res.headers.get("Cache-Control") || "private, no-cache, no-store, must-revalidate");
+  if (!isStaticOrApiPath(pathname)) {
+    headers.set("X-Content-Type-Options", "nosniff");
+    headers.set("X-Frame-Options", "SAMEORIGIN");
+    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+    headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   }
 
-  return res;
+  if (isHtml && !headers.get("Cache-Control")) {
+    headers.set("Cache-Control", "private, no-cache, no-store, must-revalidate");
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
 }
