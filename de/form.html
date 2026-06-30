@@ -68,11 +68,11 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -135,45 +135,11 @@
         }
     </style>
 
-<!--    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>-->
-<!--    <script>-->
-<!--        window.googletag = window.googletag || {cmd: []};-->
-<!--        googletag.cmd.push(function() {-->
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
-<!--                .build();-->
 
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_auto', ['fluid'], 'div-gpt-ad-1752600247237-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_adv1', [[728, 90], 'fluid', [300, 250]], 'div-gpt-ad-1752646491772-0')-->
-<!--                .defineSizeMapping(mapping)-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_adv2', [[300, 250], [728, 90], 'fluid'], 'div-gpt-ad-1752647841395-0')-->
-<!--                .defineSizeMapping(mapping)-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_adv3', [[300, 250], 'fluid'], 'div-gpt-ad-1752648099641-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_adv4', [[300, 250], 'fluid'], 'div-gpt-ad-1753026316618-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_form/form_adv5', ['fluid', [300, 250]], 'div-gpt-ad-1753026438231-0').addService(googletag.pubads());-->
-
-<!--            googletag.pubads().enableSingleRequest();-->
-<!--            googletag.enableServices();-->
 <!--        });-->
-<!--    </script>-->
 </head>
 
 <body>
-<!-- /23284785848/house_form/form_auto -->
-<!--<div id='div-gpt-ad-1752600247237-0'>-->
-<!--    <script>-->
-<!--        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752600247237-0'); });-->
-<!--    </script>-->
-<!--</div>-->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
         <symbol id="icon-add" viewBox="0 0 1024 1024">
@@ -615,7 +581,9 @@ const lang = getLangFromPath()
                     const country = params.get('country');
 
                     const picURL = getPicURL(lang, country)
-                    if(lang == "de"){                    }else if(lang == "us"){                    }else if(lang === "de-ch-at"){
+                    if(lang == "de"){
+                    }else if(lang == "us"){
+                    }else if(lang === "de-ch-at"){
                         if(country == "de"){
                             fetchDataUrl = resolveUrl("/Public/Js/dataGet.js")
                         }else if(country == "ch"){
@@ -725,8 +693,6 @@ const lang = getLangFromPath()
                             if (entry.isIntersecting) {
                                 loadForm_adv3(entry.target);
                                 obs.unobserve(entry.target);
-                                // googletag.cmd.push(function () {
-                                //     googletag.display('div-gpt-ad-1752648099641-0');
                                 // });
                             }
                         });
@@ -810,10 +776,20 @@ const lang = getLangFromPath()
 
                 const lang = getLangFromPath()
                 const picURL = getPicURL(lang, country)
-                if(lang == "de"){                }else if(lang == "us"){                }else if(lang == "de-ch-at"){
-                    if(country == "de"){                    }else if(country == "at"){                    }else if(country == "ch"){                    }else{                    }
+                if(lang == "de"){
+                }else if(lang == "us"){
+                }else if(lang == "de-ch-at"){
+                    if(country == "de"){
+                    }else if(country == "at"){
+                    }else if(country == "ch"){
+                    }else{
+                    }
                 }else{
-                    if(country == "de"){                    }else if(country == "at"){                    }else if(country == "ch"){                    }else{                    }
+                    if(country == "de"){
+                    }else if(country == "at"){
+                    }else if(country == "ch"){
+                    }else{
+                    }
                 }
 
                 data.forEach((house,index) => {
@@ -911,7 +887,6 @@ const lang = getLangFromPath()
                             if (entry.isIntersecting) {
                                 loadForm_adv5(entry.target);
                                 obs.unobserve(entry.target);
-                                //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753026438231-0'); });
                             }
                         });
                     }, {
@@ -998,7 +973,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadForm_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752646491772-0'); });
                     }
                 });
             }, {
@@ -1014,7 +988,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadForm_adv2(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752647841395-0'); });
                     }
                 });
             }, {
@@ -1032,7 +1005,6 @@ const lang = getLangFromPath()
                         if (entry.isIntersecting) {
                             loadForm_adv4(entry.target);
                             obs.unobserve(entry.target);
-                            //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1753026316618-0'); });
                         }
                     });
                 }, {
@@ -1050,84 +1022,9 @@ const lang = getLangFromPath()
 
 <script>
 
-    function loadForm_adv1(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnForm_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadForm_adv2(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnForm_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadForm_adv3(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnForm_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadForm_adv4(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnForm_adv4_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadForm_adv5(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnForm_adv5_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 </script>
 
-<!--<script>-->
-
-<!--    function loadForm_adv1(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnForm_adv1();-->
-<!--    }-->
-
-<!--    function loadForm_adv2(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnForm_adv2();-->
-<!--    }-->
-
-<!--    function loadForm_adv3(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnForm_adv3();-->
-<!--    }-->
-
-<!--    function loadForm_adv4(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnForm_adv4();-->
-<!--    }-->
-
-<!--    function loadForm_adv5(el) {-->
-<!--        // 插入 <ins> HTML-->
-<!--        el.innerHTML = returnForm_adv5();-->
-<!--    }-->
-<!--</script>-->
 
 </body>
 </html>

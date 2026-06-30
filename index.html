@@ -3,260 +3,164 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base id="site-base" href="/">
+  <script>(function(){var b=document.getElementById("site-base"),p=location.pathname,i=p.lastIndexOf("/");b.href=i<0?"/":p.slice(0,i+1);})();</script>
   <title>apkintelligence.com</title>
+  <meta name="description" content="Choose your region to explore affordable housing resources on Apkintelligence.com.">
+  <meta name="theme-color" content="#141b2e">
+  <meta property="og:title" content="Apkintelligence — Select Your Region">
+  <meta property="og:description" content="Choose your region to access localized affordable housing information.">
+  <meta property="og:type" content="website">
   <link rel="canonical" href="/">
-  <link rel="stylesheet" href="./Public/Css/layout-shell.css">
-  <link rel="icon" href="./Public/Images/icon.png" type="image/png">
+  <link rel="stylesheet" href="Public/Css/layout-shell.css">
+  <link rel="icon" href="Public/Images/icon.png" type="image/png">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-
-<!--  <script>-->
-<!--    window.googletag = window.googletag || {cmd: []};-->
-<!--    googletag.cmd.push(function() {-->
-
-<!--      var mapping = googletag.sizeMapping()-->
-<!--              .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
-<!--              .addSize([768, 0], [[300, 250]])   // 平板宽度 >=768 使用 300x250-->
-<!--              .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
-<!--              .build();-->
-
-<!--      googletag.defineSlot('/23284785848/house_index/house_index1', [[750, 300], [300, 250], 'fluid'], 'div-gpt-ad-1752434042868-0')-->
-<!--              .defineSizeMapping(mapping)-->
-<!--              .addService(googletag.pubads());-->
-
-
-<!--      googletag.pubads().enableSingleRequest();-->
-<!--      googletag.enableServices();-->
-<!--    });-->
-<!--  </script>-->
-
-<!--  <script>-->
-<!--    window.googletag = window.googletag || {cmd: []};-->
-<!--    googletag.cmd.push(function() {-->
-<!--      googletag.defineSlot('/23284785848/house_index/house_index_atuo', ['fluid'], 'div-gpt-ad-1752472114404-0').addService(googletag.pubads());-->
-<!--      googletag.pubads().enableSingleRequest();-->
-<!--      googletag.enableServices();-->
-<!--    });-->
-<!--  </script>-->
 </head>
 <body class="page-language">
 
-<!-- /23284785848/house_index/house_index_atuo -->
-<!--<div id='div-gpt-ad-1752472114404-0'>-->
-<!--  <script>-->
-<!--    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752472114404-0'); });-->
-<!--  </script>-->
-<!--</div>-->
-
-<header data-eusoft-scrollable-element="1" id="header">
-<div class="wrapper" data-eusoft-scrollable-element="1">
-    <a href="./" class="logo">
-        <img src="./Public/Images/logoImage.png" alt="logo">
+<header id="header">
+  <div class="wrapper">
+    <a href="index.html" class="logo">
+      <img src="Public/Images/logoImage.png" alt="Apkintelligence" width="160" height="40" fetchpriority="high">
     </a>
     <input type="checkbox" id="hd-menu-input">
     <div class="headshade" id="headshade"></div>
     <div class="nav-icon-back">
-        <div class="icon-nav-btn">
-            <a class="href-item" style="display: block;" href="/search/"></a>
-            <svg class="href-item" style="z-index: 0;" aria-hidden="true">
-                <use href="/Public/svg/site-icons.svg#icon-search"></use>
-            </svg>
-        </div>
-        <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
+      <div class="icon-nav-btn">
+        <a class="href-item" style="display: block;" href="/search/"></a>
+        <svg class="href-item" style="z-index: 0;" aria-hidden="true">
+          <use href="/Public/svg/site-icons.svg#icon-search"></use>
+        </svg>
+      </div>
+      <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
     </div>
-    <nav class="nav" data-eusoft-scrollable-element="1">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./" id="lang_index">Home</a>
-            </li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose">
-            <span></span>
-            <span></span>
-        </label>
+    <nav class="nav">
+      <ul class="nav-ul">
+        <li class="cor-category"><a href="./" id="lang_index">Home</a></li>
+      </ul>
+      <label for="hd-menu-input" class="nav-label" id="btclose">
+        <span></span>
+        <span></span>
+      </label>
     </nav>
     <div class="cl"></div>
-</div>
+  </div>
 </header>
 
-<!-- region-selector.html -->
-<div id="region-selector" class="region-selector" role="radiogroup" aria-label="Select region">
-  <style>
-    .region-selector {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 30px !important;
-      padding: 10px !important;
-      max-width: 300px !important;
-      margin: auto !important;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-
-    .region-option {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 12px;
-      background: #f6f8fa;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: background 0.15s ease, transform 0.1s ease;
-    }
-
-    .region-option:hover {
-      background: #eaeff5;
-      transform: translateY(-1px);
-    }
-
-    .region-option:active {
-      transform: scale(0.98);
-    }
-
-    .region-option .flag {
-      width: 40px;
-      height: 28px;
-      border-radius: 4px;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: #fff;
-    }
-
-    .region-option .label {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-    }
-
-    .region-option .country {
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    .region-option .subX {
-      font-size: 12px;
-      color: #6b7280;
-    }
-
-    @media (max-width: 480px) {
-      .region-selector {
-        max-width: 100%;
-      }
-      .region-option {
-        padding: 10px;
-      }
-    }
-  </style>
-
-  <!-- USA -->
-  <div class="region-option" data-href="/us">
-    <span class="flag">
-      <svg viewBox="0 0 60 36" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-        <rect width="60" height="36" fill="#b22234"/>
-        <g fill="#fff">
-          <rect y="4" width="60" height="4"/>
-          <rect y="12" width="60" height="4"/>
-          <rect y="20" width="60" height="4"/>
-          <rect y="28" width="60" height="4"/>
-        </g>
-        <rect width="26" height="14" fill="#3c3b6e"/>
-        <g fill="#fff" transform="translate(2,2) scale(0.9)">
-          <circle cx="3" cy="3" r="1"/>
-          <circle cx="7" cy="3" r="1"/>
-          <circle cx="11" cy="3" r="1"/>
-          <circle cx="15" cy="3" r="1"/>
-          <circle cx="3" cy="7" r="1"/>
-          <circle cx="7" cy="7" r="1"/>
-          <circle cx="11" cy="7" r="1"/>
-          <circle cx="15" cy="7" r="1"/>
-        </g>
-      </svg>
-    </span>
-    <span class="label">
-      <span class="country">United States</span>
-      <span class="subX">en-US · USD</span>
-    </span>
+<main class="home-main">
+  <div class="home-hero">
+    <div class="home-hero__badge">
+      <svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm6.5 8a6.47 6.47 0 0 1-2.9 5.4 5.5 5.5 0 0 0 .1-1.1V12a1 1 0 0 0-1-1h-.5a.5.5 0 0 1-.5-.5v-1A1.5 1.5 0 0 0 8.5 8h-1A1.5 1.5 0 0 0 6 9.5v.5a.5.5 0 0 1-.5.5H5a1 1 0 0 0-1 1v.3a5.5 5.5 0 0 0 .1 1.1A6.47 6.47 0 0 1 1.5 8 6.47 6.47 0 0 1 8 1.5 6.47 6.47 0 0 1 14.5 8z"/></svg>
+      Global Housing Resources
+    </div>
+    <h1 class="home-hero__title">Select Your <em>Region</em></h1>
+    <p class="home-hero__subtitle">Choose a country or region to access localized affordable housing information and resources.</p>
   </div>
 
-  <!-- Germany -->
-  <div class="region-option" data-href="./de">
-    <span class="flag">
-      <svg viewBox="0 0 5 3" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <rect width="5" height="1" y="0" fill="#000"/>
-        <rect width="5" height="1" y="1" fill="#DD0000"/>
-        <rect width="5" height="1" y="2" fill="#FFCE00"/>
-      </svg>
-    </span>
-    <span class="label">
-      <span class="country">Germany</span>
-      <span class="subX">de-DE · EUR</span>
-    </span>
+  <div class="home-panel">
+    <span class="home-panel__label">Available Regions · 3</span>
+    <nav id="region-selector" class="region-selector" aria-label="Select region">
+
+    <a class="region-option" href="/us" data-region="us">
+      <span class="flag" aria-hidden="true">
+        <svg viewBox="0 0 60 36" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="36" fill="#b22234"/>
+          <g fill="#fff">
+            <rect y="4" width="60" height="4"/>
+            <rect y="12" width="60" height="4"/>
+            <rect y="20" width="60" height="4"/>
+            <rect y="28" width="60" height="4"/>
+          </g>
+          <rect width="26" height="14" fill="#3c3b6e"/>
+          <g fill="#fff" transform="translate(2,2) scale(0.9)">
+            <circle cx="3" cy="3" r="1"/>
+            <circle cx="7" cy="3" r="1"/>
+            <circle cx="11" cy="3" r="1"/>
+            <circle cx="15" cy="3" r="1"/>
+            <circle cx="3" cy="7" r="1"/>
+            <circle cx="7" cy="7" r="1"/>
+            <circle cx="11" cy="7" r="1"/>
+            <circle cx="15" cy="7" r="1"/>
+          </g>
+        </svg>
+      </span>
+      <span class="label">
+        <span class="country">United States</span>
+        <span class="subX">en-US · USD</span>
+      </span>
+      <span class="arrow-wrap" aria-hidden="true">
+        <svg class="arrow" viewBox="0 0 20 20"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+
+    <a class="region-option" href="/de" data-region="de">
+      <span class="flag" aria-hidden="true">
+        <svg viewBox="0 0 5 3" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <rect width="5" height="1" y="0" fill="#000"/>
+          <rect width="5" height="1" y="1" fill="#DD0000"/>
+          <rect width="5" height="1" y="2" fill="#FFCE00"/>
+        </svg>
+      </span>
+      <span class="label">
+        <span class="country">Germany</span>
+        <span class="subX">de-DE · EUR</span>
+      </span>
+      <span class="arrow-wrap" aria-hidden="true">
+        <svg class="arrow" viewBox="0 0 20 20"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+
+    <a class="region-option" href="/de-ch-at" data-region="dach">
+      <span class="flag" aria-hidden="true">
+        <svg viewBox="0 0 90 36" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <rect x="0" y="0" width="30" height="12" fill="#000"/>
+          <rect x="0" y="12" width="30" height="12" fill="#DD0000"/>
+          <rect x="0" y="24" width="30" height="12" fill="#FFCE00"/>
+          <rect x="30" y="0" width="30" height="12" fill="#ED2939"/>
+          <rect x="30" y="12" width="30" height="12" fill="#fff"/>
+          <rect x="30" y="24" width="30" height="12" fill="#ED2939"/>
+          <rect x="60" y="0" width="30" height="36" fill="#D52B1E"/>
+          <rect x="72" y="10" width="6" height="16" fill="#fff"/>
+          <rect x="68" y="14" width="14" height="8" fill="#fff"/>
+        </svg>
+      </span>
+      <span class="label">
+        <span class="country">Deutschsprachige Region</span>
+        <span class="subX">de-DE · de-AT · de-CH · EUR · CHF</span>
+      </span>
+      <span class="arrow-wrap" aria-hidden="true">
+        <svg class="arrow" viewBox="0 0 20 20"><path d="M7.5 4.5L13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+
+    </nav>
   </div>
-
-  <!-- German-speaking region (DACH) -->
-  <div class="region-option" data-href="/de-ch-at">
-  <span class="flag">
-    <svg viewBox="0 0 90 36" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <!-- Germany -->
-      <rect x="0" y="0" width="30" height="12" fill="#000"/>
-      <rect x="0" y="12" width="30" height="12" fill="#DD0000"/>
-      <rect x="0" y="24" width="30" height="12" fill="#FFCE00"/>
-
-      <!-- Austria -->
-      <rect x="30" y="0" width="30" height="12" fill="#ED2939"/>
-      <rect x="30" y="12" width="30" height="12" fill="#fff"/>
-      <rect x="30" y="24" width="30" height="12" fill="#ED2939"/>
-
-      <!-- Switzerland -->
-      <rect x="60" y="0" width="30" height="36" fill="#D52B1E"/>
-      <rect x="72" y="10" width="6" height="16" fill="#fff"/>
-      <rect x="68" y="14" width="14" height="8" fill="#fff"/>
-    </svg>
-  </span>
-
-    <span class="label">
-    <span class="country">Deutschsprachige Region</span>
-    <span class="subX">de-DE · de-AT · de-CH · EUR · CHF</span>
-  </span>
-  </div>
-
-
-  <!--  <div class="adswp" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="index_adv1">-->
-<!--    Advertise-->
-<!--  </div>-->
-
-</div >
-
+</main>
 
 <footer id="footer">
-<div class="wrapper">
-  <a href="./Public" class="ft-logo">
-    <img src="./Public/Images/logoImage.png" alt="logo">
-  </a>
-  <ul class="footer-ul">
-    <li><a href="/aboutus.html">About Us</a></li>
-    <li><a href="/disclaimer.html">Disclaimer</a></li>
-    <li><a href="/dcma.html">DMCA</a></li>
-    <li><a href="/privacy.html">Privacy Policy</a></li>
-  </ul>
-  <p>© <span id="year">2025</span> Apkintelligence.com. All Rights Reserved.</p>
-</div>
+  <div class="wrapper">
+    <a href="index.html" class="ft-logo">
+      <img src="Public/Images/logoImage.png" alt="Apkintelligence">
+    </a>
+    <ul class="footer-ul">
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="disclaimer.html">Disclaimer</a></li>
+      <li><a href="dcma.html">DMCA</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+    </ul>
+    <p>© <span id="year"></span> Apkintelligence.com. All Rights Reserved.</p>
+  </div>
 </footer>
 
 <script>
-  document.querySelectorAll('.region-option').forEach(function (option) {
-    option.addEventListener('click', function () {
-      var url = option.getAttribute('data-href');
-      if (url) window.location.href = url;
-    });
-  });
+  document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
 <script>
@@ -267,37 +171,6 @@
     document.head.appendChild(s);
   });
 </script>
-
-<!--<script>-->
-<!--  $(document).ready(function () {-->
-<!--    document.getElementById("index_adv1").innerHTML = returnAdvWord()-->
-
-<!--    const index_adv1 = document.getElementById('index_adv1')-->
-<!--    if (index_adv1) {-->
-<!--      const observer = new IntersectionObserver((entries, obs) => {-->
-<!--        entries.forEach(entry => {-->
-<!--          if (entry.isIntersecting) {-->
-<!--            loadListAdv_Test(entry.target);-->
-<!--            obs.unobserve(entry.target);-->
-<!--            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752434042868-0'); });-->
-<!--          }-->
-<!--        });-->
-<!--      }, {-->
-<!--        rootMargin: '5px',-->
-<!--      });-->
-<!--      observer.observe(index_adv1);-->
-<!--    }-->
-
-<!--    //titleReturn-->
-<!--    document.title = `${returnWebStr()}`;-->
-<!--  })-->
-
-<!--  function loadListAdv_Test(el) {-->
-<!--    // 插入 <ins> HTML-->
-<!--    el.innerHTML = returnIndex_adv1();-->
-<!--  }-->
-<!--</script>-->
-
 
 </body>
 </html>

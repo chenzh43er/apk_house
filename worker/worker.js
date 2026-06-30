@@ -72,7 +72,11 @@ function isHtmlPage(pathname) {
 
 /** 判断是否为含 AdSense 的页面（用于可疑信号检测与广告页频控） */
 function isAdPage(pathname) {
-  if (pathname === "/" || pathname === "/index.html" || pathname === "/post") {
+  // 首页仅为地区选择，无广告 — 不应走广告页频控
+  if (pathname === "/" || pathname === "/index.html" || pathname === "/language.html") {
+    return false;
+  }
+  if (pathname === "/post") {
     return true;
   }
   if (new RegExp(`^\\/${LANG_SEGMENT}\\/${AD_PAGE_NAMES}(?:\\.html)?$`, "i").test(pathname)) {
@@ -255,8 +259,17 @@ function geoFingerprint(pathname) {
  * 流量清洗主入口。
  * @returns {Response | null} 403 拦截响应，或 null 表示放行
  */
+function isLocalDev(request) {
+  const host = new URL(request.url).hostname;
+  return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+}
+
 function evaluateTrafficGuard(request) {
   if (request.method !== "GET" && request.method !== "HEAD") {
+    return null;
+  }
+
+  if (isLocalDev(request)) {
     return null;
   }
 
@@ -363,8 +376,9 @@ const CDN_BUCKETS = {
   ch: "HOUSECH",
 };
 
-/** AdSense 验证文件内容（Worker 直接返回，不经 Pages） */
+/** ads.txt：同时声明 ADX(GAM) 与 AdSense 授权（无需随 mode 切换） */
 const ADS_TXT_BODY =
+  "google.com, pub-7335996243328726, DIRECT, f08c47fec0942fa0\n" +
   "google.com, pub-2289697662900935, DIRECT, f08c47fec0942fa0\n";
 
 /** robots.txt：允许搜索引擎与 Google 广告爬虫抓取全站 */
@@ -404,6 +418,10 @@ async function passThrough(request, env, pathname) {
 function rewrite(request, targetPath, params, env) {
   const url = new URL(request.url);
   const targetUrl = new URL(`${url.origin}${targetPath}`);
+
+  url.searchParams.forEach((value, key) => {
+    targetUrl.searchParams.set(key, value);
+  });
 
   for (const [key, value] of Object.entries(params)) {
     targetUrl.searchParams.set(key, decodeURIComponent(value));

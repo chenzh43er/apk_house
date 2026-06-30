@@ -1,0 +1,58 @@
+Google Ad Manager 手动创建清单
+networkCode: 23357265712
+后台: https://admanager.google.com/23357265712#inventory/ad_unit/list
+
+顺序: 先建父级目录，再建子广告位。Ad unit code 必须与下列名称完全一致。
+
+=== 第一步：父级目录（9 个，不填尺寸 / 仅作容器）===
+  [父级] code=house_index  路径=house_index  上级=(根下)
+  [父级] code=teach  路径=teach  上级=(根下)
+  [父级] code=house_address3  路径=house_address3  上级=(根下)
+  [父级] code=house_list  路径=house_list  上级=(根下)
+  [父级] code=house_detail  路径=house_detail  上级=(根下)
+  [父级] code=house_form  路径=house_form  上级=(根下)
+  [父级] code=house_result  路径=house_result  上级=(根下)
+  [父级] code=house_post  路径=house_post  上级=(根下)
+
+=== 第二步：广告位（38 个，Display，按 sizes 填尺寸）===
+  [广告位] code=house_index1  路径=house_index/house_index1  尺寸=Fluid, 300x250, 728x90  (前端 slot: index_adv1)
+  [广告位] code=teach_adv1  路径=teach/teach_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: teach_adv1)
+  [广告位] code=teach_adv2  路径=teach/teach_adv2  尺寸=Fluid, 300x250  (前端 slot: teach_adv2)
+  [广告位] code=teach_adv3  路径=teach/teach_adv3  尺寸=Fluid, 300x250  (前端 slot: teach_adv3)
+  [广告位] code=state_adv1  路径=house_address3/state_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: state_adv1)
+  [广告位] code=state_adv2  路径=house_address3/state_adv2  尺寸=Fluid, 300x250  (前端 slot: state_adv2)
+  [广告位] code=state_adv3  路径=house_address3/state_adv3  尺寸=Fluid, 300x250  (前端 slot: state_adv3)
+  [广告位] code=city_adv1  路径=house_address3/city_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: city_adv1)
+  [广告位] code=city_adv2  路径=house_address3/city_adv2  尺寸=Fluid, 300x250  (前端 slot: city_adv2)
+  [广告位] code=city_adv3  路径=house_address3/city_adv3  尺寸=Fluid, 300x250  (前端 slot: city_adv3)
+  [广告位] code=district_adv1  路径=house_address3/district_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: district_adv1)
+  [广告位] code=district_adv2  路径=house_address3/district_adv2  尺寸=Fluid, 300x250  (前端 slot: district_adv2)
+  [广告位] code=district_adv3  路径=house_address3/district_adv3  尺寸=Fluid, 300x250  (前端 slot: district_adv3)
+  [广告位] code=list_adv1  路径=house_list/list_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: list_adv1)
+  [广告位] code=list_adv2  路径=house_list/list_adv2  尺寸=Fluid, 300x250  (前端 slot: list_adv2)
+  [广告位] code=list_adv3  路径=house_list/list_adv3  尺寸=300x600, Fluid  (前端 slot: list_adv3)
+  [广告位] code=list_adv4  路径=house_list/list_adv4  尺寸=Fluid, 300x250  (前端 slot: list_adv4)
+  [广告位] code=detail_adv1  路径=house_detail/detail_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: detail_adv1)
+  [广告位] code=detail_adv2  路径=house_detail/detail_adv2  尺寸=Fluid, 300x250, 728x90  (前端 slot: detail_adv2)
+  [广告位] code=detail_adv3  路径=house_detail/detail_adv3  尺寸=Fluid, 300x250  (前端 slot: detail_adv3)
+  [广告位] code=detail_adv4  路径=house_detail/detail_adv4  尺寸=300x600, Fluid  (前端 slot: detail_adv4)
+  [广告位] code=detail_adv5  路径=house_detail/detail_adv5  尺寸=Fluid, 300x250  (前端 slot: detail_adv5)
+  [广告位] code=form_adv1  路径=house_form/form_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: form_adv1)
+  [广告位] code=form_adv2  路径=house_form/form_adv2  尺寸=Fluid, 300x250, 728x90  (前端 slot: form_adv2)
+  [广告位] code=form_adv3  路径=house_form/form_adv3  尺寸=Fluid, 300x250  (前端 slot: form_adv3)
+  [广告位] code=form_adv4  路径=house_form/form_adv4  尺寸=Fluid, 300x250  (前端 slot: form_adv4)
+  [广告位] code=form_adv5  路径=house_form/form_adv5  尺寸=Fluid, 300x250  (前端 slot: form_adv5)
+  [广告位] code=result_adv1  路径=house_result/result_adv1  尺寸=Fluid, 300x250, 728x90  (前端 slot: result_adv1)
+  [广告位] code=result_adv2  路径=house_result/result_adv2  尺寸=Fluid, 300x250, 728x90  (前端 slot: result_adv2)
+  [广告位] code=result_adv3  路径=house_result/result_adv3  尺寸=Fluid, 300x250  (前端 slot: result_adv3)
+  [广告位] code=result_adv4  路径=house_result/result_adv4  尺寸=Fluid, 300x250  (前端 slot: result_adv4)
+  [广告位] code=result_adv5  路径=house_result/result_adv5  尺寸=Fluid, 300x250  (前端 slot: result_adv5)
+  [广告位] code=post_adv1  路径=house_post/post_adv1  尺寸=Fluid, 300x250  (前端 slot: post_adv1)
+  [广告位] code=post_adv2  路径=house_post/post_adv2  尺寸=Fluid, 300x250, 728x90  (前端 slot: post_adv2)
+  [广告位] code=post_adv3  路径=house_post/post_adv3  尺寸=Fluid, 300x250, 728x90  (前端 slot: post_adv3)
+
+=== GPT 路径示例 ===
+  /23357265712/house_result/result_adv1
+  /23357265712/house_detail/detail_adv1
+
+创建完成后，页面加 ?ad=adx 测试。

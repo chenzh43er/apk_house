@@ -43,13 +43,13 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
-<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
-<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
+<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -732,53 +732,19 @@ const lang = getLangFromPath()
 
 <script>
 
-    function loadState_adv1(el){
-        el.innerHTML = returnState_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadState_adv2(el){
-        el.innerHTML = returnState_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadState_adv3(el) {
-        el.innerHTML = returnState_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
 </script>
 
-<!--<script>-->
 <!--    function loadListAdv_Test(el) {-->
 <!--        // 插入 <ins> HTML-->
 <!--        el.innerHTML = returnAdvTestWord();-->
 <!--    }-->
 
-<!--    function loadState_adv1(el){-->
-<!--        el.innerHTML = returnState_adv1();-->
 <!--    }-->
 
-<!--    function loadState_adv2(el){-->
-<!--        googletag.cmd.push(function() {-->
-<!--            el.innerHTML = returnState_adv2();-->
-<!--            googletag.display('div-gpt-ad-1752504098366-0');-->
 <!--        });-->
 <!--    }-->
 
-<!--    function loadState_adv3(el) {-->
 <!--        // 已加载就跳过-->
 <!--        if (el.dataset.loaded === '1') return;-->
 
@@ -786,31 +752,17 @@ const lang = getLangFromPath()
 <!--        el.innerHTML = '';-->
 
 <!--        // 生成唯一 ID-->
-<!--        const uniqueId = `div-gpt-advtestAdv_2-${Date.now()}-${Math.floor(Math.random() * 1000)}`;-->
 <!--        el.id = uniqueId;-->
 
 <!--        // 标记已加载-->
 <!--        el.dataset.loaded = '1';-->
 
 <!--        // 定义广告并展示-->
-<!--        googletag.cmd.push(function () {-->
-
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])      // PC端视口宽度 >= 1024，使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])        // 移动端（默认），使用 300x250-->
-<!--                .build();-->
-
-<!--            // googletag.defineSlot('/23284785848/mqqht/loadTestAdv_2', ['fluid'], uniqueId)-->
-<!--            //     .addService(googletag.pubads());-->
-<!--            googletag.defineSlot('/23284785848/house_address3/state_adv3', ['fluid'], uniqueId)-->
-<!--                .defineSizeMapping(mapping).addService(googletag.pubads());-->
 
 
-<!--            googletag.display(uniqueId);-->
 <!--        });-->
 <!--    }-->
 
-<!--</script>-->
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>

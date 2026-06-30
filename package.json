@@ -2,7 +2,7 @@
   "name": "apk_house",
   "private": true,
   "scripts": {
-    "predev": "npx --yes kill-port 8787",
+    "predev": "node scripts/kill-port.mjs 8787",
     "dev": "wrangler pages dev . --port 8787",
     "dev:static": "npx --yes serve -l 8788 .",
     "check": "wrangler check",
@@ -19,7 +19,13 @@
     "cf:ads-bypass:dry-run": "node scripts/cloudflare-ads-txt-bypass.mjs --dry-run",
     "cf:apply-ads-fix": "node scripts/cloudflare-apply-ads-fix.mjs",
     "cf:static-bypass": "node scripts/cloudflare-static-bot-bypass.mjs",
-    "cf:static-bypass:dry-run": "node scripts/cloudflare-static-bot-bypass.mjs --dry-run"
+    "cf:static-bypass:dry-run": "node scripts/cloudflare-static-bot-bypass.mjs --dry-run",
+    "gam:networks": "node scripts/ad-manager/list-networks.mjs",
+    "gam:check": "node scripts/ad-manager/check-network.mjs",
+    "gam:probe": "node scripts/ad-manager/probe-proxy.mjs",
+    "gam:checklist": "node scripts/ad-manager/generate-checklist.mjs",
+    "gam:create-units": "node scripts/ad-manager/create-ad-units.mjs",
+    "gam:create-units:dry-run": "node scripts/ad-manager/create-ad-units.mjs --dry-run"
   },
   "devDependencies": {
     "wrangler": "^4.98.0"

@@ -52,11 +52,13 @@
   <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
   <script src="./Public/Js/utlParam.js"></script>
   <script src="./Public/Js/common.js"></script>
-<!--  <script src="./Public/Js/googleAdv.js"></script>-->
+    <script src="/Public/Js/ad-config.js"></script>
+    <script src="./Public/Js/googleAds_Test.js"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
 <!--  <script src="./Public/Js/gtm-loader.js"></script>-->
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-          crossorigin="anonymous"></script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -70,8 +72,6 @@
   })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
   <!-- End Google Tag Manager -->
 
-<!--  <script src="./Public/Js/googleAds.js"></script>-->
-  <script src="./Public/Js/googleAds_Test.js"></script>
   <link rel="icon" href="./Public/Images/icon.png" type="image/png">
   <style>
     .select-state {
@@ -113,43 +113,14 @@
     }
   </style>
 
-<!--  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>-->
-<!--  <script>-->
-<!--    window.googletag = window.googletag || {cmd: []};-->
-<!--    googletag.cmd.push(function() {-->
-<!--      var mapping = googletag.sizeMapping()-->
-<!--              .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
-<!--              .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
-<!--              .build();-->
 
-<!--      googletag.defineSlot('/23284785848/house_post/post_auto', ['fluid'], 'div-gpt-ad-1752990334430-0').addService(googletag.pubads());-->
-
-<!--      googletag.defineSlot('/23284785848/house_post/post_adv1', ['fluid', [300, 250]], 'div-gpt-ad-1752990906258-0').addService(googletag.pubads());-->
-
-<!--      googletag.defineSlot('/23284785848/house_post/post_adv2', [[300, 250], 'fluid', [728, 90]], 'div-gpt-ad-1752991223651-0')-->
-<!--              .defineSizeMapping(mapping)-->
-<!--              .addService(googletag.pubads());-->
-
-<!--      googletag.defineSlot('/23284785848/house_post/post_adv3', [[300, 250], [728, 90], 'fluid'], 'div-gpt-ad-1752992035234-0')-->
-<!--              .defineSizeMapping(mapping)-->
-<!--              .addService(googletag.pubads());-->
-
-<!--      googletag.pubads().enableSingleRequest();-->
-<!--      googletag.enableServices();-->
 <!--    });-->
-<!--  </script>-->
 
 
 </head>
 
 <body aria-hidden="false">
 
-<!--&lt;!&ndash; /23284785848/house_post/post_auto &ndash;&gt;-->
-<!--<div id='div-gpt-ad-1752990334430-0'>-->
-<!--  <script>-->
-<!--    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752990334430-0'); });-->
-<!--  </script>-->
-<!--</div>-->
 
 <header data-eusoft-scrollable-element="1" id = "header">
 <div class="wrapper" data-eusoft-scrollable-element="1">
@@ -370,7 +341,6 @@ let langusage = getLangFromPath()
               document.getElementById("morePostDiv").innerHTML = moreTopicStr
 
 
-
               const aside_adv = document.getElementById('aside_adv')
               if (aside_adv) {
                 const observer = new IntersectionObserver((entries, obs) => {
@@ -388,34 +358,8 @@ let langusage = getLangFromPath()
             });
           });
 
-  function loadPost_adv1(el){
-    el.innerHTML = returnPost_adv1_ADS();
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error("AdSense push error", e);
-    }
-  }
 
-  function loadPost_adv2(el){
-    el.innerHTML = returnPost_adv2_ADS();
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error("AdSense push error", e);
-    }
-  }
-
-  function loadPost_adv3(el){
-    el.innerHTML = returnPost_adv3_ADS();
-    try {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      console.error("AdSense push error", e);
-    }
-  }
-
-  function loadScript(src, callback) {
+function loadScript(src, callback) {
     let script = document.createElement("script");
     script.src = src;
     script.type = "text/javascript";
@@ -439,7 +383,6 @@ let langusage = getLangFromPath()
           if (entry.isIntersecting) {
             loadPost_adv2(entry.target);
             obs.unobserve(entry.target);
-            // googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752991223651-0'); });
           }
         });
       }, {
@@ -588,9 +531,6 @@ let langusage = getLangFromPath()
       // }
 
 
-
-
-
       //titleReturn
       document.title = `${returnWebStr()} Post.`;
 
@@ -602,7 +542,6 @@ let langusage = getLangFromPath()
             if (entry.isIntersecting) {
               loadPost_adv1(entry.target);
               obs.unobserve(entry.target);
-              // googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752990906258-0'); });
             }
           });
         }, {
@@ -618,7 +557,6 @@ let langusage = getLangFromPath()
             if (entry.isIntersecting) {
               loadPost_adv3(entry.target);
               obs.unobserve(entry.target);
-              // googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752992035234-0'); });
             }
           });
         }, {
@@ -632,15 +570,11 @@ let langusage = getLangFromPath()
       // 如果要 +1 就这样
 
 
-
-
-
     });
   });
 
 
 </script>
-
 
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

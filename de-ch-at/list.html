@@ -44,12 +44,12 @@
 <!--    <script src="./Public/Js/pagination.min.js"></script>-->
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
-<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
-<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
+<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
@@ -213,39 +213,11 @@
         }
     </style>
 
-<!--    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>-->
-<!--    <script>-->
-<!--        window.googletag = window.googletag || {cmd: []};-->
-<!--        googletag.cmd.push(function() {-->
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
-<!--                .build();-->
 
-<!--            googletag.defineSlot('/23284785848/house_list/list_auto', ['fluid'], 'div-gpt-ad-1752564585475-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_list/list_adv1', [[300, 250], 'fluid', [728, 90]], 'div-gpt-ad-1752563642109-0')-->
-<!--                .defineSizeMapping(mapping)-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_list/list_adv2', [[300, 250], 'fluid'], 'div-gpt-ad-1752564918185-0')-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_list/list_adv3', [300, 600], 'div-gpt-ad-1752566092488-0').addService(googletag.pubads());-->
-
-<!--            googletag.pubads().enableSingleRequest();-->
-<!--            googletag.enableServices();-->
 <!--        });-->
-<!--    </script>-->
 </head>
 
 <body style="display: none">
-<!-- /23284785848/house_list/list_auto -->
-<!--<div id='div-gpt-ad-1752564585475-0'>-->
-<!--    <script>-->
-<!--        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752564585475-0'); });-->
-<!--    </script>-->
-<!--</div>-->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
         <symbol id="icon-add" viewBox="0 0 1024 1024">
@@ -680,7 +652,6 @@ const lang = getLangFromPath()
 
             return { state, city, district, page };
         }
-
 
 
         function createEllipsis() {
@@ -1128,8 +1099,6 @@ const lang = getLangFromPath()
     }
 
 
-
-
     const lang = getLangFromPath()
     const params = new URLSearchParams(window.location.search);
     const country = params.get('country');
@@ -1206,7 +1175,6 @@ const lang = getLangFromPath()
                     }else{
                     }
                 }
-
 
 
                 data.forEach((house, index) => {
@@ -1310,8 +1278,6 @@ const lang = getLangFromPath()
                             if (entry.isIntersecting) {
                                 loadList_adv2(entry.target);
                                 obs.unobserve(entry.target);
-                                // googletag.cmd.push(function () {
-                                //     googletag.display('div-gpt-ad-1752564918185-0');
                                 // });
                             }
                         });
@@ -1412,7 +1378,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadList_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752563642109-0'); });
                     }
                 });
             }, {
@@ -1441,89 +1406,9 @@ const lang = getLangFromPath()
 
 <script>
 
-    function loadList_adv1(el){
-        el.innerHTML = returnList_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadList_adv2(el){
-        el.innerHTML = returnList_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadList_adv3(el){
-        el.innerHTML = returnList_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadList_adv4(el) {
-        el.innerHTML = returnList_adv4_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 </script>
 
-<!--<script>-->
-
-<!--    function loadList_adv1(el){-->
-<!--        el.innerHTML = returnList_adv1();-->
-<!--    }-->
-
-<!--    function loadList_adv2(el){-->
-<!--        el.innerHTML = returnList_adv2();-->
-<!--    }-->
-
-<!--    function loadList_adv3(el){-->
-<!--        el.innerHTML = returnList_adv3();-->
-<!--    }-->
-
-<!--    function loadList_adv4(el) {-->
-<!--        // 已加载就跳过-->
-<!--        if (el.dataset.loaded === '1') return;-->
-
-<!--        // 清空旧内容（确保广告位置干净）-->
-<!--        el.innerHTML = '';-->
-
-<!--        // 生成唯一 ID-->
-<!--        const uniqueId = `div-gpt-advtestAdv_2-${Date.now()}-${Math.floor(Math.random() * 1000)}`;-->
-<!--        el.id = uniqueId;-->
-
-<!--        // 标记已加载-->
-<!--        el.dataset.loaded = '1';-->
-
-<!--        // 定义广告并展示-->
-<!--        googletag.cmd.push(function () {-->
-
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])      // PC端视口宽度 >= 1024，使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])        // 移动端（默认），使用 300x250-->
-<!--                .build();-->
-
-<!--            // googletag.defineSlot('/23284785848/mqqht/loadTestAdv_2', ['fluid'], uniqueId)-->
-<!--            //     .addService(googletag.pubads());-->
-<!--            googletag.defineSlot('/23284785848/house_list/list_adv4', ['fluid'], uniqueId)-->
-<!--                .defineSizeMapping(mapping).addService(googletag.pubads());-->
-
-
-<!--            googletag.display(uniqueId);-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 </body>
 

@@ -16,15 +16,15 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
-<!--    <script src="./Public/Js/googleAds.js"></script>-->
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
 <!--    <script src="./Public/Js/post/postName.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -73,12 +73,6 @@
 
 <body aria-hidden="false" style="visibility: hidden">
 
-<!--&lt;!&ndash; /23284785848/teach/teach_auto &ndash;&gt;-->
-<!--<div id='div-gpt-ad-1752695436101-0'>-->
-<!--    <script>-->
-<!--        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752695436101-0'); });-->
-<!--    </script>-->
-<!--</div>-->
 
 <defs>
     <symbol id="icon-add" viewBox="0 0 1024 1024">
@@ -532,7 +526,6 @@
 </div>
 
 
-
 <main class="wrapper contents section8 no-sidebar"
       style="margin-bottom: 30px; height: auto !important; min-height: 0px !important;">
     <div class="detail-left" data-eusoft-scrollable-element="1" style="height: auto !important;">
@@ -911,37 +904,9 @@ const lang = getLangFromPath()
 </script>
 
 <script>
-    function loadTeach_adv(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnTeach_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadTeach_adv2(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnTeach_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadTeach_adv3(el) {
-        // 插入 <ins> HTML
-        el.innerHTML = returnTeach_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadScript(src, callback) {
+function loadScript(src, callback) {
 
 
         const lang = getLangFromPath()
@@ -980,7 +945,6 @@ const lang = getLangFromPath()
         //             if (entry.isIntersecting) {
         //                 loadPost_adv2(entry.target);
         //                 obs.unobserve(entry.target);
-        //                 // googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752991223651-0'); });
         //             }
         //         });
         //     }, {

@@ -1,0 +1,83 @@
+/** 与 Public/Js/ad-slots-adx.js 保持一致的广告位定义 */
+export const fluidBanner = ["fluid", [300, 250], [728, 90]];
+export const fluidRect = ["fluid", [300, 250]];
+export const rect600 = [[300, 600], "fluid"];
+
+export const ADX_SLOT_DEFS = {
+  index_adv1: { unit: "house_index/house_index1", sizes: fluidBanner },
+
+  teach_adv1: { unit: "teach/teach_adv1", sizes: fluidBanner },
+  teach_adv2: { unit: "teach/teach_adv2", sizes: fluidRect },
+  teach_adv3: { unit: "teach/teach_adv3", sizes: fluidRect },
+
+  state_adv1: { unit: "house_address3/state_adv1", sizes: fluidBanner },
+  state_adv2: { unit: "house_address3/state_adv2", sizes: fluidRect },
+  state_adv3: { unit: "house_address3/state_adv3", sizes: fluidRect },
+
+  city_adv1: { unit: "house_address3/city_adv1", sizes: fluidBanner },
+  city_adv2: { unit: "house_address3/city_adv2", sizes: fluidRect },
+  city_adv3: { unit: "house_address3/city_adv3", sizes: fluidRect },
+
+  district_adv1: { unit: "house_address3/district_adv1", sizes: fluidBanner },
+  district_adv2: { unit: "house_address3/district_adv2", sizes: fluidRect },
+  district_adv3: { unit: "house_address3/district_adv3", sizes: fluidRect },
+
+  list_adv1: { unit: "house_list/list_adv1", sizes: fluidBanner },
+  list_adv2: { unit: "house_list/list_adv2", sizes: fluidRect },
+  list_adv3: { unit: "house_list/list_adv3", sizes: rect600 },
+  list_adv4: { unit: "house_list/list_adv4", sizes: fluidRect },
+
+  detail_adv1: { unit: "house_detail/detail_adv1", sizes: fluidBanner },
+  detail_adv2: { unit: "house_detail/detail_adv2", sizes: fluidBanner },
+  detail_adv3: { unit: "house_detail/detail_adv3", sizes: fluidRect },
+  detail_adv4: { unit: "house_detail/detail_adv4", sizes: rect600 },
+  detail_adv5: { unit: "house_detail/detail_adv5", sizes: fluidRect },
+
+  form_adv1: { unit: "house_form/form_adv1", sizes: fluidBanner },
+  form_adv2: { unit: "house_form/form_adv2", sizes: fluidBanner },
+  form_adv3: { unit: "house_form/form_adv3", sizes: fluidRect },
+  form_adv4: { unit: "house_form/form_adv4", sizes: fluidRect },
+  form_adv5: { unit: "house_form/form_adv5", sizes: fluidRect },
+
+  result_adv1: { unit: "house_result/result_adv1", sizes: fluidBanner },
+  result_adv2: { unit: "house_result/result_adv2", sizes: fluidBanner },
+  result_adv3: { unit: "house_result/result_adv3", sizes: fluidRect },
+  result_adv4: { unit: "house_result/result_adv4", sizes: fluidRect },
+  result_adv5: { unit: "house_result/result_adv5", sizes: fluidRect },
+
+  post_adv1: { unit: "house_post/post_adv1", sizes: fluidRect },
+  post_adv2: { unit: "house_post/post_adv2", sizes: fluidBanner },
+  post_adv3: { unit: "house_post/post_adv3", sizes: fluidBanner },
+};
+
+/** 解析为 [{ parentCode, code, name, sizes, slotKey, fullPath }] */
+export function listUnitsToCreate() {
+  const rows = [];
+  for (const [slotKey, def] of Object.entries(ADX_SLOT_DEFS)) {
+    const parts = def.unit.split("/");
+    const code = parts[parts.length - 1];
+    const parentCode = parts.length > 1 ? parts.slice(0, -1).join("/") : "";
+    rows.push({
+      slotKey,
+      fullPath: def.unit,
+      parentCode: parts.length > 1 ? parts[parts.length - 2] : "",
+      parentPath: parts.slice(0, -1).join("/"),
+      code,
+      name: code,
+      sizes: def.sizes,
+    });
+  }
+  return rows;
+}
+
+/** 所有需要存在的父级目录（按路径深度排序） */
+export function listParentFolders() {
+  const folders = new Set();
+  for (const def of Object.values(ADX_SLOT_DEFS)) {
+    const parts = def.unit.split("/");
+    for (let i = 1; i < parts.length; i++) {
+      folders.add(parts.slice(0, i).join("/"));
+    }
+  }
+  return [...folders].sort((a, b) => a.split("/").length - b.split("/").length);
+}

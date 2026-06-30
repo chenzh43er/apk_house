@@ -116,12 +116,12 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
     <link rel="stylesheet" href="./Public/Css/social-share.css"><script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
-<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
-    <script src="./Public/Js/googleAds.js"></script>
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
+<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
@@ -136,40 +136,11 @@
     })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
     <!-- End Google Tag Manager -->
 
-<!--    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>-->
-<!--    <script>-->
-<!--        window.googletag = window.googletag || {cmd: []};-->
-<!--        googletag.cmd.push(function() {-->
 
-<!--            var mapping = googletag.sizeMapping()-->
-<!--                .addSize([1024, 0], [[728, 90]])   // PC端宽度 >=1024 使用 728x90-->
-<!--                .addSize([0, 0], [[300, 250]])     // 移动端 使用 300x250-->
-<!--                .build();-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_auto', ['fluid'], 'div-gpt-ad-1752588371319-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_adv1', [[300, 250], 'fluid', [728, 90]], 'div-gpt-ad-1752576644043-0')-->
-<!--                .defineSizeMapping(mapping)-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_adv2', [[728, 90], [300, 250], 'fluid'], 'div-gpt-ad-1752578935637-0')-->
-<!--                .defineSizeMapping(mapping)-->
-<!--                .addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_adv3', [[300, 250]], 'div-gpt-ad-1752587923449-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_adv4', ['fluid', [300, 600]], 'div-gpt-ad-1752589219217-0').addService(googletag.pubads());-->
-
-<!--            googletag.defineSlot('/23284785848/house_detail/detail_adv5', ['fluid', [300, 250]], 'div-gpt-ad-1752994696303-0').addService(googletag.pubads());-->
-
-<!--            googletag.pubads().enableSingleRequest();-->
-<!--            googletag.enableServices();-->
 <!--        });-->
-<!--    </script>-->
 
 </head>
 <style>
-
 
 
     .modal {
@@ -326,12 +297,6 @@
 </style>
 
 <body style="display: none">
-<!-- /23284785848/house_detail/detail_auto -->
-<!--<div id='div-gpt-ad-1752588371319-0'>-->
-<!--    <script>-->
-<!--        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752588371319-0'); });-->
-<!--    </script>-->
-<!--</div>-->
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
@@ -600,7 +565,6 @@
             </div>
 
 
-
             <h1 class="title" data-eusoft-scrollable-element="1" id="titleMessage"></h1>
 
             <div class="adswp" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="detail_adv1">
@@ -708,7 +672,6 @@
                 <use xlink:href="#icon-clinic-button"></use>
             </svg><span id = "lang_submit">Kontakt</span></a>
         </div>
-
 
 
         <div class="underListDiv">
@@ -1203,8 +1166,6 @@ const lang = getLangFromPath()
                             if (entry.isIntersecting) {
                                 loadDetail_adv3(entry.target);
                                 obs.unobserve(entry.target);
-                                // googletag.cmd.push(function () {
-                                //     googletag.display('div-gpt-ad-1752587923449-0');
                                 // });
                             }
                         });
@@ -1348,8 +1309,6 @@ const lang = getLangFromPath()
                             if (entry.isIntersecting) {
                                 loadDetail_adv5(entry.target);
                                 obs.unobserve(entry.target);
-                                // googletag.cmd.push(function () {
-                                //     googletag.display('div-gpt-ad-1752994696303-0');
                                 // });
                             }
                         });
@@ -1444,7 +1403,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadDetail_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752576644043-0'); });
                     }
                 });
             }, {
@@ -1460,7 +1418,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadDetail_adv2(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752578935637-0'); });
                     }
                 });
             }, {
@@ -1476,7 +1433,6 @@ const lang = getLangFromPath()
                     if (entry.isIntersecting) {
                         loadDetail_adv4(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752589219217-0'); });
                     }
                 });
             }, {
@@ -1491,73 +1447,10 @@ const lang = getLangFromPath()
 </script>
 
 <script>
-    function loadDetail_adv1(el){
-        el.innerHTML = returnDetail_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadDetail_adv2(el){
-        el.innerHTML = returnDetail_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadDetail_adv3(el){
-        el.innerHTML = returnDetail_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadDetail_adv4(el){
-        el.innerHTML = returnDetail_adv4_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadDetail_adv5(el){
-        el.innerHTML = returnDetail_adv5_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 </script>
 
-<!--<script>-->
-<!--    function loadDetail_adv1(el){-->
-<!--        el.innerHTML = returnDetail_adv1();-->
-<!--    }-->
-
-<!--    function loadDetail_adv2(el){-->
-<!--        el.innerHTML = returnDetail_adv2();-->
-<!--    }-->
-
-<!--    function loadDetail_adv3(el){-->
-<!--        el.innerHTML = returnDetail_adv3();-->
-<!--    }-->
-
-<!--    function loadDetail_adv4(el){-->
-<!--        el.innerHTML = returnDetail_adv4();-->
-<!--    }-->
-
-<!--    function loadDetail_adv5(el){-->
-<!--        el.innerHTML = returnDetail_adv5();-->
-<!--    }-->
-<!--</script>-->
 </body>
 
 </html>

@@ -41,12 +41,12 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
-<!--    <script src="./Public/Js/googleAdv.js"></script>-->
-<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
-    <script src="./Public/Js/googleAds.js"></script>
+    <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2289697662900935"
-            crossorigin="anonymous"></script>
+    <script src="/Public/Js/ad-slots-adx.js"></script>
+    <script src="/Public/Js/ad-loader.js"></script>
+    <script src="/Public/Js/ad-runtime.js"></script>
+<!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1074,7 +1074,6 @@ if(lang == "de" || lang == "de-ch-at"){
                     if (entry.isIntersecting) {
                         loadCity_adv1(entry.target);
                         obs.unobserve(entry.target);
-                        //googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752506290569-0'); });
                     }
                 });
             }, {
@@ -1090,34 +1089,7 @@ if(lang == "de" || lang == "de-ch-at"){
 
 <script>
 
-    function loadCity_adv1(el){
-        // 插入 <ins> HTML
-        el.innerHTML = returnCity_adv1_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 
-    function loadCity_adv2(el){
-        // 插入 <ins> HTML
-        el.innerHTML = returnCity_adv2_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
-
-    function loadCity_adv3(el) {
-        el.innerHTML = returnCity_adv3_ADS();
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.error("AdSense push error", e);
-        }
-    }
 </script>
 
 </body>
