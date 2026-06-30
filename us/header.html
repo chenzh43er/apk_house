@@ -1,31 +1,21 @@
 <div class="wrapper" data-eusoft-scrollable-element="1">
-    <a href="./home.html" class="logo">
-        <img src="./Public/Images/logoImage.png" alt="logo">
+    <a href="./home.html" class="logo" aria-label="Apkintelligence Home">
+        <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
-    <input type="checkbox" id="hd-menu-input">
-    <div class="headshade" id="headshade"></div>
-    <div class="nav-icon-back">
-        <div class="icon-nav-btn">
-            <a class="href-item" style="display: block;" href="/search/"></a>
-            <svg class="href-item" style="z-index: 0;" aria-hidden="true">
-                <use href="/Public/svg/site-icons.svg#icon-search"></use>
-            </svg>
-        </div>
-        <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-    </div>
-    <nav class="nav" data-eusoft-scrollable-element="1">
+    <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
+    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
         <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a>
-            </li>
+            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a></li>
         </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose">
+        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
             <span></span>
             <span></span>
         </label>
     </nav>
-    <div class="cl"></div>
+    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
 </div>

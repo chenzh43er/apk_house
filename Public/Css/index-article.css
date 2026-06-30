@@ -14,32 +14,7 @@ body.page-article {
     linear-gradient(165deg, #f9fafc 0%, #eef2f8 48%, #e8edf5 100%);
 }
 
-body.page-article header#header {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(20, 27, 46, 0.06);
-  box-shadow: none;
-}
-
-body.page-article header#header .logo img {
-  margin-top: 12px;
-}
-
-body.page-article footer,
-body.page-article #footer {
-  margin-top: auto;
-}
-
-body.page-article footer .footer-ul a,
-body.page-article #footer .footer-ul a {
-  transition: opacity 0.15s ease;
-}
-
-body.page-article footer .footer-ul a:hover,
-body.page-article #footer .footer-ul a:hover {
-  opacity: 0.85;
-}
+/* footer margin-top 见 site-chrome.css */
 
 .article-index {
   --ink: #141b2e;

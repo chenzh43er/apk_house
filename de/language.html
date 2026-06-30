@@ -39,35 +39,25 @@
 
 <header data-eusoft-scrollable-element="1" id="header">
 <div class="wrapper" data-eusoft-scrollable-element="1">
-    <a href="./home.html" class="logo">
-        <img src="./Public/Images/logoImage.png" alt="logo">
+    <a href="./home.html" class="logo" aria-label="Apkintelligence Home">
+        <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
-    <input type="checkbox" id="hd-menu-input">
-    <div class="headshade" id="headshade"></div>
-    <div class="nav-icon-back">
-        <div class="icon-nav-btn">
-            <a class="href-item" style="display: block;" href="/search/"></a>
-            <svg class="href-item" style="z-index: 0;" aria-hidden="true">
-                <use href="/Public/svg/site-icons.svg#icon-search"></use>
-            </svg>
-        </div>
-        <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-    </div>
-    <nav class="nav" data-eusoft-scrollable-element="1">
+    <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
+    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
         <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Startseite</a>
-            </li>
+            <li class="cor-category"><a href="./home.html" id="lang_index">Startseite</a></li>
         </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose">
+        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
             <span></span>
             <span></span>
         </label>
     </nav>
-    <div class="cl"></div>
+    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
 </div>
 </header>
 
@@ -194,17 +184,49 @@
 
 <footer id="footer">
 <div class="wrapper">
-  <a href="./Public" class="ft-logo">
-    <img src="./Public/Images/logoImage.png" alt="logo">
-  </a>
-  <ul class="footer-ul">
-    <li><a href="/de/aboutus.html">About Us</a></li>
-    <li><a href="/de/disclaimer.html">Disclaimer</a></li>
-    <li><a href="/de/dcma.html">DMCA</a></li>
-    <li><a href="/de/privacy.html">Privacy Policy</a></li>
-  </ul>
-  <p>© <span id="year">2025</span> Apkintelligence.com. All Rights Reserved.</p>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="./home.html" class="ft-logo" aria-label="Apkintelligence Home">
+        <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
+      </a>
+      <p class="footer-tagline">Leitf&auml;den und Ressourcen zu bezahlbarem Wohnraum.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <ul class="footer-ul">
+        <li><a href="/de/aboutus.html">About Us</a></li>
+        <li><a href="/de/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/de/dcma.html">DMCA</a></li>
+        <li><a href="/de/privacy.html">Privacy Policy</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; <span id="year">2025</span> Apkintelligence.com. All Rights Reserved.</p>
+  <div class="footer-share">
+    <p class="footer-share__label">Website teilen</p>
+    <div class="footer-share__icons">
+      <a href="https://www.facebook.com/sharer/sharer.php?u=" class="footer-share__btn footer-share__link--facebook" aria-label="Auf Facebook teilen" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+      </a>
+      <a href="https://www.instagram.com/Footrel?igsh=ZnNhbWo2Y210ajAy" class="footer-share__btn footer-share__link--instagram" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+      </a>
+      <a href="https://www.youtube.com/@Footrel" class="footer-share__btn footer-share__link--youtube" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path></svg>
+      </a>
+    </div>
+  </div>
 </div>
+<script>
+(function () {
+  /** @type {string} 当前站点 host 链接，用于 Facebook 分享 */
+  var siteUrl = window.location.origin + '/';
+  var encoded = encodeURIComponent(siteUrl);
+  var fbLink = document.querySelector('.footer-share__link--facebook');
+  if (fbLink) {
+    fbLink.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encoded;
+  }
+})();
+</script>
 </footer>
 
 <script>
@@ -225,10 +247,10 @@ const lang = getLangFromPath()
               document.getElementById("lang_index").innerText="Startseite"
             }else if(lang == "us")
             {
-              document.getElementById("lang_index").innerText="HOME"
+              document.getElementById("lang_index").innerText="Home"
             }else
             {
-              document.getElementById("lang_index").innerText="HOME"
+              document.getElementById("lang_index").innerText="Home"
             }
 
 window.addEventListener('load', () => {

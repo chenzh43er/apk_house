@@ -14,20 +14,7 @@ body.page-legal {
     linear-gradient(165deg, #f9fafc 0%, #eef2f8 48%, #e8edf5 100%);
 }
 
-body.page-legal header#header {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(20, 27, 46, 0.06);
-  box-shadow: none;
-}
-
-body.page-legal header#header .logo img {
-  margin-top: 12px;
-}
-
-body.page-legal footer {
-  margin-top: auto;
-}
+/* footer margin-top 见 site-chrome.css */
 
 body.page-legal footer .footer-ul a {
   transition: opacity 0.15s ease;
