@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { listParentFolders, listUnitsToCreate } from "./slots.mjs";
+import { listParentFolders, listUnitsToCreate, ADX_OOP_DEFS } from "./slots.mjs";
 
 const lines = [];
 lines.push("Google Ad Manager 手动创建清单");
@@ -30,11 +30,26 @@ for (const row of listUnitsToCreate()) {
 }
 
 lines.push("");
+lines.push("=== 第三步：Out-of-Page 广告单元（GAM 后台手动创建，类型选 Out-of-page）===");
+for (const [slotKey, def] of Object.entries(ADX_OOP_DEFS)) {
+  lines.push(
+    `  [OOP] code=${def.unit.split("/").pop()}  路径=${def.unit}  格式=${def.format}  (前端: ${slotKey})`
+  );
+}
+
+lines.push("");
+lines.push("=== 无广告页面（不加载 Google 广告 JS）===");
+lines.push("  /de/index.html  /us/index.html  /de-ch-at/index.html");
+
+lines.push("");
 lines.push("=== GPT 路径示例 ===");
 lines.push("  /23357265712/house_result/result_adv1");
 lines.push("  /23357265712/house_detail/detail_adv1");
+lines.push("  /23357265712/house_site/bottom_anchor");
+lines.push("  /23357265712/house_site/interstitial");
 lines.push("");
 lines.push("创建完成后，页面加 ?ad=adx 测试。");
+lines.push("锚定预览：URL 加 #gamBottomAnchorDemo");
 
 const outPath = path.join(path.dirname(fileURLToPath(import.meta.url)), "ad-units-checklist.txt");
 fs.writeFileSync(outPath, lines.join("\n"), "utf8");

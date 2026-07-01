@@ -1,4 +1,4 @@
-﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
     <base href="/de/" />
@@ -114,13 +114,28 @@
           content="Find detailed information on Chugach View, including address, phone number, services, and more.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
-    <link rel="stylesheet" href="./Public/Css/social-share.css"><script src="./Public/Js/utlParam.js"></script>
+    <link rel="stylesheet" href="./Public/Css/social-share.css">
+    <link rel="stylesheet" href="/Public/Css/detail-page.css">
+    <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
+<script>
+    (function () {
+        function initDetailShareBar() {
+            renderDetailShareBar(document.getElementById("shareDiv"), window.location.href, getLangFromPath());
+        }
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initDetailShareBar);
+        } else {
+            initDetailShareBar();
+        }
+    })();
+</script>
     <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -140,163 +155,8 @@
 <!--        });-->
 
 </head>
-<style>
 
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal img {
-        max-width: 80%;
-        max-height: 80%;
-    }
-
-    .close {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        color: white;
-        font-size: 40px;
-        cursor: pointer;
-    }
-
-    .containerMessage {
-        display: flex;
-    }
-
-    .boxMessageOneline{
-        padding: 10px;
-    }
-
-    .boxMessage {
-        width: 50%;
-        padding: 10px;
-    }
-
-    .houseMessagediv{
-        font: 700 1rem/1.5rem "immo Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
-    }
-
-    .locationMessage{
-        font: 600 1rem/1.5rem "immo Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
-    }
-
-    .share-title {
-        text-align: center;
-        font-size: 1.2em;
-        margin-bottom: 20px;
-    }
-
-    .social-share {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 16px;
-        margin-top: 10px;
-    }
-
-    .social-btn {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 26px;
-        color: white;
-        text-decoration: none;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .social-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    /* Platform-specific colors */
-    .facebook   { background-color: #3b5998; }
-    .instagram  { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-    .twitter    { background-color: #1da1f2; }
-    .youtube    { background-color: #ff0000; }
-    .whatsapp   { background-color: #25d366; }
-    .pinterest  { background-color: #bd081c; }
-    .snapchat   { background-color: #fffc00; color: black; }
-    .messenger  { background-color: #0084ff; }
-
-    .shareUl{
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        grid-gap: 10px;
-    }
-
-    @media (max-width: 600px) {
-        .social-btn {
-            width: 48px;
-            height: 48px;
-            font-size: 20px;
-        }
-
-        .shareUl{
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 10px;
-            column-gap: 30px;
-        }
-    }
-
-    .suggestHouseUl {
-        display: grid;
-        grid-gap: 20px;
-    }
-
-    @media screen and (min-width: 500px) {
-        .suggestHouseUl {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media screen and (min-width: 500px) {
-        .suggestHouseUl {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    .RightBottom_adbox {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        position: sticky;
-        top: 70px;
-        height: 600px !important;
-    }
-
-    @media (max-width: 600px) {
-        .underListDiv{
-            padding: 0px;
-        }
-    }
-
-    .underListDiv{
-        max-width: 728px;
-        margin:auto;
-        padding: 10px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-</style>
-
-<body style="display: none">
+<body class="page-detail" style="display: none">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
@@ -443,21 +303,30 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
     <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menu</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Home</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
@@ -561,73 +430,39 @@
                 Advertise
             </div>
 
-            <div id = "shareDiv">
-                <div class="social-share">
-                    <a class="social-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://example.com" title="Facebook" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                    <a class="social-btn instagram" href="https://www.instagram.com" title="Instagram" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.413.56.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.413 2.227-.217.56-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.057.36-2.227.413-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.413-.56-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.413-2.227.217-.56.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.058 1.646-.07 4.85-.07zM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.06-1.277-.262-2.149-.558-2.913-.306-.789-.719-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                    </a>
-                    <a class="social-btn twitter" href="https://twitter.com/intent/tweet?url=https://example.com" title="Twitter" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </a>
-                    <a class="social-btn youtube" href="https://www.youtube.com" title="YouTube" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    </a>
-                    <a class="social-btn whatsapp" href="https://api.whatsapp.com/send?text=https://example.com" title="WhatsApp" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-                    </a>
-                    <a class="social-btn pinterest" href="https://pinterest.com/pin/create/button/?url=https://example.com" title="Pinterest" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 0 0-4.37 23.17c-.1-.94-.19-2.39.04-3.42l1.34-5.69s-.34-.68-.34-1.68c0-1.57.91-2.75 2.05-2.75.97 0 1.44.73 1.44 1.6 0 .97-.62 2.42-.94 3.77-.27 1.13.57 2.05 1.69 2.05 2.03 0 3.59-2.14 3.59-5.23 0-2.73-1.96-4.64-4.76-4.64-3.24 0-5.14 2.43-5.14 4.94 0 .97.37 2.02.85 2.59a.34.34 0 0 1 .08.32l-.31 1.24c-.05.2-.16.25-.37.15-1.37-.64-2.23-2.64-2.23-4.25 0-3.46 2.51-6.64 7.24-6.64 3.8 0 6.75 2.71 6.75 6.34 0 3.77-2.38 6.8-5.68 6.8-1.11 0-2.15-.58-2.51-1.26l-.68 2.6c-.25.96-.93 2.16-1.39 2.89A12 12 0 1 0 12 0z"/></svg>
-                    </a>
-                    <a class="social-btn snapchat" href="https://www.snapchat.com" title="Snapchat" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.062c-.012.2-.023.391-.03.574-.07 1.695-.155 3.592-.776 4.583-.545.88-2.822 1.416-4.198 1.416-.299 0-.512-.043-.727-.085-.248-.048-.497-.096-.797-.096-.338 0-.621.06-.91.122-.318.069-.646.14-1.062.14-1.423 0-3.802-.557-4.364-1.51-.618-1.053-.7-2.886-.776-4.583-.007-.183-.018-.374-.03-.574l-.003-.062c-.104-1.628-.23-3.654.299-4.847C7.653 1.069 11.016.793 12.006.793h.2z"/></svg>
-                    </a>
-                    <a class="social-btn messenger" href="https://www.messenger.com/t/?link=https://example.com" title="Messenger" target="_blank">
-                        <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.3 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.13 3.26L19.752 8l-6.561 6.963z"/></svg>
-                    </a>
-                </div>
-            </div>
+            <div id="shareDiv" class="detail-share-bar"></div>
 
         </div>
 
-        <div style="display: flex;" class="img-box">
+        <div class="img-box detail-gallery"></div>
 
-        </div>
+        <ul class="info detail-info"></ul>
 
-        <ul class="info">
-
-        </ul>
-
-        <br>
-
-        <div id="myModal" class="modal">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <img id="modalImage" class="modal-content">
+        <div id="myModal" class="detail-modal" role="dialog" aria-modal="true" aria-label="Image preview">
+            <button type="button" class="detail-modal__close" onclick="closeModal()" aria-label="Close">&times;</button>
+            <img id="modalImage" class="detail-modal__img" alt="">
         </div>
 
         <script>
             function openModal(img) {
                 const modal = document.getElementById("myModal");
                 const modalImg = document.getElementById("modalImage");
-                modal.style.display = "flex";
+                modal.classList.add("is-open");
                 modalImg.src = img.src;
+                modalImg.alt = img.alt || "";
             }
 
             function closeModal() {
-                document.getElementById("myModal").style.display = "none";
+                document.getElementById("myModal").classList.remove("is-open");
             }
 
-            // 点击模态框背景关闭
             window.onclick = function (event) {
                 const modal = document.getElementById("myModal");
                 if (event.target === modal) {
-                    modal.style.display = "none";
+                    modal.classList.remove("is-open");
                 }
             }
         </script>
-        <br>
         <div class="dt-provided" id = "message">
 
         </div>
@@ -664,9 +499,9 @@
         </div>
 
 
-        <div class="underListDiv">
-            <ul class="suggestHouseUl" id = "down_list">
-            </ul>
+        <div class="underListDiv detail-similar">
+            <h2 class="detail-similar__title" id="lang_similar">Similar Listings</h2>
+            <ul class="suggestHouseUl" id="down_list"></ul>
         </div>
     </div>
 
@@ -768,13 +603,13 @@
 const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else if(lang == "us")
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }else
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
 </script>
@@ -801,24 +636,28 @@ const lang = getLangFromPath()
         let bathStr = ""
         let typeStr = ""
         let ImmobilienStr = ""
+        let priceNoteStr = ""
         if(lang == "de"){
             roomStr = "Zimmer"
             sqftStr = "Wohnfläche"
             bathStr = "Geschoss"
             typeStr = "Projekttyp"
             ImmobilienStr = "Immobilien"
+            priceNoteStr = "Kaltmiete zzgl. NK"
         }else if(lang == "us"){
             roomStr = "bed"
             sqftStr = "sqft"
             bathStr = "bathroom"
             typeStr = "type"
             ImmobilienStr = "supplier"
+            priceNoteStr = "/ month"
         }else{
             roomStr = "bed"
             sqftStr = "sqft"
             bathStr = "bathroom"
             typeStr = "type"
             ImmobilienStr = "supplier"
+            priceNoteStr = "/ month"
         }
 
         const {fetchDataById} = module;
@@ -833,51 +672,59 @@ const lang = getLangFromPath()
         $(document).ready(function () {
 
             const innerDetailHtml = `
-                <div class="containerMessage" style="border-bottom: 1px solid black;">
-                    <div class="boxMessageOneline">
-                        <h3>${data.ver}</h3>
-                        <h2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
-                          <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a2 2 0 0 1-1-.268M1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1"/>
-                        </svg> ${data.price}</h2>
-                        Kaltmiete zzgl. NK
-                     </div>
-                </div>
-
-                <div class="containerMessage">
-                    <div class="boxMessage"><p class = "houseMessagediv"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-  <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-</svg> ${data.room}</p> ${roomStr}</div>
-                    <div class="boxMessage"><p class = "houseMessagediv"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-aspect-ratio" viewBox="0 0 16 16">
-  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
-  <path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0z"/>
-</svg> ${data.area}</p> ${sqftStr}</div>
-                </div>
-                <div class="containerMessage" style="border-bottom: 1px solid black;">
-                    <div class="boxMessage"><p class = "houseMessagediv"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-steps" viewBox="0 0 16 16">
-  <path d="M.5 0a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 .5 0M2 1.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5z"/>
-</svg> ${data.loft}</p> ${bathStr}</div>
-                    <div class="boxMessage"><p class = "houseMessagediv"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-text-left" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
-</svg> ${data.statetype}</p> ${typeStr}</div>
-                </div>
-
-                <div class="containerMessage">
-                    <div class="boxMessageOneline locationMessage">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
-  <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/>
-  <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-</svg> ${data.location}
+                <li class="detail-price-card">
+                    <div class="detail-price-card__glow" aria-hidden="true"></div>
+                    <div class="detail-price-card__content">
+                        <span class="detail-price-badge">${data.ver}</span>
+                        <div class="detail-price-row">
+                            <span class="detail-price-amount">${data.price}</span>
+                            <span class="detail-price-note">${priceNoteStr}</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="containerMessage" style="border-bottom: 1px solid black;">
-                    <div class="boxMessage locationMessage">
-                        <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check-fill" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
-  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-</svg> ${ImmobilienStr}：</p> ${data.supplier}
+                </li>
+                <li class="detail-specs-grid">
+                    <div class="detail-spec-item">
+                        <span class="detail-spec-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/></svg></span>
+                        <div class="detail-spec-body">
+                            <span class="detail-spec-label">${roomStr}</span>
+                            <span class="detail-spec-value">${data.room}</span>
+                        </div>
                     </div>
-                </div>
+                    <div class="detail-spec-item">
+                        <span class="detail-spec-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/><path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0z"/></svg></span>
+                        <div class="detail-spec-body">
+                            <span class="detail-spec-label">${sqftStr}</span>
+                            <span class="detail-spec-value">${data.area}</span>
+                        </div>
+                    </div>
+                    <div class="detail-spec-item">
+                        <span class="detail-spec-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 0a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 .5 0M2 1.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5z"/></svg></span>
+                        <div class="detail-spec-body">
+                            <span class="detail-spec-label">${bathStr}</span>
+                            <span class="detail-spec-value">${data.loft}</span>
+                        </div>
+                    </div>
+                    <div class="detail-spec-item">
+                        <span class="detail-spec-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/></svg></span>
+                        <div class="detail-spec-body">
+                            <span class="detail-spec-label">${typeStr}</span>
+                            <span class="detail-spec-value">${data.statetype}</span>
+                        </div>
+                    </div>
+                </li>
+                <li class="detail-meta-row detail-location-row">
+                    <span class="detail-meta-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10"/><path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg></span>
+                    <div class="detail-meta-body">
+                        <span class="detail-meta-text">${data.location}</span>
+                    </div>
+                </li>
+                <li class="detail-meta-row detail-supplier-row">
+                    <span class="detail-meta-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/><path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/></svg></span>
+                    <div class="detail-meta-body">
+                        <span class="detail-meta-label">${ImmobilienStr}</span>
+                        <span class="detail-meta-text">${data.supplier}</span>
+                    </div>
+                </li>
             `
 
             //state, city, district, houseId
@@ -900,29 +747,25 @@ const lang = getLangFromPath()
             const serverPic = picURL + data.mainpic + "/"
 
             if (picsObj.length === 1) {
-                $('.img-box').html(`<img class="provided-img" src="${serverPic + picsObj[0]}">`)
+                $('.img-box').addClass('detail-gallery--single').html(
+                    `<img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}">`
+                )
             }
 
             if (picsObj.length === 2) {
-                $('.img-box').html(`<div>
-                    <img class="provided-img" src="${serverPic + picsObj[0]}">
-                    <img class="provided-img" src="${serverPic + picsObj[1]}">
-                    </div`)
+                $('.img-box').addClass('detail-gallery--double').html(
+                    `<img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}">
+                    <img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[1]}" alt="${data.name}">`
+                )
             }
 
             if (picsObj.length === 3) {
-                $('.img-box').html(`<div style="width: 100%;flex: 2;margin-right: 10px;">
-                        <img onclick="openModal(this)" style="margin-bottom: 0;" object-fit: cover
-                        src="${serverPic + picsObj[0]}" alt="Chugach View"
-                        class="provided-img scale">
+                $('.img-box').html(`<div class="detail-gallery__main">
+                        <img onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}" class="provided-img">
                 </div>
-                <div style="flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
-                    <img style="margin-bottom: 0;height: 48%;" onclick="openModal(this)"
-                        src="${serverPic + picsObj[1]}" alt="Chugach View"
-                        class="provided-img scale">
-                    <img style="margin-bottom: 0;height: 48%;" onclick="openModal(this)"
-                        src="${serverPic + picsObj[2]}" alt="Chugach View"
-                        class="provided-img scale">
+                <div class="detail-gallery__side">
+                    <img onclick="openModal(this)" src="${serverPic + picsObj[1]}" alt="${data.name}" class="provided-img">
+                    <img onclick="openModal(this)" src="${serverPic + picsObj[2]}" alt="${data.name}" class="provided-img">
                 </div>`)
             }
 
@@ -940,52 +783,7 @@ const lang = getLangFromPath()
 
             localStorage.setItem('mqqhtmlLink', mqqhtmlLink)
 
-            document.getElementById("shareDiv").innerHTML = `
-                <div class="social-share">
-                <ul class="shareUl">
-                <li>
-  <a class="social-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=${mqqhtmlLink}" title="Facebook" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-  </a>
-  </li>
-   <li>
-  <a class="social-btn instagram" href="https://www.instagram.com" title="Instagram" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.805.249 2.227.413.56.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.249 1.805-.413 2.227-.217.56-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.057.36-2.227.413-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.805-.249-2.227-.413-.56-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.249-1.805.413-2.227.217-.56.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.058 1.646-.07 4.85-.07zM12 0C8.741 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.06-1.277-.262-2.149-.558-2.913-.306-.789-.719-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn twitter" href="https://twitter.com/intent/tweet?url=${mqqhtmlLink}" title="Twitter" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn youtube" href="https://www.youtube.com" title="YouTube" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn whatsapp" href="https://api.whatsapp.com/send?text=${mqqhtmlLink}" title="WhatsApp" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn pinterest" href="https://pinterest.com/pin/create/button/?url=${mqqhtmlLink}" title="Pinterest" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 0 0-4.37 23.17c-.1-.94-.19-2.39.04-3.42l1.34-5.69s-.34-.68-.34-1.68c0-1.57.91-2.75 2.05-2.75.97 0 1.44.73 1.44 1.6 0 .97-.62 2.42-.94 3.77-.27 1.13.57 2.05 1.69 2.05 2.03 0 3.59-2.14 3.59-5.23 0-2.73-1.96-4.64-4.76-4.64-3.24 0-5.14 2.43-5.14 4.94 0 .97.37 2.02.85 2.59a.34.34 0 0 1 .08.32l-.31 1.24c-.05.2-.16.25-.37.15-1.37-.64-2.23-2.64-2.23-4.25 0-3.46 2.51-6.64 7.24-6.64 3.8 0 6.75 2.71 6.75 6.34 0 3.77-2.38 6.8-5.68 6.8-1.11 0-2.15-.58-2.51-1.26l-.68 2.6c-.25.96-.93 2.16-1.39 2.89A12 12 0 1 0 12 0z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn snapchat" href="https://www.snapchat.com" title="Snapchat" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.062c-.012.2-.023.391-.03.574-.07 1.695-.155 3.592-.776 4.583-.545.88-2.822 1.416-4.198 1.416-.299 0-.512-.043-.727-.085-.248-.048-.497-.096-.797-.096-.338 0-.621.06-.91.122-.318.069-.646.14-1.062.14-1.423 0-3.802-.557-4.364-1.51-.618-1.053-.7-2.886-.776-4.583-.007-.183-.018-.374-.03-.574l-.003-.062c-.104-1.628-.23-3.654.299-4.847C7.653 1.069 11.016.793 12.006.793h.2z"/></svg>
-  </a>
-</li>
-   <li>
-  <a class="social-btn messenger" href="https://www.messenger.com/t/?link=${mqqhtmlLink}" title="Messenger" target="_blank">
-    <svg class="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.3 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8l3.13 3.26L19.752 8l-6.561 6.963z"/></svg>
-  </a>
-  </li>
-  </ul>
-</div>
-            `
+            renderDetailShareBar(document.getElementById("shareDiv"), mqqhtmlLink, lang, data.name);
 
             if (data.msg.length > 10) {
                 document.getElementById('message').innerHTML = `
@@ -1310,14 +1108,9 @@ const lang = getLangFromPath()
                   </li>`;
                     }
                     if (index == 0) {
-                        if(isMobile()){
-                            html +=
-                            `<div id = "down_listAdv" style="text-align: center" class="most-box">Advertisment</div>`
-                        }else{
-                            html += `<li>
-                            <div id = "down_listAdv" style="text-align: center" class="most-box">Advertisment</div>
+                        html += `<li>
+                            <div id="down_listAdv" class="most-box most-box--ad">Advertisment</div>
                             </li>`
-                        }
                     }
 
                 });
@@ -1371,16 +1164,26 @@ const lang = getLangFromPath()
             document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
             document.getElementById("lang_back").innerText="Zurück zur Liste"
             document.getElementById("lang_submit").innerText="Kontakt"
+            document.getElementById("lang_similar").innerText="Ähnliche Angebote"
+            document.getElementById("lang_share").innerText="Diese Anzeige teilen"
         }else if(lang == "us")
         {
             document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             document.getElementById("lang_back").innerText = "Back to list";
             document.getElementById("lang_submit").innerText = "Contact us";
+            document.getElementById("lang_similar").innerText = "Similar Listings";
+            document.getElementById("lang_share").innerText = "Share this listing";
         }else
         {
             document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
             document.getElementById("lang_back").innerText = "Back to list";
             document.getElementById("lang_submit").innerText = "Contact us";
+            document.getElementById("lang_similar").innerText = "Similar Listings";
+        }
+
+        const shareLabelEl = document.getElementById("lang_share");
+        if (shareLabelEl) {
+            shareLabelEl.innerText = detailShareLabel(lang);
         }
 
         if(isMobile()){

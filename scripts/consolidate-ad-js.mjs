@@ -8,6 +8,7 @@ const REPLACEMENTS = [
   ['./Public/Js/ad-slots-adx.js', '/Public/Js/ad-slots-adx.js'],
   ['./Public/Js/ad-loader.js', '/Public/Js/ad-loader.js'],
   ['./Public/Js/ad-runtime.js', '/Public/Js/ad-runtime.js'],
+  ['./Public/Js/ad-oop.js', '/Public/Js/ad-oop.js'],
 ];
 
 const DUPLICATE_FILES = [
@@ -15,14 +16,17 @@ const DUPLICATE_FILES = [
   'us/Public/Js/ad-slots-adx.js',
   'us/Public/Js/ad-loader.js',
   'us/Public/Js/ad-runtime.js',
+  'us/Public/Js/ad-oop.js',
   'de/Public/Js/ad-config.js',
   'de/Public/Js/ad-slots-adx.js',
   'de/Public/Js/ad-loader.js',
   'de/Public/Js/ad-runtime.js',
+  'de/Public/Js/ad-oop.js',
   'de-ch-at/Public/Js/ad-config.js',
   'de-ch-at/Public/Js/ad-slots-adx.js',
   'de-ch-at/Public/Js/ad-loader.js',
   'de-ch-at/Public/Js/ad-runtime.js',
+  'de-ch-at/Public/Js/ad-oop.js',
 ];
 
 function walkHtmlFiles(dir, out = []) {

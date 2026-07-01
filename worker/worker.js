@@ -9,7 +9,7 @@
  *  5. Supabase API 反向代理（/{lang}/rest|rpc|storage|auth）
  *  6. 静态资源透传（CSS/JS/图片/Public/Assets）
  *  7. SEO 友好 URL 重写（teach/state 路径 → 实际 HTML 页面）
- *  8. 文章路径重写（/{lang}/post/{id}/{page} → /post）
+ *  8. 文章路径重写（/{lang}/post/{id}/{page} → /{lang}/post）
  *  9. 默认透传（其余 HTML 页面回源 Pages，附加安全响应头）
  */
 
@@ -663,13 +663,13 @@ export default {
       return rewrite(request, `/${lang}/state`, {}, env);
     }
 
-    // ── 8. 文章路径重写：/{lang}/post/{postid}/{page} → /post?postid=...&page=... ──
+    // ── 8. 文章路径重写：/{lang}/post/{postid}/{page} → /{lang}/post?postid=...&page=... ──
     m = pathname.match(
       new RegExp(`^\\/(${LANG})\\/post\\/(\\d+)\\/(\\d+)$`, "i")
     );
     if (m) {
-      const [, , postid, page] = m;
-      return rewrite(request, "/post", { postid, page }, env);
+      const [, lang, postid, page] = m;
+      return rewrite(request, `/${lang}/post`, { postid, page }, env);
     }
 
     // ── 9. 默认透传：其余 HTML 页面回源 Pages ──

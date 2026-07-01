@@ -1,0 +1,374 @@
+@charset "UTF-8";
+
+/**
+ * State picker — layout aligned with teach-page funnel
+ */
+
+body.page-state .state-main.contents {
+    margin-top: 24px;
+    margin-bottom: 48px;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+body.page-state .state-content.detail-left {
+    height: auto !important;
+}
+
+/* Page header — card layout, not site chrome header */
+body.page-state .state-page-head {
+    position: static;
+    top: auto;
+    z-index: auto;
+    display: block;
+    width: auto;
+    min-height: 0;
+    isolation: auto;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 24px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+}
+
+body.page-state .state-page-head__crumbs {
+    margin-bottom: 14px;
+}
+
+body.page-state .state-crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+}
+
+body.page-state .state-crumb li {
+    display: inline-flex;
+    align-items: center;
+    color: #8b95a8;
+}
+
+body.page-state .state-crumb li + li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    margin: 0 10px;
+    border-radius: 50%;
+    background: #c5d0de;
+    flex-shrink: 0;
+}
+
+body.page-state .state-crumb a {
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+body.page-state .state-crumb a:hover {
+    color: #1173eb;
+}
+
+body.page-state .state-crumb li[aria-current='page'] {
+    color: #142144;
+    font-weight: 600;
+}
+
+body.page-state .state-page-head__label {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1173eb;
+    background: rgba(17, 115, 235, 0.08);
+    border-radius: 999px;
+}
+
+body.page-state .state-page-head__title {
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: clamp(1.625rem, 3.8vw, 2.125rem);
+    font-weight: 700;
+    color: #141b2e;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 0 0 10px;
+}
+
+body.page-state .state-page-lead {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #5a6478;
+    max-width: 52ch;
+}
+
+/* Steps card without inner teach header */
+body.page-state .state-steps-card.teach-steps-card {
+    padding: 24px 24px 24px;
+}
+
+body.page-state .state-steps-card .teach-steps-flow {
+    margin: 0;
+}
+
+body.page-state .state-ad.adswp {
+    margin-bottom: 20px;
+}
+
+/* Country selector (de-ch-at) */
+body.page-state .state-country-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+}
+
+body.page-state .state-country-card .country-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+}
+
+body.page-state .state-country-card .country-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #f8fafc;
+    border-radius: 999px;
+    border: 1px solid rgba(20, 33, 68, 0.08);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+body.page-state .state-country-card .country-item:hover {
+    border-color: rgba(17, 115, 235, 0.35);
+    background: #f5f9ff;
+}
+
+body.page-state .state-country-card .country-item.active {
+    border-color: #1173eb;
+    background: linear-gradient(180deg, #fff 0%, #f5f9ff 100%);
+    box-shadow: 0 4px 14px rgba(17, 115, 235, 0.12);
+}
+
+body.page-state .state-country-card .flag {
+    font-size: 22px;
+    line-height: 1;
+    margin: 0;
+}
+
+body.page-state .state-country-card .country-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #142144;
+}
+
+/* Steps — reuse teach card; step 1 active on this page */
+body.page-state .state-steps-card {
+    margin-bottom: 20px;
+}
+
+body.page-state .state-steps-card .select-box .prog::after {
+    display: none !important;
+}
+
+/* State grid picker */
+body.page-state .state-picker-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 22px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+}
+
+body.page-state .state-picker-head {
+    margin-bottom: 18px;
+    padding-left: 14px;
+    border-left: 3px solid #1173eb;
+}
+
+body.page-state .state-picker-title {
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: clamp(1.125rem, 2.2vw, 1.375rem);
+    font-weight: 700;
+    color: #141b2e;
+    line-height: 1.3;
+    margin: 0 0 6px;
+    letter-spacing: -0.02em;
+}
+
+body.page-state .state-picker-lead {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #6b7280;
+}
+
+body.page-state .select-state.state-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+@media screen and (min-width: 640px) {
+    body.page-state .select-state.state-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media screen and (min-width: 900px) {
+    body.page-state .select-state.state-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+body.page-state .select-state.state-grid > li {
+    margin: 0;
+    min-width: 0;
+}
+
+body.page-state .state-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+body.page-state .state-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 12px 14px;
+    border: 1px solid rgba(20, 33, 68, 0.08);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(20, 33, 68, 0.04);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    min-width: 0;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+body.page-state .state-link:hover .state-tile,
+body.page-state .state-link:focus-visible .state-tile {
+    border-color: rgba(17, 115, 235, 0.45);
+    color: #1173eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(17, 115, 235, 0.12);
+}
+
+body.page-state .state-tile__text,
+body.page-state .state-tile .text-wrapper {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-align: center;
+    word-break: break-word;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: inherit;
+    max-width: 100%;
+    min-width: 0;
+}
+
+body.page-state .divider-wrap {
+    grid-column: 1 / -1;
+    text-align: center;
+    pointer-events: none;
+    padding: 8px 0;
+}
+
+/* Info section */
+body.page-state .state-info.teach-info {
+    margin-top: 4px;
+}
+
+body.page-state .state-info .teach-info-card__lead--secondary {
+    margin-top: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #3d4659;
+}
+
+/* Sidebar */
+body.page-state .detail-right .most-read {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+}
+
+body.page-state .detail-right {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    body.page-state .detail-rightside {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    body.page-state .state-page-head {
+        padding: 18px 18px 20px;
+        margin-bottom: 16px;
+    }
+
+    body.page-state .state-page-head__title {
+        font-size: 1.5rem;
+    }
+
+    body.page-state .state-page-lead {
+        font-size: 14px;
+    }
+
+    body.page-state .state-picker-card {
+        padding: 18px 16px 20px;
+    }
+
+    body.page-state .state-steps-card.teach-steps-card {
+        padding: 16px 16px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.page-state .select-state.state-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    body.page-state .state-tile {
+        min-height: 48px;
+        padding: 10px 12px;
+    }
+}

@@ -1,4 +1,4 @@
-﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+﻿<html lang="de" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
     <base href="/de/" />
@@ -33,7 +33,11 @@
     <meta name="description"
           content="UsLowCostHousing provides 26 sources of Affordable Housing in Alaska, Anchorage near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
-    <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css"><!--    <link rel="stylesheet" href="./Public/Css/pagination.css">-->
+    <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
+    <link rel="stylesheet" href="/Public/Css/detail-page.css">
+    <link rel="stylesheet" href="/Public/Css/form-page.css">
+    <link rel="stylesheet" href="/Public/Css/list-page.css">
+    <!--    <link rel="stylesheet" href="./Public/Css/pagination.css">-->
     <script src="./Public/Js/jquery-3.0.0.min.js"></script>
 <!--    <script src="./Public/Js/pagination.min.js"></script>-->
     <script src="./Public/Js/utlParam.js"></script>
@@ -43,6 +47,7 @@
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -57,161 +62,9 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
     <!-- End Google Tag Manager -->
-    <style>
-
-        .state_advClass{
-            text-align: center;
-        }
-
-        .adswp{
-            text-align: center;
-        }
-
-        .state-address {
-            display: flex;
-        }
-
-        .state-address span {
-            flex: 1; /* 平分空间 */
-            box-sizing: border-box;
-        }
-        .imgli-box{
-            width: 48%;
-        }
-
-        @media screen and (max-width: 450px){
-            .statelists-link {
-                display: flex; flex-direction: column;
-            }
-
-            .imgli-box{
-                width: 100%;
-            }
-        }
-
-        .share-title {
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        .social-share {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .social-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            color: white;
-            text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .social-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        /* Platform-specific colors */
-        .facebook   { background-color: #3b5998; }
-        .instagram  { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
-        .twitter    { background-color: #1da1f2; }
-        .youtube    { background-color: #ff0000; }
-        .whatsapp   { background-color: #25d366; }
-        .pinterest  { background-color: #bd081c; }
-        .snapchat   { background-color: #fffc00; color: black; }
-        .messenger  { background-color: #0084ff; }
-
-        @media (max-width: 600px) {
-            .social-btn {
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
-            }
-        }
-
-        .RightBottom_adbox {
-            width: 100%;
-            position: absolute;
-            left: 0;
-            position: sticky;
-            top: 70px;
-            height: 600px !important;
-        }
-
-        .pagination {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            /*padding: 16px;*/
-        }
-
-        .pagination button,
-        .pagination .ellipsis {
-            padding: 8px 14px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            background-color: #289de9;   /* 非当前页默认背景 */
-            color: white;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .pagination .ellipsis {
-            background-color: transparent;
-            color: #999;
-            cursor: default;
-        }
-
-        .pagination button[disabled] {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        /* ✅ 当前页：白底 + 蓝字 + 蓝边框 */
-        .pagination .active {
-            background-color: white;
-            color: #289de9;
-            border: 2px solid #289de9;
-        }
-
-        .pagination .active:hover {
-            background-color: white;
-            color: #289de9;
-            border: 2px solid #289de9;
-        }
-
-        @media (max-width: 480px) {
-            .pagination {
-                gap: 2px;
-                /*padding: 12px;*/
-            }
-
-            .pagination button,
-            .pagination .ellipsis {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-        }
-    </style>
-
-
-<!--        });-->
 </head>
 
-<body style="display: none">
+<body class="page-list" style="display: none">
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
         <symbol id="icon-add" viewBox="0 0 1024 1024">
@@ -357,28 +210,37 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
-    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Startseite</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Hauptnavigation">
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menü</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Startseite</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
+    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Menü öffnen">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
-<main class="wrapper contents no-sidebar" style="height: auto !important; min-height: 0px !important;" id = "region-selector">
-    <div class="detail-left" style="height: auto !important;" data-eusoft-scrollable-element="1">
+<main class="wrapper contents" id="region-selector">
+    <div class="detail-left" data-eusoft-scrollable-element="1">
 
-        <div class="adswp" style="height: auto !important;" data-eusoft-scrollable-element="1" id="list_adv1">
+        <div class="adswp" data-eusoft-scrollable-element="1" id="list_adv1">
             Advertise
         </div>
 
@@ -416,9 +278,8 @@
 
             <h1 class="title" data-eusoft-scrollable-element="1" id = "title_find">Bezahlbaren Wohnraum finden</h1>
         </div>
-        <div class="adswp" style="height: auto !important;" data-eusoft-scrollable-element="1">
-        </div>
-        <div class="sub-box">
+        <div class="list-results">
+            <div class="list-summary sub-box">
             <h4 class="sub-content">
                 <span id="total">26</span> <span id="total_text">Wohnungen in der Nähe</span>
             </h4>
@@ -426,8 +287,8 @@
         <ul class="statelists">
 
         </ul>
-
-        <div class="pagination" id="paginationContainer"></div>
+            <div class="pagination" id="paginationContainer"></div>
+        </div>
 
     </div>
     <div class="detail-rightside" id = "asidePage">
@@ -484,16 +345,16 @@
       </a>
       <p class="footer-tagline">Leitf&auml;den und Ressourcen zu bezahlbarem Wohnraum.</p>
     </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
+    <nav class="footer-nav" aria-label="Fußzeilen-Navigation">
       <ul class="footer-ul">
-        <li><a href="/de/aboutus.html">About Us</a></li>
-        <li><a href="/de/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/de/aboutus.html">Über uns</a></li>
+        <li><a href="/de/disclaimer.html">Haftungsausschluss</a></li>
         <li><a href="/de/dcma.html">DMCA</a></li>
-        <li><a href="/de/privacy.html">Privacy Policy</a></li>
+        <li><a href="/de/privacy.html">Datenschutz</a></li>
       </ul>
     </nav>
   </div>
-  <p class="footer-copy">&copy; <span id="year">2025</span> Apkintelligence.com. All Rights Reserved.</p>
+  <p class="footer-copy">&copy; <span id="year">2025</span> Apkintelligence.com. Alle Rechte vorbehalten.</p>
   <div class="footer-share">
     <p class="footer-share__label">Website teilen</p>
     <div class="footer-share__icons">
@@ -527,13 +388,13 @@
 const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else if(lang == "us")
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }else
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
 // fetch('./asideState.html')
@@ -869,38 +730,27 @@ const lang = getLangFromPath()
 
         // 面包屑路径
         if (display_district && display_city && display_state) {
-
-            let city_href = `./district.html?state=${display_state}&city=${display_city}`
-            let state_href = `./city.html?state=${display_state}`
-            if(lang == "de"){
-                city_href = `/de/teach/state/${display_state}/${display_city}/district`; // 德语路径
-                state_href = `/de/teach/state/${display_state}/city`
-            } else if(lang == "us"){
-                city_href = `/us/teach/state/${display_state}/${display_city}/district`; // 美式路径
-                state_href = `/us/teach/state/${display_state}/city`
-            } else{
-                city_href = `/teach/state/${display_state}/${display_city}/district`; // 默认路径
-                state_href = `/teach/state/${display_state}/city`
-            }
-
+            let state_root_href = buildTeachStatePath(lang);
+            let county_href = buildTeachStatePath(lang, display_state, "city");
+            let district_href = buildTeachStatePath(lang, display_state, display_city, "district");
 
             document.getElementById("locate_search").innerHTML = `
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                <a href="./state.html" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${state_root_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
                     <i itemprop="name">${display_state}</i>
                 </a>
                 <meta itemprop="position" content="1">
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="${state_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${county_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
                     <i itemprop="name">${display_city}</i>
                 </a>
                 <meta itemprop="position" content="2">
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="${city_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${district_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
                     <i itemprop="name">${display_district}</i>
                 </a>
                 <meta itemprop="position" content="3">
@@ -1153,7 +1003,7 @@ const lang = getLangFromPath()
 
             document.getElementById("lang_item2").innerText="Bezahlbare Wohnungen"
 
-        }else if(lang == "de")
+        }else if(lang == "us")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
             document.getElementById("total_text").innerText = "Apartments nearby";

@@ -1,7 +1,8 @@
 /**
  * 页面仍调用 loadXxx_advN(el)。
- * AdSense：与改造前完全一致（同步 innerHTML + adsbygoogle.push）。
- * ADX：仅 AD_CONFIG.mode === 'adx' 时走 ApkAdLoader。
+ * ADX 与 AdSense 分离、互不干扰：同一请求只走其中一条链路。
+ *   adx     → ApkAdLoader（GPT），不 push adsbygoogle
+ *   adsense → googleAds.js innerHTML + adsbygoogle.push，不调用 ApkAdLoader
  */
 (function (w) {
   var loaderMap = {
@@ -72,6 +73,13 @@
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
   }
 
+  function isAdFreePage() {
+    return (
+      (w.AD_CONFIG && w.AD_CONFIG.adFree) ||
+      (w.ApkAd && w.ApkAd.isAdFreePage && w.ApkAd.isAdFreePage())
+    );
+  }
+
   /** 原有 AdSense 逻辑，不做异步、不依赖 ad-loader */
   function renderAdsense(slotKey, el) {
     var fnName = toAdsenseFnName(slotKey);
@@ -91,8 +99,13 @@
   Object.keys(loaderMap).forEach(function (fnName) {
     var slotKey = loaderMap[fnName];
     w[fnName] = function (el) {
-      if (isAdxMode() && w.ApkAdLoader) {
-        w.ApkAdLoader.render(slotKey, el);
+      if (isAdFreePage()) {
+        return;
+      }
+      if (isAdxMode()) {
+        if (w.ApkAdLoader) {
+          w.ApkAdLoader.render(slotKey, el);
+        }
         return;
       }
       renderAdsense(slotKey, el);

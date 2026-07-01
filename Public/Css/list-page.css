@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+/* List page — outer container & pagination only; card sizes follow lch-office.css */
+
+body.page-list .list-results {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 20px 24px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+    margin-bottom: 24px;
+}
+
+body.page-list .list-summary.sub-box {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid #e8edf3;
+    border-radius: 12px;
+}
+
+body.page-list .list-summary .sub-content {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #142144;
+    line-height: 1.4;
+}
+
+body.page-list .list-summary #total {
+    color: #1173eb;
+    font-weight: 700;
+}
+
+/* Original list.html inline styles — preserve card/image dimensions */
+body.page-list .state_advClass {
+    text-align: center;
+}
+
+body.page-list .adswp {
+    text-align: center;
+}
+
+body.page-list .state-address {
+    display: flex;
+}
+
+body.page-list .state-address span {
+    flex: 1;
+    box-sizing: border-box;
+}
+
+body.page-list .imgli-box {
+    width: 48%;
+}
+
+body.page-list .statelists > a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+body.page-list .statelists-imgli {
+    text-align: left;
+}
+
+body.page-list .statelists-imgli.state_advClass .statelists-link,
+body.page-list .statelists-imgli.state_advClass {
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+body.page-list .statelists-imgli.state_advClass:hover .statelists-link {
+    transform: none;
+    box-shadow: none;
+}
+
+body.page-list .statelists-imgli#right_adv {
+    text-align: center;
+}
+
+body.page-list .statelists-imgli#right_adv [id^="apk-ad-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 12px;
+}
+
+/* Pagination */
+body.page-list .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #eef0f4;
+}
+
+body.page-list .pagination button,
+body.page-list .pagination .ellipsis {
+    min-width: 40px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    color: #142144;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+body.page-list .pagination .ellipsis {
+    background: transparent;
+    border-color: transparent;
+    color: #9ca3af;
+    cursor: default;
+    min-width: auto;
+    padding: 10px 6px;
+}
+
+body.page-list .pagination button:hover:not([disabled]):not(.active) {
+    background: #f8fafc;
+    border-color: #1173eb;
+    color: #1173eb;
+}
+
+body.page-list .pagination button[disabled] {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border-color: #e5e7eb;
+}
+
+body.page-list .pagination .active {
+    background: linear-gradient(135deg, #1173eb 0%, #0d5fbf 100%);
+    color: #fff;
+    border-color: transparent;
+}
+
+body.page-list .pagination .active:hover {
+    background: linear-gradient(135deg, #1173eb 0%, #0d5fbf 100%);
+    color: #fff;
+}
+
+@media screen and (max-width: 450px) {
+    body.page-list .statelists-link {
+        display: flex;
+        flex-direction: column;
+    }
+
+    body.page-list .imgli-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    body.page-list .list-results {
+        padding: 16px 12px 20px;
+        border-radius: 12px;
+    }
+
+    body.page-list .pagination button,
+    body.page-list .pagination .ellipsis {
+        padding: 8px 10px;
+        font-size: 14px;
+        min-width: 36px;
+    }
+}

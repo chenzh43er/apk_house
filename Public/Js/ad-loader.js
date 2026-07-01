@@ -1,8 +1,13 @@
 (function (w) {
-  /** 仅 ADX 模式使用；AdSense 不加载、不调用本文件逻辑 */
+  /** 仅 ADX 模式使用；与 AdSense 完全分离，互不加载、互不调用。 */
+
+  function isAdxMode() {
+    return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
+  }
   var sdkPromise = null;
   var adxServicesEnabled = false;
   var definedAdxSlots = Object.create(null);
+  var oopSlots = [];
   var slotListenerRegistered = false;
   var instanceSeq = 0;
 
@@ -74,6 +79,41 @@
     return normalizeGptSizes((def && def.sizes) || ["fluid"]);
   }
 
+  function isAdFreePage() {
+    return (
+      (w.AD_CONFIG && w.AD_CONFIG.adFree) ||
+      (w.ApkAd && w.ApkAd.isAdFreePage && w.ApkAd.isAdFreePage())
+    );
+  }
+
+  function displayOopSlots() {
+    oopSlots.forEach(function (item) {
+      w.googletag.display(item.slot);
+    });
+  }
+
+  function registerOopSlot(slotKey, slot) {
+    if (!slot) {
+      return;
+    }
+    oopSlots.push({ slotKey: slotKey, slot: slot });
+    if (adxServicesEnabled) {
+      w.googletag.display(slot);
+    }
+  }
+
+  function ensureAdxServices() {
+    if (adxServicesEnabled) {
+      return;
+    }
+    applyAdxPageConfig();
+    registerSlotListener();
+    w.googletag.pubads().collapseEmptyDivs(!shouldShowEmptyPlaceholder());
+    w.googletag.enableServices();
+    adxServicesEnabled = true;
+    displayOopSlots();
+  }
+
   function applyAdxPageConfig() {
     var attrs = {};
 
@@ -110,20 +150,57 @@
     }
   }
 
+  function isCardEmbedSlot(el) {
+    return (
+      el &&
+      (el.id === "down_listAdv" ||
+        el.id === "under_listAdv" ||
+        el.classList.contains("most-box--ad"))
+    );
+  }
+
+  function getAdDivInlineStyle(el) {
+    if (isCardEmbedSlot(el)) {
+      return (
+        "width:100%;max-width:100%;height:100%;min-height:0;margin:0;" +
+        "display:flex;align-items:center;justify-content:center;" +
+        "box-sizing:border-box;"
+      );
+    }
+    return (
+      "width:100%;max-width:100%;min-height:250px;text-align:center;" +
+      "margin:8px auto;display:block;box-sizing:border-box;"
+    );
+  }
+
   function showEmptyPlaceholder(divId, path) {
     var node = document.getElementById(divId);
     if (!node) {
       return;
     }
-    node.style.display = "block";
-    node.style.minHeight = "250px";
+    var cardEmbed = isCardEmbedSlot(node.parentElement);
+    node.style.display = cardEmbed ? "flex" : "block";
     node.style.boxSizing = "border-box";
-    node.style.border = "2px dashed #ccc";
-    node.style.background = "#fafafa";
     node.style.color = "#666";
-    node.style.fontSize = "13px";
     node.style.lineHeight = "1.5";
-    node.style.padding = "12px";
+    if (cardEmbed) {
+      node.style.minHeight = "0";
+      node.style.height = "100%";
+      node.style.margin = "0";
+      node.style.alignItems = "center";
+      node.style.justifyContent = "center";
+      node.style.flexDirection = "column";
+      node.style.padding = "10px";
+      node.style.border = "none";
+      node.style.background = "#f8fafc";
+      node.style.fontSize = "12px";
+    } else {
+      node.style.minHeight = "250px";
+      node.style.border = "2px dashed #ccc";
+      node.style.background = "#fafafa";
+      node.style.fontSize = "13px";
+      node.style.padding = "12px";
+    }
     node.innerHTML =
       "<strong>广告位已加载，暂无填充</strong><br>" +
       (isLocalHost()
@@ -242,7 +319,9 @@
     el.innerHTML =
       '<div id="' +
       divId +
-      '" style="min-width:300px;min-height:250px;text-align:center;margin:8px auto;"></div>';
+      '" style="' +
+      getAdDivInlineStyle(el) +
+      '"></div>';
 
     w.googletag = w.googletag || { cmd: [] };
     w.googletag.cmd.push(function () {
@@ -269,11 +348,7 @@
       }
 
       if (!adxServicesEnabled) {
-        applyAdxPageConfig();
-        registerSlotListener();
-        w.googletag.pubads().collapseEmptyDivs(!shouldShowEmptyPlaceholder());
-        w.googletag.enableServices();
-        adxServicesEnabled = true;
+        ensureAdxServices();
       }
 
       w.googletag.display(divId);
@@ -283,7 +358,7 @@
   }
 
   function render(slotKey, el) {
-    if (!el) {
+    if (!el || !isAdxMode() || isAdFreePage()) {
       return;
     }
 
@@ -298,5 +373,8 @@
 
   w.ApkAdLoader = {
     render: render,
+    ensureGptSdk: ensureGptSdk,
+    ensureAdxServices: ensureAdxServices,
+    registerOopSlot: registerOopSlot,
   };
 })(window);

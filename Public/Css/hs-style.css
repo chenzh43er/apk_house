@@ -2646,3 +2646,16 @@ select:not(:-internal-list-box) {
         font-size: 26px;
     }
 }
+
+/**
+ * 覆盖旧版 hs-style 导航规则，避免与 site-chrome 移动端 header 冲突
+ */
+@media screen and (max-width: 900px) {
+    header .nav ul li a:nth-child(2n) {
+        float: none;
+    }
+
+    header .nav-logo {
+        display: none;
+    }
+}

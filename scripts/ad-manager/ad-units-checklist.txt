@@ -55,4 +55,15 @@ networkCode: 23357265712
   /23357265712/house_result/result_adv1
   /23357265712/house_detail/detail_adv1
 
+=== 第三步：Out-of-Page 广告单元（GAM 后台手动创建，类型选 Out-of-page）===
+  [父级] code=house_site  路径=house_site  上级=(根下)
+  [OOP] code=bottom_anchor  路径=house_site/bottom_anchor  格式=BOTTOM_ANCHOR  (前端: bottom_anchor)
+  [OOP] code=interstitial  路径=house_site/interstitial  格式=INTERSTITIAL  (前端: interstitial)
+  [OOP] code=right_rail  路径=house_site/right_rail  格式=RIGHT_SIDE_RAIL  (默认关闭，ad-config.adx.oop.rightRail)
+
+=== 无广告页面（不加载任何 Google 广告 JS）===
+  /de/index.html  /us/index.html  /de-ch-at/index.html
+
 创建完成后，页面加 ?ad=adx 测试。
+锚定预览：URL 加 #gamBottomAnchorDemo
+穿插预览：需在 GAM 配置 Line Item 后测试；部分链接可加 data-google-interstitial="false" 排除。

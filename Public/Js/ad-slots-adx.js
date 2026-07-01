@@ -54,4 +54,20 @@
     post_adv2: { unit: "house_post/post_adv2", sizes: fluidBanner },
     post_adv3: { unit: "house_post/post_adv3", sizes: fluidBanner },
   };
+
+  /** Out-of-Page：锚定 / 穿插（GAM 需建 Out-of-page 类型广告单元） */
+  w.ADX_OOP_DEFS = {
+    bottom_anchor: {
+      unit: "house_site/bottom_anchor",
+      format: "BOTTOM_ANCHOR",
+    },
+    interstitial: {
+      unit: "house_site/interstitial",
+      format: "INTERSTITIAL",
+    },
+    right_rail: {
+      unit: "house_site/right_rail",
+      format: "RIGHT_SIDE_RAIL",
+    },
+  };
 })(window);

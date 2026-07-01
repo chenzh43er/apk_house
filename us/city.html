@@ -39,6 +39,9 @@
           content="UsLowCostHousing provides information on all lists of Affordable Housing in Alaska. Find the best one near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
+    <link rel="stylesheet" href="/Public/Css/form-page.css">
+    <link rel="stylesheet" href="/Public/Css/teach-page.css">
+    <link rel="stylesheet" href="/Public/Css/state-page.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
     <script src="/Public/Js/ad-config.js"></script>
@@ -46,6 +49,7 @@
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
@@ -146,7 +150,7 @@
 
 </head>
 
-<body style="display: none">
+<body class="page-state page-teach page-city" aria-hidden="false" style="display: none">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
@@ -291,21 +295,30 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
     <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menu</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Home</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
@@ -587,85 +600,114 @@
         </symbol>
     </defs>
 </svg>
-<main class="wrapper contents no-sidebar"
-      style="margin-bottom: 30px; height: auto !important; min-height: 0px !important;">
-    <div class="detail-left" style="height: auto !important;" data-eusoft-scrollable-element="1">
-        <div class="title_box" data-eusoft-scrollable-element="1">
-            <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-                    <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="/de/Public" itemprop="item"><i itemprop="name">Home</i></a>
+<main class="wrapper contents state-main">
+    <div class="detail-left state-content" data-eusoft-scrollable-element="1">
+        <div class="state-page-head">
+            <nav class="state-page-head__crumbs" aria-label="Breadcrumb">
+                <ol class="state-crumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="./home.html" itemprop="item"><span id="state_crumb_home" itemprop="name">Home</span></a>
                         <meta itemprop="position" content="1">
-                    </span>
-
-                <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <span class="bread-crumbs-icon">/</span>
-                        <a href="#" itemprop="item" class="cur-bread-crumbs">
-                            <i itemprop="name">Affordable Housing</i>
-                        </a>
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a href="#" id="state_crumb_parent_link" itemprop="item"><span id="state_crumb_parent" itemprop="name">State</span></a>
                         <meta itemprop="position" content="2">
-                    </span>
-
-            </div>
-            <h1 class="title" data-eusoft-scrollable-element="1" id = "title_find">Find Affordable Housing</h1>
-        </div>
-        <div style="text-align: center" id="state_adv1">
-
-        </div>
-
-        <div class="select-text">
-            <div class="select-box select-now">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img id = "conPic" src="" alt="deLogo" style="width: 50px;height: 64px;"/>
-                    <div class="h4" id = "state_label"></div>
-                </div>
-            </div>
-            <div class="select-box select-now">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img id = "statePic" src="" alt="deLogo" style="width: 50px;height: 64px;"/>
-                    <div class="h4" id = "lang_city"></div>
-                </div>
-            </div>
-            <div class="select-box select-after">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img src="./Public/Images/cityPic.png" alt="deLogo" style="width: 64px;height: 64px;"/>
-                    <div class="h4" id = "lang_district"></div>
-                </div>
-            </div>
-            <div class="select-box select-after">
-                <div class="prog"></div>
-                <div class="step_box">
-                    <img src="./Public/Images/districtPic.png" alt="deLogo" style="width: 64px;height: 64px;"/>
-                    <div class="h4" id = "lang_apartment"></div>
-                </div>
-            </div>
+                    </li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+                        <span id="state_crumb_current" itemprop="name">Select city</span>
+                        <meta itemprop="position" content="3">
+                    </li>
+                </ol>
+            </nav>
+            <p class="state-page-head__label" id="state_page_label">City selection</p>
+            <h1 class="state-page-head__title" id="title_find">Find affordable housing</h1>
+            <p class="state-page-lead" id="state_page_lead">Pick a city to see affordable housing programs and listings.</p>
         </div>
 
-        <ul class="select-state" id="select-state">
+        <div class="adswp state-ad" id="state_adv1">Advertise</div>
 
-        </ul>
-        <div id = "ddr_adv"></div>
-        <p class="how-to" id = "lang_how1">
-            Affordable Housing is
-            available at subsidized rates due to government funding and incentives for low-income people. The
-            monthly rental cost is <b>as low as $300</b>, which is much lower than the market rent!
-        </p>
-        <p class="how-to" id = "lang_how2">
-            Find affordable housing for:<br>1. Seniors<br>2. Disabilities<br>3. Homeless<br>4. Single mom<br>5. Low
-            income families<br>6. Other groups<br><br>Our affordable housing includes:<br>1. HUD apartments<br>2. Public
-            housing<br>3. Section 8 apartments<br>4. Low income tax credit apartments<br>5. Other type of affordable
-            housing
-        <div></div>
-        </p>
+        <div class="teach-steps-card state-steps-card">
+            <ol class="select-text teach-steps teach-steps-flow" role="list">
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img id="conPic" class="teach-step__img" src="" alt="Country">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_state"></p>
+                            <span class="teach-step__hint" id="lang_state_hint"></span>
+                        </div>
+                    </article>
+                </li>
+                <li class="select-box select-now teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                            <span class="teach-step__pill" id="lang_step_pill">You are here</span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img id="statePic" class="teach-step__img" src="" alt="State">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_city"></p>
+                            <span class="teach-step__hint" id="lang_city_hint"></span>
+                        </div>
+                    </article>
+                </li>
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img class="teach-step__img teach-step__img--svg" src="/Public/Images/teach/step-city.svg" alt="District">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_district"></p>
+                            <span class="teach-step__hint" id="lang_district_hint"></span>
+                        </div>
+                    </article>
+                </li>
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img class="teach-step__img teach-step__img--svg" src="/Public/Images/teach/step-listings.svg" alt="Apartment">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_apartment"></p>
+                            <span class="teach-step__hint" id="lang_apartment_hint"></span>
+                        </div>
+                    </article>
+                </li>
+            </ol>
+        </div>
 
+        <div class="state-picker-card">
+            <div class="state-picker-head">
+                <h2 class="state-picker-title" id="state_picker_title">Browse by city</h2>
+                <p class="state-picker-lead" id="state_picker_lead">Tap a city below to see available housing programs.</p>
+            </div>
+            <ul class="select-state state-grid" id="select-state"></ul>
+        </div>
+
+        <div class="teach-info state-info">
+            <article class="teach-info-card teach-info-card--intro">
+                <h2 class="teach-info-card__title" id="lang_how1_title">Your free guide to affordable housing</h2>
+                <p class="teach-info-card__lead" id="lang_how1"></p>
+            </article>
+            <article class="teach-info-card">
+                <p class="teach-info-card__lead teach-info-card__lead--secondary" id="lang_how2"></p>
+            </article>
+        </div>
     </div>
 
-    <div class="detail-rightside" id = "asidePage">
-
-    </div>
-
+    <div class="detail-rightside" id="asidePage"></div>
 </main>
 
 <footer id="footer">
@@ -721,9 +763,9 @@
     const lang = getLangFromPath(); // 统一声明一次
 
 if(lang == "de" || lang == "de-ch-at"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else{
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
 // aside 路径选择
@@ -800,7 +842,119 @@ if(lang == "de" || lang == "de-ch-at"){
         });
 
 </script>
+<script>
+    function applyStateStepImages(lang, country) {
+        var con = document.getElementById('conPic');
+        var state = document.getElementById('statePic');
+        if (!con || !state) return;
+        if (lang === 'de') {
+            con.src = './Public/Images/dePic.png';
+            state.src = './Public/Images/statePic.png';
+        } else if (lang === 'us') {
+            con.src = './Public/Images/amPic.png';
+            state.src = './Public/Images/amSPic.png';
+        } else if (country === 'ch') {
+            con.src = './Public/Images/chPic.png';
+            state.src = './Public/Images/chCity.png';
+        } else if (country === 'at') {
+            con.src = './Public/Images/atPic.png';
+            state.src = './Public/Images/atCity.png';
+        } else {
+            con.src = './Public/Images/dePic.png';
+            state.src = './Public/Images/statePic.png';
+        }
+    }
+
+    function applyCityPageCopy(lang, stateName) {
+        var COPY = {
+            de: {
+                pageLabel: 'Stadt wählen',
+                crumbHome: 'Startseite',
+                crumbCurrent: 'Stadt wählen',
+                pageLead: 'Wählen Sie eine Stadt, um Programme und Angebote in Ihrer Region zu sehen.',
+                stepPill: 'Aktueller Schritt',
+                pickerTitle: 'Nach Stadt suchen',
+                pickerLead: 'Tippen Sie auf eine Stadt, um verfügbare Wohnprogramme zu sehen.',
+                how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
+                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
+                how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
+                stateHint: 'Ausgewählt',
+                city: 'Stadt auswählen', cityHint: 'Stadt in der Nähe finden',
+                district: 'Bezirk auswählen', districtHint: 'Stadtteil eingrenzen',
+                apartment: 'Wohnung auswählen', apartmentHint: 'Passende Angebote ansehen',
+                title: 'Bezahlbaren Wohnraum finden'
+            },
+            us: {
+                pageLabel: 'City selection',
+                crumbHome: 'Home',
+                crumbCurrent: 'Select city',
+                pageLead: 'Pick a city to see affordable housing programs and listings in your area.',
+                stepPill: 'You are here',
+                pickerTitle: 'Browse by city',
+                pickerLead: 'Tap a city below to see available housing programs.',
+                how1Title: 'Your free guide to affordable housing',
+                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
+                how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
+                stateHint: 'Selected',
+                city: 'Select city', cityHint: 'Pick a city nearby',
+                district: 'Select district', districtHint: 'Narrow your area',
+                apartment: 'Select apartment', apartmentHint: 'Browse matching listings',
+                title: 'Find affordable housing'
+            },
+            'de-ch-at': {
+                pageLabel: 'Gemeinde wählen',
+                crumbHome: 'Startseite',
+                crumbCurrent: 'Gemeinde wählen',
+                pageLead: 'Wählen Sie eine Gemeinde, um Programme und Angebote in Ihrer Region zu sehen.',
+                stepPill: 'Aktueller Schritt',
+                pickerTitle: 'Nach Gemeinde suchen',
+                pickerLead: 'Tippen Sie auf eine Gemeinde, um verfügbare Wohnprogramme zu sehen.',
+                how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
+                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 €.',
+                how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
+                stateHint: 'Ausgewählt',
+                city: 'Gemeinde wählen', cityHint: 'Ort in der Nähe finden',
+                district: 'Quartier wählen', districtHint: 'Umgebung eingrenzen',
+                apartment: 'Wohnung wählen', apartmentHint: 'Passende Angebote ansehen',
+                title: 'Bezahlbaren Wohnraum finden'
+            }
+        };
+        var copy = COPY[lang] || COPY.us;
+        var set = function (id, text) {
+            var el = document.getElementById(id);
+            if (el && text != null) el.textContent = text;
+        };
+        set('title_find', copy.title);
+        set('state_page_label', copy.pageLabel);
+        set('state_crumb_home', copy.crumbHome);
+        set('state_crumb_current', copy.crumbCurrent);
+        set('state_page_lead', copy.pageLead);
+        set('lang_step_pill', copy.stepPill);
+        set('state_picker_title', copy.pickerTitle);
+        set('state_picker_lead', copy.pickerLead);
+        set('lang_how1_title', copy.how1Title);
+        set('lang_how1', copy.how1);
+        set('lang_how2', copy.how2);
+        set('lang_state', stateName || '');
+        set('lang_state_hint', copy.stateHint);
+        set('lang_city', copy.city);
+        set('lang_city_hint', copy.cityHint);
+        set('lang_district', copy.district);
+        set('lang_district_hint', copy.districtHint);
+        set('lang_apartment', copy.apartment);
+        set('lang_apartment_hint', copy.apartmentHint);
+        var parent = document.getElementById('state_crumb_parent');
+        var parentLink = document.getElementById('state_crumb_parent_link');
+        if (parent && stateName) parent.textContent = stateName;
+        if (parentLink && stateName) {
+            parentLink.href = buildTeachStatePath(lang);
+        }
+    }
+
+</script>
+
 <script type="module">
+    const lang = getLangFromPath();
     const params = new URLSearchParams(window.location.search);
     const country = params.get('country');
 
@@ -839,14 +993,13 @@ if(lang == "de" || lang == "de-ch-at"){
         const { fetchCitiesByState } = module;
 
 
-    const params = new URLSearchParams(window.location.search);
-    const display_state = getStateFromUrl();  // "Tom"
+    const display_state = getStateFromUrl();
 
     const {data, error} = await fetchCitiesByState(display_state);
 
     $(document).ready(function () {
-
-        document.getElementById("state_label").innerText = display_state
+        applyCityPageCopy(lang, display_state);
+        applyStateStepImages(lang, country);
 
         let innerStr = '';
         data.forEach((item,index)  => {
@@ -864,21 +1017,12 @@ if(lang == "de" || lang == "de-ch-at"){
                         }
 
                 innerStr += `<li>
-    <a href="${link_href}" class="state-link">
-    <div class = "selectLidiv">
-    <div class="text-wrapper">
-    ${item.display_city}</div></div>
-    </a>
-    </li>`;
-            if((index+1) % 12 == 0 && data.length > 12){
+                <a href="${link_href}" class="state-link"><span class="state-tile selectLidiv"><span class="state-tile__text text-wrapper">${item.display_city}</span></span></a>
+                </li>`;
+            if((index+1) % 16 == 0){
                 innerStr += `<li class = "divider-wrap state_advClass"><div>${returnAdvWord()}</div></li>`
             }
         });
-
-        if(data.length < 12){
-            document.getElementById("ddr_adv").innerHTML = returnAdvWord()
-        }
-
         document.getElementById('select-state').innerHTML = innerStr;
         document.body.style.display = "block";
 
@@ -891,21 +1035,6 @@ if(lang == "de" || lang == "de-ch-at"){
             });
         }, { rootMargin: '5px' });
         document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
-
-        const ddr_adv = document.getElementById('ddr_adv')
-        if (ddr_adv) {
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadCity_adv3(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, {
-                rootMargin: '5px',
-            });
-            observer.observe(ddr_adv);
-        }
     });
     });
 
@@ -917,10 +1046,10 @@ if(lang == "de" || lang == "de-ch-at"){
             return decodeURIComponent(url.searchParams.get("state"));
         }
 
-        // 如果没有参数，再从 /xx/Alabama/city 或 /xx/Baden-Württemberg/city 这种路径提取
-        const match = url.pathname.match(/\/([^/]+)\/city$/);
+        const regex = /^\/(?:(?:de|de-ch-at)(?:\/teach\/state)?|us\/teach\/state)\/([^/]+)(?:\/city)?\/?$/i;
+        const match = url.pathname.match(regex);
         if (match) {
-            return decodeURIComponent(match[1]); // 解码 URL 编码
+            return decodeURIComponent(match[1]);
         }
 
         return null;
@@ -928,162 +1057,7 @@ if(lang == "de" || lang == "de-ch-at"){
 
 </script>
 
-<script>
-    $(document).ready(function () {
-        const lang = getLangFromPath()
-        //console.log(lang)
-        if(lang == "de"){
-            document.getElementById("title_find").innerText="Bezahlbaren Wohnraum finden"
 
-            document.getElementById("lang_city").innerText="Stadt auswählen"
-            document.getElementById("lang_district").innerText="Bezirk auswählen"
-            document.getElementById("lang_apartment").innerText="Wohnung auswählen"
-
-            document.getElementById("lang_how1").innerText="Bezahlbarer Wohnraum ist dank staatlicher Fördermittel und Anreize für einkommensschwache Personen zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 €, was deutlich unter dem üblichen Marktpreis liegt!"
-            document.getElementById("lang_how2").innerHTML=`<p class="how-to" id="lang_how2">
-    Finden Sie bezahlbaren Wohnraum für:<br>
-    1. Senioren<br>
-    2. Menschen mit Behinderung<br>
-    3. Obdachlose<br>
-    4. Alleinerziehende Mütter<br>
-    5. Familien mit geringem Einkommen<br>
-    6. Andere Personengruppen<br><br>
-
-    Unser Angebot an bezahlbarem Wohnraum umfasst:<br>
-    1. HUD-Wohnungen<br>
-    2. Sozialwohnungen<br>
-    3. Wohnungen mit Section-8-Förderung<br>
-    4. Wohnungen mit Steuergutschrift für einkommensschwache Haushalte<br>
-    5. Weitere Arten von bezahlbarem Wohnraum
-    <div></div>
-</p>`
-            document.getElementById("conPic").src = "./Public/Images/dePic.png"
-            document.getElementById("statePic").src = "./Public/Images/statePic.png"
-        }else if (lang == "us")
-        {
-            document.getElementById("title_find").innerText = "Find affordable housing";
-
-            document.getElementById("lang_city").innerText = "Select city";
-            document.getElementById("lang_district").innerText = "Select district";
-            document.getElementById("lang_apartment").innerText = "Select apartment";
-
-            document.getElementById("lang_how1").innerText = "Affordable housing is available at subsidized prices for low-income individuals thanks to government subsidies and incentives. Monthly rent starts at just €300, which is significantly below the usual market rate!";
-
-            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
-    Find affordable housing for:<br>
-    1. Seniors<br>
-    2. People with disabilities<br>
-    3. Homeless individuals<br>
-    4. Single mothers<br>
-    5. Low-income families<br>
-    6. Other groups of people<br><br>
-
-    Our affordable housing options include:<br>
-    1. HUD housing<br>
-    2. Social housing<br>
-    3. Section 8 housing<br>
-    4. Housing with low-income tax credits<br>
-    5. Other types of affordable housing
-    <div></div>
-</p>`;
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
-            document.getElementById("conPic").style.width = "64px"
-            document.getElementById("statePic").style.width = "64px"
-        }else if(lang == "de-ch-at")
-        {
-            document.getElementById("title_find").innerText = "Find affordable housing";
-
-            document.getElementById("lang_city").innerText = "Select city";
-            document.getElementById("lang_district").innerText = "Select district";
-            document.getElementById("lang_apartment").innerText = "Select apartment";
-
-            document.getElementById("lang_how1").innerText = "Affordable housing is available at subsidized prices for low-income individuals thanks to government subsidies and incentives. Monthly rent starts at just €300, which is significantly below the usual market rate!";
-
-            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
-    Find affordable housing for:<br>
-    1. Seniors<br>
-    2. People with disabilities<br>
-    3. Homeless individuals<br>
-    4. Single mothers<br>
-    5. Low-income families<br>
-    6. Other groups of people<br><br>
-
-    Our affordable housing options include:<br>
-    1. HUD housing<br>
-    2. Social housing<br>
-    3. Section 8 housing<br>
-    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
-    5. Other types of affordable housing
-    <div></div>
-</p>`;
-
-            const country = params.get('country');     // "123"
-
-            if(country == "de"){
-                document.getElementById("conPic").src = "./Public/Images/dePic.png"
-                document.getElementById("statePic").src = "./Public/Images/statePic.png"
-            }else if (country == "ch"){
-                document.getElementById("conPic").src = "./Public/Images/chPic.png"
-                document.getElementById("statePic").src = "./Public/Images/chCity.png"
-            }else if (country == "at"){
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
-            }else{
-                document.getElementById("conPic").src = "./Public/Images/dePic.png"
-                document.getElementById("statePic").src = "./Public/Images/statePic.png"
-            }
-
-            document.getElementById("conPic").style.width = "64px"
-            document.getElementById("statePic").style.width = "64px"
-        }
-        else{
-            document.getElementById("title_find").innerText = "Find affordable housing";
-
-            document.getElementById("lang_city").innerText = "Select city";
-            document.getElementById("lang_district").innerText = "Select district";
-            document.getElementById("lang_apartment").innerText = "Select apartment";
-
-            document.getElementById("lang_how1").innerText = "Affordable housing is available at subsidized prices for low-income individuals thanks to government subsidies and incentives. Monthly rent starts at just €300, which is significantly below the usual market rate!";
-
-            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
-    Find affordable housing for:<br>
-    1. Seniors<br>
-    2. People with disabilities<br>
-    3. Homeless individuals<br>
-    4. Single mothers<br>
-    5. Low-income families<br>
-    6. Other groups of people<br><br>
-
-    Our affordable housing options include:<br>
-    1. HUD housing<br>
-    2. Social housing<br>
-    3. Section 8 housing<br>
-    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
-    5. Other types of affordable housing
-    <div></div>
-</p>`;
-            const country = params.get('country');     // "123"
-
-            if(country == "de"){
-                document.getElementById("conPic").src = "./Public/Images/dePic.png"
-                document.getElementById("statePic").src = "./Public/Images/statePic.png"
-            }else if (country == "ch"){
-                document.getElementById("conPic").src = "./Public/Images/chPic.png"
-                document.getElementById("statePic").src = "./Public/Images/chCity.png"
-            }else if (country == "at"){
-                document.getElementById("conPic").src = "./Public/Images/atPic.png"
-                document.getElementById("statePic").src = "./Public/Images/atCity.png"
-            }else{
-                document.getElementById("conPic").src = "./Public/Images/dePic.png"
-                document.getElementById("statePic").src = "./Public/Images/statePic.png"
-            }
-
-            document.getElementById("conPic").style.width = "64px"
-            document.getElementById("statePic").style.width = "64px"
-        }
-    });
-</script>
 
 <script>
     $(document).ready(function () {

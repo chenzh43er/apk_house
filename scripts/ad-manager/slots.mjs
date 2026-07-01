@@ -50,6 +50,22 @@ export const ADX_SLOT_DEFS = {
   post_adv3: { unit: "house_post/post_adv3", sizes: fluidBanner },
 };
 
+/** Out-of-Page：锚定 / 穿插（GAM 后台需手动建 Out-of-page 类型单元） */
+export const ADX_OOP_DEFS = {
+  bottom_anchor: {
+    unit: "house_site/bottom_anchor",
+    format: "BOTTOM_ANCHOR",
+  },
+  interstitial: {
+    unit: "house_site/interstitial",
+    format: "INTERSTITIAL",
+  },
+  right_rail: {
+    unit: "house_site/right_rail",
+    format: "RIGHT_SIDE_RAIL",
+  },
+};
+
 /** 解析为 [{ parentCode, code, name, sizes, slotKey, fullPath }] */
 export function listUnitsToCreate() {
   const rows = [];
@@ -73,7 +89,8 @@ export function listUnitsToCreate() {
 /** 所有需要存在的父级目录（按路径深度排序） */
 export function listParentFolders() {
   const folders = new Set();
-  for (const def of Object.values(ADX_SLOT_DEFS)) {
+  const allDefs = { ...ADX_SLOT_DEFS, ...ADX_OOP_DEFS };
+  for (const def of Object.values(allDefs)) {
     const parts = def.unit.split("/");
     for (let i = 1; i < parts.length; i++) {
       folders.add(parts.slice(0, i).join("/"));

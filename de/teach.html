@@ -1,4 +1,4 @@
-﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+﻿<html lang="de" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
@@ -14,6 +14,8 @@
           content="UsLowCostHousing offers you the easiest and fastest way to find Affordable Housing near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
+    <link rel="stylesheet" href="/Public/Css/form-page.css">
+    <link rel="stylesheet" href="/Public/Css/teach-page.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
     <script src="/Public/Js/ad-config.js"></script>
@@ -21,6 +23,7 @@
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
 <!--    <script src="./Public/Js/post/postName.js"></script>-->
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
@@ -45,33 +48,9 @@
 
 
     <!-- End Google Tag Manager -->
-    <style>
-        .loc-btn{
-            font-weight: bold !important;
-            color: white !important;
-        }
-
-        .button-div {
-            background-color: #f5b609;  /* 背景色 */
-            color: white;               /* 字体颜色 */
-            padding: 12px 20px;         /* 内边距 */
-            text-align: center;         /* 居中文本 */
-            border-radius: 8px;         /* 圆角 */
-            cursor: pointer;            /* 鼠标指针变为手型 */
-            font-size: 16px;            /* 字体大小 */
-            font-weight: bold;          /* 字体加粗 */
-            user-select: none;          /* 禁止选中文本 */
-            transition: background-color 0.3s;
-            margin-bottom: 20px;
-        }
-
-        .button-div:hover {
-            background-color: #e0a800; /* 悬浮时稍微变深 */
-        }
-    </style>
 </head>
 
-<body aria-hidden="false" style="visibility: hidden">
+<body class="page-teach" aria-hidden="false" style="visibility: hidden">
 
 
 <defs>
@@ -218,21 +197,30 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
-    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Startseite</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+    <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Hauptnavigation">
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menü</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Startseite</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
-    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
+    <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Menü öffnen">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
@@ -499,88 +487,137 @@
     </defs>
 </svg>
 
-<div class="indexitm-banner ab-indexitm-banner">
+<div class="indexitm-banner ab-indexitm-banner teach-hero">
     <div class="index-wrap">
         <div class="indexitm-banner-l">
             <div class="c-l" data-eusoft-scrollable-element="1" id="lang_locate">Locate current location</div>
             <h1 class="indexitm-banner-tit" data-eusoft-scrollable-element="1" id = "lang_find">Find Affordable Housing</h1>
             <p class="indexitm-banner-desc" id="lang_price">As low as $300/mo</p>
-            <ul class="ab-search-wrap" style="display: block">
-                <li><a class="loc-btn" id="lang_click" href="./state.html">
+            <ul class="ab-search-wrap">
+                <li><a class="loc-btn" id="lang_click" href="#">
                     <svg class="icon-loc" width="18" height="18">
                         <use xlink:href="#icon-loc"></use>
-                    </svg>Click Now 1</a></li>
+                    </svg><span id="lang_click_text">Start step 1 — select your state</span></a></li>
             </ul>
         </div>
     </div>
 </div>
 
 
-<main class="wrapper contents section8 no-sidebar"
-      style="margin-bottom: 30px; height: auto !important; min-height: 0px !important;">
-    <div class="detail-left" data-eusoft-scrollable-element="1" style="height: auto !important;">
-        <div class="adswp" style="height: auto !important;" data-eusoft-scrollable-element="1" id="teach_adv1">
+<main class="wrapper contents section8 teach-main">
+    <div class="detail-left teach-content">
+        <div class="adswp teach-ad" id="teach_adv1">
             Advertise
         </div>
 
-        <div class="select-text">
-            <div class="select-box select-now">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img id = "conPic" src="" alt="deLogo" style="width: 50px;height: 64px;"/>
-                    <div class="h4" id = "lang_state"></div>
+        <div class="teach-steps-card">
+            <header class="teach-steps-head">
+                <div class="teach-steps-head__body">
+                    <span class="teach-steps-label" id="lang_steps_label">How it works</span>
+                    <h2 class="teach-steps-title" id="lang_steps_title">Find housing in 4 easy steps</h2>
+                    <p class="teach-steps-lead" id="lang_steps_lead">Our free assistant walks you through each step — no sign-up required.</p>
                 </div>
-            </div>
-            <div class="select-box select-after">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img id = "statePic" src="" alt="deLogo" style="width: 50px;height: 64px;"/>
-                    <div class="h4" id = "lang_city"></div>
-                </div>
-            </div>
-            <div class="select-box select-after">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img src="./Public/Images/cityPic.png" alt="deLogo" style="width: 64px;height: 64px;"/>
-                    <div class="h4" id = "lang_district"></div>
-                </div>
-            </div>
-            <div class="select-box select-after">
-                <div class="prog" data-eusoft-scrollable-element="1"></div>
-                <div class="step_box">
-                    <img src="./Public/Images/districtPic.png" alt="deLogo" style="width: 64px;height: 64px;"/>
-                    <div class="h4" id = "lang_apartment"></div>
-                </div>
+            </header>
+            <ol class="select-text teach-steps teach-steps-flow" role="list">
+                <li class="select-box select-now teach-step" role="listitem">
+                    <a class="teach-step-go" id="teach_step_link" href="#">
+                        <article class="step_box teach-step__card teach-step__card--action">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                            <span class="teach-step__pill" id="lang_step_pill">Start here</span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img id="conPic" class="teach-step__img" src="" alt="Country">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_state"></p>
+                            <span class="teach-step__hint" id="lang_state_hint"></span>
+                        </div>
+                        </article>
+                    </a>
+                </li>
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img id="statePic" class="teach-step__img" src="" alt="State">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_city"></p>
+                            <span class="teach-step__hint" id="lang_city_hint"></span>
+                        </div>
+                    </article>
+                </li>
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img class="teach-step__img teach-step__img--svg" src="/Public/Images/teach/step-city.svg" alt="City">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_district"></p>
+                            <span class="teach-step__hint" id="lang_district_hint"></span>
+                        </div>
+                    </article>
+                </li>
+                <li class="select-box select-after teach-step" role="listitem">
+                    <article class="step_box teach-step__card">
+                        <div class="teach-step__head">
+                            <span class="prog teach-step__num" aria-hidden="true"></span>
+                        </div>
+                        <div class="teach-step__icon">
+                            <img class="teach-step__img teach-step__img--svg" src="/Public/Images/teach/step-listings.svg" alt="Apartment">
+                        </div>
+                        <div class="teach-step__copy">
+                            <p class="h4 teach-step__text" id="lang_apartment"></p>
+                            <span class="teach-step__hint" id="lang_apartment_hint"></span>
+                        </div>
+                    </article>
+                </li>
+            </ol>
+            <div class="teach-steps-foot">
+                <p class="teach-steps-foot__note" id="lang_steps_foot">Free · No sign-up · About 2 minutes</p>
+                <a class="teach-steps-foot__btn" id="teach_steps_cta" href="#">
+                    <span id="lang_steps_cta">Select your state</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
             </div>
         </div>
 
-        <div class="adswp" style="height: auto !important;" data-eusoft-scrollable-element="1" id="teach_adv2">
+        <div class="adswp teach-ad" id="teach_adv2">
             Advertise
         </div>
 
-        <div class="button-div" onclick="handleClick()" id = "lang_clickDiv">
-            点击这里
+        <a class="button-div teach-cta" id="lang_clickDiv" href="#">
+            Select your state to begin
+        </a>
+
+        <div class="teach-info">
+            <article class="teach-info-card teach-info-card--intro">
+                <h2 class="teach-info-card__title" id="lang_how1_title">Your free guide to affordable housing</h2>
+                <p class="teach-info-card__lead" id="lang_how1">
+                    Apkintelligence is a free housing search assistant. We bring together Section 8 listings,
+                    public housing info, LIHTC apartments, waiting-list updates, and local housing authority
+                    resources — pick your state and explore options near you in minutes.
+                </p>
+            </article>
+            <article class="teach-info-card teach-info-card--grid">
+                <div class="teach-info-grid">
+                    <section class="teach-info-col">
+                        <h3 class="teach-info-col__title" id="lang_how2_who_title">Who uses this assistant</h3>
+                        <ul class="teach-info-list" id="lang_how2_who"></ul>
+                    </section>
+                    <section class="teach-info-col">
+                        <h3 class="teach-info-col__title" id="lang_how2_types_title">What you'll find here</h3>
+                        <ul class="teach-info-list" id="lang_how2_types"></ul>
+                    </section>
+                </div>
+            </article>
         </div>
-
-
-        <p class="how-to" id = "lang_how1">
-            Affordable Housing is
-            available at subsidized rates due to government funding and incentives for low-income people. The
-            monthly rental cost is <b>as low as $300</b>, which is much lower than the market rent!
-        </p>
-        <p class="how-to" id = "lang_how2">
-            Find affordable housing for:<br>1. Seniors<br>2. Disabilities<br>3. Homeless<br>4. Single mom<br>5. Low
-            income families
-
-            <br>6. Other groups<br>
-            <br>Our affordable housing includes:
-            <br>1. HUD
-            apartments
-            <br>2. Public housing
-            <br>3. Section 8 apartments
-            <br>4. Low income tax credit apartments
-            <br>5.Other type of affordable housing
-        </p>
     </div>
 
 
@@ -588,6 +625,13 @@
     </div>
 
 </main>
+
+<div class="teach-sticky-cta" id="teach_sticky_bar" aria-hidden="true">
+    <div class="teach-sticky-cta__inner">
+        <span class="teach-sticky-cta__label" id="lang_sticky_label">Step 1 of 4</span>
+        <a class="teach-sticky-cta__btn" id="lang_sticky_cta" href="#">Select state →</a>
+    </div>
+</div>
 
 <footer id = "footer">
 <div class="wrapper">
@@ -598,16 +642,16 @@
       </a>
       <p class="footer-tagline">Leitf&auml;den und Ressourcen zu bezahlbarem Wohnraum.</p>
     </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
+    <nav class="footer-nav" aria-label="Fußzeilen-Navigation">
       <ul class="footer-ul">
-        <li><a href="/de/aboutus.html">About Us</a></li>
-        <li><a href="/de/disclaimer.html">Disclaimer</a></li>
+        <li><a href="/de/aboutus.html">Über uns</a></li>
+        <li><a href="/de/disclaimer.html">Haftungsausschluss</a></li>
         <li><a href="/de/dcma.html">DMCA</a></li>
-        <li><a href="/de/privacy.html">Privacy Policy</a></li>
+        <li><a href="/de/privacy.html">Datenschutz</a></li>
       </ul>
     </nav>
   </div>
-  <p class="footer-copy">&copy; <span id="year">2025</span> Apkintelligence.com. All Rights Reserved.</p>
+  <p class="footer-copy">&copy; <span id="year">2025</span> Apkintelligence.com. Alle Rechte vorbehalten.</p>
   <div class="footer-share">
     <p class="footer-share__label">Website teilen</p>
     <div class="footer-share__icons">
@@ -642,13 +686,13 @@
 const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else if(lang == "us")
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }else
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
     const langAside = ["de", "de-ch-at"].includes(lang)
@@ -740,148 +784,270 @@ const lang = getLangFromPath()
 </script>
 
 <script>
+    function getTeachStateHref() {
+        return appendParams(buildTeachStatePath(getLangFromPath()));
+    }
+
+    function bindTeachFunnelLinks() {
+        var href = getTeachStateHref();
+        ['lang_click', 'lang_clickDiv', 'teach_steps_cta', 'teach_step_link', 'lang_sticky_cta', 'teach_info_go'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.href = href;
+        });
+    }
+
+    var TEACH_FUNNEL = {
+        de: {
+            heroCta: 'Schritt 1 — Bundesland wählen',
+            mainCta: 'Bundesland wählen und starten',
+            stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
+            stepsCta: 'Bundesland wählen',
+            stickyLabel: 'Schritt 1 von 4',
+            stickyCta: 'Bundesland wählen →',
+            introLink: 'Mit Bundesland starten →'
+        },
+        us: {
+            heroCta: 'Start step 1 — select your state',
+            mainCta: 'Select your state to begin',
+            stepsFoot: 'Free · No sign-up · About 2 minutes',
+            stepsCta: 'Select your state',
+            stickyLabel: 'Step 1 of 4',
+            stickyCta: 'Select state →',
+            introLink: 'Start with your state →'
+        },
+        'de-ch-at': {
+            heroCta: 'Schritt 1 — Kanton wählen',
+            mainCta: 'Kanton wählen und starten',
+            stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
+            stepsCta: 'Kanton wählen',
+            stickyLabel: 'Schritt 1 von 4',
+            stickyCta: 'Kanton wählen →',
+            introLink: 'Mit Kanton starten →'
+        }
+    };
+
+    function applyTeachFunnelCopy(lang) {
+        var copy = TEACH_FUNNEL[lang] || TEACH_FUNNEL.us;
+        var heroText = document.getElementById('lang_click_text');
+        if (heroText) heroText.textContent = copy.heroCta;
+        var mainCta = document.getElementById('lang_clickDiv');
+        if (mainCta) mainCta.textContent = copy.mainCta;
+        var stepsFoot = document.getElementById('lang_steps_foot');
+        if (stepsFoot) stepsFoot.textContent = copy.stepsFoot;
+        var stepsCta = document.getElementById('lang_steps_cta');
+        if (stepsCta) stepsCta.textContent = copy.stepsCta;
+        var stickyLabel = document.getElementById('lang_sticky_label');
+        if (stickyLabel) stickyLabel.textContent = copy.stickyLabel;
+        var stickyCta = document.getElementById('lang_sticky_cta');
+        if (stickyCta) stickyCta.textContent = copy.stickyCta;
+        return copy;
+    }
+
+    function applyTeachStepImages(lang) {
+        var con = document.getElementById('conPic');
+        var state = document.getElementById('statePic');
+        if (!con || !state) return;
+        if (lang === 'de') {
+            con.src = './Public/Images/dePic.png';
+            state.src = './Public/Images/statePic.png';
+        } else if (lang === 'de-ch-at') {
+            con.src = './Public/Images/chPic.png';
+            state.src = './Public/Images/chCity.png';
+        } else {
+            con.src = './Public/Images/amPic.png';
+            state.src = './Public/Images/amSPic.png';
+        }
+    }
+
+    function initStickyTeachCta() {
+        var bar = document.getElementById('teach_sticky_bar');
+        var hero = document.querySelector('.teach-hero');
+        if (!bar || !hero) return;
+        document.body.classList.add('teach-has-sticky');
+        var observer = new IntersectionObserver(function (entries) {
+            var visible = !entries[0].isIntersecting;
+            bar.classList.toggle('is-visible', visible);
+            bar.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        }, { threshold: 0, rootMargin: '0px' });
+        observer.observe(hero);
+    }
+
+    function fillTeachInfoList(el, items) {
+        if (!el || !items) return;
+        el.innerHTML = items.map(function (item) {
+            return '<li>' + item + '</li>';
+        }).join('');
+    }
+
+    function applyTeachInfo(copy) {
+        var titleEl = document.getElementById('lang_how1_title');
+        var leadEl = document.getElementById('lang_how1');
+        var whoTitleEl = document.getElementById('lang_how2_who_title');
+        var typesTitleEl = document.getElementById('lang_how2_types_title');
+        if (titleEl) titleEl.textContent = copy.introTitle;
+        if (leadEl) {
+            var introLink = copy.introLink
+                ? ' <a class="teach-info-go" id="teach_info_go" href="#">' + copy.introLink + '</a>'
+                : '';
+            leadEl.innerHTML = copy.introHtml + introLink;
+        }
+        if (whoTitleEl) whoTitleEl.textContent = copy.whoTitle;
+        if (typesTitleEl) typesTitleEl.textContent = copy.typesTitle;
+        fillTeachInfoList(document.getElementById('lang_how2_who'), copy.whoItems);
+        fillTeachInfoList(document.getElementById('lang_how2_types'), copy.typesItems);
+    }
+
+    function applyTeachStepsHeader(lang) {
+        var STEPS = {
+            de: {
+                label: 'So funktioniert\u2019s',
+                title: 'In 4 Schritten zur passenden Wohnung',
+                lead: 'Unser kostenloser Assistent f\u00fchrt Sie Schritt f\u00fcr Schritt \u2014 ohne Anmeldung.',
+                pill: 'Hier starten',
+                items: [
+                    { id: 'lang_state', hint: 'lang_state_hint', text: 'Bundesland w\u00e4hlen', hintText: 'Ihre Region festlegen' },
+                    { id: 'lang_city', hint: 'lang_city_hint', text: 'Stadt w\u00e4hlen', hintText: 'Stadt in der N\u00e4he finden' },
+                    { id: 'lang_district', hint: 'lang_district_hint', text: 'Bezirk w\u00e4hlen', hintText: 'Stadtteil eingrenzen' },
+                    { id: 'lang_apartment', hint: 'lang_apartment_hint', text: 'Wohnung w\u00e4hlen', hintText: 'Passende Angebote ansehen' }
+                ]
+            },
+            us: {
+                label: 'How it works',
+                title: 'Find housing in 4 easy steps',
+                lead: 'Our free assistant walks you through each step \u2014 no sign-up required.',
+                pill: 'Start here',
+                items: [
+                    { id: 'lang_state', hint: 'lang_state_hint', text: 'Select state', hintText: 'Choose your region' },
+                    { id: 'lang_city', hint: 'lang_city_hint', text: 'Select city', hintText: 'Pick a city nearby' },
+                    { id: 'lang_district', hint: 'lang_district_hint', text: 'Select district', hintText: 'Narrow your area' },
+                    { id: 'lang_apartment', hint: 'lang_apartment_hint', text: 'Select apartment', hintText: 'Browse matching listings' }
+                ]
+            },
+            'de-ch-at': {
+                label: 'So funktioniert\u2019s',
+                title: 'In 4 Schritten zur passenden Wohnung',
+                lead: 'Unser kostenloser Assistent f\u00fchrt Sie Schritt f\u00fcr Schritt \u2014 ohne Anmeldung.',
+                pill: 'Hier starten',
+                items: [
+                    { id: 'lang_state', hint: 'lang_state_hint', text: 'Kanton w\u00e4hlen', hintText: 'Ihre Region festlegen' },
+                    { id: 'lang_city', hint: 'lang_city_hint', text: 'Gemeinde w\u00e4hlen', hintText: 'Ort in der N\u00e4he finden' },
+                    { id: 'lang_district', hint: 'lang_district_hint', text: 'Quartier w\u00e4hlen', hintText: 'Umgebung eingrenzen' },
+                    { id: 'lang_apartment', hint: 'lang_apartment_hint', text: 'Wohnung w\u00e4hlen', hintText: 'Passende Angebote ansehen' }
+                ]
+            }
+        };
+        var copy = STEPS[lang] || STEPS.us;
+        var labelEl = document.getElementById('lang_steps_label');
+        var titleEl = document.getElementById('lang_steps_title');
+        var leadEl = document.getElementById('lang_steps_lead');
+        var pillEl = document.getElementById('lang_step_pill');
+        if (labelEl) labelEl.textContent = copy.label;
+        if (titleEl) titleEl.textContent = copy.title;
+        if (leadEl) leadEl.textContent = copy.lead;
+        if (pillEl) pillEl.textContent = copy.pill;
+        copy.items.forEach(function (item) {
+            var el = document.getElementById(item.id);
+            var hintEl = document.getElementById(item.hint);
+            if (el) el.textContent = item.text;
+            if (hintEl) hintEl.textContent = item.hintText;
+        });
+    }
+
+    var TEACH_INFO = {
+        de: {
+            introTitle: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
+            introHtml: 'Apkintelligence ist ein <strong>kostenloser Assistent</strong> für die Wohnungssuche. Wir bündeln Wartelisten, lokale Angebote und Informationen zu Sozialwohnungen, Wohnberechtigungsscheinen und gefördertem Mietwohnraum — wählen Sie Ihr Bundesland und sehen Sie in wenigen Minuten, was in Ihrer Nähe verfügbar ist.',
+            whoTitle: 'Für wen ist der Assistent?',
+            typesTitle: 'Was Sie hier finden',
+            whoItems: [
+                'Mieter mit geringem Einkommen',
+                'Familien auf der Suche nach Sozialwohnungen',
+                'Senioren, die bezahlbaren Wohnraum vergleichen',
+                'Alle, die Wartelisten in ihrer Region prüfen möchten',
+                'Erstbewerber, die Programme und Abläufe verstehen wollen',
+                'Alle, die geförderte Wohnungen in der Nähe suchen'
+            ],
+            typesItems: [
+                'Sozial- und geförderte Mietwohnungen',
+                'Infos zu Wohnberechtigungsscheinen',
+                'Wartelisten-Updates nach Bundesland',
+                'Lokale Wohnungsbaugesellschaften & Behörden',
+                'Schritt-für-Schritt-Hilfe bei der Bewerbung'
+            ]
+        },
+        us: {
+            introTitle: 'Your free guide to affordable housing',
+            introHtml: 'Apkintelligence is a <strong>free housing search assistant</strong>. We bring together Section 8 listings, public housing info, LIHTC apartments, waiting-list updates, and local housing authority resources — pick your state and explore options near you in minutes.',
+            whoTitle: 'Who uses this assistant',
+            typesTitle: "What you'll find here",
+            whoItems: [
+                'Renters searching for income-restricted apartments',
+                'Families exploring Section 8 or voucher-friendly listings',
+                'Seniors comparing affordable housing options nearby',
+                'Anyone checking open or upcoming waiting lists',
+                'First-time applicants learning how local programs work',
+                'People looking for below-market rent in their area'
+            ],
+            typesItems: [
+                'Section 8 & housing voucher listings',
+                'Public housing program information',
+                'LIHTC (income-restricted) apartments',
+                'Regional waiting list status & updates',
+                'Housing authority links & application guides'
+            ]
+        },
+        'de-ch-at': {
+            introTitle: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
+            introHtml: 'Apkintelligence ist ein <strong>kostenloser Assistent</strong> für die Wohnungssuche in der Schweiz und Österreich. Wir bündeln Wartelisten, lokale Angebote und Informationen zu subventioniertem Wohnraum, gemeinnützigem Wohnbau und regionalen Förderprogrammen — ohne Anmeldung, direkt nach Kanton und Gemeinde.',
+            whoTitle: 'Für wen ist der Assistent?',
+            typesTitle: 'Was Sie hier finden',
+            whoItems: [
+                'Mieter mit begrenztem Haushaltseinkommen',
+                'Familien auf der Suche nach bezahlbarem Wohnraum',
+                'Senioren, die geförderte Wohnungen vergleichen',
+                'Alle, die Wartelisten in ihrer Region prüfen möchten',
+                'Neue Bewerber, die lokale Abläufe verstehen wollen',
+                'Alle, die subventionierte Wohnungen in der Nähe suchen'
+            ],
+            typesItems: [
+                'Subventionierter & gemeinnütziger Wohnraum',
+                'Kantonale Förder- und Wohnbauprogramme',
+                'Wartelisten-Updates nach Region',
+                'Gemeinde- & Wohnbauverband-Kontakte',
+                'Schritt-für-Schritt-Hilfe bei der Bewerbung'
+            ]
+        }
+    };
+
     $(document).ready(function () {
         const lang = getLangFromPath()
-        //console.log(lang)
-        if(lang == "de"){
-            document.getElementById("lang_state").innerText="Bundesland auswählen"
-            document.getElementById("lang_city").innerText="Stadt auswählen"
-            document.getElementById("lang_district").innerText="Bezirk auswählen"
-            document.getElementById("lang_apartment").innerText="Wohnung auswählen"
+        var funnelCopy = applyTeachFunnelCopy(lang);
+        var infoCopy = TEACH_INFO[lang] || TEACH_INFO.us;
+        infoCopy.introLink = funnelCopy.introLink;
+        applyTeachInfo(infoCopy);
+        applyTeachStepsHeader(lang);
+        applyTeachStepImages(lang);
+        bindTeachFunnelLinks();
+        initStickyTeachCta();
 
-            document.getElementById("lang_how1").innerText="Bezahlbarer Wohnraum ist dank staatlicher Fördermittel und Anreize für einkommensschwache Personen zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 €, was deutlich unter dem üblichen Marktpreis liegt!"
-            document.getElementById("lang_how2").innerHTML=`<p class="how-to" id="lang_how2">
-    Finden Sie bezahlbaren Wohnraum für:<br>
-    1. Senioren<br>
-    2. Menschen mit Behinderung<br>
-    3. Obdachlose<br>
-    4. Alleinerziehende Mütter<br>
-    5. Familien mit geringem Einkommen<br>
-    6. Andere Personengruppen<br><br>
-
-    Unser Angebot an bezahlbarem Wohnraum umfasst:<br>
-    1. HUD-Wohnungen<br>
-    2. Sozialwohnungen<br>
-    3. Wohnungen mit Section-8-Förderung<br>
-    4. Wohnungen mit Steuergutschrift für einkommensschwache Haushalte<br>
-    5. Weitere Arten von bezahlbarem Wohnraum
-    <div></div>
-</p>`
-            document.getElementById("lang_locate").innerText="Aktuellen Standort ermitteln"
-
-            document.getElementById("lang_find").innerText="Bezahlbaren Wohnraum finden"
-
-            document.getElementById("lang_price").innerText="Schon ab 300€/Monat"
-
-            document.getElementById("lang_click").innerHTML=`Hier klicken`
-
-            document.getElementById("lang_clickDiv").innerText = "Hier klicken, um zu starten"
-
-            document.getElementById("conPic").src = "./Public/Images/dePic.png"
-            document.getElementById("statePic").src = "./Public/Images/statePic.png"
-        }else if(lang == "us")
-        {
-            document.getElementById("lang_state").innerText = "Select state";
-            document.getElementById("lang_city").innerText = "Select city";
-            document.getElementById("lang_district").innerText = "Select district";
-            document.getElementById("lang_apartment").innerText = "Select apartment";
-
-            document.getElementById("lang_how1").innerText = "Affordable housing is available to low-income individuals at subsidized prices thanks to government subsidies and incentives. Monthly rent starts as low as €300, which is significantly below the typical market rate!";
-
-            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
-    Find affordable housing for:<br>
-    1. Seniors<br>
-    2. People with disabilities<br>
-    3. Homeless individuals<br>
-    4. Single mothers<br>
-    5. Low-income families<br>
-    6. Other groups of people<br><br>
-
-    Our affordable housing options include:<br>
-    1. HUD housing<br>
-    2. Social housing<br>
-    3. Section 8 housing<br>
-    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
-    5. Other types of affordable housing
-    <div></div>
-</p>`;
-
+        if (lang === 'de' || lang === 'de-ch-at') {
+            document.getElementById("lang_locate").innerText = "Aktuellen Standort ermitteln";
+            document.getElementById("lang_find").innerText = "Bezahlbaren Wohnraum finden";
+            document.getElementById("lang_price").innerText = "Schon ab 300€/Monat";
+        } else {
             document.getElementById("lang_locate").innerText = "Detect current location";
-
             document.getElementById("lang_find").innerText = "Find affordable housing";
-
-            document.getElementById("lang_price").innerText = "Starting from $300/month";
-
-            document.getElementById("lang_click").innerHTML = `Click here`;
-
-            document.getElementById("lang_clickDiv").innerText = "Click here to get started";
-
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
-            document.getElementById("conPic").style.width = "64px"
-            document.getElementById("statePic").style.width = "64px"
-
-        }else
-        {
-            document.getElementById("lang_state").innerText = "Select state";
-            document.getElementById("lang_city").innerText = "Select city";
-            document.getElementById("lang_district").innerText = "Select district";
-            document.getElementById("lang_apartment").innerText = "Select apartment";
-
-            document.getElementById("lang_how1").innerText = "Affordable housing is available to low-income individuals at subsidized prices thanks to government subsidies and incentives. Monthly rent starts as low as €300, which is significantly below the typical market rate!";
-
-            document.getElementById("lang_how2").innerHTML = `<p class="how-to" id="lang_how2">
-    Find affordable housing for:<br>
-    1. Seniors<br>
-    2. People with disabilities<br>
-    3. Homeless individuals<br>
-    4. Single mothers<br>
-    5. Low-income families<br>
-    6. Other groups of people<br><br>
-
-    Our affordable housing options include:<br>
-    1. HUD housing<br>
-    2. Social housing<br>
-    3. Section 8 housing<br>
-    4. LIHTC (Low-Income Housing Tax Credit) housing<br>
-    5. Other types of affordable housing
-    <div></div>
-</p>`;
-
-            document.getElementById("lang_locate").innerText = "Detect current location";
-
-            document.getElementById("lang_find").innerText = "Find affordable housing";
-
-            document.getElementById("lang_price").innerText = "Starting from €300/month";
-
-            document.getElementById("lang_click").innerHTML = `Click here`;
-
-            document.getElementById("lang_clickDiv").innerText = "Click here to get started";
-
-            document.getElementById("conPic").src = "./Public/Images/amPic.png"
-            document.getElementById("statePic").src = "./Public/Images/amSPic.png"
-            document.getElementById("conPic").style.width = "64px"
-            document.getElementById("statePic").style.width = "64px"
+            document.getElementById("lang_price").innerText = lang === 'us'
+                ? "Starting from $300/month"
+                : "Starting from €300/month";
         }
-
-        //const lang = getLangFromPath()
-        let link_href = ``
-        if(lang == "de"){
-            link_href = `/de/teach/state`; // 注意这里改成绝对路径
-        }else if(lang == "us"){
-            link_href = `/us/teach/state`; // 注意这里改成绝对路径
-        }else{
-            link_href = `/teach/state`; // 注意这里改成绝对路径
-        }
-        document.getElementById("lang_click").href = link_href
     });
 
 
     const conPic = document.getElementById("conPic");
-
-    conPic.onload = function () {
-      console.log("图片加载完成");
-    };
+    if (conPic) {
+        conPic.onload = function () {};
+    }
 </script>
 
 <script>
@@ -923,105 +1089,6 @@ const lang = getLangFromPath()
         //titleReturn
         document.title = `${returnWebStr()} Teach.`;
     })
-</script>
-
-<script>
-
-
-function loadScript(src, callback) {
-
-
-        const lang = getLangFromPath()
-        let link_href = ``
-        if(lang == "de"){
-            link_href = `/de/teach/state`; // 注意这里改成绝对路径
-        }else if(lang == "us"){
-            link_href = `/us/teach/state`; // 注意这里改成绝对路径
-        }else{
-            link_href = `/teach/state`; // 注意这里改成绝对路径
-        }
-
-        link_href = appendParams(link_href);
-        document.getElementById("lang_click").href = link_href
-
-        let script = document.createElement("script");
-        script.src = src;
-        script.type = "text/javascript";
-        script.async = true;
-
-        script.onload = function () {
-            ////console.log(`${src} 加载完成`);
-            if (callback) callback(); // 加载完成后执行回调函数
-        };
-
-        script.onerror = function () {
-            //console.error(`${src} 加载失败`);
-        };
-
-        document.head.appendChild(script); // 插入到 `head` 中
-
-        // const bottom_div = document.getElementById('bottom_div')
-        // if (bottom_div) {
-        //     const observer = new IntersectionObserver((entries, obs) => {
-        //         entries.forEach(entry => {
-        //             if (entry.isIntersecting) {
-        //                 loadPost_adv2(entry.target);
-        //                 obs.unobserve(entry.target);
-        //             }
-        //         });
-        //     }, {
-        //         rootMargin: '5px',
-        //     });
-        //     observer.observe(bottom_div);
-        // }
-    }
-
-</script>
-
-<script>
-    // const keysToKeep = ['token','source','campaign','content','country','keyword','lang','medium'];
-    // const params = new URLSearchParams(window.location.search);
-    //
-    // const keepParams = new URLSearchParams();
-    // keysToKeep.forEach(key => {
-    //     if (params.has(key)) keepParams.set(key, params.get(key));
-    // });
-    //
-    // function appendParams(url) {
-    //     try {
-    //         const u = new URL(url, window.location.origin);
-    //         keysToKeep.forEach(key => {
-    //             if (keepParams.has(key) && !u.searchParams.has(key)) {
-    //                 u.searchParams.set(key, keepParams.get(key));
-    //             }
-    //         });
-    //         return u.toString();
-    //     } catch {
-    //         return url;
-    //     }
-    // }
-    
-    function handleClick() {
-
-        const lang = getLangFromPath()
-        let link_href = ``
-        if(lang == "de"){
-            link_href = `/de/teach/state`; // 注意这里改成绝对路径
-        }else if(lang == "us"){
-            link_href = `/us/teach/state`; // 注意这里改成绝对路径
-        }else{
-            link_href = `/teach/state`; // 注意这里改成绝对路径
-        }
-
-        link_href = appendParams(link_href);
-
-        document.getElementById("lang_click").href = link_href
-
-        //alert("按钮被点击！");
-        // window.location.href = "./state.html"
-        window.location.href = link_href
-
-    }
 </script>
 
 </body>

@@ -1,4 +1,4 @@
-﻿<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
+<html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
     <base href="/de/" />
@@ -62,6 +62,8 @@
           content="Find detailed information on Chugach View, including address, phone number, services, and more.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
+    <link rel="stylesheet" href="/Public/Css/detail-page.css">
+    <link rel="stylesheet" href="/Public/Css/form-page.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
     <script src="/Public/Js/ad-config.js"></script>
@@ -69,6 +71,7 @@
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
 <!--    <script src="./Public/Js/gtm-loader.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -83,59 +86,9 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KKQT4KF4');</script>
     <!-- End Google Tag Manager -->
-    <style>
-        .statelists-imgli{
-            text-align: center;
-        }
-
-        .suggestHouseUl {
-            display: grid;
-            grid-gap: 20px;
-        }
-
-        @media screen and (min-width: 500px) {
-            .suggestHouseUl {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .underListDiv{
-                padding: 0px;
-            }
-        }
-
-        @media screen and (min-width: 500px) {
-            .suggestHouseUl {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-        }
-
-        .RightBottom_adbox {
-            width: 100%;
-            position: absolute;
-            left: 0;
-            position: sticky;
-            top: 70px;
-            height: 600px !important;
-        }
-
-        .underListDiv{
-            max-width: 728px;
-            margin:auto;
-            padding: 10px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-    </style>
-
-
-<!--        });-->
 </head>
 
-<body>
+<body class="page-form">
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
         <symbol id="icon-add" viewBox="0 0 1024 1024">
@@ -281,21 +234,30 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
     <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menu</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Home</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
@@ -356,46 +318,46 @@
     </defs>
 </svg>
 
-<main class="wrapper contents" style="height: auto !important; min-height: 0px !important;" data-eusoft-scrollable-element="1">
-    <div class="detail-left" style="height: auto !important;" data-eusoft-scrollable-element="1">
-        <div class="adswp" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="form_adv1">
+<main class="wrapper contents" data-eusoft-scrollable-element="1">
+    <div class="detail-left" data-eusoft-scrollable-element="1">
+        <div class="adswp" data-eusoft-scrollable-element="1" id="form_adv1">
             Advertise
         </div>
 
-        <div class="contact-form"
-             style="max-width: 728px; margin:auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-            <form>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="name" style="display: block; margin-bottom: 8px; font-weight: bold;" id="lang_name">name：</label>
-                    <input type="text" id="name" name="name" required
-                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        <div class="form-card contact-form">
+            <div class="form-card__header">
+                <h1 class="form-card__title" id="lang_form_title">Contact Request</h1>
+                <p class="form-card__subtitle" id="lang_form_subtitle">Send us your inquiry about this listing.</p>
+            </div>
+            <form class="form-card__body">
+                <div class="form-group">
+                    <label for="name" class="form-label" id="lang_name">Full name</label>
+                    <input type="text" id="name" name="name" class="form-input" required autocomplete="name">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="email" style="display: block; margin-bottom: 8px; font-weight: bold;">E-Mail</label>
-                    <input type="email" id="email" name="email" required
-                           style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <div class="form-group">
+                    <label for="email" class="form-label" id="lang_email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required autocomplete="email">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label for="message" style="display: block; margin-bottom: 8px; font-weight: bold;" id = "lang_beizhu">Ich bin Eigentümer einer Immobilie</label>
-                    <textarea id="message" name="message" rows="4"
-                              style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                <div class="form-group">
+                    <label for="message" class="form-label" id="lang_beizhu">Message</label>
+                    <textarea id="message" name="message" class="form-textarea" rows="4" required></textarea>
                 </div>
 
-                <button type="button" onclick="submitForm()" class="submit-btn"
-                        style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;" id = "lang_submit">
-                    Kontaktanfrage senden
+                <button type="button" onclick="submitForm()" class="form-submit submit-btn" id="lang_submit">
+                    Send contact request
                 </button>
             </form>
         </div>
 
-        <div class="adswp" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="form_adv2">
+        <div class="adswp" data-eusoft-scrollable-element="1" id="form_adv2">
             Advertise
         </div>
 
-        <div class="underListDiv">
-            <ul class="suggestHouseUl" id = "under_list">
+        <div class="underListDiv detail-similar">
+            <h2 class="detail-similar__title" id="lang_similar">Similar Listings</h2>
+            <ul class="suggestHouseUl" id="under_list">
             </ul>
         </div>
     </div>
@@ -468,13 +430,13 @@
 const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else if(lang == "us")
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }else
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
 </script>
@@ -766,14 +728,9 @@ const lang = getLangFromPath()
                     }
 
                     if (index == 0) {
-                        if(isMobile()){
-                            html +=
-                                `<div id = "under_listAdv" style="text-align: center" class="most-box">Advertisment</div>`
-                        }else{
-                            html += `<li>
-                            <div id = "under_listAdv" style="text-align: center" class="most-box">Advertisment</div>
-                            </li>`
-                        }
+                        html += `<li>
+                            <div id="under_listAdv" class="most-box most-box--ad">Advertisment</div>
+                            </li>`;
                     }
                 });
 
@@ -805,21 +762,33 @@ const lang = getLangFromPath()
         const lang = getLangFromPath()
         //console.log(lang)
         if(lang == "de"){
-            document.getElementById("lang_name").innerText="Vollständiger Name"
-            document.getElementById("lang_beizhu").innerText="Hinterlassen Sie hier eine Nachricht."
-            document.getElementById("lang_submit").innerText="Kontaktanfrage senden"
-            document.getElementById("aside_text").innerText="Beratungsdienst für bezahlbaren Wohnraum"
+            document.getElementById("lang_form_title").innerText = "Kontaktanfrage";
+            document.getElementById("lang_form_subtitle").innerText = "Senden Sie uns Ihre Anfrage zu dieser Immobilie.";
+            document.getElementById("lang_name").innerText = "Vollständiger Name";
+            document.getElementById("lang_email").innerText = "E-Mail";
+            document.getElementById("lang_beizhu").innerText = "Nachricht";
+            document.getElementById("lang_submit").innerText = "Kontaktanfrage senden";
+            document.getElementById("lang_similar").innerText = "Ähnliche Angebote";
+            document.getElementById("aside_text").innerText = "Beratungsdienst für bezahlbaren Wohnraum";
         }else if(lang == "us")
         {
+            document.getElementById("lang_form_title").innerText = "Contact Request";
+            document.getElementById("lang_form_subtitle").innerText = "Send us your inquiry about this listing.";
             document.getElementById("lang_name").innerText = "Full name";
-            document.getElementById("lang_beizhu").innerText = "Leave a message here.";
+            document.getElementById("lang_email").innerText = "Email";
+            document.getElementById("lang_beizhu").innerText = "Message";
             document.getElementById("lang_submit").innerText = "Send contact request";
+            document.getElementById("lang_similar").innerText = "Similar Listings";
             document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
         }else
         {
+            document.getElementById("lang_form_title").innerText = "Contact Request";
+            document.getElementById("lang_form_subtitle").innerText = "Send us your inquiry about this listing.";
             document.getElementById("lang_name").innerText = "Full name";
-            document.getElementById("lang_beizhu").innerText = "Leave a message here.";
+            document.getElementById("lang_email").innerText = "Email";
+            document.getElementById("lang_beizhu").innerText = "Message";
             document.getElementById("lang_submit").innerText = "Send contact request";
+            document.getElementById("lang_similar").innerText = "Similar Listings";
             document.getElementById("aside_text").innerText = "Advisory service for affordable housing";
         }
 

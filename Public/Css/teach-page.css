@@ -1,0 +1,911 @@
+@charset "UTF-8";
+
+/**
+ * Teach landing — hero, step funnel, CTA, info cards
+ * Matches form-page / detail-page design language
+ */
+
+body.page-teach {
+    background:
+        radial-gradient(ellipse 80% 45% at 50% -10%, rgba(17, 115, 235, 0.06) 0%, transparent 55%),
+        linear-gradient(180deg, #f4f7fb 0%, #eef2f8 100%);
+    min-height: 100vh;
+}
+
+/* ── Hero banner ── */
+
+body.page-teach .teach-hero.ab-indexitm-banner {
+    position: relative;
+    min-height: 340px;
+    padding: 56px 0 64px;
+    background-image:
+        linear-gradient(135deg, rgba(20, 27, 46, 0.82) 0%, rgba(17, 116, 235, 0.45) 100%),
+        url(../Images/housing/ab-desktop.webp);
+    background-position: center;
+    background-size: cover;
+}
+
+body.page-teach .teach-hero .index-wrap {
+    background: transparent;
+}
+
+body.page-teach .teach-hero .indexitm-banner-l {
+    max-width: 640px;
+}
+
+body.page-teach .teach-hero .c-l {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(8px);
+    letter-spacing: 0.08em;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.92);
+    margin-bottom: 12px;
+}
+
+body.page-teach .teach-hero .indexitm-banner-tit {
+    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    color: #fff;
+}
+
+body.page-teach .teach-hero .indexitm-banner-desc {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 28px;
+}
+
+body.page-teach .teach-hero .ab-search-wrap {
+    width: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.page-teach .teach-hero .ab-search-wrap .loc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    min-width: 220px;
+    height: auto;
+    min-height: 52px;
+    padding: 0 28px;
+    line-height: 1.2;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff !important;
+    background: #1174eb;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(17, 116, 235, 0.45);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.page-teach .teach-hero .ab-search-wrap .loc-btn:hover {
+    background: #0065e1;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(17, 116, 235, 0.5);
+}
+
+body.page-teach .teach-hero .ab-search-wrap .loc-btn .icon-loc {
+    fill: #fff;
+    transform: none;
+}
+
+/* ── Main layout ── */
+
+body.page-teach .teach-main.contents {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin: 32px auto 48px;
+    padding: 0 16px;
+    height: auto !important;
+    min-height: 0 !important;
+    box-sizing: border-box;
+    overflow-x: clip;
+}
+
+body.page-teach .teach-content.detail-left {
+    flex: 1 1 680px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto !important;
+    box-sizing: border-box;
+}
+
+body.page-teach .detail-rightside {
+    flex: 0 0 300px;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+body.page-teach .teach-ad.adswp {
+    margin-bottom: 20px;
+    text-align: center;
+    height: auto !important;
+}
+
+/* ── Steps card ── */
+
+body.page-teach .teach-steps-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 0 24px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+    overflow: hidden;
+}
+
+body.page-teach .teach-steps-head {
+    margin: 0 -24px 28px;
+    padding: 24px 24px 22px;
+    background: linear-gradient(
+        180deg,
+        rgba(17, 115, 235, 0.06) 0%,
+        rgba(17, 115, 235, 0.015) 100%
+    );
+    border-bottom: 1px solid rgba(20, 33, 68, 0.07);
+}
+
+body.page-teach .teach-steps-head__body {
+    max-width: 640px;
+    padding-left: 16px;
+    border-left: 3px solid #1173eb;
+}
+
+body.page-teach .teach-steps-label {
+    display: block;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #1174eb;
+    margin: 0 0 8px;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+}
+
+body.page-teach .teach-steps-title {
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: #141b2e;
+    line-height: 1.28;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+}
+
+body.page-teach .teach-steps-lead {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #5a6478;
+    max-width: 52ch;
+}
+
+body.page-teach .teach-steps-flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Horizontal flow with connectors */
+body.page-teach .teach-steps-card .teach-steps-flow.select-text {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+body.page-teach .teach-steps-card .select-box.teach-step {
+    width: auto;
+    max-width: none;
+    padding: 0 10px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    list-style: none;
+}
+
+body.page-teach .teach-steps-card .select-box.teach-step:first-child {
+    padding-left: 0;
+}
+
+body.page-teach .teach-steps-card .select-box.teach-step:last-child {
+    padding-right: 0;
+}
+
+/* Arrow connector between steps */
+body.page-teach .teach-steps-card .teach-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 28px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #c5d0de;
+    border-right: 2px solid #c5d0de;
+    transform: rotate(45deg);
+    z-index: 2;
+    pointer-events: none;
+}
+
+body.page-teach .teach-steps-card .select-box .prog::after {
+    display: none !important;
+}
+
+/* Unified step card */
+body.page-teach .teach-steps-card .teach-step__card.step_box {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    height: 100%;
+    min-height: 168px;
+    margin: 0;
+    padding: 18px 16px 16px;
+    text-align: left;
+    background: #fff;
+    border: 1px solid rgba(20, 33, 68, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(20, 33, 68, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+body.page-teach .teach-steps-card .select-now .teach-step__card.step_box {
+    border-color: rgba(17, 115, 235, 0.4);
+    box-shadow: 0 8px 28px rgba(17, 115, 235, 0.12);
+    background: linear-gradient(180deg, #fff 0%, #f5f9ff 100%);
+}
+
+body.page-teach .teach-steps-card .select-after .teach-step__card.step_box {
+    background: #fff;
+}
+
+body.page-teach .teach-steps-card .teach-step__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+    min-height: 28px;
+}
+
+body.page-teach .teach-steps-card .teach-step__num.prog {
+    width: auto;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+body.page-teach .teach-steps-card .teach-step__num.prog::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    border-radius: 50%;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: #c5d0de;
+    box-shadow: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+body.page-teach .teach-steps-card .select-now .teach-step__num.prog::before {
+    background: linear-gradient(135deg, #1173eb, #3d9bff);
+    box-shadow: 0 3px 10px rgba(17, 115, 235, 0.35);
+    transform: none;
+}
+
+body.page-teach .teach-steps-card .teach-step__pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #1173eb;
+    background: rgba(17, 115, 235, 0.1);
+    white-space: nowrap;
+}
+
+body.page-teach .teach-steps-card .select-after .teach-step__pill {
+    display: none;
+}
+
+body.page-teach .teach-steps-card .teach-step__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+    background: transparent;
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+body.page-teach .teach-steps-card .select-now .teach-step__icon {
+    background: transparent;
+}
+
+/* White-background PNGs: multiply blends white into the card surface */
+body.page-teach .teach-steps-card .teach-step__icon img.teach-step__img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+    filter: contrast(1.04) saturate(1.06);
+}
+
+/* Transparent SVG icons: no blend needed */
+body.page-teach .teach-steps-card .teach-step__icon img.teach-step__img--svg {
+    width: 48px;
+    height: 48px;
+    mix-blend-mode: normal;
+    filter: none;
+}
+
+body.page-teach .teach-steps-card .teach-step__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+}
+
+body.page-teach .teach-steps-card .teach-step__text.h4 {
+    margin: 0;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #142144;
+}
+
+body.page-teach .teach-steps-card .select-now .teach-step__text.h4 {
+    color: #1173eb;
+}
+
+body.page-teach .teach-steps-card .select-after .teach-step__text.h4 {
+    color: #3d4659;
+    font-weight: 600;
+}
+
+body.page-teach .teach-steps-card .teach-step__hint {
+    display: block;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #8b95a8;
+    font-weight: 400;
+}
+
+body.page-teach .teach-steps-card .select-now .teach-step__hint {
+    color: #5a6478;
+}
+
+/* Clickable step 1 — drives users to /teach/state */
+body.page-teach .teach-step-go {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    outline: none;
+}
+
+body.page-teach .teach-step-go:focus-visible .teach-step__card {
+    box-shadow: 0 0 0 3px rgba(17, 115, 235, 0.35), 0 8px 28px rgba(17, 115, 235, 0.12);
+}
+
+body.page-teach .teach-step__card--action {
+    cursor: pointer;
+    position: relative;
+}
+
+body.page-teach .teach-step-go:hover .teach-step__card--action,
+body.page-teach .teach-step-go:focus-visible .teach-step__card--action {
+    transform: translateY(-3px);
+    border-color: rgba(17, 115, 235, 0.55);
+    box-shadow: 0 12px 32px rgba(17, 115, 235, 0.18);
+}
+
+body.page-teach .teach-step__card--action::after {
+    content: '→';
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1173eb;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+body.page-teach .teach-step-go:hover .teach-step__card--action::after {
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+/* Steps card footer CTA */
+body.page-teach .teach-steps-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 20px;
+    margin-top: 4px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(20, 33, 68, 0.07);
+}
+
+body.page-teach .teach-steps-foot__note {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b7280;
+    flex: 1 1 200px;
+}
+
+body.page-teach .teach-steps-foot__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    min-height: 46px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #1173eb 0%, #0d5fbf 100%);
+    box-shadow: 0 4px 14px rgba(17, 115, 235, 0.32);
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+body.page-teach .teach-steps-foot__btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(17, 115, 235, 0.4);
+    color: #fff;
+}
+
+body.page-teach .teach-steps-foot__btn svg {
+    flex-shrink: 0;
+}
+
+/* ── Primary CTA ── */
+
+body.page-teach .teach-cta.button-div,
+body.page-teach a.teach-cta.button-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    padding: 14px 20px;
+    margin: 0 0 24px;
+    border: none;
+    border-radius: 12px;
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: clamp(14px, 3.5vw, 16px);
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    color: #fff;
+    background: linear-gradient(135deg, #1173eb 0%, #0d5fbf 100%);
+    box-shadow: 0 4px 14px rgba(17, 115, 235, 0.35);
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+body.page-teach .teach-cta.button-div:hover,
+body.page-teach a.teach-cta.button-div:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(17, 115, 235, 0.4);
+    background: linear-gradient(135deg, #0f68d4 0%, #0a52a8 100%);
+}
+
+body.page-teach .teach-cta.button-div:active,
+body.page-teach a.teach-cta.button-div:active {
+    transform: translateY(0);
+}
+
+body.page-teach a.teach-cta.button-div {
+    text-decoration: none;
+}
+
+body.page-teach .teach-info-go {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1173eb;
+    text-decoration: none;
+}
+
+body.page-teach .teach-info-go:hover {
+    text-decoration: underline;
+}
+
+/* Sticky mobile CTA */
+body.page-teach .teach-sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.96);
+    border-top: 1px solid rgba(20, 33, 68, 0.08);
+    box-shadow: 0 -4px 24px rgba(20, 33, 68, 0.1);
+    backdrop-filter: blur(10px);
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+body.page-teach .teach-sticky-cta.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body.page-teach .teach-sticky-cta__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+body.page-teach .teach-sticky-cta__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5a6478;
+    white-space: nowrap;
+}
+
+body.page-teach .teach-sticky-cta__btn {
+    flex: 1 1 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #1173eb 0%, #0d5fbf 100%);
+    box-shadow: 0 4px 12px rgba(17, 115, 235, 0.35);
+    white-space: nowrap;
+}
+
+body.page-teach .teach-sticky-cta__btn:hover {
+    color: #fff;
+}
+
+body.page-teach.teach-has-sticky {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── Info blocks ── */
+
+body.page-teach .teach-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+body.page-teach .teach-info-card {
+    background: #fff;
+    border: 1px solid rgba(20, 33, 68, 0.06);
+    border-radius: 16px;
+    padding: 24px 26px;
+    box-shadow: 0 2px 12px rgba(20, 33, 68, 0.04);
+}
+
+body.page-teach .teach-info-card--intro {
+    border-left: 4px solid #1173eb;
+}
+
+body.page-teach .teach-info-card__title {
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 700;
+    color: #142144;
+    line-height: 1.3;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+}
+
+body.page-teach .teach-info-card__lead {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #3d4659;
+}
+
+body.page-teach .teach-info-card__lead strong {
+    color: #1173eb;
+    font-weight: 700;
+}
+
+body.page-teach .teach-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+}
+
+body.page-teach .teach-info-col__title {
+    font-family: GoogleSans, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #1173eb;
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(17, 115, 235, 0.15);
+}
+
+body.page-teach .teach-info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+body.page-teach .teach-info-list li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #3d4659;
+}
+
+body.page-teach .teach-info-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1173eb, #3d9bff);
+    transform: translateY(-50%);
+}
+
+/* Legacy .how-to — keep harmless if referenced elsewhere */
+body.page-teach .teach-info .how-to {
+    width: 100%;
+    margin: 0;
+    padding: 22px 24px;
+    background: #fff;
+    border: 1px solid rgba(20, 33, 68, 0.06);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(20, 33, 68, 0.04);
+    font-size: 15px;
+    line-height: 1.65;
+    color: #3d4659;
+}
+
+body.page-teach .teach-info .how-to b,
+body.page-teach .teach-info .how-to strong {
+    color: #1173eb;
+    font-weight: 700;
+}
+
+/* ── Sidebar (aside loaded dynamically) ── */
+
+body.page-teach .detail-right .most-read {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 16px rgba(20, 33, 68, 0.06);
+    border: 1px solid rgba(20, 33, 68, 0.06);
+}
+
+body.page-teach .detail-right .common-tit {
+    font-size: 16px;
+    line-height: 1.35;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #1173eb;
+    margin-bottom: 16px;
+}
+
+body.page-teach .detail-right {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    min-width: 0;
+}
+
+body.page-teach .detail-right .most-list {
+    margin-right: 0;
+}
+
+body.page-teach .detail-right .most-list li {
+    width: 100%;
+    max-width: 100%;
+    padding-right: 0;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+    body.page-teach .detail-rightside {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    body.page-teach .teach-steps-card {
+        padding: 0 16px 18px;
+        border-radius: 14px;
+    }
+
+    body.page-teach .teach-steps-head {
+        margin: 0 -16px 22px;
+        padding: 18px 16px 16px;
+    }
+
+    body.page-teach .teach-steps-lead {
+        font-size: 13px;
+        max-width: none;
+    }
+
+    body.page-teach .teach-steps-card .teach-steps-flow.select-text {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 12px;
+    }
+
+    body.page-teach .teach-steps-card .select-box.teach-step {
+        padding: 0;
+    }
+
+    body.page-teach .teach-steps-card .teach-step:not(:last-child)::after {
+        display: none;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__card.step_box {
+        min-height: 152px;
+    }
+}
+
+@media (max-width: 768px) {
+    body.page-teach .teach-hero.ab-indexitm-banner {
+        min-height: 300px;
+        padding: 44px 0 52px;
+    }
+
+    body.page-teach .teach-hero .ab-search-wrap .loc-btn {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    body.page-teach .teach-main.contents {
+        margin-top: 24px;
+        margin-bottom: 32px;
+    }
+
+    body.page-teach .teach-steps-foot {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    body.page-teach .teach-steps-foot__btn {
+        width: 100%;
+    }
+
+    body.page-teach .teach-info-card {
+        padding: 18px 16px;
+    }
+
+    body.page-teach .teach-info-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    body.page-teach .teach-info-card__lead {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.page-teach .teach-steps-card .teach-steps-flow.select-text {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__card.step_box {
+        position: relative;
+        min-height: 0;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px 14px 16px;
+        padding-top: 40px;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__head {
+        position: absolute;
+        top: 10px;
+        left: 12px;
+        right: 12px;
+        margin: 0;
+        min-height: 0;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__icon img.teach-step__img {
+        width: 44px;
+        height: 44px;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__icon img.teach-step__img--svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    body.page-teach .teach-steps-card .teach-step__copy {
+        margin-top: 0;
+        flex: 1;
+        min-width: 0;
+    }
+
+    body.page-teach .teach-step__card--action::after {
+        display: none;
+    }
+}

@@ -6,15 +6,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <title>
-        apkintelligence.com
-    </title>
+    <title>Find Affordable Housing Near You | Apkintelligence.com</title>
     <meta
             name="description"
             content="UsLowCostHousing provides free and latest information about section 8 and low income housing resources, including waiting lists and local authorities."
     />
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css"/>
     <link rel="stylesheet" href="./Public/Css/lch-office.css"/>
+    <link rel="stylesheet" href="/Public/Css/home-intro.css"/>
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js"></script>
     <script src="/Public/Js/ad-config.js"></script>
@@ -22,6 +21,7 @@
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-oop.js"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KKQT4KF4"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -37,7 +37,7 @@
 
 
 </head>
-<body aria-hidden="false" style="">
+<body class="page-home" aria-hidden="false">
 
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
@@ -200,56 +200,213 @@
         <img src="./Public/Images/logoImage.png" alt="Apkintelligence">
     </a>
     <input type="checkbox" id="hd-menu-input" class="hd-menu-input" aria-hidden="true">
-    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
     <nav class="nav" data-eusoft-scrollable-element="1" aria-label="Main navigation">
-        <ul class="nav-ul" data-eusoft-scrollable-element="1">
-            <li class="cor-category"><a href="./home.html" id="lang_index">Home</a></li>
-        </ul>
-        <label for="hd-menu-input" class="nav-label" id="btclose" aria-label="Close menu">
-            <span></span>
-            <span></span>
-        </label>
+        <div class="nav-sheet">
+            <div class="nav-sheet-head" aria-hidden="true">
+                <span class="nav-sheet-title">Menu</span>
+            </div>
+            <ul class="nav-ul" data-eusoft-scrollable-element="1">
+                <li class="cor-category">
+                    <a href="./home.html" id="lang_index">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        </span>
+                        <span class="nav-item-text">Home</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+                <li class="cor-category nav-teach-item">
+                    <a href="./teach.html" class="nav-teach-link">
+                        <span class="nav-item-icon-wrap" aria-hidden="true">
+                            <svg class="nav-item-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        </span>
+                        <span class="nav-item-text">Find Housing</span>
+                        <svg class="nav-item-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <label for="hd-menu-input" class="hd-menu-btn" id="hd-menu-btn" aria-label="Open menu">
         <span></span>
         <span></span>
         <span></span>
     </label>
+    <label for="hd-menu-input" class="headshade" id="headshade" aria-hidden="true"></label>
 </div>
 </header>
 
-<div class="hs-banner">
+<div class="hs-banner hs-banner--home">
     <div class="wrapper">
         <div class="banner">
-            <div class="hs-banner-cate" id = "lang_title">FREE LOW INCOME HOUSING RESOURCES</div>
-            <h1 class="hs-banner-tit" data-eusoft-scrollable-element="1">
-                <span id = "lang_cheap">Cheap Apartment Near Me</span>
+            <div class="hs-banner-cate" id="lang_title">FREE LOW INCOME HOUSING RESOURCES</div>
+            <h1 class="hs-banner-tit">
+                <span id="lang_cheap">Affordable Housing Near Me</span>
             </h1>
-            <a href="./teach.html" class="hs-aff-item" id = "lang_click">Affordable Housing
-                <svg class="right-arrow">
-                    <use xlink:href="#right-arrow"></use>
-                </svg>
-            </a>
+            <p class="hs-banner-lead" id="lang_lead">
+                Apkintelligence is your free guide to Section 8, LIHTC, public housing, and local assistance programs — see what's available near you in just a few clicks.
+            </p>
+            <div class="hs-banner-actions">
+                <a href="./teach.html" class="home-cta home-cta--primary" id="lang_click">
+                    <svg class="home-cta__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                    Find Housing Now
+                </a>
+                <a href="#how-it-works" class="home-cta home-cta--ghost">How It Works</a>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="adswp" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="index_adv1">
+<div class="adswp home-hero-ad" style="height: auto !important;text-align: center" data-eusoft-scrollable-element="1" id="index_adv1">
     Advertise
 </div>
 
-<div class="wrapper breakBox" data-eusoft-scrollable-element="1">
-    <div class="tit-group">
-        <h2 class="common-tit" data-eusoft-scrollable-element="1" id = "lang_topsearch">
-            Top Search Affordable Housing
-        </h2>
-        <div class="hs-common-subtit" id = "lang_searchmonth">
-            Provide you with top searches in a month
+<div class="home-teach-strip" aria-label="Quick start assistant">
+    <div class="wrapper home-teach-strip__inner">
+        <p class="home-teach-strip__label">Jump in:</p>
+        <a href="./teach.html" class="home-teach-chip home-teach-chip--primary">Open Assistant</a>
+        <a href="./teach.html" class="home-teach-chip">Section 8 &amp; Vouchers</a>
+        <a href="./teach.html" class="home-teach-chip">Check Waiting Lists</a>
+        <a href="./teach.html" class="home-teach-chip">Search Near Me</a>
+    </div>
+</div>
+
+<section class="home-section home-intro" aria-labelledby="home-intro-title">
+    <div class="wrapper">
+        <div class="home-intro__grid">
+            <div class="home-intro__copy">
+                <span class="home-section-label">About Apkintelligence</span>
+                <h2 class="home-section-title" id="home-intro-title">Your free guide to affordable housing</h2>
+                <p class="home-section-lead">
+                    Millions of Americans qualify for housing assistance — but many don't know which programs exist or how to apply. We bring waiting lists, local listings, and step-by-step guidance together in one place. <a href="./teach.html" class="home-teach-link">Start free with our assistant now →</a>
+                </p>
+                <ul class="home-intro__points">
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Free search for Section 8, public housing &amp; income-restricted rentals
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Up-to-date waiting lists and local housing authority info
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Step-by-step assistant — <a href="./teach.html" class="home-teach-link">start without signing up</a>
+                    </li>
+                </ul>
+                <div class="home-inline-cta">
+                    <a href="./teach.html" class="home-cta home-cta--primary">Start Free Assistant →</a>
+                </div>
+            </div>
+            <div class="home-stats">
+                <a href="./teach.html" class="home-stat home-card-link">
+                    <div class="home-stat__num">70%</div>
+                    <p class="home-stat__text">of eligible housing benefits go unclaimed — <strong>check if you qualify now →</strong></p>
+                </a>
+                <a href="./teach.html" class="home-stat home-card-link">
+                    <div class="home-stat__num">50</div>
+                    <p class="home-stat__text">states covered — <strong>pick your state &amp; search →</strong></p>
+                </a>
+                <a href="./teach.html" class="home-stat home-card-link">
+                    <div class="home-stat__num">100%</div>
+                    <p class="home-stat__text">free — <strong>find housing now →</strong></p>
+                </a>
+            </div>
         </div>
     </div>
+</section>
+
+<section class="home-section home-section--alt home-steps" id="how-it-works" aria-labelledby="home-steps-title">
+    <div class="wrapper">
+        <span class="home-section-label">3 Easy Steps</span>
+        <h2 class="home-section-title" id="home-steps-title">How to find affordable housing</h2>
+        <p class="home-section-lead">Our assistant walks you through state, city, and matching listings — <a href="./teach.html" class="home-teach-link">start here</a>.</p>
+        <div class="home-steps__grid">
+            <a href="./teach.html" class="home-step home-card-link">
+                <div class="home-step__num">1</div>
+                <h3 class="home-step__title">Pick your state</h3>
+                <p class="home-step__text">Select your state and instantly see programs and listings available in your area.</p>
+                <span class="home-step__action">Start step 1 →</span>
+            </a>
+            <a href="./teach.html" class="home-step home-card-link">
+                <div class="home-step__num">2</div>
+                <h3 class="home-step__title">Compare listings</h3>
+                <p class="home-step__text">Filter by rent, size, and program type — Section 8, public housing, or LIHTC.</p>
+                <span class="home-step__action">Browse listings →</span>
+            </a>
+            <a href="./teach.html" class="home-step home-card-link">
+                <div class="home-step__num">3</div>
+                <h3 class="home-step__title">Take action</h3>
+                <p class="home-step__text">Get clear next steps and links to housing authorities — straight from the assistant.</p>
+                <span class="home-step__action">Prepare your application →</span>
+            </a>
+        </div>
+        <div class="home-steps__foot">
+            <a href="./teach.html" class="home-cta home-cta--primary">All 3 steps in the assistant →</a>
+        </div>
+    </div>
+</section>
+
+<section class="home-section home-features" aria-labelledby="home-features-title">
+    <div class="wrapper">
+        <span class="home-section-label">What we offer</span>
+        <h2 class="home-section-title" id="home-features-title">Everything for your housing search</h2>
+        <div class="home-features__grid">
+            <a href="./teach.html" class="home-feature home-card-link">
+                <div class="home-feature__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </div>
+                <h3 class="home-feature__title">Local search</h3>
+                <p class="home-feature__text">State, city, and neighborhood — listings near you.</p>
+                <span class="home-feature__action">Start search →</span>
+            </a>
+            <a href="./teach.html" class="home-feature home-card-link">
+                <div class="home-feature__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <h3 class="home-feature__title">Guides &amp; tips</h3>
+                <p class="home-feature__text">Section 8, vouchers, and applications explained clearly.</p>
+                <span class="home-feature__action">Open guides →</span>
+            </a>
+            <a href="./teach.html" class="home-feature home-card-link">
+                <div class="home-feature__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <h3 class="home-feature__title">Waiting lists</h3>
+                <p class="home-feature__text">Info on open and upcoming waiting lists in your region.</p>
+                <span class="home-feature__action">Check waiting lists →</span>
+            </a>
+            <a href="./teach.html" class="home-feature home-card-link">
+                <div class="home-feature__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3 class="home-feature__title">Trusted &amp; free</h3>
+                <p class="home-feature__text">No registration needed — reliable sources, transparent info.</p>
+                <span class="home-feature__action">Try it now →</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="home-cta-band" aria-labelledby="home-cta-title">
+    <div class="wrapper home-cta-band__inner">
+        <h2 class="home-cta-band__title" id="home-cta-title">Ready to find your home?</h2>
+        <p class="home-cta-band__text">Start our free assistant now — see matching listings in your area in under 2 minutes.</p>
+        <a href="./teach.html" class="home-cta home-cta--light">
+            Start Assistant →
+        </a>
+    </div>
+</section>
+
+<div class="wrapper breakBox home-regions" data-eusoft-scrollable-element="1">
+    <div class="tit-group">
+        <h2 class="common-tit" id="lang_topsearch">Popular Regions</h2>
+        <div class="hs-common-subtit" id="lang_searchmonth">Top searched states — or jump straight into the assistant.</div>
+    </div>
+    <p class="home-regions-teach">Not sure where to start? <a href="./teach.html">Begin free with our assistant →</a></p>
     <ul class="top-search break-related">
         <li>
-            <a href="#" id = "href_ad1">
+            <a href="./teach.html" id="href_ad1">
                 <img
                         src="./Public/Images/housing/California.webp"
                         alt="California"
@@ -261,7 +418,7 @@
         </li>
         <li>
             <div>
-                <a href="#" id = "href_ad2">
+                <a href="./teach.html" id="href_ad2">
                     <img src="./Public/Images/housing/Florida.webp" alt="Florida"/>
                     <div class="top-tit" data-eusoft-scrollable-element="1" id = "lang_ad2">
                         Florida
@@ -269,7 +426,7 @@
                 </a>
             </div>
             <div>
-                <a href="#" id = "href_ad3">
+                <a href="./teach.html" id="href_ad3">
                     <img src="./Public/Images/housing/Texas.webp" alt="Texas"/>
                     <div class="top-tit" data-eusoft-scrollable-element="1" id = "lang_ad3">
                         Texas
@@ -278,7 +435,7 @@
             </div>
         </li>
         <li>
-            <a href="#" id = "href_ad4">
+            <a href="./teach.html" id="href_ad4">
                 <img src="./Public/Images/housing/NewYork.webp" alt="New York"/>
                 <div class="top-tit" data-eusoft-scrollable-element="1" id = "lang_ad4">
                     New York
@@ -287,7 +444,7 @@
         </li>
         <li>
             <div>
-                <a href="#" id = "href_ad5">
+                <a href="./teach.html" id="href_ad5">
                     <img
                             src="./Public/Images/housing/NorthCarolina.webp"
                             alt="North Carolina"
@@ -298,7 +455,7 @@
                 </a>
             </div>
             <div>
-                <a href="#" id = "href_ad6">
+                <a href="./teach.html" id="href_ad6">
                     <img src="./Public/Images/housing/Georgia.webp" alt="Georgia"/>
                     <div class="top-tit" data-eusoft-scrollable-element="1" id = "lang_ad6">
                         Georgia
@@ -307,6 +464,13 @@
             </div>
         </li>
     </ul>
+    <div class="home-regions__foot">
+        <a href="./teach.html" class="home-cta home-cta--primary">Browse all regions in the assistant →</a>
+    </div>
+</div>
+
+<div class="home-teach-float" aria-hidden="false">
+    <a href="./teach.html" class="home-teach-float__btn">Find Housing — Start Assistant</a>
 </div>
 
 <footer id="footer">
@@ -364,13 +528,13 @@
     const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
-                document.getElementById("lang_index").innerText="Startseite"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }else if(lang == "us")
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }else
             {
-                document.getElementById("lang_index").innerText="Home"
+                (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Home")
             }
 
 // 鍔犺浇 footer
@@ -378,105 +542,34 @@
 
 <script>
     $(document).ready(function () {
-        const lang = getLangFromPath()
-        //console.log(lang)
-        if(lang == "de"){
-            document.getElementById("lang_title").innerText="Kostenlose Hilfsangebote f眉r Menschen mit geringem Einkommen"
-
-            document.getElementById("lang_cheap").innerText="G眉nstige Wohnung in meiner N盲he"
-
-            document.getElementById("lang_click").innerHTML=`Bezahlbare Wohnung
-                <svg class="right-arrow">
-                    <use xlink:href="#right-arrow"></use>
-                </svg>`
-
-            document.getElementById("lang_topsearch").innerHTML="Meistgesuchter bezahlbarer Wohnraum"
-
-            document.getElementById("lang_searchmonth").innerHTML="Hier sind die meistgesuchten Begriffe des Monats."
-
-            document.getElementById("lang_ad1").innerText="Baden-W眉rttemberg"
-            document.getElementById("href_ad1").href="./city.html?state=Baden-W眉rttemberg"
-
-            document.getElementById("lang_ad2").innerText="Bayern"
-            document.getElementById("href_ad2").href="./city.html?state=Bayern"
-
-            document.getElementById("lang_ad3").innerText="Berlin"
-            document.getElementById("href_ad3").href="./city.html?state=Berlin"
-
-            document.getElementById("lang_ad4").innerText="Brandenburg"
-            document.getElementById("href_ad4").href="./city.html?state=Brandenburg"
-
-            document.getElementById("lang_ad5").innerText="Bremen"
-            document.getElementById("href_ad5").href="./city.html?state=Bremen"
-
-            document.getElementById("lang_ad6").innerText="Hamburg"
-            document.getElementById("href_ad6").href="./city.html?state=Hamburg"
-
-        }else if(lang == "us"){
-            document.getElementById("lang_title").innerText = "Free assistance services for people with low income";
-
-            document.getElementById("lang_cheap").innerText = "Affordable housing near me";
-
-            document.getElementById("lang_click").innerHTML = `Affordable housing
-    <svg class="right-arrow">
-        <use xlink:href="#right-arrow"></use>
-    </svg>`;
-
-            document.getElementById("lang_topsearch").innerHTML = "Most searched affordable housing";
-
-            document.getElementById("lang_searchmonth").innerHTML = "Here are the most searched terms of the month.";
-
-            document.getElementById("lang_ad1").innerText = "Alabama";
-            document.getElementById("href_ad1").href = "./city.html?state=Alabama";
-
-            document.getElementById("lang_ad2").innerText = "Alaska";
-            document.getElementById("href_ad2").href = "./city.html?state=Alaska";
-
-            document.getElementById("lang_ad3").innerText = "Arizona";
-            document.getElementById("href_ad3").href = "./city.html?state=Arizona";
-
-            document.getElementById("lang_ad4").innerText = "Arkansas";
-            document.getElementById("href_ad4").href = "./city.html?state=Arkansas";
-
-            document.getElementById("lang_ad5").innerText = "California";
-            document.getElementById("href_ad5").href = "./city.html?state=California";
-
-            document.getElementById("lang_ad6").innerText = "Colorado";
-            document.getElementById("href_ad6").href = "./city.html?state=Colorado";
-        }else
-        {
-            document.getElementById("lang_title").innerText = "Free assistance services for people with low income";
-
-            document.getElementById("lang_cheap").innerText = "Affordable housing near me";
-
-            document.getElementById("lang_click").innerHTML = `Affordable housing
-    <svg class="right-arrow">
-        <use xlink:href="#right-arrow"></use>
-    </svg>`;
-
-            document.getElementById("lang_topsearch").innerHTML = "Most searched affordable housing";
-
-            document.getElementById("lang_searchmonth").innerHTML = "Here are the most searched terms of the month.";
-
-            document.getElementById("lang_ad1").innerText = "Alabama";
-            document.getElementById("href_ad1").href = "./city.html?state=Alabama";
-
-            document.getElementById("lang_ad2").innerText = "Alaska";
-            document.getElementById("href_ad2").href = "./city.html?state=Alaska";
-
-            document.getElementById("lang_ad3").innerText = "Arizona";
-            document.getElementById("href_ad3").href = "./city.html?state=Arizona";
-
-            document.getElementById("lang_ad4").innerText = "Arkansas";
-            document.getElementById("href_ad4").href = "./city.html?state=Arkansas";
-
-            document.getElementById("lang_ad5").innerText = "California";
-            document.getElementById("href_ad5").href = "./city.html?state=California";
-
-            document.getElementById("lang_ad6").innerText = "Hamburg";
-            document.getElementById("href_ad6").href = "./city.html?state=Colorado";
+        const lang = getLangFromPath();
+        if (lang === "us") {
+            document.title = "Find Affordable Housing Near You | Apkintelligence.com";
+        } else if (lang === "de" || lang === "de-ch-at") {
+            document.getElementById("lang_title").innerText = "Kostenlose Hilfsangebote für Menschen mit geringem Einkommen";
+            document.getElementById("lang_cheap").innerText = "Günstige Wohnung in meiner Nähe";
+            document.getElementById("lang_topsearch").innerHTML = "Beliebte Regionen";
+            document.getElementById("lang_searchmonth").innerHTML = "Die meistgesuchten Bundesländer — oder direkt mit dem Assistenten starten.";
+            setDeRegions();
         }
     });
+
+    function setDeRegions() {
+        var regions = [
+            ["lang_ad1", "href_ad1", "Baden-Württemberg"],
+            ["lang_ad2", "href_ad2", "Bayern"],
+            ["lang_ad3", "href_ad3", "Berlin"],
+            ["lang_ad4", "href_ad4", "Brandenburg"],
+            ["lang_ad5", "href_ad5", "Bremen"],
+            ["lang_ad6", "href_ad6", "Hamburg"]
+        ];
+        regions.forEach(function (r) {
+            var label = document.getElementById(r[0]);
+            var link = document.getElementById(r[1]);
+            if (label) label.innerText = r[2];
+            if (link) link.href = "./teach.html";
+        });
+    }
 </script>
 
 <script>
@@ -498,8 +591,11 @@
             observer.observe(index_adv1);
         }
 
-        //titleReturn
-        document.title = `${returnWebStr()}`;
+        if (getLangFromPath() === "us") {
+            document.title = "Find Affordable Housing Near You | Apkintelligence.com";
+        } else if (getLangFromPath() !== "de" && getLangFromPath() !== "de-ch-at") {
+            document.title = `${returnWebStr()}`;
+        }
     })
 </script>
 
