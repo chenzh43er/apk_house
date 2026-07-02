@@ -10,3 +10,6 @@ scripts/r2-migrate/.r2-migrate-active.conf
 scripts/r2-migrate/sync.log
 scripts/r2-migrate/sync.log.bak
 scripts/r2-migrate/migrate-at-ch.log
+
+# Craigslist scrape artifacts (local cache; images upload to R2 separately)
+data/craigslist/images/
