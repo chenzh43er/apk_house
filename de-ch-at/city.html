@@ -322,22 +322,6 @@
 </div>
 </header>
 
-<script>
-    window.onload = function () {
-        let shade = document.querySelector(".shade")
-        var bt = document.getElementById("hd-menu-btn");
-        var btclose = document.getElementById("btclose");
-        bt.onclick = function () {
-            shade.style.display = "block";
-        }
-        btclose.onclick = function () {
-            shade.style.display = "none";
-        }
-        $("#backdrop").click(function () {
-            $(this).hide()
-        });
-    }
-</script>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <defs>
         <symbol id="icon-step1" viewBox="0 0 512 512">
@@ -692,6 +676,7 @@
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by city</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a city below to see available housing programs.</p>
+                <p class="state-picker-legend" id="state_picker_legend" aria-hidden="true"></p>
             </div>
             <ul class="select-state state-grid" id="select-state"></ul>
         </div>
@@ -874,7 +859,7 @@ if(lang == "de" || lang == "de-ch-at"){
                 pageLead: 'Wählen Sie eine Stadt, um Programme und Angebote in Ihrer Region zu sehen.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Stadt suchen',
-                pickerLead: 'Tippen Sie auf eine Stadt, um verfügbare Wohnprogramme zu sehen.',
+                pickerLead: 'Tippen Sie auf eine Stadt – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
@@ -891,7 +876,7 @@ if(lang == "de" || lang == "de-ch-at"){
                 pageLead: 'Pick a city to see affordable housing programs and listings in your area.',
                 stepPill: 'You are here',
                 pickerTitle: 'Browse by city',
-                pickerLead: 'Tap a city below to see available housing programs.',
+                pickerLead: 'Tap a city below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
                 how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
@@ -908,7 +893,7 @@ if(lang == "de" || lang == "de-ch-at"){
                 pageLead: 'Wählen Sie eine Gemeinde, um Programme und Angebote in Ihrer Region zu sehen.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Gemeinde suchen',
-                pickerLead: 'Tippen Sie auf eine Gemeinde, um verfügbare Wohnprogramme zu sehen.',
+                pickerLead: 'Tippen Sie auf eine Gemeinde – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 €.',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
@@ -932,6 +917,7 @@ if(lang == "de" || lang == "de-ch-at"){
         set('lang_step_pill', copy.stepPill);
         set('state_picker_title', copy.pickerTitle);
         set('state_picker_lead', copy.pickerLead);
+        applyPickerCountLegend(lang);
         set('lang_how1_title', copy.how1Title);
         set('lang_how1', copy.how1);
         set('lang_how2', copy.how2);
@@ -990,19 +976,20 @@ if(lang == "de" || lang == "de-ch-at"){
     }
 
     ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
-        const { fetchCitiesByState } = module;
+        const { fetchCitiesByState, attachCityHouseCounts } = module;
 
 
     const display_state = getStateFromUrl();
 
     const {data, error} = await fetchCitiesByState(display_state);
+    const items = data || [];
 
     $(document).ready(function () {
         applyCityPageCopy(lang, display_state);
         applyStateStepImages(lang, country);
 
         let innerStr = '';
-        data.forEach((item,index)  => {
+        items.forEach((item,index)  => {
 
             let link_href = `./district.html?state=${display_state}&city=${item.display_city}`
 
@@ -1017,7 +1004,7 @@ if(lang == "de" || lang == "de-ch-at"){
                         }
 
                 innerStr += `<li>
-                <a href="${link_href}" class="state-link"><span class="state-tile selectLidiv"><span class="state-tile__text text-wrapper">${item.display_city}</span></span></a>
+                <a href="${link_href}" class="state-link" data-picker-key="${encodeURIComponent(item.display_city)}">${buildPickerTileHtml(item.display_city, null, lang)}</a>
                 </li>`;
             if((index+1) % 16 == 0){
                 innerStr += `<li class = "divider-wrap state_advClass"><div>${returnAdvWord()}</div></li>`
@@ -1025,6 +1012,13 @@ if(lang == "de" || lang == "de-ch-at"){
         });
         document.getElementById('select-state').innerHTML = innerStr;
         document.body.style.display = "block";
+
+        attachCityHouseCounts(display_state, items).then(function (dataWithCounts) {
+            dataWithCounts.forEach(function (item) {
+                const link = document.querySelector('.state-link[data-picker-key="' + encodeURIComponent(item.display_city) + '"]');
+                updatePickerTileCount(link, item.house_count, lang);
+            });
+        });
 
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {

@@ -1,0 +1,41 @@
+{
+  "data": {
+    "batch": "2-0-360-1-0",
+    "minPostedDate": 1740000000,
+    "decode": {
+      "minPostedDate": 1740000000,
+      "locations": [
+        [0, "Unknown", ""],
+        [1, "San Francisco", "sfc"],
+        [2, "East Bay", "eby"],
+        [3, "Peninsula", "pen"]
+      ]
+    },
+    "items": [
+      [
+        7851234567,
+        86400,
+        10,
+        2350,
+        "1~37.7749~-122.4194",
+        [4, ["https://images.craigslist.org/sample1.jpg"]],
+        [5, [2, 980]],
+        [6, ["2BR-downtown-apartment"]],
+        [10, ["$2,350"]],
+        "Bright 2BR apartment near downtown"
+      ],
+      [
+        7851234568,
+        172800,
+        10,
+        1800,
+        "2~37.8044~-122.2711",
+        [4, ["https://images.craigslist.org/sample2.jpg"]],
+        [5, [1, 650]],
+        [6, ["1BR-studio-oakland"]],
+        [10, ["$1,800"]],
+        "Cozy 1BR studio in Oakland"
+      ]
+    ]
+  }
+}

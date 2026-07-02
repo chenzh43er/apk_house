@@ -1,0 +1,214 @@
+{
+  "meta": {
+    "region": "Houston",
+    "state": "Texas",
+    "abbr": "TX",
+    "city": "houston",
+    "postal": "77002",
+    "scraped_at": "2026-07-02T14:51:02.328Z",
+    "input_urls": 2,
+    "kept": 2,
+    "skipped_no_images": 0,
+    "skipped_errors": 0
+  },
+  "listings": [
+    {
+      "craigslist": {
+        "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7",
+        "posting_id": "7944691462",
+        "title": "1 BEDROOM 1 BATH",
+        "price": 725,
+        "price_text": "$725",
+        "room": 1,
+        "area": "520",
+        "loft": "1",
+        "location": "311 near HIGHLAND CROSS DRIVE",
+        "full_address": "311 near HIGHLAND CROSS DRIVE, Houston",
+        "locality": "Houston",
+        "geocode_query": "311 near HIGHLAND CROSS DRIVE, Houston",
+        "description": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "phone": "",
+        "image_urls": [
+          "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_1200x900.jpg",
+          "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_600x450.jpg"
+        ],
+        "housing_type": "house",
+        "baths": 1,
+        "image_files": [
+          "507030c9d8dc425d1518e8de74ff4eef.jpg",
+          "26c3e100410d0cf4ab093a717aed4e36.jpg"
+        ],
+        "mainpic": "543d0736-b0e6-4964-9ad6-8033b0bce11d",
+        "geo": {
+          "street": "311 near HIGHLAND CROSS DRIVE",
+          "display_state": "Texas",
+          "display_city": "Houston County",
+          "display_district": "Houston",
+          "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+          "lat": null,
+          "lon": null,
+          "address_json": {
+            "source": "craigslist",
+            "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+            "address": {
+              "road": "311 near HIGHLAND CROSS DRIVE",
+              "city": "Houston",
+              "county": "Houston County",
+              "state": "Texas",
+              "postcode": "",
+              "country": "United States",
+              "country_code": "us"
+            },
+            "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7#share",
+            "posting_id": "7944691462"
+          }
+        }
+      },
+      "house_ger": {
+        "id": "87dfe675-ab77-42b9-a907-fe284ea93fd3",
+        "name": "1 BEDROOM 1 BATH",
+        "location": "311 near HIGHLAND CROSS DRIVE",
+        "mainpic": "543d0736-b0e6-4964-9ad6-8033b0bce11d",
+        "msg": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "tel": "",
+        "status": 1,
+        "pics": "[\"507030c9d8dc425d1518e8de74ff4eef.jpg\",\"26c3e100410d0cf4ab093a717aed4e36.jpg\"]",
+        "detail_loca1": "Texas",
+        "detail_loca2": "Houston County",
+        "detail_loca3": "Houston",
+        "room": "1",
+        "area": "520",
+        "loft": "1",
+        "supplier": "Craigslist",
+        "price": "$725",
+        "ver": "House",
+        "info": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "statetype": "house",
+        "street": "311 near HIGHLAND CROSS DRIVE",
+        "district": "Houston",
+        "city": "Houston County",
+        "state": "Texas",
+        "country": "United States",
+        "county": "Houston County",
+        "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+        "address_json": "{\"source\":\"craigslist\",\"display_name\":\"311 near HIGHLAND CROSS DRIVE, Houston, TX\",\"address\":{\"road\":\"311 near HIGHLAND CROSS DRIVE\",\"city\":\"Houston\",\"county\":\"Houston County\",\"state\":\"Texas\",\"postcode\":\"\",\"country\":\"United States\",\"country_code\":\"us\"},\"url\":\"https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7\",\"posting_id\":\"7944691462\"}",
+        "display_state": "Texas",
+        "display_city": "Houston County",
+        "display_district": "Houston",
+        "pic_count": 2,
+        "pics_jsonStr": "[\"507030c9d8dc425d1518e8de74ff4eef.jpg\",\"26c3e100410d0cf4ab093a717aed4e36.jpg\"]",
+        "cdkey": "cl-7944691462",
+        "create_time": "7/2/2026 22:50:55",
+        "update_time": "7/2/2026 22:50:55",
+        "_source": {
+          "craigslist_id": "7944691462",
+          "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7",
+          "image_urls": [
+            "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_1200x900.jpg",
+            "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_600x450.jpg"
+          ],
+          "image_dir": "543d0736-b0e6-4964-9ad6-8033b0bce11d"
+        }
+      }
+    },
+    {
+      "craigslist": {
+        "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7#share",
+        "posting_id": "7944691462",
+        "title": "1 BEDROOM 1 BATH",
+        "price": 725,
+        "price_text": "$725",
+        "room": 1,
+        "area": "520",
+        "loft": "1",
+        "location": "311 near HIGHLAND CROSS DRIVE",
+        "full_address": "311 near HIGHLAND CROSS DRIVE, Houston",
+        "locality": "Houston",
+        "geocode_query": "311 near HIGHLAND CROSS DRIVE, Houston",
+        "description": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "phone": "",
+        "image_urls": [
+          "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_1200x900.jpg",
+          "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_600x450.jpg"
+        ],
+        "housing_type": "house",
+        "baths": 1,
+        "image_files": [
+          "27d96bf148cd1fcdc2093cdc3a83c19b.jpg",
+          "dbfc7e544c7e1ef9e27ab44fd88933cf.jpg"
+        ],
+        "mainpic": "e3722d3d-b6bd-49b9-92bb-c78104acd6e0",
+        "geo": {
+          "street": "311 near HIGHLAND CROSS DRIVE",
+          "display_state": "Texas",
+          "display_city": "Houston County",
+          "display_district": "Houston",
+          "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+          "lat": null,
+          "lon": null,
+          "address_json": {
+            "source": "craigslist",
+            "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+            "address": {
+              "road": "311 near HIGHLAND CROSS DRIVE",
+              "city": "Houston",
+              "county": "Houston County",
+              "state": "Texas",
+              "postcode": "",
+              "country": "United States",
+              "country_code": "us"
+            },
+            "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7#share",
+            "posting_id": "7944691462"
+          }
+        }
+      },
+      "house_ger": {
+        "id": "cba08773-2bb4-4eec-bb2f-0afc982f6543",
+        "name": "1 BEDROOM 1 BATH",
+        "location": "311 near HIGHLAND CROSS DRIVE",
+        "mainpic": "e3722d3d-b6bd-49b9-92bb-c78104acd6e0",
+        "msg": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "tel": "",
+        "status": 1,
+        "pics": "[\"27d96bf148cd1fcdc2093cdc3a83c19b.jpg\",\"dbfc7e544c7e1ef9e27ab44fd88933cf.jpg\"]",
+        "detail_loca1": "Texas",
+        "detail_loca2": "Houston County",
+        "detail_loca3": "Houston",
+        "room": "1",
+        "area": "520",
+        "loft": "1",
+        "supplier": "Craigslist",
+        "price": "$725",
+        "ver": "House",
+        "info": "QR Code Link to This Post OUR ONE BEDROOM ONE BATH HAS DROPPED IN PRICE!! NOW $725!!! APPLICATION $35 WITH THIS YOU CAN RESERVE THE APARTMENT AND GET YOUR APPLICATION STARTED!! CALL US TODAY AT show contact info VISIT OUR WEBSITE AT WWW.SEDONAPOINTEAPTS.COM",
+        "statetype": "house",
+        "street": "311 near HIGHLAND CROSS DRIVE",
+        "district": "Houston",
+        "city": "Houston County",
+        "state": "Texas",
+        "country": "United States",
+        "county": "Houston County",
+        "display_name": "311 near HIGHLAND CROSS DRIVE, Houston, TX",
+        "address_json": "{\"source\":\"craigslist\",\"display_name\":\"311 near HIGHLAND CROSS DRIVE, Houston, TX\",\"address\":{\"road\":\"311 near HIGHLAND CROSS DRIVE\",\"city\":\"Houston\",\"county\":\"Houston County\",\"state\":\"Texas\",\"postcode\":\"\",\"country\":\"United States\",\"country_code\":\"us\"},\"url\":\"https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7#share\",\"posting_id\":\"7944691462\"}",
+        "display_state": "Texas",
+        "display_city": "Houston County",
+        "display_district": "Houston",
+        "pic_count": 2,
+        "pics_jsonStr": "[\"27d96bf148cd1fcdc2093cdc3a83c19b.jpg\",\"dbfc7e544c7e1ef9e27ab44fd88933cf.jpg\"]",
+        "cdkey": "cl-7944691462",
+        "create_time": "7/2/2026 22:51:02",
+        "update_time": "7/2/2026 22:51:02",
+        "_source": {
+          "craigslist_id": "7944691462",
+          "url": "https://www.craigslist.org/view/d/houston-bedroom-bath/hXRxHsDYanTm6iVps4y4A7#share",
+          "image_urls": [
+            "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_1200x900.jpg",
+            "https://images.craigslist.org/00T0T_1zJJcS9JUp9_0gw0oM_600x450.jpg"
+          ],
+          "image_dir": "e3722d3d-b6bd-49b9-92bb-c78104acd6e0"
+        }
+      }
+    }
+  ]
+}

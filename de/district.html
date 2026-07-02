@@ -679,6 +679,7 @@
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by district</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a district below to see available listings.</p>
+                <p class="state-picker-legend" id="state_picker_legend" aria-hidden="true"></p>
             </div>
             <ul class="select-state state-grid" id="select-state"></ul>
         </div>
@@ -879,7 +880,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie einen Bezirk, um passende Wohnangebote zu sehen.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Bezirk suchen',
-                pickerLead: 'Tippen Sie auf einen Bezirk, um verfügbare Angebote zu sehen.',
+                pickerLead: 'Tippen Sie auf einen Bezirk – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
@@ -896,7 +897,7 @@ const lang = getLangFromPath()
                 pageLead: 'Pick a district to see affordable housing listings in your area.',
                 stepPill: 'You are here',
                 pickerTitle: 'Browse by district',
-                pickerLead: 'Tap a district below to see available listings.',
+                pickerLead: 'Tap a district below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
                 how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
@@ -913,7 +914,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie ein Quartier, um passende Wohnangebote zu sehen.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Quartier suchen',
-                pickerLead: 'Tippen Sie auf ein Quartier, um verfügbare Angebote zu sehen.',
+                pickerLead: 'Tippen Sie auf ein Quartier – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 €.',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
@@ -937,6 +938,7 @@ const lang = getLangFromPath()
         set('lang_step_pill', copy.stepPill);
         set('state_picker_title', copy.pickerTitle);
         set('state_picker_lead', copy.pickerLead);
+        applyPickerCountLegend(lang);
         set('lang_how1_title', copy.how1Title);
         set('lang_how1', copy.how1);
         set('lang_how2', copy.how2);
@@ -1000,18 +1002,19 @@ const lang = getLangFromPath()
     }
 
     ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
-        const { fetchDistrictsByCity } = module;
+        const { fetchDistrictsByCity, attachDistrictHouseCounts } = module;
 
     const { state: display_state, city: display_city } = getStateAndCityFromUrl();
     applyDistrictPageCopy(lang, display_state, display_city);
     applyStateStepImages(lang, country);
 
     const {data, error} = await fetchDistrictsByCity(display_city);
+    const items = data || [];
 
     $(document).ready(function () {
 
         let innerStr = '';
-        data.forEach((item,index) => {
+        items.forEach((item,index) => {
 
 
             let link_href = `./list.html?state=${display_state}&city=${display_city}&district=${item.display_district}`
@@ -1027,7 +1030,7 @@ const lang = getLangFromPath()
             }
 
             innerStr += `<li>
-                    <a href="${link_href}" class="state-link"><span class="state-tile selectLidiv"><span class="state-tile__text text-wrapper">${item.display_district}</span></span></a>
+                    <a href="${link_href}" class="state-link" data-picker-key="${encodeURIComponent(item.display_district)}">${buildPickerTileHtml(item.display_district, null, lang)}</a>
                 </li>`;
 
             if((index+1) % 16 == 0){
@@ -1037,6 +1040,13 @@ const lang = getLangFromPath()
 
         document.getElementById('select-state').innerHTML = innerStr;
         document.body.style.display = "block";
+
+        attachDistrictHouseCounts(display_state, display_city, items).then(function (dataWithCounts) {
+            dataWithCounts.forEach(function (item) {
+                const link = document.querySelector('.state-link[data-picker-key="' + encodeURIComponent(item.display_district) + '"]');
+                updatePickerTileCount(link, item.house_count, lang);
+            });
+        });
 
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {

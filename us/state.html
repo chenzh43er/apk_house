@@ -210,6 +210,7 @@
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by state</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a state below to see available housing programs.</p>
+                <p class="state-picker-legend" id="state_picker_legend" aria-hidden="true"></p>
             </div>
             <ul class="select-state state-grid" id="select-state"></ul>
         </div>
@@ -414,15 +415,16 @@ const lang = getLangFromPath()
     }
 
     ensureSupabase().then(() => import(fetchDataUrl)).then(async module => {
-        const { fetchDistinctStates } = module;
+        const { fetchDistinctStates, attachStateHouseCounts } = module;
 
     const { data, error } = await  fetchDistinctStates();
+    const items = data || [];
 
     $(document).ready(function() {
         let innerStr = '';
-        data.forEach((item,index) => {
+        items.forEach((item,index) => {
             innerStr += `<li>
-                <a href="./city.html?state=${item.display_state}" class="state-link"><span class="state-tile selectLidiv"><span class="state-tile__text text-wrapper">${item.display_state}</span></span></a>
+                <a href="./city.html?state=${item.display_state}" class="state-link" data-picker-key="${encodeURIComponent(item.display_state)}">${buildPickerTileHtml(item.display_state, null, lang)}</a>
                 </li>`;
 
             if((index+1) % 16 == 0){
@@ -451,6 +453,13 @@ const lang = getLangFromPath()
         });
 
         document.body.style.display = "block";
+
+        attachStateHouseCounts(items).then(function (dataWithCounts) {
+            dataWithCounts.forEach(function (item) {
+                const link = document.querySelector('.state-link[data-picker-key="' + encodeURIComponent(item.display_state) + '"]');
+                updatePickerTileCount(link, item.house_count, lang);
+            });
+        });
 
         const observer = new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
@@ -501,7 +510,7 @@ const lang = getLangFromPath()
                 stepsLead: 'Wählen Sie ein Bundesland, um mit Städten und Angeboten fortzufahren.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Bundesland suchen',
-                pickerLead: 'Tippen Sie auf ein Bundesland, um verfügbare Wohnprogramme zu sehen.',
+                pickerLead: 'Tippen Sie auf ein Bundesland – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
@@ -521,7 +530,7 @@ const lang = getLangFromPath()
                 stepsLead: 'Choose a state to continue to cities and listings.',
                 stepPill: 'You are here',
                 pickerTitle: 'Browse by state',
-                pickerLead: 'Tap a state below to see available housing programs.',
+                pickerLead: 'Tap a state below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
                 how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
@@ -541,7 +550,7 @@ const lang = getLangFromPath()
                 stepsLead: 'Wählen Sie einen Kanton, um mit Gemeinden und Angeboten fortzufahren.',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Kanton suchen',
-                pickerLead: 'Tippen Sie auf einen Kanton, um verfügbare Wohnprogramme zu sehen.',
+                pickerLead: 'Tippen Sie auf einen Kanton – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
                 how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 €.',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
@@ -565,6 +574,7 @@ const lang = getLangFromPath()
         set('lang_step_pill', copy.stepPill);
         set('state_picker_title', copy.pickerTitle);
         set('state_picker_lead', copy.pickerLead);
+        applyPickerCountLegend(lang);
         set('lang_how1_title', copy.how1Title);
         set('lang_how1', copy.how1);
         set('lang_how2', copy.how2);

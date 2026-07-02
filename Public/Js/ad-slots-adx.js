@@ -17,7 +17,7 @@
 
     state_adv1: { unit: "house_address3/state_adv1", sizes: fluidBanner },
     state_adv2: { unit: "house_address3/state_adv2", sizes: fluidRect },
-    state_adv3: { unit: "house_address3/state_adv3", sizes: fluidRect },
+    state_adv3: { unit: "house_address3/state_adv3", sizes: [[300, 600], "fluid", [300, 250]] },
 
     city_adv1: { unit: "house_address3/city_adv1", sizes: fluidBanner },
     city_adv2: { unit: "house_address3/city_adv2", sizes: fluidRect },

@@ -746,28 +746,7 @@ const lang = getLangFromPath()
 
             const serverPic = picURL + data.mainpic + "/"
 
-            if (picsObj.length === 1) {
-                $('.img-box').addClass('detail-gallery--single').html(
-                    `<img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}">`
-                )
-            }
-
-            if (picsObj.length === 2) {
-                $('.img-box').addClass('detail-gallery--double').html(
-                    `<img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}">
-                    <img class="provided-img" onclick="openModal(this)" src="${serverPic + picsObj[1]}" alt="${data.name}">`
-                )
-            }
-
-            if (picsObj.length === 3) {
-                $('.img-box').html(`<div class="detail-gallery__main">
-                        <img onclick="openModal(this)" src="${serverPic + picsObj[0]}" alt="${data.name}" class="provided-img">
-                </div>
-                <div class="detail-gallery__side">
-                    <img onclick="openModal(this)" src="${serverPic + picsObj[1]}" alt="${data.name}" class="provided-img">
-                    <img onclick="openModal(this)" src="${serverPic + picsObj[2]}" alt="${data.name}" class="provided-img">
-                </div>`)
-            }
+            renderDetailGallery(document.querySelector(".img-box"), picsObj, serverPic, data.name, lang);
 
             document.getElementById('titleMessage').innerText = data.name
             //document.getElementById('cdkeyMessage').innerText = "Key:" + data.cdkey

@@ -125,6 +125,11 @@ body.page-state .state-steps-card .teach-steps-flow {
 
 body.page-state .state-ad.adswp {
     margin-bottom: 20px;
+    min-height: 250px;
+}
+
+body.page-state .state-ad--mid.adswp {
+    margin: 16px 0 20px;
 }
 
 /* Country selector (de-ch-at) */
@@ -221,7 +226,7 @@ body.page-state .state-picker-lead {
     margin: 0;
     font-size: 14px;
     line-height: 1.55;
-    color: #6b7280;
+    color: #5c6578;
 }
 
 body.page-state .select-state.state-grid {
@@ -257,11 +262,39 @@ body.page-state .state-link {
     height: 100%;
 }
 
+body.page-state .state-picker-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(17, 115, 235, 0.06);
+    color: #3d4659;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+body.page-state .state-picker-legend__sample {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(17, 115, 235, 0.1);
+    color: #1173eb;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 body.page-state .state-tile {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 52px;
+    gap: 8px;
+    min-height: 64px;
     padding: 12px 14px;
     border: 1px solid rgba(20, 33, 68, 0.08);
     border-radius: 12px;
@@ -296,6 +329,64 @@ body.page-state .state-tile .text-wrapper {
     color: inherit;
     max-width: 100%;
     min-width: 0;
+}
+
+body.page-state .state-tile__count {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+body.page-state .state-tile__count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 100%;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(17, 115, 235, 0.08);
+    color: #1173eb;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body.page-state .state-tile__count-num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+}
+
+body.page-state .state-tile__count-label {
+    opacity: 0.92;
+    white-space: nowrap;
+}
+
+body.page-state .state-tile__count.is-loading .state-tile__count-badge {
+    animation: picker-count-pulse 1.4s ease-in-out infinite;
+}
+
+body.page-state .state-tile__count.is-empty .state-tile__count-badge,
+body.page-state .state-tile__count-badge--empty {
+    background: rgba(20, 33, 68, 0.06);
+    color: #8b93a3;
+}
+
+body.page-state .state-link:hover .state-tile__count-badge,
+body.page-state .state-link:focus-visible .state-tile__count-badge {
+    background: rgba(17, 115, 235, 0.14);
+    color: #0d5fc7;
+}
+
+body.page-state .state-link:hover .state-tile__count.is-empty .state-tile__count-badge,
+body.page-state .state-link:focus-visible .state-tile__count.is-empty .state-tile__count-badge {
+    background: rgba(20, 33, 68, 0.08);
+    color: #6b7280;
+}
+
+@keyframes picker-count-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
 }
 
 body.page-state .divider-wrap {

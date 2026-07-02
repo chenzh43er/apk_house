@@ -353,3 +353,176 @@ function renderDetailShareBar(container, pageUrl, lang, shareTitle) {
     container.innerHTML = buildDetailShareMarkup(pageUrl, lang, shareTitle);
     bindDetailShareCopy(container, lang);
 }
+
+function escapeHtmlAttr(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+function getGalleryMoreLabel(count, lang) {
+    const isDe = lang === "de" || lang === "de-ch-at";
+    if (isDe) {
+        return count === 1 ? "+1 Foto" : `+${count} Fotos`;
+    }
+    return count === 1 ? "+1 photo" : `+${count} photos`;
+}
+
+function renderDetailGallery(container, pics, baseUrl, altText, lang) {
+    const el = typeof container === "string"
+        ? document.querySelector(container)
+        : container;
+    if (!el) return;
+
+    if (!lang) lang = getLangFromPath();
+
+    el.className = "img-box detail-gallery";
+    el.innerHTML = "";
+    el.style.display = "";
+
+    let picsArr = pics;
+    if (typeof pics === "string") {
+        try {
+            picsArr = JSON.parse(pics);
+        } catch {
+            picsArr = [];
+        }
+    }
+    if (!Array.isArray(picsArr) || picsArr.length === 0) {
+        el.style.display = "none";
+        return;
+    }
+
+    const alt = escapeHtmlAttr(altText || "");
+    const base = baseUrl || "";
+    const imgTag = (filename, extraClass) =>
+        `<img class="provided-img${extraClass ? " " + extraClass : ""}" onclick="openModal(this)" src="${base + filename}" alt="${alt}">`;
+
+    const n = picsArr.length;
+
+    if (n === 1) {
+        el.classList.add("detail-gallery--single");
+        el.innerHTML = imgTag(picsArr[0]);
+        return;
+    }
+
+    if (n === 2) {
+        el.classList.add("detail-gallery--double");
+        el.innerHTML = imgTag(picsArr[0]) + imgTag(picsArr[1]);
+        return;
+    }
+
+    el.classList.add(
+        n === 3 ? "detail-gallery--triple" :
+        n === 4 ? "detail-gallery--quad" :
+        "detail-gallery--multi"
+    );
+
+    let sideHtml = "";
+    if (n === 3) {
+        sideHtml = imgTag(picsArr[1]) + imgTag(picsArr[2]);
+    } else if (n === 4) {
+        sideHtml = imgTag(picsArr[1]) + imgTag(picsArr[2]) + imgTag(picsArr[3]);
+    } else {
+        const hiddenCount = n - 3;
+        const moreLabel = escapeHtmlAttr(getGalleryMoreLabel(hiddenCount, lang));
+        sideHtml =
+            imgTag(picsArr[1]) +
+            `<div class="detail-gallery__more-cell">` +
+            imgTag(picsArr[2]) +
+            `<button type="button" class="detail-gallery__more" onclick="openModal(this.previousElementSibling)" aria-label="${moreLabel}">` +
+            `<span>${moreLabel}</span></button>` +
+            `</div>`;
+    }
+
+    el.innerHTML =
+        `<div class="detail-gallery__main">${imgTag(picsArr[0])}</div>` +
+        `<div class="detail-gallery__side">${sideHtml}</div>`;
+}
+
+function getHouseCountCopy(lang, count) {
+    const isDe = lang === "de" || lang === "de-ch-at";
+    const locales = { de: "de-DE", us: "en-US", "de-ch-at": "de-CH" };
+    const locale = locales[lang] || "en-US";
+
+    if (count == null) {
+        return {
+            formatted: "…",
+            label: isDe ? "Angebote" : "listings",
+            ariaLabel: isDe ? "Anzahl wird geladen" : "Loading listing count",
+            isLoading: true,
+            isEmpty: false
+        };
+    }
+
+    const n = Number(count) || 0;
+    if (!n) {
+        return {
+            formatted: "",
+            label: isDe ? "Keine Angebote" : "No listings",
+            ariaLabel: isDe ? "Keine Angebote verfügbar" : "No listings available",
+            isLoading: false,
+            isEmpty: true
+        };
+    }
+
+    const formatted = n.toLocaleString(locale);
+    const label = isDe
+        ? (n === 1 ? "Angebot" : "Angebote")
+        : (n === 1 ? "listing" : "listings");
+
+    return {
+        formatted,
+        label,
+        ariaLabel: formatted + " " + label,
+        isLoading: false,
+        isEmpty: false
+    };
+}
+
+function buildPickerTileHtml(name, count, lang) {
+    const copy = getHouseCountCopy(lang, count);
+    const countClasses = ["state-tile__count"];
+    if (copy.isLoading) countClasses.push("is-loading");
+    if (copy.isEmpty) countClasses.push("is-empty");
+
+    let badgeHtml = `<span class="state-tile__count-badge${copy.isEmpty ? " state-tile__count-badge--empty" : ""}">`;
+    if (!copy.isEmpty && copy.formatted) {
+        badgeHtml += `<span class="state-tile__count-num">${copy.formatted}</span>`;
+    }
+    badgeHtml += `<span class="state-tile__count-label">${copy.label}</span></span>`;
+
+    return `<span class="state-tile selectLidiv">` +
+        `<span class="state-tile__text text-wrapper">${name}</span>` +
+        `<span class="${countClasses.join(" ")}" aria-live="polite" aria-label="${copy.ariaLabel}">` +
+        badgeHtml +
+        `</span></span>`;
+}
+
+function updatePickerTileCount(linkEl, count, lang) {
+    if (!linkEl) return;
+    const tile = linkEl.querySelector(".state-tile");
+    if (!tile) return;
+
+    const oldCount = tile.querySelector(".state-tile__count");
+    if (oldCount) oldCount.remove();
+
+    const wrapper = document.createElement("span");
+    wrapper.innerHTML = buildPickerTileHtml("", count, lang);
+    const newCount = wrapper.querySelector(".state-tile__count");
+    if (newCount) tile.appendChild(newCount);
+}
+
+function applyPickerCountLegend(lang) {
+    const el = document.getElementById("state_picker_legend");
+    if (!el) return;
+    const isDe = lang === "de" || lang === "de-ch-at";
+    if (isDe) {
+        el.innerHTML = 'Die Badge zeigt verfügbare Angebote, z. B. <span class="state-picker-legend__sample"><span>676</span> Angebote</span>';
+    } else {
+        el.innerHTML = 'The badge shows available listings, e.g. <span class="state-picker-legend__sample"><span>676</span> listings</span>';
+    }
+}

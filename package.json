@@ -25,9 +25,16 @@
     "gam:probe": "node scripts/ad-manager/probe-proxy.mjs",
     "gam:checklist": "node scripts/ad-manager/generate-checklist.mjs",
     "gam:create-units": "node scripts/ad-manager/create-ad-units.mjs",
-    "gam:create-units:dry-run": "node scripts/ad-manager/create-ad-units.mjs --dry-run"
+    "gam:create-units:dry-run": "node scripts/ad-manager/create-ad-units.mjs --dry-run",
+    "craigslist:scrape": "node scripts/craigslist/scrape.mjs",
+    "craigslist:batch-us": "node scripts/craigslist/batch-us.mjs",
+    "craigslist:merge-us": "node scripts/craigslist/batch-us.mjs --merge-only",
+    "craigslist:import": "node scripts/craigslist/import.mjs",
+    "craigslist:upload-images": "node scripts/craigslist/upload-images.mjs"
   },
   "devDependencies": {
+    "pg": "^8.22.0",
+    "playwright": "^1.61.1",
     "wrangler": "^4.98.0"
   }
 }

@@ -73,16 +73,40 @@ export async function countHouses(state = null, city = null, district = null) {
     }
 }
 
-
+const EXCLUDED_US_STATES = new Set(['District of Columbia']);
 
 // 通过 RPC 获取所有去重后的州
+export async function attachStateHouseCounts(states) {
+    return Promise.all((states || []).map(async (item) => {
+        const { count } = await countHouses(item.display_state);
+        return { ...item, house_count: count ?? 0 };
+    }));
+}
+
+export async function attachCityHouseCounts(state, cities) {
+    return Promise.all((cities || []).map(async (item) => {
+        const { count } = await countHouses(state, item.display_city);
+        return { ...item, house_count: count ?? 0 };
+    }));
+}
+
+export async function attachDistrictHouseCounts(state, city, districts) {
+    return Promise.all((districts || []).map(async (item) => {
+        const { count } = await countHouses(state, city, item.display_district);
+        return { ...item, house_count: count ?? 0 };
+    }));
+}
+
 export async function fetchDistinctStates() {
     try {
         const { data, error } = await supabase.rpc('get_unique_states');
         if (error) {
             throw new Error(`获取州时发生错误: ${error.message}`);
         }
-        return { data, error: null };
+        const filtered = (data || []).filter(
+            (item) => !EXCLUDED_US_STATES.has(item.display_state)
+        );
+        return { data: filtered, error: null };
     } catch (err) {
         console.error('fetchDistinctStates 错误:', err);
         return { data: null, error: err.message };
