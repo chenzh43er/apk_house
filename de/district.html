@@ -585,7 +585,7 @@
 </svg>
 <main class="wrapper contents state-main">
     <div class="detail-left state-content" data-eusoft-scrollable-element="1">
-        <div class="state-page-head">
+        <header class="state-page-head">
             <nav class="state-page-head__crumbs" aria-label="Breadcrumb">
                 <ol class="state-crumb" itemscope itemtype="https://schema.org/BreadcrumbList">
                     <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -606,10 +606,37 @@
                     </li>
                 </ol>
             </nav>
-            <p class="state-page-head__label" id="state_page_label">District selection</p>
-            <h1 class="state-page-head__title" id="title_find">Find affordable housing</h1>
-            <p class="state-page-lead" id="state_page_lead">Pick a district to see affordable housing listings.</p>
-        </div>
+            <div class="state-page-head__banner">
+                <div class="state-page-head__glow state-page-head__glow--1" aria-hidden="true"></div>
+                <div class="state-page-head__glow state-page-head__glow--2" aria-hidden="true"></div>
+                <div class="state-page-head__inner">
+                    <div class="state-page-head__copy">
+                        <span class="state-page-head__label" id="state_page_label">District selection</span>
+                        <h1 class="state-page-head__title" id="title_find">Find affordable housing</h1>
+                        <p class="state-page-lead" id="state_page_lead">Pick a district to see affordable housing listings.</p>
+                        <ul class="state-page-head__chips" role="list">
+                            <li class="state-page-head__chip" role="listitem">
+                                <svg class="state-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6.5 11.5 3 8l1-1 2.5 2.5L12 4l1 1-6.5 6.5z"/></svg>
+                                <span id="state_head_chip1">Step 3 of 4</span>
+                            </li>
+                            <li class="state-page-head__chip" role="listitem">
+                                <svg class="state-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.5 2 5v6l6 3.5 6-3.5V5L8 1.5zm0 1.2 4.8 2.8L8 8.3 3.2 5.5 8 2.7zM3 6.4l5 2.9 5-2.9V10l-5 2.9L3 10V6.4z"/></svg>
+                                <span id="state_head_chip2">Local listings</span>
+                            </li>
+                            <li class="state-page-head__chip" role="listitem">
+                                <svg class="state-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zm-.5 2.5v2h-1V8h3V5H7.5z"/></svg>
+                                <span id="state_head_chip3">Free to browse</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="state-page-head__visual" aria-hidden="true">
+                        <div class="state-page-head__visual-ring"></div>
+                        <div class="state-page-head__visual-core"></div>
+                        <img class="state-page-head__illus" src="/Public/Images/teach/step-listings.svg" alt="" width="148" height="148">
+                    </div>
+                </div>
+            </div>
+        </header>
 
         <div class="adswp state-ad" id="state_adv1">Advertise</div>
 
@@ -878,6 +905,9 @@ const lang = getLangFromPath()
                 crumbHome: 'Startseite',
                 crumbCurrent: 'Bezirk wählen',
                 pageLead: 'Wählen Sie einen Bezirk, um passende Wohnangebote zu sehen.',
+                headChip1: 'Schritt 3 von 4',
+                headChip2: 'Lokale Angebote',
+                headChip3: 'Kostenlos browsen',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Bezirk suchen',
                 pickerLead: 'Tippen Sie auf einen Bezirk – die Badge zeigt die Anzahl verfügbarer Angebote.',
@@ -895,6 +925,9 @@ const lang = getLangFromPath()
                 crumbHome: 'Home',
                 crumbCurrent: 'Select district',
                 pageLead: 'Pick a district to see affordable housing listings in your area.',
+                headChip1: 'Step 3 of 4',
+                headChip2: 'Local listings',
+                headChip3: 'Free to browse',
                 stepPill: 'You are here',
                 pickerTitle: 'Browse by district',
                 pickerLead: 'Tap a district below — the badge shows how many listings are available.',
@@ -912,6 +945,9 @@ const lang = getLangFromPath()
                 crumbHome: 'Startseite',
                 crumbCurrent: 'Quartier wählen',
                 pageLead: 'Wählen Sie ein Quartier, um passende Wohnangebote zu sehen.',
+                headChip1: 'Schritt 3 von 4',
+                headChip2: 'Lokale Angebote',
+                headChip3: 'Kostenlos browsen',
                 stepPill: 'Aktueller Schritt',
                 pickerTitle: 'Nach Quartier suchen',
                 pickerLead: 'Tippen Sie auf ein Quartier – die Badge zeigt die Anzahl verfügbarer Angebote.',
@@ -935,6 +971,9 @@ const lang = getLangFromPath()
         set('state_crumb_home', copy.crumbHome);
         set('state_crumb_current', copy.crumbCurrent);
         set('state_page_lead', copy.pageLead);
+        set('state_head_chip1', copy.headChip1);
+        set('state_head_chip2', copy.headChip2);
+        set('state_head_chip3', copy.headChip3);
         set('lang_step_pill', copy.stepPill);
         set('state_picker_title', copy.pickerTitle);
         set('state_picker_lead', copy.pickerLead);

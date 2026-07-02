@@ -250,39 +250,53 @@
             Advertise
         </div>
 
-        <div class="title_box" data-eusoft-scrollable-element="1">
-            <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-                    <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="./home.html" itemprop="item"><i itemprop="name" id = "lang_item1">Home</i></a>
+        <div class="title_box list-page-head" data-eusoft-scrollable-element="1">
+            <nav class="list-page-head__site bread_crumbs" itemscope itemtype="http://schema.org/BreadcrumbList" aria-label="Breadcrumb">
+                    <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                        <a href="./home.html" itemprop="item"><i itemprop="name" id="lang_item1">Home</i></a>
                         <meta itemprop="position" content="1">
                     </span>
 
-                <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+                <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                         <span class="bread-crumbs-icon">/</span>
                         <a href="./state.html" itemprop="item" class="cur-bread-crumbs">
-                            <i itemprop="name" id = "lang_item2">Affordable Housing</i>
+                            <i itemprop="name" id="lang_item2">Affordable Housing</i>
                         </a>
                         <meta itemprop="position" content="2">
                     </span>
-            </div>
+            </nav>
 
-            <div class="bread_crumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList" id = "locate_search">
-                    <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <a href="./state.html" itemprop="item" class="cur-bread-crumbs">
-                            <i itemprop="name">Affordable Housing</i>
-                        </a>
-                        <meta itemprop="position" content="1">
-                    </span>
-                <span itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-                        <span class="bread-crumbs-icon">/</span>
-                        <a href="./state.html" itemprop="item" class="cur-bread-crumbs">
-                            <i itemprop="name">Affordable Housing</i>
-                        </a>
-                        <meta itemprop="position" content="2">
-                    </span>
+            <div class="list-page-head__banner">
+                <div class="list-page-head__glow list-page-head__glow--1" aria-hidden="true"></div>
+                <div class="list-page-head__glow list-page-head__glow--2" aria-hidden="true"></div>
+                <div class="list-page-head__inner">
+                    <div class="list-page-head__copy">
+                        <div class="list-page-head__loc bread_crumbs" itemscope itemtype="http://schema.org/BreadcrumbList" id="locate_search"></div>
+                        <span class="list-page-head__label" id="list_page_label">Apartment listings</span>
+                        <h1 class="title list-page-head__title" data-eusoft-scrollable-element="1" id="title_find">Find affordable housing</h1>
+                        <p class="list-page-head__lead" id="list_page_lead">Browse subsidized apartments in your selected area.</p>
+                        <ul class="list-page-head__chips" role="list">
+                            <li class="list-page-head__chip" role="listitem">
+                                <svg class="list-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M6.5 11.5 3 8l1-1 2.5 2.5L12 4l1 1-6.5 6.5z"/></svg>
+                                <span id="list_head_chip1">Step 4 of 4</span>
+                            </li>
+                            <li class="list-page-head__chip" role="listitem">
+                                <svg class="list-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1.5 2 5v6l6 3.5 6-3.5V5L8 1.5zm0 1.2 4.8 2.8L8 8.3 3.2 5.5 8 2.7zM3 6.4l5 2.9 5-2.9V10l-5 2.9L3 10V6.4z"/></svg>
+                                <span id="list_head_chip2">Verified listings</span>
+                            </li>
+                            <li class="list-page-head__chip" role="listitem">
+                                <svg class="list-page-head__chip-icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11zm-.5 2.5v2h-1V8h3V5H7.5z"/></svg>
+                                <span id="list_head_chip3">Updated regularly</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list-page-head__visual" aria-hidden="true">
+                        <div class="list-page-head__visual-ring"></div>
+                        <div class="list-page-head__visual-core"></div>
+                        <img class="list-page-head__illus" src="/Public/Images/teach/step-listings.svg" alt="" width="148" height="148">
+                    </div>
+                </div>
             </div>
-
-            <h1 class="title" data-eusoft-scrollable-element="1" id = "title_find">Bezahlbaren Wohnraum finden</h1>
         </div>
         <div class="list-results">
             <div class="list-summary sub-box">
@@ -832,21 +846,21 @@ const lang = getLangFromPath()
 
             document.getElementById("locate_search").innerHTML = `
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                <a href="${state_root_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${state_root_href}" itemprop="item" class="cur-bread-crumbs">
                     <i itemprop="name">${display_state}</i>
                 </a>
                 <meta itemprop="position" content="1">
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="${county_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${county_href}" itemprop="item" class="cur-bread-crumbs">
                     <i itemprop="name">${display_city}</i>
                 </a>
                 <meta itemprop="position" content="2">
             </span>
             <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
                 <span class="bread-crumbs-icon">/</span>
-                <a href="${district_href}" itemprop="item" class="cur-bread-crumbs" style="color: #1174eb;">
+                <a href="${district_href}" itemprop="item" class="cur-bread-crumbs">
                     <i itemprop="name">${display_district}</i>
                 </a>
                 <meta itemprop="position" content="3">
@@ -1182,8 +1196,13 @@ const lang = getLangFromPath()
             document.getElementById("lang_item1").innerText="Startseite"
 
             document.getElementById("lang_item2").innerText="Bezahlbare Wohnungen"
+            document.getElementById("list_page_label").innerText = "Wohnungsangebote";
+            document.getElementById("list_page_lead").innerText = "Durchsuchen Sie subventionierte Wohnungen in Ihrer Region.";
+            document.getElementById("list_head_chip1").innerText = "Schritt 4 von 4";
+            document.getElementById("list_head_chip2").innerText = "Geprüfte Angebote";
+            document.getElementById("list_head_chip3").innerText = "Regelmäßig aktualisiert";
 
-        }else if(lang == "de" || lang == "de-ch-at")
+        }else if(lang == "us")
         {
             document.getElementById("title_find").innerText = "Find affordable housing";
             document.getElementById("total_text").innerText = "Apartments nearby";
@@ -1191,6 +1210,11 @@ const lang = getLangFromPath()
 
             document.getElementById("lang_item1").innerText = "Home";
             document.getElementById("lang_item2").innerText = "Affordable apartments";
+            document.getElementById("list_page_label").innerText = "Apartment listings";
+            document.getElementById("list_page_lead").innerText = "Browse subsidized apartments in your selected area.";
+            document.getElementById("list_head_chip1").innerText = "Step 4 of 4";
+            document.getElementById("list_head_chip2").innerText = "Verified listings";
+            document.getElementById("list_head_chip3").innerText = "Updated regularly";
         }else
         {
             document.getElementById("title_find").innerText="Bezahlbaren Wohnraum finden"
@@ -1200,6 +1224,11 @@ const lang = getLangFromPath()
             document.getElementById("lang_item1").innerText="Startseite"
 
             document.getElementById("lang_item2").innerText="Bezahlbare Wohnungen"
+            document.getElementById("list_page_label").innerText = "Wohnungsangebote";
+            document.getElementById("list_page_lead").innerText = "Durchsuchen Sie subventionierte Wohnungen in Ihrer Region.";
+            document.getElementById("list_head_chip1").innerText = "Schritt 4 von 4";
+            document.getElementById("list_head_chip2").innerText = "Geprüfte Angebote";
+            document.getElementById("list_head_chip3").innerText = "Regelmäßig aktualisiert";
         }
 
         if(isMobile()){
