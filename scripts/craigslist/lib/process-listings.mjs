@@ -12,6 +12,8 @@ import { parseDetailHtml } from './parse-detail-page.mjs';
 import { buildGeocodeQuery, geocodeAddress, parseUsAddressFallback } from './geocode.mjs';
 import { saveListingImages } from './images.mjs';
 import { mapListingToHouseGer } from './map-to-house.mjs';
+import { listingKeyFromUrl, rememberListingKeys } from './listing-key.mjs';
+import { createStepProgress, shortText } from './progress.mjs';
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -231,29 +233,73 @@ export async function fetchSearchListingUrls(searchOptions, fetchOptions = {}) {
 export async function processListingUrls(urls, context, options = {}) {
   const delayMs = options.delayMs ?? 1500;
   const max = options.max ?? urls.length;
-  const results = [];
-  const stats = { processed: 0, kept: 0, skipped_no_images: 0, skipped_errors: 0 };
+  const seenKeys = options.seenKeys ?? new Set();
+  const inputUrls = urls || [];
 
-  for (let i = 0; i < Math.min(urls.length, max); i += 1) {
-    const url = urls[i];
+  const pending = [];
+  let skippedAlready = 0;
+
+  for (const url of inputUrls) {
+    const key = listingKeyFromUrl(url);
+    if (key && seenKeys.has(key)) {
+      skippedAlready += 1;
+      continue;
+    }
+    pending.push(url);
+  }
+
+  const limit = max > 0 ? Math.min(pending.length, max) : pending.length;
+  const results = [];
+  const stats = {
+    input: inputUrls.length,
+    pending: pending.length,
+    skipped_already: skippedAlready,
+    processed: 0,
+    kept: 0,
+    skipped_no_images: 0,
+    skipped_errors: 0,
+    limit
+  };
+
+  const progress = createStepProgress({
+    label: options.progressLabel || 'Listing',
+    total: limit,
+    quiet: options.quietProgress === true
+  });
+
+  progress.start(
+    `${limit} to process` +
+    (skippedAlready ? `, ${skippedAlready} already done` : '') +
+    (inputUrls.length !== pending.length ? `, ${inputUrls.length - pending.length - skippedAlready} filtered` : '')
+  );
+
+  for (let i = 0; i < limit; i += 1) {
+    const url = pending[i];
+    const urlLabel = shortText(url, 80);
     try {
       const result = await processListingUrl(url, context, options);
       stats.processed += 1;
       if (result.skipped) {
         if (result.reason === 'no_images') stats.skipped_no_images += 1;
         else stats.skipped_errors += 1;
-        console.warn(`Skip ${url} (${result.reason})`);
+        progress.tick(1, `skip (${result.reason}) ${urlLabel}`);
       } else {
         stats.kept += 1;
         results.push(result);
+        rememberListingKeys(seenKeys, result);
+        const title = shortText(result.craigslist?.title || result.house_ger?.name || '', 48);
+        progress.tick(1, `kept ${title || urlLabel}`);
+        options.onKept?.(result);
       }
     } catch (error) {
       stats.skipped_errors += 1;
-      console.warn(`Skip ${url} (${error.message})`);
+      progress.tick(1, `error ${error.message} | ${urlLabel}`);
     }
 
-    if (i < urls.length - 1) await sleep(delayMs);
+    if (i < limit - 1) await sleep(delayMs);
   }
+
+  progress.done(`kept=${stats.kept}, skip_no_images=${stats.skipped_no_images}, errors=${stats.skipped_errors}`);
 
   return { results, stats };
 }

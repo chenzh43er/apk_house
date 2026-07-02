@@ -186,6 +186,7 @@ async function main() {
       displayState: args.displayState
     }, {
       max: args.max,
+      progressLabel: `${args.city}-${args.category}`,
       proxy: args.proxy,
       useBrowser: args.useBrowser,
       headless: args.headless,

@@ -5,6 +5,13 @@ import { fileURLToPath } from 'node:url';
 import { closeBrowser } from './lib/browser.mjs';
 import { fetchSearchListingUrls, processListingUrls } from './lib/process-listings.mjs';
 import { mapProcessedResults } from './lib/map-to-house.mjs';
+import {
+  dedupeListingResults,
+  loadSeenKeysFromBatchDir,
+  loadSeenKeysFromListings,
+  rememberListingKeys
+} from './lib/listing-key.mjs';
+import { createBatchProgress, createStepProgress } from './lib/progress.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -58,13 +65,13 @@ Fully automated US Craigslist housing scrape (Playwright browser).
 
 Options:
   --states CA,NY,TX       Only these states (abbr or name). Default: all regions
-  --per-region-max 30     Max listings per metro area
+  --per-region-max 30     Max detail pages per metro (0 = all found URLs)
   --distance 25           Search radius miles
   --output-dir DIR        JSON output per region + merged all-us.json
   --proxy URL             US proxy (or set CRAIGSLIST_PROXY)
   --headed                Show browser window
-  --no-resume             Re-scrape regions already completed
-  --merge-only            Rebuild all-us.json from existing region JSON files
+  --no-resume             Ignore saved region JSON and re-scrape from scratch
+  --merge-only            Rebuild all-us.json from existing region JSON files (deduped by URL/cdkey)
 
 Examples:
   node scripts/craigslist/batch-us.mjs --states CA --per-region-max 20 --headed
@@ -93,15 +100,19 @@ function rebuildMergedFile(outputDir, selectedCount = null) {
     .filter(isRegionFile)
     .sort();
 
-  const listings = [];
+  const rawListings = [];
   const regionKeys = [];
+  const mergeProgress = createStepProgress({ label: 'Merge', total: files.length });
 
   for (const file of files) {
     const payload = JSON.parse(fs.readFileSync(path.join(outputDir, file), 'utf8'));
     regionKeys.push(file.replace(/\.json$/, ''));
-    listings.push(...(payload.listings || []));
+    rawListings.push(...(payload.listings || []));
+    mergeProgress.tick(1, file);
   }
 
+  const listings = dedupeListingResults(rawListings);
+  mergeProgress.done(`${listings.length} unique listings`);
   const mergedFile = path.join(outputDir, 'all-us.json');
   fs.writeFileSync(mergedFile, JSON.stringify({
     meta: {
@@ -109,23 +120,59 @@ function rebuildMergedFile(outputDir, selectedCount = null) {
       regions_on_disk: regionKeys.length,
       regions_requested: selectedCount,
       region_files: regionKeys,
-      total_listings: listings.length
+      total_listings: listings.length,
+      total_before_dedup: rawListings.length,
+      duplicates_removed: rawListings.length - listings.length
     },
     listings
   }, null, 2), 'utf8');
 
-  return { mergedFile, total: listings.length, regionKeys };
+  return { mergedFile, total: listings.length, regionKeys, duplicatesRemoved: rawListings.length - listings.length };
 }
 
-async function scrapeRegion(region, args) {
+function buildRegionPayload(region, meta, listings) {
+  return {
+    meta: {
+      region: region.label,
+      state: region.state,
+      abbr: region.abbr,
+      city: region.city,
+      postal: region.postal,
+      scraped_at: new Date().toISOString(),
+      ...meta
+    },
+    listings: dedupeListingResults(listings)
+  };
+}
+
+function saveRegionFile(outFile, region, meta, listings) {
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, JSON.stringify(buildRegionPayload(region, meta, listings), null, 2), 'utf8');
+}
+
+async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionIndex) {
   const key = regionKey(region);
   const outFile = path.join(args.outputDir, `${key}.json`);
+
+  batchProgress.regionStart(regionIndex, region);
+
+  let existingListings = [];
   if (args.resume && fs.existsSync(outFile)) {
-    console.log(`Skip completed region ${key}`);
-    return JSON.parse(fs.readFileSync(outFile, 'utf8'));
+    const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
+    existingListings = existing.listings || [];
+    for (const listingKey of loadSeenKeysFromListings(existingListings)) {
+      globalSeenKeys.add(listingKey);
+    }
+    console.log(`Resume ${key}: ${existingListings.length} listings already saved`);
+  } else if (!args.resume && fs.existsSync(outFile)) {
+    const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
+    for (const listingKey of loadSeenKeysFromListings(existing.listings)) {
+      globalSeenKeys.delete(listingKey);
+    }
+    console.log(`Re-scrape ${key}: ignoring ${(existing.listings || []).length} previously saved listings`);
   }
 
-  console.log(`\n=== ${region.label} (${region.state}) ===`);
+  console.log(`Fetching search URLs for ${key}...`);
 
   const urls = await fetchSearchListingUrls({
     city: region.city,
@@ -142,45 +189,99 @@ async function scrapeRegion(region, args) {
 
   console.log(`Found ${urls.length} listing URLs`);
 
+  const existingCount = existingListings.length;
+  const remaining = args.perRegionMax > 0
+    ? Math.max(0, args.perRegionMax - existingCount)
+    : urls.length;
+
+  if (args.perRegionMax > 0 && existingCount >= args.perRegionMax) {
+    console.log(`Region already has ${existingCount} listings (limit ${args.perRegionMax}), skipping scrape`);
+    batchProgress.regionDone({
+      totalListings: existingCount,
+      newListings: 0
+    });
+    return buildRegionPayload(region, {
+      input_urls: urls.length,
+      existing_listings: existingCount,
+      kept: 0,
+      skipped_already: urls.length,
+      process_limit: 0
+    }, existingListings);
+  }
+
+  const processMax = args.perRegionMax > 0 ? remaining : urls.length;
+  if (args.perRegionMax > 0) {
+    console.log(`Processing up to ${processMax} new URLs (${existingCount} already saved, limit ${args.perRegionMax})`);
+  } else {
+    console.log(`Processing up to ${processMax} new listing URLs`);
+  }
+
+  let listings = [...existingListings];
+
   const { results, stats } = await processListingUrls(urls, {
     displayState: region.state
   }, {
-    max: args.perRegionMax,
+    max: processMax,
+    seenKeys: globalSeenKeys,
+    progressLabel: key,
     proxy: args.proxy,
     useBrowser: true,
     headless: args.headless,
     imagesDir: args.imagesDir,
-    delayMs: 2000
+    delayMs: 2000,
+    onKept: (result) => {
+      listings = dedupeListingResults([...listings, ...mapProcessedResults([result])]);
+      saveRegionFile(outFile, region, {
+        input_urls: urls.length,
+        existing_listings: existingCount,
+        process_limit: processMax,
+        kept: listings.length - existingCount,
+        skipped_already: stats.skipped_already,
+        skipped_no_images: stats.skipped_no_images,
+        skipped_errors: stats.skipped_errors,
+        in_progress: true
+      }, listings);
+    }
   });
 
-  const payload = {
-    meta: {
-      region: region.label,
-      state: region.state,
-      abbr: region.abbr,
-      city: region.city,
-      postal: region.postal,
-      scraped_at: new Date().toISOString(),
-      input_urls: urls.length,
-      kept: stats.kept,
-      skipped_no_images: stats.skipped_no_images,
-      skipped_errors: stats.skipped_errors
-    },
-    listings: mapProcessedResults(results)
+  listings = dedupeListingResults([
+    ...existingListings,
+    ...mapProcessedResults(results)
+  ]);
+
+  const meta = {
+    input_urls: urls.length,
+    existing_listings: existingCount,
+    process_limit: processMax,
+    kept: listings.length - existingCount,
+    total_listings: listings.length,
+    skipped_already: stats.skipped_already,
+    skipped_no_images: stats.skipped_no_images,
+    skipped_errors: stats.skipped_errors,
+    processed: stats.processed
   };
 
-  fs.mkdirSync(args.outputDir, { recursive: true });
-  fs.writeFileSync(outFile, JSON.stringify(payload, null, 2), 'utf8');
-  console.log(`Saved ${stats.kept} listings -> ${outFile}`);
-  return payload;
+  saveRegionFile(outFile, region, meta, listings);
+
+  batchProgress.regionDone({
+    totalListings: listings.length,
+    newListings: meta.kept
+  });
+
+  console.log(
+    `Saved ${outFile} | total=${listings.length}, new=${meta.kept}, skipped already=${stats.skipped_already}`
+  );
+
+  return buildRegionPayload(region, meta, listings);
 }
 
 async function main() {
   const args = parseArgs(process.argv);
 
   if (args.mergeOnly) {
-    const { mergedFile, total, regionKeys } = rebuildMergedFile(args.outputDir);
-    console.log(`Merged ${total} listings from ${regionKeys.length} region files -> ${mergedFile}`);
+    const { mergedFile, total, regionKeys, duplicatesRemoved } = rebuildMergedFile(args.outputDir);
+    const dedupNote = duplicatesRemoved > 0 ? `, removed ${duplicatesRemoved} duplicates` : '';
+    console.log(`Merged ${total} listings from ${regionKeys.length} region files${dedupNote} -> ${mergedFile}`);
     return;
   }
 
@@ -188,7 +289,17 @@ async function main() {
   fs.mkdirSync(args.outputDir, { recursive: true });
   fs.mkdirSync(args.imagesDir, { recursive: true });
 
-  console.log(`Regions to scrape: ${selected.length}`);
+  const globalSeenKeys = loadSeenKeysFromBatchDir(args.outputDir);
+  const batchProgress = createBatchProgress(selected.length);
+
+  console.log(`\n${'='.repeat(64)}`);
+  console.log(`Craigslist US batch scrape`);
+  console.log(`Regions: ${selected.length} | per-region-max: ${args.perRegionMax || 'unlimited'} | resume: ${args.resume}`);
+  if (globalSeenKeys.size > 0) {
+    console.log(`Known listings from disk: ${globalSeenKeys.size}`);
+  }
+  console.log(`${'='.repeat(64)}`);
+
   if (!args.proxy) {
     console.warn('No CRAIGSLIST_PROXY set. From outside the US you usually need a US residential proxy.');
   }
@@ -196,12 +307,14 @@ async function main() {
   const merged = [];
 
   try {
-    for (const region of selected) {
+    for (let i = 0; i < selected.length; i += 1) {
+      const region = selected[i];
       try {
-        const payload = await scrapeRegion(region, args);
+        const payload = await scrapeRegion(region, args, globalSeenKeys, batchProgress, i);
         merged.push(...payload.listings);
       } catch (error) {
         console.error(`Region failed ${region.label}: ${error.message}`);
+        batchProgress.regionDone({ failed: true });
       }
     }
   } finally {
@@ -210,7 +323,8 @@ async function main() {
 
   const mergedFile = path.join(args.outputDir, 'all-us.json');
   const rebuilt = rebuildMergedFile(args.outputDir, selected.length);
-  console.log(`\nMerged ${rebuilt.total} listings from ${rebuilt.regionKeys.length} region files -> ${mergedFile}`);
+  const dedupNote = rebuilt.duplicatesRemoved > 0 ? `, removed ${rebuilt.duplicatesRemoved} duplicates` : '';
+  batchProgress.printSummary(`Merged ${rebuilt.total} listings -> ${mergedFile}${dedupNote}`);
   if (merged.length !== rebuilt.total) {
     console.warn(`Note: ${selected.length - rebuilt.regionKeys.length} requested regions have no saved JSON yet (network timeout or not scraped).`);
   }

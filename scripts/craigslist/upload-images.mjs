@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createStepProgress, shortText } from './lib/progress.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -197,6 +198,8 @@ async function uploadOne(job, options) {
 async function runPool(jobs, options) {
   const stats = { uploaded: 0, skipped: 0, missing: 0, failed: 0, planned: 0 };
   let index = 0;
+  const progress = createStepProgress({ label: 'Upload', total: jobs.length });
+  progress.start(`concurrency=${options.concurrency}`);
 
   async function worker() {
     while (index < jobs.length) {
@@ -205,22 +208,17 @@ async function runPool(jobs, options) {
       try {
         const result = await uploadOne(current, options);
         stats[result.status] += 1;
-        if (result.status === 'uploaded') {
-          console.log(`uploaded ${current.key}`);
-        } else if (result.status === 'skipped') {
-          // quiet by default
-        } else if (result.status === 'missing') {
-          console.warn(`missing local file: ${current.localPath}`);
-        }
+        progress.tick(1, `${result.status} ${shortText(current.key, 64)}`);
       } catch (error) {
         stats.failed += 1;
-        console.warn(`failed ${current.key}: ${error.message}`);
+        progress.tick(1, `failed ${shortText(current.key, 48)} (${error.message})`);
       }
     }
   }
 
   const workers = Array.from({ length: Math.max(1, options.concurrency) }, () => worker());
   await Promise.all(workers);
+  progress.done(`uploaded=${stats.uploaded}, skipped=${stats.skipped}, missing=${stats.missing}, failed=${stats.failed}`);
   return stats;
 }
 
@@ -244,7 +242,7 @@ async function main() {
   }
 
   const stats = await runPool(jobs, args);
-  console.log(`Upload complete: uploaded=${stats.uploaded}, skipped=${stats.skipped}, missing=${stats.missing}, failed=${stats.failed}`);
+  console.log(`Upload summary: uploaded=${stats.uploaded}, skipped=${stats.skipped}, missing=${stats.missing}, failed=${stats.failed}`);
 }
 
 main().catch((error) => {

@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import pg from 'pg';
+import { createStepProgress } from './lib/progress.mjs';
 
 const { Client } = pg;
 
@@ -235,6 +236,9 @@ async function main() {
   let skipped = 0;
   let updated = 0;
 
+  const progress = createStepProgress({ label: 'Import', total: rows.length });
+  progress.start();
+
   try {
     for (const row of rows) {
       const values = HOUSE_COLUMNS.map((column) => row[column] ?? null);
@@ -251,8 +255,10 @@ async function main() {
           const sql = `UPDATE house_ger SET ${buildUpdateAssignments()} WHERE cdkey = $1`;
           await client.query(sql, [row.cdkey, ...buildUpdateValues(row)]);
           updated += 1;
+          progress.tick(1, `updated ${row.cdkey}`);
         } else {
           skipped += 1;
+          progress.tick(1, `skipped ${row.cdkey}`);
         }
         continue;
       }
@@ -260,12 +266,13 @@ async function main() {
       const sql = `INSERT INTO house_ger (${quotedColumns}) VALUES (${placeholders})`;
       await client.query(sql, values);
       inserted += 1;
+      progress.tick(1, `inserted ${row.cdkey}`);
     }
   } finally {
     await client.end();
   }
 
-  console.log(`Import complete: inserted=${inserted}, updated=${updated}, skipped=${skipped}`);
+  progress.done(`inserted=${inserted}, updated=${updated}, skipped=${skipped}`);
 }
 
 main().catch((error) => {
