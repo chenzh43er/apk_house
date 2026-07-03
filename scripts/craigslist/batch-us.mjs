@@ -12,6 +12,7 @@ import {
   rememberListingKeys
 } from './lib/listing-key.mjs';
 import { createBatchProgress, createStepProgress } from './lib/progress.mjs';
+import { readJsonFile, writeJsonFileAtomic, quarantineCorruptFile } from './lib/safe-json.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
@@ -126,7 +127,7 @@ function rebuildMergedFile(outputDir, selectedCount = null) {
   const listings = dedupeListingResults(rawListings);
   mergeProgress.done(`${listings.length} unique listings`);
   const mergedFile = path.join(outputDir, 'all-us.json');
-  fs.writeFileSync(mergedFile, JSON.stringify({
+  writeJsonFileAtomic(mergedFile, {
     meta: {
       scraped_at: new Date().toISOString(),
       regions_on_disk: regionKeys.length,
@@ -137,7 +138,7 @@ function rebuildMergedFile(outputDir, selectedCount = null) {
       duplicates_removed: rawListings.length - listings.length
     },
     listings
-  }, null, 2), 'utf8');
+  });
 
   return { mergedFile, total: listings.length, regionKeys, duplicatesRemoved: rawListings.length - listings.length };
 }
@@ -158,8 +159,21 @@ function buildRegionPayload(region, meta, listings) {
 }
 
 function saveRegionFile(outFile, region, meta, listings) {
-  fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  fs.writeFileSync(outFile, JSON.stringify(buildRegionPayload(region, meta, listings), null, 2), 'utf8');
+  writeJsonFileAtomic(outFile, buildRegionPayload(region, meta, listings));
+}
+
+function loadRegionFile(outFile, key) {
+  try {
+    return readJsonFile(outFile);
+  } catch (error) {
+    const quarantined = quarantineCorruptFile(outFile);
+    console.warn(
+      `[${key}] Region JSON corrupt (${error.message}). ` +
+      (quarantined ? `Quarantined -> ${quarantined}. ` : '') +
+      'Starting this region from scratch; re-run --merge-only after recovery.'
+    );
+    return null;
+  }
 }
 
 async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionIndex) {
@@ -170,18 +184,22 @@ async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionI
 
   let existingListings = [];
   if (args.resume && fs.existsSync(outFile)) {
-    const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
-    existingListings = existing.listings || [];
-    for (const listingKey of loadSeenKeysFromListings(existingListings)) {
-      globalSeenKeys.add(listingKey);
+    const existing = loadRegionFile(outFile, key);
+    if (existing) {
+      existingListings = existing.listings || [];
+      for (const listingKey of loadSeenKeysFromListings(existingListings)) {
+        globalSeenKeys.add(listingKey);
+      }
+      console.log(`Resume ${key}: ${existingListings.length} listings already saved`);
     }
-    console.log(`Resume ${key}: ${existingListings.length} listings already saved`);
   } else if (!args.resume && fs.existsSync(outFile)) {
-    const existing = JSON.parse(fs.readFileSync(outFile, 'utf8'));
-    for (const listingKey of loadSeenKeysFromListings(existing.listings)) {
-      globalSeenKeys.delete(listingKey);
+    const existing = loadRegionFile(outFile, key);
+    if (existing) {
+      for (const listingKey of loadSeenKeysFromListings(existing.listings)) {
+        globalSeenKeys.delete(listingKey);
+      }
+      console.log(`Re-scrape ${key}: ignoring ${(existing.listings || []).length} previously saved listings`);
     }
-    console.log(`Re-scrape ${key}: ignoring ${(existing.listings || []).length} previously saved listings`);
   }
 
   console.log(`Fetching search URLs for ${key}...`);
