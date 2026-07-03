@@ -101,6 +101,25 @@ function isAdPage(pathname) {
   ) {
     return true;
   }
+  if (
+    new RegExp(
+      `^\\/teach\\/state\\/[^/]+\\/[^/]+\\/[^/]+\\/[^/]+\\/(?:form|result|detail|list)$`,
+      "i"
+    ).test(pathname)
+  ) {
+    return true;
+  }
+  if (
+    new RegExp(
+      `^\\/teach\\/state\\/[^/]+\\/[^/]+\\/[^/]+\\/\\d+\\/list$`,
+      "i"
+    ).test(pathname)
+  ) {
+    return true;
+  }
+  if (pathname === "/teach/state" || /^\/teach\/state\//i.test(pathname)) {
+    return true;
+  }
   if (new RegExp(`^\\/${LANG_SEGMENT}\\/post\\/\\d+\\/\\d+$`, "i").test(pathname)) {
     return true;
   }
@@ -251,8 +270,14 @@ function geoFingerprint(pathname) {
   const m = pathname.match(
     new RegExp(`^\\/(${LANG_SEGMENT})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/`, "i")
   );
-  if (!m) return null;
-  return [m[1].toLowerCase(), m[2].toLowerCase(), m[3].toLowerCase()].join("|");
+  if (m) {
+    return [m[1].toLowerCase(), m[2].toLowerCase(), m[3].toLowerCase()].join("|");
+  }
+  const bare = pathname.match(/^\/teach\/state\/([^/]+)\/([^/]+)\/([^/]+)\//i);
+  if (bare) {
+    return ["us", bare[1].toLowerCase(), bare[2].toLowerCase()].join("|");
+  }
+  return null;
 }
 
 /**
@@ -375,6 +400,26 @@ const CDN_BUCKETS = {
   at: "HOUSEAT",
   ch: "HOUSECH",
 };
+
+/** /teach/state 无语言前缀时，从 query 推断默认语言（否则 us） */
+function resolveLangFromRequest(request) {
+  const url = new URL(request.url);
+  const lang = (url.searchParams.get("lang") || "").toLowerCase();
+  if (LANGS.includes(lang)) return lang;
+
+  const country = (url.searchParams.get("country") || "").toLowerCase();
+  if (country === "de") return "de";
+  if (country === "at" || country === "ch") return "de-ch-at";
+
+  return "us";
+}
+
+/** 将 /teach/state/... 补全为 /{lang}/teach/state/... */
+function withLangTeachPath(pathname, request) {
+  if (!/^\/teach\/state(?:\/|$)/i.test(pathname)) return pathname;
+  if (new RegExp(`^\\/(${LANG})(?:\\/|$)`, "i").test(pathname)) return pathname;
+  return `/${resolveLangFromRequest(request)}${pathname}`;
+}
 
 /** ads.txt：同时声明 ADX(GAM) 与 AdSense 授权（无需随 mode 切换） */
 const ADS_TXT_BODY =
@@ -574,6 +619,13 @@ export default {
       return Response.redirect(target.toString(), 301);
     }
 
+    // /us、/de、/de-ch-at 无尾斜杠时，相对链接 ./teach/state 会解析成 /teach/state（丢失语言前缀）
+    if (/^\/(de|us|de-ch-at)$/.test(pathname)) {
+      const target = new URL(`${pathname}/`, request.url);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
+    }
+
     // ── 4. R2 CDN 图片代理 ──
     if (pathname.startsWith("/cdn/")) {
       const imageRes = await r2ImageProxy(request, env, ctx);
@@ -599,9 +651,10 @@ export default {
     }
 
     // ── 7. SEO 友好 URL 重写（teach/state 层级路径） ──
+    const routePath = withLangTeachPath(pathname, request);
 
     // /{lang}/teach/state/{state}/{city}/{district}/{id}/result → /{lang}/result?id=...
-    let m = pathname.match(
+    let m = routePath.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/result$`,
         "i"
@@ -613,7 +666,7 @@ export default {
     }
 
     // /{lang}/teach/state/{state}/{city}/{district}/{id}/form → /{lang}/form?id=...
-    m = pathname.match(
+    m = routePath.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/form$`,
         "i"
@@ -625,7 +678,7 @@ export default {
     }
 
     // /{lang}/teach/state/{state}/{city}/{district}/{id}/detail → /{lang}/detail?id=...
-    m = pathname.match(
+    m = routePath.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/detail$`,
         "i"
@@ -637,7 +690,7 @@ export default {
     }
 
     // /{lang}/teach/state/{state}/{city}/{district}/{page}/list → /{lang}/list?...
-    m = pathname.match(
+    m = routePath.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/([^/]+)\\/(\\d+)\\/list$`,
         "i"
@@ -649,7 +702,7 @@ export default {
     }
 
     // /{lang}/teach/state/{state}/{city}/district → /{lang}/district?state=...&city=...
-    m = pathname.match(
+    m = routePath.match(
       new RegExp(
         `^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/([^/]+)\\/district$`,
         "i"
@@ -661,7 +714,7 @@ export default {
     }
 
     // /{lang}/teach/state/{state}/city → /{lang}/city?state=...
-    m = pathname.match(
+    m = routePath.match(
       new RegExp(`^\\/(${LANG})\\/teach\\/state\\/([^/]+)\\/city$`, "i")
     );
     if (m) {
@@ -670,7 +723,7 @@ export default {
     }
 
     // /{lang}/teach/state → /{lang}/state
-    m = pathname.match(new RegExp(`^\\/(${LANG})\\/teach\\/state$`, "i"));
+    m = routePath.match(new RegExp(`^\\/(${LANG})\\/teach\\/state$`, "i"));
     if (m) {
       const [, lang] = m;
       return rewrite(request, `/${lang}/state`, {}, env);

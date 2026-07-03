@@ -180,8 +180,7 @@ async function main() {
   console.log(`Cloudflare 迁移 — ${DOMAIN} → Ubeator 账户${dryRun ? " (dry-run)" : ""}\n`);
 
   await ensurePagesProject();
-  await addPagesDomain(PAGES_PROJECT, DOMAIN);
-  await addPagesDomain(PAGES_PROJECT, `www.${DOMAIN}`);
+  // 不要绑 Pages 自定义域：公网入口由 houseworker 路由接管，Pages 仅作内部回源 apk-house.pages.dev
   await deployWorker();
   await ensureWorkerRoutes();
   await triggerPagesDeploy(PAGES_PROJECT);
