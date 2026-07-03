@@ -32,7 +32,7 @@
        */
       testMode: false,
       /** 本地测试时模拟的正式域名（GPT 不认可 127.0.0.1） */
-      productionOrigin: "https://apkintelligence.com",
+      productionOrigin: "https://identityinsight.org",
       /** GPT Out-of-Page：锚定 + 穿插（仅 ADX，且非 ad-free 页面） */
       oop: {
         bottomAnchor: true,

@@ -144,6 +144,26 @@ export function sizesToRest(sizes) {
   });
 }
 
+/** Out-of-Page 广告单元尺寸（GAM REST API SizeType） */
+export function oopFormatToRestSizes(format) {
+  if (format === "INTERSTITIAL") {
+    return [
+      {
+        size: { width: 1, height: 1, sizeType: "INTERSTITIAL" },
+        environmentType: "BROWSER",
+      },
+    ];
+  }
+
+  // 锚定 / 侧栏：Out-of-page，1x1 IGNORED
+  return [
+    {
+      size: { width: 1, height: 1, sizeType: "IGNORED" },
+      environmentType: "BROWSER",
+    },
+  ];
+}
+
 export async function createAdUnit(networkCode, adUnit) {
   return gamRequest("POST", `/networks/${networkCode}/adUnits`, adUnit);
 }

@@ -1,16 +1,16 @@
-# Cloudflare Worker：apkintelligence.com 统一入口（流量清洗 + 路由 + R2 + Supabase）
-# 账户：Chjgfjjyghjhggg@gmail.com
-name = "billowing-leaf-30ae"
+# Cloudflare Worker：identityinsight.org 统一入口（流量清洗 + 路由 + R2 + Supabase）
+# 账户：Ubeator@foxmail.com
+name = "houseworker"
 main = "worker/worker.js"
 compatibility_date = "2026-03-17"
-account_id = "0e70af17109f26d0d034bab33006f59e"
+account_id = "892acd09257ee1251aca55e5a6f9946e"
 
 # 禁用 esbuild 打包，直接上传源文件以保留注释（Dashboard 可见）
 no_bundle = true
 
 routes = [
-  { pattern = "apkintelligence.com/*", zone_name = "apkintelligence.com" },
-  { pattern = "www.apkintelligence.com/*", zone_name = "apkintelligence.com" },
+  { pattern = "identityinsight.org/*", zone_name = "identityinsight.org" },
+  { pattern = "www.identityinsight.org/*", zone_name = "identityinsight.org" },
 ]
 
 [[r2_buckets]]

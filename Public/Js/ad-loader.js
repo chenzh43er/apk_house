@@ -124,7 +124,7 @@
     if (isLocalHost()) {
       var origin =
         (w.AD_CONFIG.adx && w.AD_CONFIG.adx.productionOrigin) ||
-        "https://apkintelligence.com";
+        "https://identityinsight.org";
       attrs.page_url = origin + w.location.pathname + w.location.search;
     }
 

@@ -13,15 +13,19 @@ const US_STATE_NAME_TO_ABBR = Object.fromEntries(
 
 const cache = new Map();
 let lastRequestAt = 0;
+let throttleChain = Promise.resolve();
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function throttle() {
-  const wait = Math.max(0, 1100 - (Date.now() - lastRequestAt));
-  if (wait) await sleep(wait);
-  lastRequestAt = Date.now();
+  throttleChain = throttleChain.then(async () => {
+    const wait = Math.max(0, 1100 - (Date.now() - lastRequestAt));
+    if (wait) await sleep(wait);
+    lastRequestAt = Date.now();
+  });
+  return throttleChain;
 }
 
 export function parseUsAddressComponents(text) {

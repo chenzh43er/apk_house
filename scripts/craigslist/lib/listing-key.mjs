@@ -1,14 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { normalizeSearchListingUrl } from './search-urls.mjs';
+import { normalizeSearchListingUrl, extractPostingIdFromUrl } from './search-urls.mjs';
 
 export function listingKeyFromUrl(url) {
   const normalized = normalizeSearchListingUrl(String(url || '').trim());
   if (!normalized) return '';
 
-  const numeric = normalized.match(/\/(\d{8,})\.html$/i)
-    || normalized.match(/[?&]postingID=(\d+)/i);
-  if (numeric) return `cl-${numeric[1]}`;
+  const postingId = extractPostingIdFromUrl(normalized);
+  if (postingId) return `cl-${postingId}`;
 
   const view = normalized.match(/\/view\/d\/[^/]+\/([^/?#]+)/i)
     || normalized.match(/\/[a-z0-9-]+\/d\/[^/]+\/([^/?#]+)/i);

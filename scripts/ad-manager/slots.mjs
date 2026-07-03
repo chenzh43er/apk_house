@@ -86,6 +86,21 @@ export function listUnitsToCreate() {
   return rows;
 }
 
+/** OOP 单元列表（与 ADX_OOP_DEFS 一致） */
+export function listOopUnitsToCreate() {
+  return Object.entries(ADX_OOP_DEFS).map(([slotKey, def]) => {
+    const parts = def.unit.split("/");
+    return {
+      slotKey,
+      fullPath: def.unit,
+      parentPath: parts.slice(0, -1).join("/"),
+      code: parts[parts.length - 1],
+      name: parts[parts.length - 1],
+      format: def.format,
+    };
+  });
+}
+
 /** 所有需要存在的父级目录（按路径深度排序） */
 export function listParentFolders() {
   const folders = new Set();

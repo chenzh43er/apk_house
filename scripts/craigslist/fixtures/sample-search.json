@@ -4,6 +4,7 @@
     "minPostedDate": 1740000000,
     "decode": {
       "minPostedDate": 1740000000,
+      "minPostingId": 7938000000,
       "locations": [
         [0, "Unknown", ""],
         [1, "San Francisco", "sfc"],
@@ -13,7 +14,7 @@
     },
     "items": [
       [
-        7851234567,
+        6744102,
         86400,
         10,
         2350,
@@ -25,7 +26,7 @@
         "Bright 2BR apartment near downtown"
       ],
       [
-        7851234568,
+        6744103,
         172800,
         10,
         1800,

@@ -32,7 +32,9 @@ function parseArgs(argv) {
     useBrowser: true,
     headless: true,
     exportUrlsOnly: false,
-    output: ''
+    output: '',
+    concurrency: 3,
+    delayMs: 500
   };
 
   for (let i = 2; i < argv.length; i += 1) {
@@ -61,6 +63,8 @@ function parseArgs(argv) {
       case '--no-browser': args.useBrowser = false; break;
       case '--headed': args.headless = false; break;
       case '--export-urls-only': args.exportUrlsOnly = true; break;
+      case '--concurrency': args.concurrency = Number.parseInt(next, 10); i += 1; break;
+      case '--delay-ms': args.delayMs = Number.parseInt(next, 10); i += 1; break;
       case '--help':
         printHelp();
         process.exit(0);
@@ -154,6 +158,8 @@ Options:
   --city --state --postal --distance 25   Live search + auto detail scrape
   --url URL / --urls URL                    Scrape specific listing(s), skip search
   --max 50
+  --concurrency 3           Parallel detail pages (default: 3)
+  --delay-ms 500            Stagger between worker starts (default: 500)
   --browser (default) / --no-browser
   --headed                                Show browser window
   --proxy URL                             Or env CRAIGSLIST_PROXY
@@ -187,12 +193,13 @@ async function main() {
     }, {
       max: args.max,
       progressLabel: `${args.city}-${args.category}`,
+      concurrency: args.concurrency,
       proxy: args.proxy,
       useBrowser: args.useBrowser,
       headless: args.headless,
       detailHtmlDir: args.detailHtmlDir,
       imagesDir: args.imagesDir,
-      delayMs: 2000
+      delayMs: args.delayMs
     });
 
     const output = {

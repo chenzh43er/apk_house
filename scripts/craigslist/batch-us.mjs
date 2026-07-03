@@ -28,7 +28,11 @@ function parseArgs(argv) {
     proxy: process.env.CRAIGSLIST_PROXY || '',
     headless: true,
     resume: true,
-    mergeOnly: false
+    mergeOnly: false,
+    concurrency: 2,
+    delayMs: 1200,
+    maxRetries: 3,
+    blockWaitMs: 90000
   };
 
   for (let i = 2; i < argv.length; i += 1) {
@@ -44,6 +48,10 @@ function parseArgs(argv) {
       case '--headed': args.headless = false; break;
       case '--no-resume': args.resume = false; break;
       case '--merge-only': args.mergeOnly = true; break;
+      case '--concurrency': args.concurrency = Number.parseInt(next, 10); i += 1; break;
+      case '--delay-ms': args.delayMs = Number.parseInt(next, 10); i += 1; break;
+      case '--max-retries': args.maxRetries = Number.parseInt(next, 10); i += 1; break;
+      case '--block-wait-ms': args.blockWaitMs = Number.parseInt(next, 10); i += 1; break;
       case '--help':
         printHelp();
         process.exit(0);
@@ -72,6 +80,10 @@ Options:
   --headed                Show browser window
   --no-resume             Ignore saved region JSON and re-scrape from scratch
   --merge-only            Rebuild all-us.json from existing region JSON files (deduped by URL/cdkey)
+  --concurrency 2         Parallel detail pages per region (default: 2, use 1 if blocked often)
+  --delay-ms 1200         Delay between starting each listing worker (default: 1200)
+  --max-retries 3         Retries per listing when blocked (default: 3)
+  --block-wait-ms 90000   Pause and reset browser after N consecutive blocks (default: 90s)
 
 Examples:
   node scripts/craigslist/batch-us.mjs --states CA --per-region-max 20 --headed
@@ -224,11 +236,14 @@ async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionI
     max: processMax,
     seenKeys: globalSeenKeys,
     progressLabel: key,
+    concurrency: args.concurrency,
+    maxRetries: args.maxRetries,
+    blockWaitMs: args.blockWaitMs,
     proxy: args.proxy,
     useBrowser: true,
     headless: args.headless,
     imagesDir: args.imagesDir,
-    delayMs: 2000,
+    delayMs: args.delayMs,
     onKept: (result) => {
       listings = dedupeListingResults([...listings, ...mapProcessedResults([result])]);
       saveRegionFile(outFile, region, {
@@ -236,9 +251,7 @@ async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionI
         existing_listings: existingCount,
         process_limit: processMax,
         kept: listings.length - existingCount,
-        skipped_already: stats.skipped_already,
-        skipped_no_images: stats.skipped_no_images,
-        skipped_errors: stats.skipped_errors,
+        total_listings: listings.length,
         in_progress: true
       }, listings);
     }
@@ -272,6 +285,13 @@ async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionI
     `Saved ${outFile} | total=${listings.length}, new=${meta.kept}, skipped already=${stats.skipped_already}`
   );
 
+  if (stats.skipped_errors > 0 && stats.skipped_errors >= stats.kept) {
+    console.warn(
+      `[${key}] High block/error rate (${stats.skipped_errors} errors vs ${stats.kept} kept). ` +
+      'Try: --concurrency 1 --delay-ms 2000 and set CRAIGSLIST_PROXY to a US residential proxy, then re-run (resume skips done URLs).'
+    );
+  }
+
   return buildRegionPayload(region, meta, listings);
 }
 
@@ -294,7 +314,7 @@ async function main() {
 
   console.log(`\n${'='.repeat(64)}`);
   console.log(`Craigslist US batch scrape`);
-  console.log(`Regions: ${selected.length} | per-region-max: ${args.perRegionMax || 'unlimited'} | resume: ${args.resume}`);
+  console.log(`Regions: ${selected.length} | per-region-max: ${args.perRegionMax || 'unlimited'} | concurrency: ${args.concurrency} | resume: ${args.resume}`);
   if (globalSeenKeys.size > 0) {
     console.log(`Known listings from disk: ${globalSeenKeys.size}`);
   }

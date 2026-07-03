@@ -7,7 +7,7 @@ import { createStepProgress, shortText } from './lib/progress.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '../..');
-const DEFAULT_ACCOUNT_ID = '0e70af17109f26d0d034bab33006f59e';
+const DEFAULT_ACCOUNT_ID = '892acd09257ee1251aca55e5a6f9946e';
 const DEFAULT_BUCKET = 'houseus';
 const DEFAULT_CDN_BASE = 'https://main.apk-house.pages.dev/cdn/us';
 

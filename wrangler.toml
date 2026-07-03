@@ -1,6 +1,7 @@
 # Cloudflare Pages 静态站点（Git 集成读取此文件）
-# 注意：Pages 配置不支持 account_id、remote 等 Worker 专用字段
+# 账户：Ubeator@foxmail.com
 name = "apk-house"
+account_id = "892acd09257ee1251aca55e5a6f9946e"
 pages_build_output_dir = "."
 compatibility_date = "2026-03-17"
 

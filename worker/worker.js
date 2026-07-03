@@ -1,5 +1,5 @@
 /**
- * billowing-leaf-30ae — apkintelligence.com 统一边缘 Worker
+ * houseworker — identityinsight.org 统一边缘 Worker
  *
  * 功能模块（按请求处理顺序）：
  *  1. SEO/AdSense 爬虫文件（ads.txt、robots.txt）
@@ -394,19 +394,32 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://apkintelligence.com/sitemap.xml
+Sitemap: https://identityinsight.org/sitemap.xml
 `;
+
+/** Pages 生产回源地址（Zone Worker 无 ASSETS binding 时使用） */
+const PAGES_ORIGIN = "https://apk-house.pages.dev";
 
 /**
  * 静态资源 / HTML 回源 Pages，并为 HTML 响应附加安全头。
- * 本地 dev 使用 ASSETS binding；线上 Zone Worker 通过 fetch 回源。
+ * 本地 dev 使用 ASSETS binding；线上 Zone Worker 回源 apk-house.pages.dev。
  */
 async function passThrough(request, env, pathname) {
   let res;
   if (env.ASSETS) {
     res = await env.ASSETS.fetch(request);
   } else {
-    res = await fetch(request);
+    const reqUrl = new URL(request.url);
+    const path = pathname || reqUrl.pathname;
+    const pagesUrl = new URL(path + reqUrl.search, PAGES_ORIGIN);
+    res = await fetch(
+      new Request(pagesUrl, {
+        method: request.method,
+        headers: request.headers,
+        body: request.method !== "GET" && request.method !== "HEAD" ? request.body : undefined,
+        redirect: "follow",
+      })
+    );
   }
   return applySecurityHeaders(res, pathname || new URL(request.url).pathname);
 }

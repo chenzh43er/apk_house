@@ -15,7 +15,7 @@
 
 import fs from "node:fs";
 
-const ZONE_NAME = "apkintelligence.com";
+const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
 const API = "https://api.cloudflare.com/client/v4";
 

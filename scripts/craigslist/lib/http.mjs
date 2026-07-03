@@ -63,7 +63,12 @@ export async function craigslistFetch(url, options = {}) {
 
 export function isBlockedResponse(status, text) {
   if (status === 403 || status === 429) return true;
+  if (status === 404) return false;
   return /your request has been blocked|access denied|captcha/i.test(text);
+}
+
+export function isGoneResponse(status) {
+  return status === 404 || status === 410;
 }
 
 export function buildBlockedSearchUrl(context = {}) {

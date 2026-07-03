@@ -19,7 +19,7 @@
 import fs from "node:fs";
 import readline from "node:readline";
 
-const ZONE_NAME = "apkintelligence.com";
+const ZONE_NAME = "identityinsight.org";
 const API = "https://api.cloudflare.com/client/v4";
 
 const BYPASS_EXPR =
