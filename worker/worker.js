@@ -424,7 +424,7 @@ function withLangTeachPath(pathname, request) {
 /** ads.txt：同时声明 ADX(GAM) 与 AdSense 授权（无需随 mode 切换） */
 const ADS_TXT_BODY =
   "google.com, pub-7335996243328726, DIRECT, f08c47fec0942fa0\n" +
-  "google.com, pub-2289697662900935, DIRECT, f08c47fec0942fa0\n";
+  "google.com, pub-3481735481590354, DIRECT, f08c47fec0942fa0\n";
 
 /** robots.txt：允许搜索引擎与 Google 广告爬虫抓取全站 */
 const ROBOTS_TXT_BODY = `User-agent: *

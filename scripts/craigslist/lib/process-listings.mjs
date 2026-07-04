@@ -12,7 +12,7 @@ import { parseDetailHtml } from './parse-detail-page.mjs';
 import { buildGeocodeQuery, geocodeAddress, parseUsAddressFallback } from './geocode.mjs';
 import { saveListingImages } from './images.mjs';
 import { mapListingToHouseGer } from './map-to-house.mjs';
-import { listingKeyFromUrl, rememberListingKeys } from './listing-key.mjs';
+import { listingKeyFromUrl, listingKeyFromResult, rememberListingKeys } from './listing-key.mjs';
 import { createStepProgress, shortText } from './progress.mjs';
 import { waitForCooldown, recordListingSuccess, recordListingBlock, isBlockedError } from './block-guard.mjs';
 
@@ -29,6 +29,15 @@ function createMutex() {
   };
 }
 
+function isDuplicateListing(url, result, seenKeys) {
+  const urlKey = listingKeyFromUrl(url);
+  const resultKey = listingKeyFromResult(result);
+  return Boolean(
+    (urlKey && seenKeys.has(urlKey))
+    || (resultKey && seenKeys.has(resultKey))
+  );
+}
+
 async function handleListingResult(url, context, options, seenKeys, withMutex, stats, progress, results) {
   const urlLabel = shortText(url, 80);
 
@@ -41,6 +50,7 @@ async function handleListingResult(url, context, options, seenKeys, withMutex, s
     if (result.skipped) {
       if (result.reason === 'no_images') stats.skipped_no_images += 1;
       else if (result.reason === 'gone') stats.skipped_gone = (stats.skipped_gone || 0) + 1;
+      else if (result.reason === 'duplicate') stats.skipped_duplicate = (stats.skipped_duplicate || 0) + 1;
       else stats.skipped_errors += 1;
       progress.tick(1, `skip (${result.reason}) ${urlLabel}`);
       return;
@@ -49,16 +59,19 @@ async function handleListingResult(url, context, options, seenKeys, withMutex, s
     recordListingSuccess();
 
     await withMutex(async () => {
-      const key = listingKeyFromUrl(url);
-      if (key && seenKeys.has(key)) {
-        stats.skipped_already += 1;
-        progress.tick(1, `skip (duplicate) ${urlLabel}`);
+      if (isDuplicateListing(url, result, seenKeys)) {
+        stats.skipped_duplicate = (stats.skipped_duplicate || 0) + 1;
+        rememberListingKeys(seenKeys, result);
+        rememberListingKeys(seenKeys, url);
+        const cdkey = result.house_ger?.cdkey || listingKeyFromResult(result);
+        progress.tick(1, `skip (duplicate ${cdkey}) ${urlLabel}`);
         return;
       }
 
       stats.kept += 1;
       results.push(result);
       rememberListingKeys(seenKeys, result);
+      rememberListingKeys(seenKeys, url);
       const title = shortText(result.craigslist?.title || result.house_ger?.name || '', 48);
       progress.tick(1, `kept ${title || urlLabel}`);
       await options.onKept?.(result);
@@ -263,6 +276,13 @@ export async function processListingUrl(url, context, options = {}) {
 async function finalizeListing(url, html, htmlFilePath, source, context, options, downloadImage, capturedImages) {
   const detail = parseDetailHtml(html, { url, htmlFilePath });
 
+  const earlyKey = detail.posting_id && /^\d+$/.test(String(detail.posting_id))
+    ? `cl-${detail.posting_id}`
+    : listingKeyFromUrl(url);
+  if (options.seenKeys?.has(earlyKey)) {
+    return { skipped: true, reason: 'duplicate', url, detail };
+  }
+
   let imageUrls = detail.image_urls;
   if (capturedImages?.size && imageUrls.length === 0) {
     imageUrls = [...capturedImages.keys()];
@@ -436,7 +456,10 @@ export async function processListingUrls(urls, context, options = {}) {
   const workers = Array.from({ length: Math.min(concurrency, queue.length || 1) }, (_, workerId) => worker(workerId));
   await Promise.all(workers);
 
-  progress.done(`kept=${stats.kept}, skip_no_images=${stats.skipped_no_images}, errors=${stats.skipped_errors}`);
+  progress.done(
+    `kept=${stats.kept}, dup=${stats.skipped_duplicate || 0}, ` +
+    `skip_no_images=${stats.skipped_no_images}, errors=${stats.skipped_errors}`
+  );
 
   return { results, stats };
 }

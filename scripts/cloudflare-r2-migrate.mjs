@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * 跨账户 R2 桶迁移：Chjgfjjyghjhggg → Ubeator
- * 使用 Cloudflare REST API + Wrangler OAuth
+ * 使用 Cloudflare REST API + R2 API Token（推荐）或 Wrangler OAuth
  *
  * 用法：
  *   node scripts/cloudflare-r2-migrate.mjs
@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { authHeadersForAccount, ensureAuthReady, refreshOAuthToken, usingR2ApiTokens } from "./cloudflare-auth.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CACHE_DIR = path.resolve(__dirname, "../data/r2-migrate-cache");
@@ -33,32 +34,6 @@ const buckets = bucketArg ? [bucketArg] : BUCKETS;
 const concurrency = Math.max(1, Number.parseInt(concurrencyArg, 10) || 2);
 const DELAY_MS = Number.parseInt(process.env.R2_MIGRATE_DELAY_MS || "150", 10);
 
-function readToken() {
-  const home = process.env.USERPROFILE || process.env.HOME || "";
-  const paths = [
-    process.env.WRANGLER_HOME,
-    `${home}/AppData/Roaming/xdg.config/.wrangler/config/default.toml`,
-    `${home}/.wrangler/config/default.toml`,
-  ].filter(Boolean);
-
-  for (const p of paths) {
-    try {
-      const text = fs.readFileSync(p, "utf8");
-      const match = text.match(/^oauth_token\s*=\s*"([^"]+)"/m);
-      if (match) return match[1];
-    } catch {
-      // try next
-    }
-  }
-  throw new Error("缺少 Wrangler OAuth token，请先运行 wrangler login");
-}
-
-let token = readToken();
-
-function authHeaders(extra = {}) {
-  return { Authorization: `Bearer ${token}`, ...extra };
-}
-
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
@@ -68,15 +43,23 @@ function objectUrl(accountId, bucket, key) {
   return `${API}/accounts/${accountId}/r2/buckets/${bucket}/objects/${encoded}`;
 }
 
-async function fetchWithRetry(url, init = {}, label = "request") {
+async function fetchWithRetry(url, init = {}, label = "request", accountId = DST_ACCOUNT) {
   const maxRetries = 8;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const res = await fetch(url, init);
+      const res = await fetch(url, {
+        ...init,
+        headers: authHeadersForAccount(accountId, init.headers || {}),
+      });
 
-      if (res.status === 401 && attempt < maxRetries) {
-        token = readToken();
-        console.warn(`  [${label}] HTTP 401，已刷新 OAuth token 后重试 (${attempt + 1}/${maxRetries})`);
+      if (res.status === 401 && !usingR2ApiTokens() && attempt < maxRetries) {
+        try {
+          await refreshOAuthToken(true);
+          console.warn(`  [${label}] HTTP 401，已通过 refresh_token 刷新 OAuth 后重试 (${attempt + 1}/${maxRetries})`);
+        } catch (err) {
+          console.warn(`  [${label}] HTTP 401，OAuth 刷新失败: ${err.message}`);
+          throw err;
+        }
         await sleep(1000);
         continue;
       }
@@ -135,7 +118,7 @@ async function listPage(accountId, bucket, cursor) {
   url.searchParams.set("limit", "1000");
   if (cursor) url.searchParams.set("cursor", cursor);
 
-  const res = await fetchWithRetry(url, { headers: authHeaders() }, `list ${bucket}`);
+  const res = await fetchWithRetry(url, { headers: {} }, `list ${bucket}`, accountId);
   const data = await parseJson(res, `list ${bucket}`);
   if (!data.success) throw new Error(JSON.stringify(data.errors, null, 2));
 
@@ -179,8 +162,9 @@ async function copyObject(bucket, obj) {
 
   const getRes = await fetchWithRetry(
     objectUrl(SRC_ACCOUNT, bucket, key),
-    { headers: authHeaders() },
-    `GET ${key}`
+    { headers: {} },
+    `GET ${key}`,
+    SRC_ACCOUNT
   );
   if (!getRes.ok) throw new Error(`GET ${key} failed: ${getRes.status}`);
 
@@ -191,10 +175,11 @@ async function copyObject(bucket, obj) {
     objectUrl(DST_ACCOUNT, bucket, key),
     {
       method: "PUT",
-      headers: authHeaders({ "Content-Type": contentType }),
+      headers: { "Content-Type": contentType },
       body,
     },
-    `PUT ${key}`
+    `PUT ${key}`,
+    DST_ACCOUNT
   );
 
   if (!putRes.ok) {
@@ -300,9 +285,15 @@ async function migrateBucket(bucket) {
 }
 
 async function main() {
+  await ensureAuthReady();
   console.log(
     `R2 迁移 ${SRC_ACCOUNT} → ${DST_ACCOUNT}${dryRun ? " (dry-run)" : ""}\n` +
-      `并发 ${concurrency}，请求间隔 ${DELAY_MS}ms`
+      `并发 ${concurrency}，请求间隔 ${DELAY_MS}ms` +
+      (usingR2ApiTokens()
+        ? "，使用 R2 API Token（源 + 目标）"
+        : process.env.CLOUDFLARE_API_TOKEN
+          ? "，使用 CLOUDFLARE_API_TOKEN"
+          : "，使用 Wrangler OAuth")
   );
 
   const totals = { copied: 0, skipped: 0, failed: 0 };

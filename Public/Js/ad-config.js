@@ -14,7 +14,7 @@
   w.AD_CONFIG = {
     mode: "adx",
     adsense: {
-      client: "ca-pub-2289697662900935",
+      client: "ca-pub-3481735481590354",
     },
 
     adx: {

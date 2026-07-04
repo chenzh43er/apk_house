@@ -43,8 +43,7 @@ export function dedupeListingResults(listings) {
 export function loadSeenKeysFromListings(listings) {
   const seen = new Set();
   for (const item of listings || []) {
-    const key = listingKeyFromResult(item);
-    if (key) seen.add(key);
+    rememberListingKeys(seen, item);
   }
   return seen;
 }
