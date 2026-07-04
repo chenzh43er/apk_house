@@ -53,7 +53,11 @@ function readToken() {
   throw new Error("缺少 Wrangler OAuth token，请先运行 wrangler login");
 }
 
-const TOKEN = readToken();
+let token = readToken();
+
+function authHeaders(extra = {}) {
+  return { Authorization: `Bearer ${token}`, ...extra };
+}
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
@@ -69,6 +73,13 @@ async function fetchWithRetry(url, init = {}, label = "request") {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       const res = await fetch(url, init);
+
+      if (res.status === 401 && attempt < maxRetries) {
+        token = readToken();
+        console.warn(`  [${label}] HTTP 401，已刷新 OAuth token 后重试 (${attempt + 1}/${maxRetries})`);
+        await sleep(1000);
+        continue;
+      }
 
       if (res.status === 429 || res.status >= 500) {
         const wait = Math.min(60_000, 1000 * 2 ** attempt);
@@ -124,7 +135,7 @@ async function listPage(accountId, bucket, cursor) {
   url.searchParams.set("limit", "1000");
   if (cursor) url.searchParams.set("cursor", cursor);
 
-  const res = await fetchWithRetry(url, { headers: { Authorization: `Bearer ${TOKEN}` } }, `list ${bucket}`);
+  const res = await fetchWithRetry(url, { headers: authHeaders() }, `list ${bucket}`);
   const data = await parseJson(res, `list ${bucket}`);
   if (!data.success) throw new Error(JSON.stringify(data.errors, null, 2));
 
@@ -168,7 +179,7 @@ async function copyObject(bucket, obj) {
 
   const getRes = await fetchWithRetry(
     objectUrl(SRC_ACCOUNT, bucket, key),
-    { headers: { Authorization: `Bearer ${TOKEN}` } },
+    { headers: authHeaders() },
     `GET ${key}`
   );
   if (!getRes.ok) throw new Error(`GET ${key} failed: ${getRes.status}`);
@@ -180,10 +191,7 @@ async function copyObject(bucket, obj) {
     objectUrl(DST_ACCOUNT, bucket, key),
     {
       method: "PUT",
-      headers: {
-        Authorization: `Bearer ${TOKEN}`,
-        "Content-Type": contentType,
-      },
+      headers: authHeaders({ "Content-Type": contentType }),
       body,
     },
     `PUT ${key}`
