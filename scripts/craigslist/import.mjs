@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import pg from 'pg';
 import { createStepProgress } from './lib/progress.mjs';
+import { hasRequiredLocality } from './lib/house-locality.mjs';
 
 const { Client } = pg;
 
@@ -63,6 +64,9 @@ Options:
 Dedup key:
   cdkey = cl-{craigslist_posting_id}
   Same posting is skipped by default; use --upsert to refresh fields.
+
+Import filter:
+  Rows with empty district or city are skipped (not inserted/updated).
 
 Environment:
   DATABASE_URL               e.g. from secrets/us-database.env
@@ -205,19 +209,39 @@ function buildUpdateValues(row) {
     .map((column) => row[column] ?? null);
 }
 
+function filterImportableRows(rows) {
+  const importable = [];
+  let skippedNoLocality = 0;
+
+  for (const row of rows) {
+    if (hasRequiredLocality(row)) {
+      importable.push(row);
+    } else {
+      skippedNoLocality += 1;
+    }
+  }
+
+  return { importable, skippedNoLocality };
+}
+
 async function main() {
   const args = parseArgs(process.argv);
   const databaseUrl = loadDatabaseUrl(args.databaseUrl);
   const payload = JSON.parse(fs.readFileSync(args.input, 'utf8'));
   const rawRows = (payload.listings || []).map((item) => stripMetaFields(item.house_ger));
-  const rows = dedupeRows(rawRows);
+  const deduped = dedupeRows(rawRows);
+  const { importable: rows, skippedNoLocality } = filterImportableRows(deduped);
 
   if (!rows.length) {
-    console.log('No listings found in input file.');
+    console.log(`No importable listings in ${args.input}${skippedNoLocality ? ` (${skippedNoLocality} skipped: empty district/city)` : ''}.`);
     return;
   }
 
-  console.log(`Loaded ${rows.length} rows from ${args.input}${rawRows.length !== rows.length ? ` (${rawRows.length - rows.length} duplicate cdkey in file removed)` : ''}`);
+  console.log(
+    `Loaded ${rows.length} importable rows from ${args.input}` +
+    (rawRows.length !== deduped.length ? ` (${rawRows.length - deduped.length} duplicate cdkey removed)` : '') +
+    (skippedNoLocality ? `, ${skippedNoLocality} skipped (empty district/city)` : '')
+  );
 
   if (args.dryRun) {
     console.log('Dry run OK. Sample row:');
@@ -272,7 +296,7 @@ async function main() {
     await client.end();
   }
 
-  progress.done(`inserted=${inserted}, updated=${updated}, skipped=${skipped}`);
+  progress.done(`inserted=${inserted}, updated=${updated}, skipped=${skipped}, no_locality=${skippedNoLocality}`);
 }
 
 main().catch((error) => {

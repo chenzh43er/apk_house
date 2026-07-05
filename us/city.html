@@ -1057,6 +1057,7 @@ if(lang == "de" || lang == "de-ch-at"){
                 const link = document.querySelector('.state-link[data-picker-key="' + encodeURIComponent(item.display_city) + '"]');
                 updatePickerTileCount(link, item.house_count, lang);
             });
+            applyPickerCountLegend(lang, sumHouseCounts(dataWithCounts));
         });
 
         const observer = new IntersectionObserver((entries, obs) => {

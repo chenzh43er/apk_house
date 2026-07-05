@@ -516,13 +516,30 @@ function updatePickerTileCount(linkEl, count, lang) {
     if (newCount) tile.appendChild(newCount);
 }
 
-function applyPickerCountLegend(lang) {
+function sumHouseCounts(items) {
+    return (items || []).reduce(function (sum, item) {
+        return sum + (Number(item.house_count) || 0);
+    }, 0);
+}
+
+function applyPickerCountLegend(lang, count) {
     const el = document.getElementById("state_picker_legend");
     if (!el) return;
     const isDe = lang === "de" || lang === "de-ch-at";
-    if (isDe) {
-        el.innerHTML = 'Die Badge zeigt verfügbare Angebote, z. B. <span class="state-picker-legend__sample"><span>676</span> Angebote</span>';
-    } else {
-        el.innerHTML = 'The badge shows available listings, e.g. <span class="state-picker-legend__sample"><span>676</span> listings</span>';
+    const copy = getHouseCountCopy(lang, count);
+
+    if (copy.isLoading) {
+        el.innerHTML = isDe ? "Angebote werden geladen…" : "Loading listings…";
+        return;
     }
+
+    el.removeAttribute("aria-hidden");
+
+    if (copy.isEmpty) {
+        el.innerHTML = isDe ? "Derzeit keine Angebote verfügbar." : "No listings available right now.";
+        return;
+    }
+
+    const badge = `<span class="state-picker-legend__sample"><span>${copy.formatted}</span> ${copy.label}</span>`;
+    el.innerHTML = isDe ? `Derzeit ${badge} verfügbar.` : `${badge} available right now.`;
 }

@@ -15,6 +15,7 @@ import { mapListingToHouseGer } from './map-to-house.mjs';
 import { listingKeyFromUrl, listingKeyFromResult, rememberListingKeys } from './listing-key.mjs';
 import { createStepProgress, shortText } from './progress.mjs';
 import { waitForCooldown, recordListingSuccess, recordListingBlock, isBlockedError } from './block-guard.mjs';
+import { hasRequiredLocality } from './house-locality.mjs';
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -51,6 +52,7 @@ async function handleListingResult(url, context, options, seenKeys, withMutex, s
       if (result.reason === 'no_images') stats.skipped_no_images += 1;
       else if (result.reason === 'gone') stats.skipped_gone = (stats.skipped_gone || 0) + 1;
       else if (result.reason === 'duplicate') stats.skipped_duplicate = (stats.skipped_duplicate || 0) + 1;
+      else if (result.reason === 'no_locality') stats.skipped_no_locality = (stats.skipped_no_locality || 0) + 1;
       else stats.skipped_errors += 1;
       progress.tick(1, `skip (${result.reason}) ${urlLabel}`);
       return;
@@ -301,6 +303,10 @@ async function finalizeListing(url, html, htmlFilePath, source, context, options
     })
     : parseUsAddressFallback(detail.full_address, context.displayState, { locality: detail.locality });
 
+  if (!hasRequiredLocality({ district: geo?.display_district, city: geo?.display_city })) {
+    return { skipped: true, reason: 'no_locality', url, detail };
+  }
+
   const mainpic = randomUUID();
   const savedImages = await saveListingImages(imageUrls, {
     mainpic,
@@ -458,7 +464,7 @@ export async function processListingUrls(urls, context, options = {}) {
 
   progress.done(
     `kept=${stats.kept}, dup=${stats.skipped_duplicate || 0}, ` +
-    `skip_no_images=${stats.skipped_no_images}, errors=${stats.skipped_errors}`
+    `skip_no_images=${stats.skipped_no_images}, skip_no_locality=${stats.skipped_no_locality || 0}, errors=${stats.skipped_errors}`
   );
 
   return { results, stats };

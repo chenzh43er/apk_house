@@ -43,7 +43,8 @@
     "craigslist:batch-us": "node scripts/craigslist/batch-us.mjs",
     "craigslist:merge-us": "node scripts/craigslist/batch-us.mjs --merge-only",
     "craigslist:import": "node scripts/craigslist/import.mjs",
-    "craigslist:upload-images": "node scripts/craigslist/upload-images.mjs"
+    "craigslist:upload-images": "node scripts/craigslist/upload-images.mjs",
+    "craigslist:purge-empty-locality": "node scripts/craigslist/purge-empty-locality.mjs"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",

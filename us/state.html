@@ -491,6 +491,7 @@ const lang = getLangFromPath()
                 const link = document.querySelector('.state-link[data-picker-key="' + encodeURIComponent(item.display_state) + '"]');
                 updatePickerTileCount(link, item.house_count, lang);
             });
+            applyPickerCountLegend(lang, sumHouseCounts(dataWithCounts));
         });
         });
     });
