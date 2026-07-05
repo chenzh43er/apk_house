@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 通过 Cloudflare API 为 apkintelligence.com 启用基础 Bot / WAF 防护。
+ * 通过 Cloudflare API 为 identityinsight.org 启用基础 Bot / WAF 防护。
  *
  * 凭证（任选其一）：
  *   CLOUDFLARE_API_TOKEN — 需 Zone Settings:Edit + Firewall Services:Edit

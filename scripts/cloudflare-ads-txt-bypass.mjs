@@ -154,7 +154,7 @@ async function main() {
   });
 
   console.log("\n完成。请验证：");
-  console.log("  curl.exe -sI https://apkintelligence.com/ads.txt");
+  console.log("  curl.exe -sI https://identityinsight.org/ads.txt");
   console.log("\n若仍 403，请在 Dashboard 额外操作：");
   console.log("  Security → Settings → Super Bot Fight Mode");
   console.log("  → Static resource protection = Off");

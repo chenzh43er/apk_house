@@ -10,4 +10,4 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://apkintelligence.com/sitemap.xml
+Sitemap: https://identityinsight.org/sitemap.xml

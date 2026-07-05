@@ -13,7 +13,7 @@
  *
  * Token 创建：https://dash.cloudflare.com/profile/api-tokens
  * 权限：Zone Settings Edit + Zone WAF Edit + Config Rules Edit + Zone Read
- * 资源：Include → Specific zone → apkintelligence.com
+ * 资源：Include → Specific zone → identityinsight.org
  */
 
 import fs from "node:fs";
@@ -205,7 +205,7 @@ async function main() {
        Zone → Zone WAF → Edit
        Zone → Config Rules → Edit
        Zone → Zone → Read
-  4. Zone Resources → Include → Specific zone → apkintelligence.com
+  4. Zone Resources → Include → Specific zone → identityinsight.org
   5. Continue → Create Token → 复制
 
   6. 在本终端运行：

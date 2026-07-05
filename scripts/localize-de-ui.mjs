@@ -26,8 +26,8 @@ const REPLACEMENTS = [
   ['aria-label="Legal pages"', 'aria-label="Rechtliche Seiten"'],
   ['<html lang="en"', '<html lang="de"'],
   [
-    'content="UsLowCostHousing provides free and latest information about section 8 and low income housing resources, including waiting lists and local authorities."',
-    'content="Apkintelligence bietet kostenlose und aktuelle Informationen zu bezahlbarem Wohnraum und Hilfsangeboten für Menschen mit geringem Einkommen."',
+    'content="Identity Insight provides free, up-to-date information about Section 8 and low-income housing resources, including waiting lists and local housing authorities."',
+    'content="Identity Insight bietet kostenlose und aktuelle Informationen zu bezahlbarem Wohnraum und Hilfsangeboten für Menschen mit geringem Einkommen."',
   ],
   ['Legal Information', "Rechtliche Informationen"],
   ['>About Us</a>', ">Über uns</a>"],

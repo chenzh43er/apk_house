@@ -22,7 +22,7 @@ function isMobile() {
 }
 
 function returnWebStr(){
-    return "Apkintelligence.com"
+    return "identityinsight.org"
 }
 
 function loadScript(src, callback) {
@@ -218,7 +218,7 @@ function detailShareCopiedLabel(lang) {
 }
 
 function detailShareEmailSubject(lang, title) {
-    const name = title || "Apkintelligence";
+    const name = title || "Identity Insight";
     return lang === "de" || lang === "de-ch-at"
         ? `Wohnungsanzeige: ${name}`
         : `Housing listing: ${name}`;
