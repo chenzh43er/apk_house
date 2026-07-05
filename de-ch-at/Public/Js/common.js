@@ -59,6 +59,27 @@ function ensureSupabase() {
 
 window.onscroll = null;
 
+(function stripCloudflareChallengeParams() {
+    try {
+        const url = new URL(window.location.href);
+        let changed = false;
+        for (const key of [...url.searchParams.keys()]) {
+            if (key.startsWith('__cf_chl')) {
+                url.searchParams.delete(key);
+                changed = true;
+            }
+        }
+        if (!changed) return;
+        let clean = url.pathname;
+        const qs = url.searchParams.toString();
+        if (qs) clean += '?' + qs;
+        if (url.hash) clean += url.hash;
+        history.replaceState(history.state, document.title, clean);
+    } catch {
+        // ignore malformed URLs
+    }
+})();
+
 const keysToKeep = ['token','source','campaign','content','country','keyword','lang','medium'];
 const params = new URLSearchParams(window.location.search);
 
@@ -70,6 +91,9 @@ keysToKeep.forEach(key => {
 function appendParams(url) {
     try {
         const u = new URL(url, window.location.origin);
+        for (const key of [...u.searchParams.keys()]) {
+            if (key.startsWith('__cf_chl')) u.searchParams.delete(key);
+        }
         keysToKeep.forEach(key => {
             if (keepParams.has(key) && !u.searchParams.has(key)) {
                 u.searchParams.set(key, keepParams.get(key));
