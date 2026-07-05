@@ -5,13 +5,16 @@
     "abbr": "ID",
     "city": "boise",
     "postal": "83702",
-    "scraped_at": "2026-07-04T19:42:17.994Z",
+    "scraped_at": "2026-07-04T19:46:53.703Z",
     "input_urls": 924,
     "existing_listings": 0,
     "process_limit": 200,
     "kept": 1,
     "total_listings": 1,
-    "in_progress": true
+    "skipped_already": 0,
+    "skipped_no_images": 3,
+    "skipped_errors": 0,
+    "processed": 200
   },
   "listings": [
     {

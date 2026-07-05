@@ -1,49 +1,75 @@
 #!/usr/bin/env node
 /**
- * WAF 流量清洗规则 2 / 3：
- *   2. 匿名器 + 开放代理 → Managed Challenge（需 Enterprise Managed IP Lists）
- *   3. 非移动端 UA → Managed Challenge
+ * WAF 流量清洗规则 2 / 3
+ *
+ * Pro（默认）：
+ *   规则 2 替代：可疑脚本 UA → Managed Challenge（无法使用托管 IP 列表）
+ *   规则 3：非移动端 UA → Managed Challenge
+ *
+ * Enterprise（--enterprise）：
+ *   规则 2：$cf.anonymizer + $cf.open_proxies → Managed Challenge
+ *   规则 3：非移动端 UA → Managed Challenge
  *
  * 所需权限：Zone WAF Edit + Zone Read
  *
- * 用法（API Token）：
- *   $env:CLOUDFLARE_API_TOKEN="你的token"
- *   node scripts/cloudflare-traffic-guard-rules.mjs
- *
- * 用法（Global API Key + 账号邮箱）：
- *   $env:CLOUDFLARE_API_EMAIL="you@example.com"
- *   $env:CLOUDFLARE_API_KEY="你的global-api-key"
- *   node scripts/cloudflare-traffic-guard-rules.mjs
- *
- *  dry-run：node scripts/cloudflare-traffic-guard-rules.mjs --dry-run
+ * 用法：
+ *   node scripts/cloudflare-traffic-guard-rules.mjs          # Pro 默认
+ *   node scripts/cloudflare-traffic-guard-rules.mjs --enterprise
+ *   node scripts/cloudflare-traffic-guard-rules.mjs --dry-run
  */
 
 import fs from "node:fs";
 
 const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
+const enterprise = process.argv.includes("--enterprise");
 const API = "https://api.cloudflare.com/client/v4";
 
-const TRAFFIC_RULES = [
-  {
-    ref: "challenge_anonymizer_proxy",
-    description: "Challenge anonymizers and open proxies (Managed IP Lists)",
-    expression:
-      "(ip.src in $cf.anonymizer) or (ip.src in $cf.open_proxies)",
-    action: "managed_challenge",
-  },
-  {
-    ref: "challenge_non_mobile_ua",
-    description: "Challenge non-mobile User-Agent",
-    expression: [
-      '(not http.user_agent contains "Mobile")',
-      'and (not http.user_agent contains "Android")',
-      'and (not http.user_agent contains "iPhone")',
-      "and (not cf.client.bot)",
-    ].join(" "),
-    action: "managed_challenge",
-  },
-];
+const RULE_ENTERPRISE_ANONYMIZER = {
+  ref: "challenge_anonymizer_proxy",
+  description: "Challenge anonymizers and open proxies (Managed IP Lists)",
+  expression:
+    "(ip.src in $cf.anonymizer) or (ip.src in $cf.open_proxies)",
+  action: "managed_challenge",
+};
+
+const RULE_PRO_SCRIPT_UA = {
+  ref: "challenge_suspicious_script_ua",
+  description: "Challenge suspicious script User-Agents (Pro fallback for rule 2)",
+  expression: [
+    "(not cf.client.bot)",
+    'and (http.user_agent contains "curl"',
+    'or http.user_agent contains "python-requests"',
+    'or http.user_agent contains "Go-http-client"',
+    'or http.user_agent contains "HeadlessChrome"',
+    'or http.user_agent contains "PhantomJS"',
+    'or http.user_agent contains "scrapy"',
+    'or http.user_agent eq "")',
+  ].join(" "),
+  action: "managed_challenge",
+};
+
+const RULE_NON_MOBILE = {
+  ref: "challenge_non_mobile_ua",
+  description: "Challenge non-mobile User-Agent",
+  expression: [
+    '(not http.user_agent contains "Mobile")',
+    'and (not http.user_agent contains "Android")',
+    'and (not http.user_agent contains "iPhone")',
+    "and (not cf.client.bot)",
+  ].join(" "),
+  action: "managed_challenge",
+};
+
+const ENTERPRISE_ONLY_REFS = new Set(["challenge_anonymizer_proxy"]);
+const PRO_FALLBACK_REFS = new Set(["challenge_suspicious_script_ua"]);
+
+function buildTrafficRules() {
+  if (enterprise) {
+    return [RULE_ENTERPRISE_ANONYMIZER, RULE_NON_MOBILE];
+  }
+  return [RULE_PRO_SCRIPT_UA, RULE_NON_MOBILE];
+}
 
 function readWranglerOAuthToken() {
   const home = process.env.USERPROFILE || process.env.HOME || "";
@@ -117,7 +143,23 @@ async function getZoneId() {
   return zone.id;
 }
 
+function pruneIncompatibleRules(rules) {
+  const keepRefs = new Set(buildTrafficRules().map((r) => r.ref));
+  return rules.filter((r) => {
+    if (enterprise) {
+      return !PRO_FALLBACK_REFS.has(r.ref);
+    }
+    if (ENTERPRISE_ONLY_REFS.has(r.ref) && !keepRefs.has(r.ref)) {
+      console.log(`→ 移除 Enterprise 专属规则（Pro 不可用）: ${r.description}`);
+      return false;
+    }
+    return true;
+  });
+}
+
 async function upsertTrafficRules(zoneId) {
+  const trafficRules = buildTrafficRules();
+
   let ruleset;
   try {
     ruleset = await cf(
@@ -139,9 +181,9 @@ async function upsertTrafficRules(zoneId) {
     });
   }
 
-  let rules = [...(ruleset.rules || [])];
+  let rules = pruneIncompatibleRules([...(ruleset.rules || [])]);
 
-  for (const descriptor of TRAFFIC_RULES) {
+  for (const descriptor of trafficRules) {
     const idx = rules.findIndex(
       (r) => r.ref === descriptor.ref || r.description === descriptor.description
     );
@@ -173,8 +215,9 @@ async function upsertTrafficRules(zoneId) {
 }
 
 async function main() {
+  const mode = enterprise ? "Enterprise" : "Pro";
   console.log(
-    `Cloudflare 流量清洗规则 2/3 — ${ZONE_NAME}${dryRun ? " (dry-run)" : ""}\n`
+    `Cloudflare 流量清洗规则 2/3 (${mode}) — ${ZONE_NAME}${dryRun ? " (dry-run)" : ""}\n`
   );
 
   const zoneId = await getZoneId();
@@ -183,12 +226,19 @@ async function main() {
   await upsertTrafficRules(zoneId);
 
   console.log("\n✅ 规则已提交（传播通常 1–2 分钟）");
-  console.log("\nDashboard 确认：Security → WAF → Custom rules");
-  console.log("  规则 2: Challenge anonymizers and open proxies");
-  console.log("  规则 3: Challenge non-mobile User-Agent");
-  console.log("\n注意：规则 2 使用 $cf.anonymizer / $cf.open_proxies 托管 IP 列表，");
-  console.log("      需 Enterprise + WAF；Pro 套餐 API 可能返回表达式错误。");
-  console.log("      规则 3 在 Pro 可用；已排除 cf.client.bot 以保护 SEO 爬虫。");
+  console.log("\nDashboard：Security → 安全规则 → 自定义规则");
+
+  if (enterprise) {
+    console.log("  规则 2: Challenge anonymizers and open proxies");
+    console.log("  规则 3: Challenge non-mobile User-Agent");
+  } else {
+    console.log("  规则 2 (Pro 替代): Challenge suspicious script User-Agents");
+    console.log("  规则 3: Challenge non-mobile User-Agent");
+    console.log("\nPro 无法使用 $cf.anonymizer / $cf.open_proxies（需 Enterprise）。");
+    console.log("Tor/VPN 部分覆盖请配合 Dashboard → Bots → Super Bot Fight Mode：");
+    console.log("  Likely automated → Managed Challenge");
+    console.log("  Definitely automated → Block");
+  }
 }
 
 main().catch((err) => {
@@ -201,12 +251,14 @@ main().catch((err) => {
   ) {
     console.error(`
 需要带 WAF 写入权限的凭证：
-  方式 A — API Token（推荐）：
-     $env:CLOUDFLARE_API_TOKEN="你的token"
-  方式 B — Global API Key：
-     $env:CLOUDFLARE_API_EMAIL="你的Cloudflare账号邮箱"
-     $env:CLOUDFLARE_API_KEY="你的global-api-key"
-  然后运行：node scripts/cloudflare-traffic-guard-rules.mjs
+  $env:CLOUDFLARE_API_TOKEN="你的token"
+  npm run cf:traffic-guard
+`);
+  }
+  if (String(err.message).includes("cf.open_proxies") || String(err.message).includes("cf.anonymizer")) {
+    console.error(`
+这是 Enterprise 专属能力。Pro 请不要手动写托管 IP 列表表达式，直接运行：
+  npm run cf:traffic-guard
 `);
   }
   process.exit(1);

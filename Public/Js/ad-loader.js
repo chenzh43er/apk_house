@@ -108,45 +108,50 @@
     }
     applyAdxPageConfig();
     registerSlotListener();
-    w.googletag.pubads().collapseEmptyDivs(!shouldShowEmptyPlaceholder());
     w.googletag.enableServices();
     adxServicesEnabled = true;
     displayOopSlots();
   }
 
   function applyAdxPageConfig() {
-    var attrs = {};
+    var pageConfig = {
+      collapseDiv: shouldShowEmptyPlaceholder() ? "ON_NO_FILL" : "BEFORE_FETCH",
+    };
+    var adsenseAttrs = {};
 
     if (isAdxTestMode()) {
-      attrs.adsense_test_mode = "on";
+      adsenseAttrs.adsense_test_mode = "on";
     }
 
     if (isLocalHost()) {
       var origin =
         (w.AD_CONFIG.adx && w.AD_CONFIG.adx.productionOrigin) ||
         "https://identityinsight.org";
-      attrs.page_url = origin + w.location.pathname + w.location.search;
+      adsenseAttrs.page_url = origin + w.location.pathname + w.location.search;
     }
 
-    if (!Object.keys(attrs).length) {
-      return;
+    if (Object.keys(adsenseAttrs).length) {
+      pageConfig.adsenseAttributes = adsenseAttrs;
     }
 
     if (w.googletag.setConfig) {
-      w.googletag.setConfig({ adsenseAttributes: attrs });
+      w.googletag.setConfig(pageConfig);
     } else {
-      if (attrs.adsense_test_mode) {
+      w.googletag
+        .pubads()
+        .collapseEmptyDivs(!shouldShowEmptyPlaceholder());
+      if (adsenseAttrs.adsense_test_mode) {
         w.googletag.pubads().set("adsense_test_mode", "on");
       }
-      if (attrs.page_url) {
-        w.googletag.pubads().set("page_url", attrs.page_url);
+      if (adsenseAttrs.page_url) {
+        w.googletag.pubads().set("page_url", adsenseAttrs.page_url);
       }
     }
 
     if (isAdxTestMode() && w.AD_CONFIG.adx.testMode === "demo") {
       console.info("[ApkAd] ADX demo：" + DEMO_AD_UNIT);
     } else if (isLocalHost()) {
-      console.info("[ApkAd] 本地 ADX · page_url=" + attrs.page_url);
+      console.info("[ApkAd] 本地 ADX · page_url=" + adsenseAttrs.page_url);
     }
   }
 

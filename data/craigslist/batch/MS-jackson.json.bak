@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "region": "Jackson",
+    "state": "Mississippi",
+    "abbr": "MS",
+    "city": "jackson",
+    "postal": "39201",
+    "scraped_at": "2026-07-04T22:43:19.254Z",
+    "input_urls": 776,
+    "existing_listings": 0,
+    "process_limit": 200,
+    "kept": 1,
+    "total_listings": 1,
+    "in_progress": true
+  },
+  "listings": [
+    {
+      "craigslist": {
+        "url": "https://jackson.craigslist.org/search/apa?postingID=7945162789",
+        "posting_id": "7945162789",
+        "title": "Flat Screen TVs, WiFi access, Handicapped Accessible",
+        "price": 288,
+        "price_text": "$288",
+        "room": 0,
+        "area": "",
+        "loft": "1",
+        "location": "616 Briarwood Drive",
+        "full_address": "616 Briarwood Drive",
+        "locality": "",
+        "geocode_query": "616 Briarwood Drive",
+        "description": "QR Code Link to This Post Siegel Select Locations - Flexible Stay Options Choose from several convenient Siegel Select locations offering comfortable furnished units, free utilities and flexible payment terms designed for extended stay living. Call Now: show contact info Property Info: https://livesiegelcompanies.com/er76gjxd/siegel-select-jackson Features and Amenities Free Premium Cable TV Fully Furnished Special Corporate and Group Rate Housing WiFi access No Long-Term Lease Required Handicapped Accessible Low weekly, Bi-weekly, & Monthly Payment Options Nearby Restaurants, Shopping, Entertainment and More Siegel Rewards Program Flat Screen TVs Free Parking Free Utilities Free Siegel Rewards Program Earn points every time you pay rent or refer a friend. Redeem your points for free rent, food, movies, gift cards and more. Terms and conditions apply Pet Friendly Restrictions apply pursuant to applicable state and local laws. Contact office for more details. Additional Details Information may change without notice and is not guaranteed. The property may update or correct pricing, availability or details at any time. Rates include mandatory fees only and exclude applicable taxes. A refundable security deposit may be required. Credit card payments incur a 3% processing fee. Pricing varies by unit type, demand, dates of stay and length of stay. Features and amenities may differ by location or unit. All stays are subject to community policies and applicable state and local regulations. Managed by The Siegel Group. Equal Housing Opportunity.",
+        "phone": "",
+        "image_urls": [
+          "https://images.craigslist.org/00Y0Y_5Pniao3cEqX_0jm0cU_600x450.jpg",
+          "https://images.craigslist.org/00J0J_bJxWzkQ6oPl_0iA0co_600x450.jpg",
+          "https://images.craigslist.org/00Q0Q_esXz5WgrxYA_0jm0cU_600x450.jpg",
+          "https://images.craigslist.org/00Y0Y_5Pniao3cEqX_0jm0cU_50x50c.jpg",
+          "https://images.craigslist.org/00J0J_bJxWzkQ6oPl_0iA0co_50x50c.jpg",
+          "https://images.craigslist.org/00Q0Q_esXz5WgrxYA_0jm0cU_50x50c.jpg"
+        ],
+        "housing_type": "apartment",
+        "baths": 1,
+        "image_files": [
+          "e9382153248fc14318ebc370c04f793c.jpg",
+          "7f192e270a0cb43bbc73ff8fb1c53213.jpg",
+          "cca4ddd6b6ef815f1980af76dab738b7.jpg",
+          "320d6ec08182ef51dcca358a0c807c5b.jpg",
+          "241f648de446115b997091685473cdaa.jpg",
+          "30a749fc28eaf8d568ee294d5dac26b9.jpg"
+        ],
+        "mainpic": "53b03f90-8008-44f5-8c00-7504a174c247",
+        "geo": {
+          "street": "616 Briarwood Drive",
+          "display_state": "Mississippi",
+          "display_city": "",
+          "display_district": "",
+          "display_name": "616 Briarwood Drive, MS",
+          "lat": null,
+          "lon": null,
+          "address_json": {
+            "source": "craigslist",
+            "display_name": "616 Briarwood Drive, MS",
+            "address": {
+              "road": "616 Briarwood Drive",
+              "city": "",
+              "county": "",
+              "state": "Mississippi",
+              "postcode": "",
+              "country": "United States",
+              "country_code": "us"
+            },
+            "url": "https://jackson.craigslist.org/search/apa?postingID=7945162789",
+            "posting_id": "7945162789"
+          }
+        }
+      },
+      "house_ger": {
+        "id": "9e1f95f4-1513-43c9-b9b1-3bf845b6c88d",
+        "name": "Flat Screen TVs, WiFi access, Handicapped Accessible",
+        "location": "616 Briarwood Drive",
+        "mainpic": "53b03f90-8008-44f5-8c00-7504a174c247",
+        "msg": "QR Code Link to This Post Siegel Select Locations - Flexible Stay Options Choose from several convenient Siegel Select locations offering comfortable furnished units, free utilities and flexible payment terms designed for extended stay living. Call Now: show contact info Property Info: https://livesiegelcompanies.com/er76gjxd/siegel-select-jackson Features and Amenities Free Premium Cable TV Fully Furnished Special Corporate and Group Rate Housing WiFi access No Long-Term Lease Required Handicapped Accessible Low weekly, Bi-weekly, & Monthly Payment Options Nearby Restaurants, Shopping, Entertainment and More Siegel Rewards Program Flat Screen TVs Free Parking Free Utilities Free Siegel Rewards Program Earn points every time you pay rent or refer a friend. Redeem your points for free rent, food, movies, gift cards and more. Terms and conditions apply Pet Friendly Restrictions apply pursuant to applicable state and local laws. Contact office for more details. Additional Details Information may change without notice and is not guaranteed. The property may update or correct pricing, availability or details at any time. Rates include mandatory fees only and exclude applicable taxes. A refundable security deposit may be required. Credit card payments incur a 3% processing fee. Pricing varies by unit type, demand, dates of stay and length of stay. Features and amenities may differ by location or unit. All stays are subject to community policies and applicable state and local regulations. Managed by The Siegel Group. Equal Housing Opportunity.",
+        "tel": "",
+        "status": 1,
+        "pics": "[\"e9382153248fc14318ebc370c04f793c.jpg\",\"7f192e270a0cb43bbc73ff8fb1c53213.jpg\",\"cca4ddd6b6ef815f1980af76dab738b7.jpg\",\"320d6ec08182ef51dcca358a0c807c5b.jpg\",\"241f648de446115b997091685473cdaa.jpg\",\"30a749fc28eaf8d568ee294d5dac26b9.jpg\"]",
+        "detail_loca1": "Mississippi",
+        "detail_loca2": "",
+        "detail_loca3": "",
+        "room": "0",
+        "area": "",
+        "loft": "1",
+        "supplier": "Craigslist",
+        "price": "$288",
+        "ver": "Apartment",
+        "info": "QR Code Link to This Post Siegel Select Locations - Flexible Stay Options Choose from several convenient Siegel Select locations offering comfortable furnished units, free utilities and flexible payment terms designed for extended stay living. Call Now: show contact info Property Info: https://livesiegelcompanies.com/er76gjxd/siegel-select-jackson Features and Amenities Free Premium Cable TV Fully Furnished Special Corporate and Group Rate Housing WiFi access No Long-Term Lease Required Handicapped Accessible Low weekly, Bi-weekly, & Monthly Payment Options Nearby Restaurants, Shopping, Entertainment and More Siegel Rewards Program Flat Screen TVs Free Parking Free Utilities Free Siegel Rewards Program Earn points every time you pay rent or refer a friend. Redeem your points for free rent, food, movies, gift cards and more. Terms and conditions apply Pet Friendly Restrictions apply pursuant to applicable state and local laws. Contact office for more details. Additional Details Information may change without notice and is not guaranteed. The property may update or correct pricing, availability or details at any time. Rates include mandatory fees only and exclude applicable taxes. A refundable security deposit may be required. Credit card payments incur a 3% processing fee. Pricing varies by unit type, demand, dates of stay and length of stay. Features and amenities may differ by location or unit. All stays are subject to community policies and applicable state and local regulations. Managed by The Siegel Group. Equal Housing Opportunity.",
+        "statetype": "apartment",
+        "street": "616 Briarwood Drive",
+        "district": "",
+        "city": "",
+        "state": "Mississippi",
+        "country": "United States",
+        "county": "",
+        "display_name": "616 Briarwood Drive, MS",
+        "address_json": "{\"source\":\"craigslist\",\"display_name\":\"616 Briarwood Drive, MS\",\"address\":{\"road\":\"616 Briarwood Drive\",\"city\":\"\",\"county\":\"\",\"state\":\"Mississippi\",\"postcode\":\"\",\"country\":\"United States\",\"country_code\":\"us\"},\"url\":\"https://jackson.craigslist.org/search/apa?postingID=7945162789\",\"posting_id\":\"7945162789\"}",
+        "display_state": "Mississippi",
+        "display_city": "",
+        "display_district": "",
+        "pic_count": 6,
+        "pics_jsonStr": "[\"e9382153248fc14318ebc370c04f793c.jpg\",\"7f192e270a0cb43bbc73ff8fb1c53213.jpg\",\"cca4ddd6b6ef815f1980af76dab738b7.jpg\",\"320d6ec08182ef51dcca358a0c807c5b.jpg\",\"241f648de446115b997091685473cdaa.jpg\",\"30a749fc28eaf8d568ee294d5dac26b9.jpg\"]",
+        "cdkey": "cl-7945162789",
+        "create_time": "7/5/2026 6:33:15",
+        "update_time": "7/5/2026 6:33:15",
+        "_source": {
+          "craigslist_id": "7945162789",
+          "url": "https://jackson.craigslist.org/search/apa?postingID=7945162789",
+          "image_urls": [
+            "https://images.craigslist.org/00Y0Y_5Pniao3cEqX_0jm0cU_600x450.jpg",
+            "https://images.craigslist.org/00J0J_bJxWzkQ6oPl_0iA0co_600x450.jpg",
+            "https://images.craigslist.org/00Q0Q_esXz5WgrxYA_0jm0cU_600x450.jpg",
+            "https://images.craigslist.org/00Y0Y_5Pniao3cEqX_0jm0cU_50x50c.jpg",
+            "https://images.craigslist.org/00J0J_bJxWzkQ6oPl_0iA0co_50x50c.jpg",
+            "https://images.craigslist.org/00Q0Q_esXz5WgrxYA_0jm0cU_50x50c.jpg"
+          ],
+          "image_dir": "53b03f90-8008-44f5-8c00-7504a174c247"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "region": "Buffalo",
+    "state": "New York",
+    "abbr": "NY",
+    "city": "buffalo",
+    "postal": "14202",
+    "scraped_at": "2026-07-05T00:49:04.224Z",
+    "input_urls": 1264,
+    "existing_listings": 0,
+    "process_limit": 200,
+    "kept": 1,
+    "total_listings": 1,
+    "in_progress": true
+  },
+  "listings": [
+    {
+      "craigslist": {
+        "url": "https://buffalo.craigslist.org/search/apa?postingID=7945172895",
+        "posting_id": "7945172895",
+        "title": "Wonderful 1BR/1BA-Buffalo– $950/mo – Pets OK – House for Rent",
+        "price": 950,
+        "price_text": "$950",
+        "room": 1,
+        "area": "",
+        "loft": "1",
+        "location": "114 15th St",
+        "full_address": "114 15th St, APT 3,",
+        "locality": "",
+        "geocode_query": "114 15th St",
+        "description": "QR Code Link to This Post This inviting 1-bedroom, 1-bath apartment at 114 15th St in Buffalo offers comfortable living in a convenient West Side location for $950 per month. The unit features a bright and spacious living area, a well-sized bedroom with generous closet space, a functional kitchen with ample cabinetry, and a clean, updated bathroom. Fresh paint and easy-to-maintain flooring make the space move-in ready. Situated on a quiet residential street, the apartment provides quick access to public transportation, local shops, restaurants, and the vibrant Elmwood Village. Serious inquires please contact here:- show contact info .!!",
+        "phone": "",
+        "image_urls": [
+          "https://images.craigslist.org/00o0o_lpB7uMvTGP5_0a90di_600x450.jpg",
+          "https://images.craigslist.org/00j0j_bf7vHRyeXFG_09X0dj_600x450.jpg",
+          "https://images.craigslist.org/00T0T_g5ADH8QYMzb_09X0dk_600x450.jpg",
+          "https://images.craigslist.org/00l0l_kJozjSNX7V5_09T0dh_600x450.jpg",
+          "https://images.craigslist.org/00o0o_lpB7uMvTGP5_0a90di_50x50c.jpg",
+          "https://images.craigslist.org/00j0j_bf7vHRyeXFG_09X0dj_50x50c.jpg",
+          "https://images.craigslist.org/00T0T_g5ADH8QYMzb_09X0dk_50x50c.jpg",
+          "https://images.craigslist.org/00l0l_kJozjSNX7V5_09T0dh_50x50c.jpg"
+        ],
+        "housing_type": "house",
+        "baths": 1,
+        "image_files": [
+          "4eff2ea37fd1556fcb18310e4880a289.jpg",
+          "f046ff048d1340ba6bbeb21cb52f3706.jpg",
+          "1e3a9ae8309f9d89a28b7ea72a855cfd.jpg",
+          "ef4ec0f7c9af6089baa6c05ffd542f4d.jpg",
+          "b229f6a15ecfa9a0b7b735f26fdc3935.jpg",
+          "58d045f48c7d87d83b2161d582458e22.jpg",
+          "373150ce20f4e907906a2511b6ce476f.jpg",
+          "43bcaafc895807a8c13e373aa3e1edd6.jpg"
+        ],
+        "mainpic": "58aa5141-73f5-43be-a22b-6ad9a96a5338",
+        "geo": {
+          "street": "114 15th St",
+          "display_state": "New York",
+          "display_city": "",
+          "display_district": "",
+          "display_name": "114 15th St, NY",
+          "lat": null,
+          "lon": null,
+          "address_json": {
+            "source": "craigslist",
+            "display_name": "114 15th St, NY",
+            "address": {
+              "road": "114 15th St",
+              "city": "",
+              "county": "",
+              "state": "New York",
+              "postcode": "",
+              "country": "United States",
+              "country_code": "us"
+            },
+            "url": "https://buffalo.craigslist.org/search/apa?postingID=7945172895",
+            "posting_id": "7945172895"
+          }
+        }
+      },
+      "house_ger": {
+        "id": "440c9abd-a734-46ba-a2c1-2b6e4ab568c0",
+        "name": "Wonderful 1BR/1BA-Buffalo– $950/mo – Pets OK – House for Rent",
+        "location": "114 15th St",
+        "mainpic": "58aa5141-73f5-43be-a22b-6ad9a96a5338",
+        "msg": "QR Code Link to This Post This inviting 1-bedroom, 1-bath apartment at 114 15th St in Buffalo offers comfortable living in a convenient West Side location for $950 per month. The unit features a bright and spacious living area, a well-sized bedroom with generous closet space, a functional kitchen with ample cabinetry, and a clean, updated bathroom. Fresh paint and easy-to-maintain flooring make the space move-in ready. Situated on a quiet residential street, the apartment provides quick access to public transportation, local shops, restaurants, and the vibrant Elmwood Village. Serious inquires please contact here:- show contact info .!!",
+        "tel": "",
+        "status": 1,
+        "pics": "[\"4eff2ea37fd1556fcb18310e4880a289.jpg\",\"f046ff048d1340ba6bbeb21cb52f3706.jpg\",\"1e3a9ae8309f9d89a28b7ea72a855cfd.jpg\",\"ef4ec0f7c9af6089baa6c05ffd542f4d.jpg\",\"b229f6a15ecfa9a0b7b735f26fdc3935.jpg\",\"58d045f48c7d87d83b2161d582458e22.jpg\",\"373150ce20f4e907906a2511b6ce476f.jpg\",\"43bcaafc895807a8c13e373aa3e1edd6.jpg\"]",
+        "detail_loca1": "New York",
+        "detail_loca2": "",
+        "detail_loca3": "",
+        "room": "1",
+        "area": "",
+        "loft": "1",
+        "supplier": "Craigslist",
+        "price": "$950",
+        "ver": "House",
+        "info": "QR Code Link to This Post This inviting 1-bedroom, 1-bath apartment at 114 15th St in Buffalo offers comfortable living in a convenient West Side location for $950 per month. The unit features a bright and spacious living area, a well-sized bedroom with generous closet space, a functional kitchen with ample cabinetry, and a clean, updated bathroom. Fresh paint and easy-to-maintain flooring make the space move-in ready. Situated on a quiet residential street, the apartment provides quick access to public transportation, local shops, restaurants, and the vibrant Elmwood Village. Serious inquires please contact here:- show contact info .!!",
+        "statetype": "house",
+        "street": "114 15th St",
+        "district": "",
+        "city": "",
+        "state": "New York",
+        "country": "United States",
+        "county": "",
+        "display_name": "114 15th St, NY",
+        "address_json": "{\"source\":\"craigslist\",\"display_name\":\"114 15th St, NY\",\"address\":{\"road\":\"114 15th St\",\"city\":\"\",\"county\":\"\",\"state\":\"New York\",\"postcode\":\"\",\"country\":\"United States\",\"country_code\":\"us\"},\"url\":\"https://buffalo.craigslist.org/search/apa?postingID=7945172895\",\"posting_id\":\"7945172895\"}",
+        "display_state": "New York",
+        "display_city": "",
+        "display_district": "",
+        "pic_count": 8,
+        "pics_jsonStr": "[\"4eff2ea37fd1556fcb18310e4880a289.jpg\",\"f046ff048d1340ba6bbeb21cb52f3706.jpg\",\"1e3a9ae8309f9d89a28b7ea72a855cfd.jpg\",\"ef4ec0f7c9af6089baa6c05ffd542f4d.jpg\",\"b229f6a15ecfa9a0b7b735f26fdc3935.jpg\",\"58d045f48c7d87d83b2161d582458e22.jpg\",\"373150ce20f4e907906a2511b6ce476f.jpg\",\"43bcaafc895807a8c13e373aa3e1edd6.jpg\"]",
+        "cdkey": "cl-7945172895",
+        "create_time": "7/5/2026 8:36:46",
+        "update_time": "7/5/2026 8:36:46",
+        "_source": {
+          "craigslist_id": "7945172895",
+          "url": "https://buffalo.craigslist.org/search/apa?postingID=7945172895",
+          "image_urls": [
+            "https://images.craigslist.org/00o0o_lpB7uMvTGP5_0a90di_600x450.jpg",
+            "https://images.craigslist.org/00j0j_bf7vHRyeXFG_09X0dj_600x450.jpg",
+            "https://images.craigslist.org/00T0T_g5ADH8QYMzb_09X0dk_600x450.jpg",
+            "https://images.craigslist.org/00l0l_kJozjSNX7V5_09T0dh_600x450.jpg",
+            "https://images.craigslist.org/00o0o_lpB7uMvTGP5_0a90di_50x50c.jpg",
+            "https://images.craigslist.org/00j0j_bf7vHRyeXFG_09X0dj_50x50c.jpg",
+            "https://images.craigslist.org/00T0T_g5ADH8QYMzb_09X0dk_50x50c.jpg",
+            "https://images.craigslist.org/00l0l_kJozjSNX7V5_09T0dh_50x50c.jpg"
+          ],
+          "image_dir": "58aa5141-73f5-43be-a22b-6ad9a96a5338"
+        }
+      }
+    }
+  ]
+}

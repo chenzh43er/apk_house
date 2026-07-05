@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "region": "New Jersey",
+    "state": "New Jersey",
+    "abbr": "NJ",
+    "city": "newjersey",
+    "postal": "07102",
+    "scraped_at": "2026-07-05T00:07:14.521Z",
+    "input_urls": 8940,
+    "existing_listings": 0,
+    "process_limit": 200,
+    "kept": 1,
+    "total_listings": 1,
+    "skipped_already": 1,
+    "skipped_no_images": 0,
+    "skipped_errors": 0,
+    "processed": 200
+  },
+  "listings": [
+    {
+      "craigslist": {
+        "url": "https://newjersey.craigslist.org/search/apa?postingID=7945176251",
+        "posting_id": "7943730696",
+        "title": "1 bath apartment in great location!",
+        "price": 1400,
+        "price_text": "$1,400",
+        "room": 2,
+        "area": "",
+        "loft": "1",
+        "location": "",
+        "full_address": "",
+        "locality": "",
+        "geocode_query": "",
+        "description": "QR Code Link to This Post Surrounded by desirable towns such as Ridgewood, Wyckoff, and Waldwick, Midland Park is one of Bergen County’s best-kept secrets. Midland Park has great schools and easy access to major highways (Route 208, Interstate 287, and Route 4&17). The apartment is within walking distance to shops, restaurants, and public transportation, and features a townhouse layout, with two floors and the entire right side of the home. The first floor features both a front and side entrance, a large living room, eat-in kitchen with stainless steel appliances, walk-in pantry, and laundry room with washer and dryer. The second floor contains the primary bedroom, second bedroom, bathroom, and walk-up access to the attic with plenty of storage. The apartment includes two off-street parking spaces, and a patio area in the back yard for relaxing and entertaining. Apartment features a new fridge, range hood, washer, and dryer. Apartment also includes window AC units for your comfort and convenience. Schedule your showing today! Tenant responsible for gas, electric, and snow removal. Credit check, application, and interview required. Credit score 750 - 850. Pets allowed for additional fee.",
+        "phone": "",
+        "image_urls": [
+          "https://images.craigslist.org/00g0g_i825IEgx1TY_07g07g_600x450.jpg"
+        ],
+        "housing_type": "townhouse",
+        "baths": 1,
+        "image_files": [
+          "8a3d08d60ed51d2d3ce0904e4f307279.jpg"
+        ],
+        "mainpic": "0b3b7dcf-6ab5-4715-a423-f35137f808ba",
+        "geo": {
+          "street": "NJ",
+          "display_state": "New Jersey",
+          "display_city": "",
+          "display_district": "",
+          "display_name": "NJ, NJ",
+          "lat": null,
+          "lon": null,
+          "address_json": {
+            "source": "craigslist",
+            "display_name": "NJ, NJ",
+            "address": {
+              "road": "NJ",
+              "city": "",
+              "county": "",
+              "state": "New Jersey",
+              "postcode": "",
+              "country": "United States",
+              "country_code": "us"
+            },
+            "url": "https://newjersey.craigslist.org/search/apa?postingID=7945176251",
+            "posting_id": "7943730696"
+          }
+        }
+      },
+      "house_ger": {
+        "id": "cf6850d0-292c-422e-ae44-57eea624778d",
+        "name": "1 bath apartment in great location!",
+        "location": "NJ",
+        "mainpic": "0b3b7dcf-6ab5-4715-a423-f35137f808ba",
+        "msg": "QR Code Link to This Post Surrounded by desirable towns such as Ridgewood, Wyckoff, and Waldwick, Midland Park is one of Bergen County’s best-kept secrets. Midland Park has great schools and easy access to major highways (Route 208, Interstate 287, and Route 4&17). The apartment is within walking distance to shops, restaurants, and public transportation, and features a townhouse layout, with two floors and the entire right side of the home. The first floor features both a front and side entrance, a large living room, eat-in kitchen with stainless steel appliances, walk-in pantry, and laundry room with washer and dryer. The second floor contains the primary bedroom, second bedroom, bathroom, and walk-up access to the attic with plenty of storage. The apartment includes two off-street parking spaces, and a patio area in the back yard for relaxing and entertaining. Apartment features a new fridge, range hood, washer, and dryer. Apartment also includes window AC units for your comfort and convenience. Schedule your showing today! Tenant responsible for gas, electric, and snow removal. Credit check, application, and interview required. Credit score 750 - 850. Pets allowed for additional fee.",
+        "tel": "",
+        "status": 1,
+        "pics": "[\"8a3d08d60ed51d2d3ce0904e4f307279.jpg\"]",
+        "detail_loca1": "New Jersey",
+        "detail_loca2": "",
+        "detail_loca3": "",
+        "room": "2",
+        "area": "",
+        "loft": "1",
+        "supplier": "Craigslist",
+        "price": "$1,400",
+        "ver": "Townhouse",
+        "info": "QR Code Link to This Post Surrounded by desirable towns such as Ridgewood, Wyckoff, and Waldwick, Midland Park is one of Bergen County’s best-kept secrets. Midland Park has great schools and easy access to major highways (Route 208, Interstate 287, and Route 4&17). The apartment is within walking distance to shops, restaurants, and public transportation, and features a townhouse layout, with two floors and the entire right side of the home. The first floor features both a front and side entrance, a large living room, eat-in kitchen with stainless steel appliances, walk-in pantry, and laundry room with washer and dryer. The second floor contains the primary bedroom, second bedroom, bathroom, and walk-up access to the attic with plenty of storage. The apartment includes two off-street parking spaces, and a patio area in the back yard for relaxing and entertaining. Apartment features a new fridge, range hood, washer, and dryer. Apartment also includes window AC units for your comfort and convenience. Schedule your showing today! Tenant responsible for gas, electric, and snow removal. Credit check, application, and interview required. Credit score 750 - 850. Pets allowed for additional fee.",
+        "statetype": "townhouse",
+        "street": "NJ",
+        "district": "",
+        "city": "",
+        "state": "New Jersey",
+        "country": "United States",
+        "county": "",
+        "display_name": "NJ, NJ",
+        "address_json": "{\"source\":\"craigslist\",\"display_name\":\"NJ, NJ\",\"address\":{\"road\":\"NJ\",\"city\":\"\",\"county\":\"\",\"state\":\"New Jersey\",\"postcode\":\"\",\"country\":\"United States\",\"country_code\":\"us\"},\"url\":\"https://newjersey.craigslist.org/search/apa?postingID=7945176251\",\"posting_id\":\"7943730696\"}",
+        "display_state": "New Jersey",
+        "display_city": "",
+        "display_district": "",
+        "pic_count": 1,
+        "pics_jsonStr": "[\"8a3d08d60ed51d2d3ce0904e4f307279.jpg\"]",
+        "cdkey": "cl-7943730696",
+        "create_time": "7/5/2026 7:57:48",
+        "update_time": "7/5/2026 7:57:48",
+        "_source": {
+          "craigslist_id": "7943730696",
+          "url": "https://newjersey.craigslist.org/search/apa?postingID=7945176251",
+          "image_urls": [
+            "https://images.craigslist.org/00g0g_i825IEgx1TY_07g07g_600x450.jpg"
+          ],
+          "image_dir": "0b3b7dcf-6ab5-4715-a423-f35137f808ba"
+        }
+      }
+    }
+  ]
+}
