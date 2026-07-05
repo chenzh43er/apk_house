@@ -14,3 +14,8 @@ scripts/r2-migrate/migrate-at-ch.log
 
 # Craigslist scrape artifacts (local cache; images upload to R2 separately)
 data/craigslist/images/
+data/craigslist/batch/
+
+# npm cache & migration artifacts (never commit)
+.npm-cache/
+data/r2-migrate-cache/

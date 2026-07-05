@@ -7,3 +7,17 @@ worker/**
 package.json
 package-lock.json
 wrangler.toml
+
+# Craigslist scrape data (local-only; images upload to R2 via scripts)
+data/craigslist/**
+
+# Dev / migration caches
+data/r2-migrate-cache/**
+.npm-cache/**
+
+# Dev scripts (not static assets)
+scripts/**
+
+# Secrets & local env
+secrets/**
+.dev.vars
