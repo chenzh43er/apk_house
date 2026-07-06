@@ -189,7 +189,7 @@ async function scrapeRegion(region, args, globalSeenKeys, batchProgress, regionI
       existingListings = existing.listings || [];
       for (const listingKey of loadSeenKeysFromListings(existingListings)) {
         globalSeenKeys.add(listingKey);
-      }
+    
       console.log(`Resume ${key}: ${existingListings.length} listings already saved`);
     }
   } else if (!args.resume && fs.existsSync(outFile)) {

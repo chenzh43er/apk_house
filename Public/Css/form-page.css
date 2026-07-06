@@ -39,6 +39,23 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp {
     margin-bottom: 20px;
     text-align: center;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* GPT 注入的 iframe 常有固定像素宽高，需限制在容器内（主内容区 state_adv1 等） */
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] iframe {
+    max-width: 100% !important;
 }
 
 /* Contact form card */
@@ -210,10 +227,7 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) #right_adv [id^="apk-ad-"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box;
+    border-radius: 12px;
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .statelists-imgli {
