@@ -502,36 +502,17 @@ function getHouseCountCopy(lang, count) {
 }
 
 function buildPickerTileHtml(name, count, lang) {
-    const copy = getHouseCountCopy(lang, count);
-    const countClasses = ["state-tile__count"];
-    if (copy.isLoading) countClasses.push("is-loading");
-    if (copy.isEmpty) countClasses.push("is-empty");
-
-    let badgeHtml = `<span class="state-tile__count-badge${copy.isEmpty ? " state-tile__count-badge--empty" : ""}">`;
-    if (!copy.isEmpty && copy.formatted) {
-        badgeHtml += `<span class="state-tile__count-num">${copy.formatted}</span>`;
-    }
-    badgeHtml += `<span class="state-tile__count-label">${copy.label}</span></span>`;
-
     return `<span class="state-tile selectLidiv">` +
         `<span class="state-tile__text text-wrapper">${name}</span>` +
-        `<span class="${countClasses.join(" ")}" aria-live="polite" aria-label="${copy.ariaLabel}">` +
-        badgeHtml +
-        `</span></span>`;
+        `</span>`;
 }
 
 function updatePickerTileCount(linkEl, count, lang) {
     if (!linkEl) return;
     const tile = linkEl.querySelector(".state-tile");
     if (!tile) return;
-
     const oldCount = tile.querySelector(".state-tile__count");
     if (oldCount) oldCount.remove();
-
-    const wrapper = document.createElement("span");
-    wrapper.innerHTML = buildPickerTileHtml("", count, lang);
-    const newCount = wrapper.querySelector(".state-tile__count");
-    if (newCount) tile.appendChild(newCount);
 }
 
 function sumHouseCounts(items) {
@@ -543,21 +524,6 @@ function sumHouseCounts(items) {
 function applyPickerCountLegend(lang, count) {
     const el = document.getElementById("state_picker_legend");
     if (!el) return;
-    const isDe = lang === "de" || lang === "de-ch-at";
-    const copy = getHouseCountCopy(lang, count);
-
-    if (copy.isLoading) {
-        el.innerHTML = isDe ? "Angebote werden geladen…" : "Loading listings…";
-        return;
-    }
-
-    el.removeAttribute("aria-hidden");
-
-    if (copy.isEmpty) {
-        el.innerHTML = isDe ? "Derzeit keine Angebote verfügbar." : "No listings available right now.";
-        return;
-    }
-
-    const badge = `<span class="state-picker-legend__sample"><span>${copy.formatted}</span> ${copy.label}</span>`;
-    el.innerHTML = isDe ? `Derzeit ${badge} verfügbar.` : `${badge} available right now.`;
+    el.innerHTML = "";
+    el.setAttribute("aria-hidden", "true");
 }
