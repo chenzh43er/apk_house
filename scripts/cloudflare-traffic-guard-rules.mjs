@@ -4,11 +4,12 @@
  *
  * Pro（默认）：
  *   规则 2 替代：可疑脚本 UA → Managed Challenge（无法使用托管 IP 列表）
- *   规则 3：非移动端 UA → Managed Challenge
  *
  * Enterprise（--enterprise）：
  *   规则 2：$cf.anonymizer + $cf.open_proxies → Managed Challenge
- *   规则 3：非移动端 UA → Managed Challenge
+ *
+ * 注意：「非移动端 UA → Challenge」会误杀全部桌面用户，已默认关闭。
+ * 若确需启用：--challenge-non-mobile（不推荐）
  *
  * 所需权限：Zone WAF Edit + Zone Read
  *
@@ -23,6 +24,7 @@ import fs from "node:fs";
 const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
 const enterprise = process.argv.includes("--enterprise");
+const challengeNonMobile = process.argv.includes("--challenge-non-mobile");
 const API = "https://api.cloudflare.com/client/v4";
 
 const RULE_ENTERPRISE_ANONYMIZER = {
@@ -65,10 +67,9 @@ const ENTERPRISE_ONLY_REFS = new Set(["challenge_anonymizer_proxy"]);
 const PRO_FALLBACK_REFS = new Set(["challenge_suspicious_script_ua"]);
 
 function buildTrafficRules() {
-  if (enterprise) {
-    return [RULE_ENTERPRISE_ANONYMIZER, RULE_NON_MOBILE];
-  }
-  return [RULE_PRO_SCRIPT_UA, RULE_NON_MOBILE];
+  const rules = enterprise ? [RULE_ENTERPRISE_ANONYMIZER] : [RULE_PRO_SCRIPT_UA];
+  if (challengeNonMobile) rules.push(RULE_NON_MOBILE);
+  return rules;
 }
 
 function readWranglerOAuthToken() {
@@ -146,6 +147,10 @@ async function getZoneId() {
 function pruneIncompatibleRules(rules) {
   const keepRefs = new Set(buildTrafficRules().map((r) => r.ref));
   return rules.filter((r) => {
+    if (r.ref === "challenge_non_mobile_ua" && !challengeNonMobile) {
+      console.log(`→ 移除误杀规则: ${r.description}`);
+      return false;
+    }
     if (enterprise) {
       return !PRO_FALLBACK_REFS.has(r.ref);
     }
@@ -230,14 +235,15 @@ async function main() {
 
   if (enterprise) {
     console.log("  规则 2: Challenge anonymizers and open proxies");
-    console.log("  规则 3: Challenge non-mobile User-Agent");
   } else {
     console.log("  规则 2 (Pro 替代): Challenge suspicious script User-Agents");
-    console.log("  规则 3: Challenge non-mobile User-Agent");
     console.log("\nPro 无法使用 $cf.anonymizer / $cf.open_proxies（需 Enterprise）。");
     console.log("Tor/VPN 部分覆盖请配合 Dashboard → Bots → Super Bot Fight Mode：");
     console.log("  Likely automated → Managed Challenge");
     console.log("  Definitely automated → Block");
+  }
+  if (!challengeNonMobile) {
+    console.log("\n已跳过「非移动端 UA Challenge」（会误杀全部桌面用户）。");
   }
 }
 

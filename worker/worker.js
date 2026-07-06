@@ -22,13 +22,13 @@
 
 const RATE_LIMIT = {
   ipWindowMs: 60_000,
-  ipBurstLimit: 20,
+  ipBurstLimit: 60,
   uaWindowMs: 60_000,
-  uaBurstLimit: 80,
+  uaBurstLimit: 120,
   adWindowMs: 120_000,
-  adBurstLimit: 8,
+  adBurstLimit: 24,
   geoWindowMs: 180_000,
-  geoDistinctLimit: 12,
+  geoDistinctLimit: 24,
 };
 
 const rateState = {
@@ -162,7 +162,8 @@ function isBadBot(request) {
 
   const cf = request.cf;
   const score = cf?.botManagement?.score;
-  if (typeof score === "number" && score <= 10) return true;
+  // 仅拦截 Cloudflare 判定为「确定自动化」的流量（1 分），避免误杀正常用户
+  if (typeof score === "number" && score <= 1) return true;
 
   return false;
 }
@@ -289,6 +290,20 @@ function isLocalDev(request) {
   return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
 }
 
+/** 已通过 Cloudflare 人机验证，或具备真实浏览器导航特征 */
+function isTrustedBrowserSession(request) {
+  const cookie = request.headers.get("Cookie") || "";
+  if (/\bcf_clearance=/.test(cookie)) return true;
+
+  const secFetchMode = request.headers.get("Sec-Fetch-Mode");
+  const secFetchDest = request.headers.get("Sec-Fetch-Dest");
+  if (secFetchMode === "navigate" && secFetchDest === "document") return true;
+
+  if (request.headers.get("Sec-CH-UA")) return true;
+
+  return false;
+}
+
 function evaluateTrafficGuard(request) {
   if (request.method !== "GET" && request.method !== "HEAD") {
     return null;
@@ -313,6 +328,10 @@ function evaluateTrafficGuard(request) {
   }
 
   if (isGoodBot(request)) {
+    return null;
+  }
+
+  if (isTrustedBrowserSession(request)) {
     return null;
   }
 
