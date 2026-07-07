@@ -34,7 +34,7 @@
     return w.matchMedia && w.matchMedia(MOBILE_BREAKPOINT).matches;
   }
 
-  /** 移动端仅请求宽度 ≤300 的固定尺寸，不请求 fluid / 728×90，避免 iOS 越界 */
+  /** 移动端仅请求宽度 ≤300 的固定尺寸，不请求 728×90，避免 iOS 越界 */
   function filterMobileSizes(sizes) {
     var pixel = [];
     sizes.forEach(function (s) {
@@ -76,28 +76,21 @@
     return "/" + networkCode + "/" + def.unit;
   }
 
-  /** GPT defineSlot 可识别的尺寸列表 */
+  /** GPT defineSlot 可识别的固定像素尺寸列表（不含 fluid） */
   function normalizeGptSizes(sizes) {
     if (!sizes || !sizes.length) {
       return [[300, 250]];
     }
 
     var pixel = [];
-    var hasFluid = false;
-
     sizes.forEach(function (s) {
-      if (s === "fluid") {
-        hasFluid = true;
-      } else if (Array.isArray(s) && s.length === 2) {
+      if (Array.isArray(s) && s.length === 2) {
         pixel.push(s);
       }
     });
 
-    if (!pixel.length && !hasFluid) {
+    if (!pixel.length) {
       return [[300, 250]];
-    }
-    if (hasFluid) {
-      return pixel.length ? pixel.concat(["fluid"]) : ["fluid"];
     }
     return pixel;
   }
@@ -107,7 +100,7 @@
     if (testMode === "demo") {
       return DEMO_SIZES;
     }
-    var sizes = normalizeGptSizes((def && def.sizes) || ["fluid"]);
+    var sizes = normalizeGptSizes((def && def.sizes) || [[300, 250]]);
     if (isMobileViewport()) {
       sizes = filterMobileSizes(sizes);
     }
@@ -230,7 +223,7 @@
   }
 
   function getAllSlotSizes(def) {
-    return normalizeGptSizes((def && def.sizes) || ["fluid"]);
+    return normalizeGptSizes((def && def.sizes) || [[300, 250]]);
   }
 
   function buildGptSizeMapping(def) {
