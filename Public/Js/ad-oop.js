@@ -18,7 +18,14 @@
   }
 
   function isDesktopViewport() {
+    if (w.innerWidth > 0 && w.innerWidth <= 768) {
+      return false;
+    }
     return w.matchMedia && w.matchMedia("(min-width: 769px)").matches;
+  }
+
+  function isMobileViewport() {
+    return !isDesktopViewport();
   }
 
   function isAdxTestMode() {
@@ -49,8 +56,14 @@
     if (key === "bottom_anchor" && oopConfig.bottomAnchor === false) {
       return false;
     }
-    if (key === "interstitial" && oopConfig.interstitial === false) {
-      return false;
+    if (key === "interstitial") {
+      if (oopConfig.interstitial === false) {
+        return false;
+      }
+      // 移动端默认关闭全屏穿插：体验差，且 body display:none→block 会误触发 unhideWindow
+      if (isMobileViewport() && oopConfig.interstitialOnMobile !== true) {
+        return false;
+      }
     }
     if (key === "right_rail") {
       if (oopConfig.rightRail !== true) {

@@ -22,9 +22,14 @@ const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
 const API = "https://api.cloudflare.com/client/v4";
 
+/** 真实浏览器打开页面（含 iOS Safari / Android Chrome） */
+const BROWSER_NAV_BYPASS =
+  '(http.sec_fetch_mode eq "navigate" and http.sec_fetch_dest eq "document")';
+
 /** Pro WAF 仅支持 eq / contains（不支持 starts_with / matches） */
 const BYPASS_EXPR = [
   "cf.client.bot",
+  BROWSER_NAV_BYPASS,
   '(http.request.uri.path eq "/ads.txt")',
   '(http.request.uri.path eq "/robots.txt")',
   '(http.request.uri.path contains "/Public/")',
@@ -233,6 +238,18 @@ async function verifyUrls() {
       expect: (s) => s === 200,
     },
     {
+      name: "iPhone Safari HTML",
+      url: `https://${ZONE_NAME}/us/list`,
+      ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+      headers: {
+        Accept: "text/html",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Site": "none",
+      },
+      expect: (s) => s === 200 || s === 301 || s === 302,
+    },
+    {
       name: "普通用户 HTML（可能仍 Challenge）",
       url: `https://${ZONE_NAME}/us/list`,
       ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/136.0.0.0",
@@ -245,7 +262,7 @@ async function verifyUrls() {
     try {
       const res = await fetch(c.url, {
         redirect: "manual",
-        headers: { "User-Agent": c.ua },
+        headers: { "User-Agent": c.ua, ...(c.headers || {}) },
       });
       const ok = c.expect(res.status);
       const mitigated = res.headers.get("cf-mitigated") || "";
@@ -268,7 +285,7 @@ async function main() {
 
   await upsertPhaseRule(zoneId, "http_request_firewall_custom", {
     ref: "bot_static_bypass_skip",
-    description: "Skip SBFM for verified bots, ads.txt, static assets",
+    description: "Skip SBFM for verified bots, browser navigation, ads.txt, static assets",
     expression: BYPASS_EXPR,
     action: "skip",
     action_parameters: {
@@ -299,6 +316,17 @@ async function main() {
     action_parameters: {
       bic: false,
       security_level: "essentially_off",
+    },
+  });
+
+  await upsertPhaseRule(zoneId, "http_config_settings", {
+    ref: "browser_nav_low_security",
+    description: "Lower security for real browser page loads (mobile/desktop Safari/Chrome)",
+    expression: BROWSER_NAV_BYPASS,
+    action: "set_config",
+    action_parameters: {
+      bic: false,
+      security_level: "low",
     },
   });
 

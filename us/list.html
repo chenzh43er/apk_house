@@ -751,6 +751,9 @@ const lang = getLangFromPath()
         // 插入 DOM
         $('.statelists').html(html);
         document.body.style.display = "block";
+        if (window.ApkAdLoader && window.ApkAdLoader.scanAndClampAllMobileAds) {
+            window.ApkAdLoader.scanAndClampAllMobileAds();
+        }
 
         // 初始化 observer（只需一次）
         initAdObserver();

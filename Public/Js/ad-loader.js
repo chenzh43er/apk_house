@@ -221,32 +221,91 @@
     );
   }
 
+  function getMobileAdContainerWidth() {
+    var vw =
+      w.innerWidth ||
+      (document.documentElement && document.documentElement.clientWidth) ||
+      MOBILE_MAX_AD_WIDTH;
+    return Math.max(240, Math.min(MOBILE_MAX_AD_WIDTH, vw - 32));
+  }
+
+  function getAllSlotSizes(def) {
+    return normalizeGptSizes((def && def.sizes) || ["fluid"]);
+  }
+
+  function buildGptSizeMapping(def) {
+    if (!w.googletag.sizeMapping) {
+      return null;
+    }
+    var allSizes = getAllSlotSizes(def);
+    var mobileSizes = filterMobileSizes(allSizes);
+    return w
+      .googletag.sizeMapping()
+      .addSize([0, 0], mobileSizes)
+      .addSize([769, 0], allSizes)
+      .build();
+  }
+
+  function scaleWideIframe(frame, containerW) {
+    if (!frame) {
+      return;
+    }
+    var attrW = parseInt(frame.getAttribute("width"), 10);
+    var rect = frame.getBoundingClientRect();
+    var frameW = rect.width || attrW || frame.offsetWidth || 0;
+    if (!frameW || frameW <= containerW + 2) {
+      frame.style.transform = "";
+      if (frame.parentElement) {
+        frame.parentElement.style.height = "";
+      }
+      return;
+    }
+    var scale = containerW / frameW;
+    var frameH = rect.height || parseInt(frame.getAttribute("height"), 10) || 250;
+    frame.style.transform = "scale(" + scale + ")";
+    frame.style.transformOrigin = "top center";
+    frame.style.marginLeft = "auto";
+    frame.style.marginRight = "auto";
+    frame.style.display = "block";
+    var parent = frame.parentElement;
+    if (parent) {
+      parent.style.width = containerW + "px";
+      parent.style.maxWidth = "100%";
+      parent.style.marginLeft = "auto";
+      parent.style.marginRight = "auto";
+      parent.style.overflow = "hidden";
+      parent.style.height = Math.ceil(frameH * scale) + "px";
+    }
+  }
+
   function clampMobileAdNode(node) {
     if (!node) {
       return;
     }
-    var maxW = MOBILE_MAX_AD_WIDTH + "px";
-    var maxVw = "min(" + MOBILE_MAX_AD_WIDTH + "px, 100vw)";
+    var containerW = getMobileAdContainerWidth();
+    var maxW = containerW + "px";
     node.style.maxWidth = maxW;
-    node.style.width = "100%";
+    node.style.width = maxW;
     node.style.marginLeft = "auto";
     node.style.marginRight = "auto";
     node.style.overflow = "hidden";
     node.style.boxSizing = "border-box";
+    node.style.position = "relative";
 
     node.querySelectorAll(
       "iframe, div[id^='google_ads_iframe'], div[data-google-query-id]"
     ).forEach(function (el) {
-      el.style.maxWidth = maxVw;
-      el.style.width = "100%";
+      el.style.maxWidth = maxW;
+      el.style.width = maxW;
       el.style.marginLeft = "auto";
       el.style.marginRight = "auto";
       el.style.display = "block";
       el.style.boxSizing = "border-box";
       el.style.overflow = "hidden";
       if (el.tagName === "IFRAME") {
-        el.setAttribute("width", String(MOBILE_MAX_AD_WIDTH));
+        el.setAttribute("width", String(containerW));
         el.setAttribute("scrolling", "no");
+        scaleWideIframe(el, containerW);
       }
     });
   }
@@ -262,7 +321,8 @@
     clampMobileAdNode(node);
     var host = node.closest && node.closest(".adswp, .state_advClass, .divider-wrap");
     if (host) {
-      host.style.maxWidth = MOBILE_MAX_AD_WIDTH + "px";
+      var containerW = getMobileAdContainerWidth();
+      host.style.maxWidth = containerW + "px";
       host.style.width = "100%";
       host.style.marginLeft = "auto";
       host.style.marginRight = "auto";
@@ -271,16 +331,92 @@
     }
   }
 
+  function scanAndClampAllMobileAds() {
+    if (!isMobileViewport()) {
+      return;
+    }
+    var containerW = getMobileAdContainerWidth();
+    var hostMax = containerW + "px";
+    document
+      .querySelectorAll(
+        ".adswp, .state_advClass, .divider-wrap.state_advClass, .apk-ad-clip, #google_bottom_anchor"
+      )
+      .forEach(function (host) {
+        host.style.maxWidth = hostMax;
+        host.style.width = "100%";
+        host.style.marginLeft = "auto";
+        host.style.marginRight = "auto";
+        host.style.overflow = "hidden";
+        host.style.boxSizing = "border-box";
+      });
+    document
+      .querySelectorAll(
+        "div[id^='google_ads_iframe_'], .adswp iframe, .state_advClass iframe"
+      )
+      .forEach(function (el) {
+        if (el.tagName === "IFRAME") {
+          scaleWideIframe(el, containerW);
+          return;
+        }
+        el.style.maxWidth = hostMax;
+        el.style.width = hostMax;
+        el.style.overflow = "hidden";
+        el.style.marginLeft = "auto";
+        el.style.marginRight = "auto";
+      });
+  }
+
+  var mobileGuardStarted = false;
+  function initMobileAdGuard() {
+    if (!isMobileViewport() || mobileGuardStarted) {
+      return;
+    }
+    mobileGuardStarted = true;
+    ensureMobileAdStyles();
+    scanAndClampAllMobileAds();
+    [0, 80, 200, 500, 1000, 2000, 4000].forEach(function (ms) {
+      w.setTimeout(scanAndClampAllMobileAds, ms);
+    });
+    if (typeof MutationObserver === "undefined" || !document.body) {
+      return;
+    }
+    var bodyObserver = new MutationObserver(function () {
+      scanAndClampAllMobileAds();
+    });
+    bodyObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "width", "height"],
+    });
+    if (document.body.style.display === "none") {
+      var visibleObserver = new MutationObserver(function () {
+        if (document.body.style.display !== "none") {
+          [0, 100, 400, 1000, 2500].forEach(function (ms) {
+            w.setTimeout(scanAndClampAllMobileAds, ms);
+          });
+        }
+      });
+      visibleObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["style"],
+      });
+    }
+  }
+
   function scheduleMobileClamp(divId) {
     clampMobileAdFrame(divId);
+    scanAndClampAllMobileAds();
     if (w.requestAnimationFrame) {
       w.requestAnimationFrame(function () {
         clampMobileAdFrame(divId);
+        scanAndClampAllMobileAds();
       });
     }
-    [50, 200, 600].forEach(function (ms) {
+    [50, 200, 600, 1500].forEach(function (ms) {
       w.setTimeout(function () {
         clampMobileAdFrame(divId);
+        scanAndClampAllMobileAds();
       }, ms);
     });
   }
@@ -320,10 +456,11 @@
       MOBILE_BREAKPOINT +
       "{" +
       "body.page-form,body.page-result,body.page-list,body.page-teach,body.page-state{" +
-      "overflow-x:clip!important;max-width:100vw;}" +
-      ".contents,.detail-left,.state-content{" +
-      "overflow-x:clip!important;max-width:100%!important;min-width:0!important;}" +
-      ".adswp,.state_advClass,.divider-wrap.state_advClass," +
+      "overflow-x:hidden!important;max-width:100%!important;width:100%!important;}" +
+      "html{overflow-x:hidden!important;max-width:100%!important;}" +
+      ".wrapper,.wrapper.contents,.contents,.detail-left,.state-content{" +
+      "overflow-x:hidden!important;max-width:100%!important;width:100%!important;min-width:0!important;}" +
+      ".apk-ad-clip,.adswp,.state_advClass,.divider-wrap.state_advClass," +
       ".teach-ad.adswp,.state-ad.adswp,.home-hero-ad.adswp," +
       "#adv1,#adv2,#adv3,.ads{" +
       "max-width:" +
@@ -489,22 +626,39 @@
 
     var def = w.ADX_SLOT_DEFS[slotKey];
     var divId = resolveInstanceDivId(slotKey, el);
-    var sizes = getAdxSizes(slotKey, def);
+    var allSizes = getAllSlotSizes(def);
+    var slotStyle = getAdDivInlineStyle(el);
+    var clipHtml = "";
+
+    if (isMobileViewport() && !isCardEmbedSlot(el)) {
+      var clipW = getMobileAdContainerWidth();
+      clipHtml =
+        '<div class="apk-ad-clip" style="width:' +
+        clipW +
+        "px;max-width:100%;margin:0 auto;overflow:hidden;position:relative;box-sizing:border-box\">";
+    }
 
     el.innerHTML =
+      clipHtml +
       '<div id="' +
       divId +
       '" style="' +
-      getAdDivInlineStyle(el) +
-      '"></div>';
+      slotStyle +
+      '"></div>' +
+      (clipHtml ? "</div>" : "");
 
     w.googletag = w.googletag || { cmd: [] };
     w.googletag.cmd.push(function () {
       var slot = definedAdxSlots[divId];
       if (!slot) {
-        slot = w.googletag
-          .defineSlot(path, sizes, divId)
-          .addService(w.googletag.pubads());
+        slot = w.googletag.defineSlot(path, allSizes, divId);
+        var mapping = buildGptSizeMapping(def);
+        if (slot && mapping) {
+          slot = slot.defineSizeMapping(mapping);
+        }
+        if (slot) {
+          slot = slot.addService(w.googletag.pubads());
+        }
         if (slot) {
           definedAdxSlots[divId] = slot;
         } else {
@@ -512,7 +666,7 @@
             "[ApkAd] defineSlot 失败:",
             slotKey,
             path,
-            sizes
+            allSizes
           );
           el.removeAttribute("data-apk-ad-pending");
           if (shouldShowEmptyPlaceholder()) {
@@ -552,5 +706,12 @@
     ensureGptSdk: ensureGptSdk,
     ensureAdxServices: ensureAdxServices,
     registerOopSlot: registerOopSlot,
+    scanAndClampAllMobileAds: scanAndClampAllMobileAds,
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileAdGuard);
+  } else {
+    initMobileAdGuard();
+  }
 })(window);

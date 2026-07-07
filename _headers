@@ -14,7 +14,19 @@
 /Public/Js/ad-runtime.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/Public/Js/ad-oop.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /Public/Js/ad-slots-adx.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+/Public/Css/form-page.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/Public/Css/state-page.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/Public/Css/list-page.css
   Cache-Control: public, max-age=0, must-revalidate
 
 /Public/Fonts/*

@@ -9,15 +9,18 @@ body.page-state .state-main.contents {
     margin-bottom: 48px;
     height: auto !important;
     min-height: 0 !important;
-    overflow-x: clip;
+    overflow-x: hidden;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
 }
 
 body.page-state .state-content.detail-left {
     height: auto !important;
-    overflow-x: clip;
+    overflow-x: hidden;
     max-width: 100%;
     min-width: 0;
+    width: 100% !important;
 }
 
 /* Page header — eye-catching hero banner */

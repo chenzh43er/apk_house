@@ -33,14 +33,21 @@
       testMode: false,
       /** 本地测试时模拟的正式域名（GPT 不认可 127.0.0.1） */
       productionOrigin: "https://identityinsight.org",
-      /** GPT Out-of-Page：锚定 + 穿插（仅 ADX，且非 ad-free 页面） */
+      /**
+       * GPT Out-of-Page（仅 ADX，且非 ad-free 页面）
+       * - bottomAnchor：底部锚定条（移动端保留）
+       * - interstitial：全屏穿插；移动端默认关闭（见 ad-oop.js），避免每次进页都弹
+       * - interstitialOnMobile: true 可强制在移动端也开穿插（不推荐）
+       */
       oop: {
         bottomAnchor: true,
         interstitial: true,
+        interstitialOnMobile: false,
         rightRail: false,
         interstitialTriggers: {
           navBar: true,
-          unhideWindow: true,
+          // 关闭：本站多页用 body display:none 延迟展示，会误触发「窗口重新可见」
+          unhideWindow: false,
         },
       },
     },
