@@ -20,6 +20,9 @@
 /Public/Js/ad-slots-adx.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/Public/Css/ad-mobile.css
+  Cache-Control: public, max-age=0, must-revalidate
+
 /Public/Css/form-page.css
   Cache-Control: public, max-age=0, must-revalidate
 

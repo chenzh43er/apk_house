@@ -246,22 +246,47 @@
       .build();
   }
 
+  function getIframeNaturalWidth(frame) {
+    if (!frame) {
+      return 0;
+    }
+    var attrW = parseInt(frame.getAttribute("width"), 10);
+    if (attrW > 0) {
+      return attrW;
+    }
+    var inlineW = parseInt(frame.style.width, 10);
+    if (inlineW > 0) {
+      return inlineW;
+    }
+    var rect = frame.getBoundingClientRect();
+    if (rect.width > 0) {
+      return rect.width;
+    }
+    return frame.offsetWidth || 0;
+  }
+
   function scaleWideIframe(frame, containerW) {
     if (!frame) {
       return;
     }
-    var attrW = parseInt(frame.getAttribute("width"), 10);
-    var rect = frame.getBoundingClientRect();
-    var frameW = rect.width || attrW || frame.offsetWidth || 0;
+    var frameW = getIframeNaturalWidth(frame);
     if (!frameW || frameW <= containerW + 2) {
       frame.style.transform = "";
+      frame.style.width = "100%";
+      frame.style.maxWidth = containerW + "px";
       if (frame.parentElement) {
         frame.parentElement.style.height = "";
       }
       return;
     }
     var scale = containerW / frameW;
-    var frameH = rect.height || parseInt(frame.getAttribute("height"), 10) || 250;
+    var frameH =
+      frame.getBoundingClientRect().height ||
+      parseInt(frame.getAttribute("height"), 10) ||
+      250;
+    frame.style.width = frameW + "px";
+    frame.style.maxWidth = frameW + "px";
+    frame.style.height = frameH + "px";
     frame.style.transform = "scale(" + scale + ")";
     frame.style.transformOrigin = "top center";
     frame.style.marginLeft = "auto";
@@ -449,38 +474,11 @@
     if (!isMobileViewport() || document.getElementById("apk-ad-mobile-css")) {
       return;
     }
-    var style = document.createElement("style");
-    style.id = "apk-ad-mobile-css";
-    style.textContent =
-      "@media " +
-      MOBILE_BREAKPOINT +
-      "{" +
-      "body.page-form,body.page-result,body.page-list,body.page-teach,body.page-state{" +
-      "overflow-x:hidden!important;max-width:100%!important;width:100%!important;}" +
-      "html{overflow-x:hidden!important;max-width:100%!important;}" +
-      ".wrapper,.wrapper.contents,.contents,.detail-left,.state-content{" +
-      "overflow-x:hidden!important;max-width:100%!important;width:100%!important;min-width:0!important;}" +
-      ".apk-ad-clip,.adswp,.state_advClass,.divider-wrap.state_advClass," +
-      ".teach-ad.adswp,.state-ad.adswp,.home-hero-ad.adswp," +
-      "#adv1,#adv2,#adv3,.ads{" +
-      "max-width:" +
-      MOBILE_MAX_AD_WIDTH +
-      "px!important;width:100%!important;margin-left:auto!important;margin-right:auto!important;" +
-      "overflow:hidden!important;box-sizing:border-box!important;}" +
-      ".adswp [id^='apk-ad-'],.state_advClass [id^='apk-ad-']," +
-      "[id^='apk-ad-'],div[id^='google_ads_iframe_']{" +
-      "max-width:min(" +
-      MOBILE_MAX_AD_WIDTH +
-      "px,100vw)!important;width:100%!important;margin-left:auto!important;" +
-      "margin-right:auto!important;overflow:hidden!important;box-sizing:border-box!important;}" +
-      ".adswp [id^='apk-ad-'] iframe,.state_advClass [id^='apk-ad-'] iframe," +
-      "[id^='apk-ad-'] iframe,.adswp iframe,div[id^='google_ads_iframe_'] iframe{" +
-      "max-width:min(" +
-      MOBILE_MAX_AD_WIDTH +
-      "px,100vw)!important;width:100%!important;margin-left:auto!important;" +
-      "margin-right:auto!important;box-sizing:border-box!important;display:block!important;}" +
-      "}";
-    document.head.appendChild(style);
+    var link = document.createElement("link");
+    link.id = "apk-ad-mobile-css";
+    link.rel = "stylesheet";
+    link.href = "/Public/Css/ad-mobile.css";
+    document.head.appendChild(link);
   }
 
   function showEmptyPlaceholder(divId, path) {
@@ -538,6 +536,13 @@
         return;
       }
       showEmptyPlaceholder(divId, event.slot.getAdUnitPath());
+    });
+
+    w.googletag.pubads().addEventListener("impressionViewable", function (event) {
+      if (!isMobileViewport()) {
+        return;
+      }
+      scheduleMobileClamp(event.slot.getSlotElementId());
     });
 
     w.googletag.pubads().addEventListener("slotRequested", function (event) {
@@ -713,5 +718,13 @@
     document.addEventListener("DOMContentLoaded", initMobileAdGuard);
   } else {
     initMobileAdGuard();
+  }
+
+  if (w.visualViewport) {
+    w.visualViewport.addEventListener("resize", function () {
+      if (isMobileViewport()) {
+        scanAndClampAllMobileAds();
+      }
+    });
   }
 })(window);
