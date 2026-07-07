@@ -1037,7 +1037,8 @@ body.page-detail .detail-right .most-list {
 }
 
 body.page-detail .detail-right .most-list li,
-body.page-detail .detail-right .most-list #right_adv {
+body.page-detail .detail-right .most-list #right_adv,
+body.page-detail .detail-right .most-list #aside_adv {
     width: 100%;
     max-width: 100%;
     padding-right: 0;
@@ -1045,7 +1046,8 @@ body.page-detail .detail-right .most-list #right_adv {
     box-sizing: border-box;
 }
 
-body.page-detail #right_adv [id^="apk-ad-"] {
+body.page-detail #right_adv [id^="apk-ad-"],
+body.page-detail #aside_adv [id^="apk-ad-"] {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;

@@ -776,6 +776,13 @@ body.page-teach .detail-right .most-list li {
     box-sizing: border-box;
 }
 
+body.page-teach #aside_adv [id^="apk-ad-"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+}
+
 /* ── Responsive ── */
 
 @media (max-width: 900px) {

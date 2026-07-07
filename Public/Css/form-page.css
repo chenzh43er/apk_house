@@ -201,7 +201,8 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-right .most-list li,
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-right .most-list #right_adv {
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-right .most-list #right_adv,
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-right .most-list #aside_adv {
     width: 100%;
     max-width: 100%;
     padding-right: 0;
@@ -209,7 +210,8 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
     box-sizing: border-box;
 }
 
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) #right_adv [id^="apk-ad-"] {
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) #right_adv [id^="apk-ad-"],
+body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) #aside_adv [id^="apk-ad-"] {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;

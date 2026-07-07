@@ -1443,6 +1443,25 @@ select:not(:-internal-list-box) {
 .detail-right .most-list li {
     width: 100%;
 }
+.detail-right .most-list > li:has(#aside_adv) {
+    padding-right: 0;
+}
+.detail-right #aside_adv,
+.detail-rightside #aside_adv {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.detail-right #aside_adv [id^="apk-ad-"],
+.detail-rightside #aside_adv [id^="apk-ad-"],
+#aside_adv ins.adsbygoogle,
+#aside_adv iframe,
+#aside_adv div[id^="google_ads_iframe_"],
+#aside_adv div[data-google-query-id] {
+    max-width: 100% !important;
+    box-sizing: border-box;
+}
 .list {
     margin-top: 20px;
     min-height: 80vh;

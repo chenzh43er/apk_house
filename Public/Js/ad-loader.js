@@ -193,6 +193,102 @@
     );
   }
 
+  function isAsideAdHost(el) {
+    return (
+      el &&
+      (el.id === "aside_adv" || (el.closest && el.closest("#aside_adv")))
+    );
+  }
+
+  function getAsideAdContainerWidth(node) {
+    var aside =
+      (node && node.closest && node.closest("#aside_adv")) ||
+      document.getElementById("aside_adv");
+    if (!aside) {
+      return 300;
+    }
+    var width = aside.getBoundingClientRect().width || aside.offsetWidth;
+    if (width > 0) {
+      return Math.floor(width);
+    }
+    var sidebar = aside.closest(".detail-rightside, .detail-right");
+    if (sidebar) {
+      width = sidebar.getBoundingClientRect().width || sidebar.offsetWidth;
+      if (width > 0) {
+        return Math.floor(width);
+      }
+    }
+    return 300;
+  }
+
+  function clampAsideAdNode(node) {
+    if (!node || isMobileViewport()) {
+      return;
+    }
+    var host = node.closest ? node.closest("#aside_adv") : null;
+    if (!host) {
+      return;
+    }
+    var containerW = getAsideAdContainerWidth(node);
+    var maxW = containerW + "px";
+    host.style.maxWidth = "100%";
+    host.style.overflow = "hidden";
+    host.style.boxSizing = "border-box";
+
+    node.style.maxWidth = maxW;
+    node.style.width = "100%";
+    node.style.overflow = "hidden";
+    node.style.boxSizing = "border-box";
+    node.style.marginLeft = "auto";
+    node.style.marginRight = "auto";
+
+    node.querySelectorAll(
+      "iframe, ins.adsbygoogle, div[id^='google_ads_iframe'], div[data-google-query-id]"
+    ).forEach(function (el) {
+      el.style.maxWidth = maxW;
+      el.style.boxSizing = "border-box";
+      el.style.overflow = "hidden";
+      el.style.marginLeft = "auto";
+      el.style.marginRight = "auto";
+      if (el.tagName === "IFRAME") {
+        scaleWideIframe(el, containerW);
+      }
+    });
+  }
+
+  function clampAsideAdFrame(divId) {
+    if (isMobileViewport()) {
+      return;
+    }
+    var node = document.getElementById(divId);
+    if (!node) {
+      return;
+    }
+    clampAsideAdNode(node);
+  }
+
+  function clampAllAsideAdHosts() {
+    if (isMobileViewport()) {
+      return;
+    }
+    document.querySelectorAll("#aside_adv").forEach(function (host) {
+      host.style.maxWidth = "100%";
+      host.style.overflow = "hidden";
+      host.style.boxSizing = "border-box";
+      var containerW = getAsideAdContainerWidth(host);
+      host.querySelectorAll(
+        "[id^='apk-ad-'], ins.adsbygoogle, iframe, div[id^='google_ads_iframe'], div[data-google-query-id]"
+      ).forEach(function (el) {
+        el.style.maxWidth = "100%";
+        el.style.boxSizing = "border-box";
+        el.style.overflow = "hidden";
+        if (el.tagName === "IFRAME") {
+          scaleWideIframe(el, containerW);
+        }
+      });
+    });
+  }
+
   function getAdDivInlineStyle(el) {
     if (isCardEmbedSlot(el)) {
       return (
@@ -211,7 +307,7 @@
     }
     return (
       "width:100%;max-width:100%;min-height:250px;text-align:center;" +
-      "margin:8px auto;display:block;box-sizing:border-box;"
+      "margin:8px auto;display:block;box-sizing:border-box;overflow:hidden;"
     );
   }
 
@@ -518,6 +614,40 @@
     }, 600);
   }
 
+  function observeAsideAdClamp(divId) {
+    if (isMobileViewport()) {
+      return;
+    }
+    var node = document.getElementById(divId);
+    if (!node || !isAsideAdHost(node)) {
+      return;
+    }
+    if (node.getAttribute("data-apk-ad-aside-clamp") === "1") {
+      clampAsideAdFrame(divId);
+      return;
+    }
+    node.setAttribute("data-apk-ad-aside-clamp", "1");
+    clampAsideAdFrame(divId);
+    w.setTimeout(function () {
+      clampAsideAdFrame(divId);
+    }, 600);
+    if (typeof MutationObserver === "undefined") {
+      return;
+    }
+    var observer = new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        if (mutations[i].addedNodes.length) {
+          clampAsideAdFrame(divId);
+          return;
+        }
+      }
+    });
+    observer.observe(node, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
   function observeMobileAdClamp(divId) {
     if (!isMobileViewport()) {
       return;
@@ -605,6 +735,7 @@
       if (!event.isEmpty) {
         scheduleMobileClamp(divId);
         observeMobileAdClamp(divId);
+        observeAsideAdClamp(divId);
         return;
       }
       if (!shouldShowEmptyPlaceholder()) {
@@ -762,6 +893,7 @@
 
       w.googletag.display(divId);
       observeMobileAdClamp(divId);
+      observeAsideAdClamp(divId);
       el.setAttribute("data-apk-ad-loaded", "1");
       el.removeAttribute("data-apk-ad-pending");
     });
@@ -781,18 +913,71 @@
       });
   }
 
+  var asideGuardStarted = false;
+  function initAsideAdGuard() {
+    if (isMobileViewport() || asideGuardStarted) {
+      return;
+    }
+    asideGuardStarted = true;
+    clampAllAsideAdHosts();
+    [400, 1200, 3000].forEach(function (ms) {
+      w.setTimeout(clampAllAsideAdHosts, ms);
+    });
+    if (typeof MutationObserver === "undefined" || !document.body) {
+      return;
+    }
+    var asideObserver = new MutationObserver(function (mutations) {
+      var asideChanged = false;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type !== "childList") {
+          continue;
+        }
+        var nodes = m.addedNodes;
+        for (var j = 0; j < nodes.length; j++) {
+          var n = nodes[j];
+          if (n.nodeType !== 1) {
+            continue;
+          }
+          if (
+            n.id === "aside_adv" ||
+            (n.querySelector && n.querySelector("#aside_adv, iframe, [id^='google_ads_iframe_']"))
+          ) {
+            asideChanged = true;
+            break;
+          }
+        }
+        if (asideChanged) {
+          break;
+        }
+      }
+      if (asideChanged) {
+        clampAllAsideAdHosts();
+      }
+    });
+    asideObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+  }
+
   w.ApkAdLoader = {
     render: render,
     ensureGptSdk: ensureGptSdk,
     ensureAdxServices: ensureAdxServices,
     registerOopSlot: registerOopSlot,
     scanAndClampAllMobileAds: scanAndClampAllMobileAds,
+    clampAllAsideAdHosts: clampAllAsideAdHosts,
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initMobileAdGuard);
+    document.addEventListener("DOMContentLoaded", function () {
+      initMobileAdGuard();
+      initAsideAdGuard();
+    });
   } else {
     initMobileAdGuard();
+    initAsideAdGuard();
   }
 
   if (w.visualViewport) {

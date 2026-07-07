@@ -94,6 +94,14 @@
     } catch (e) {
       console.error("AdSense push error", e);
     }
+    if (w.ApkAdLoader && w.ApkAdLoader.clampAllAsideAdHosts) {
+      w.setTimeout(function () {
+        w.ApkAdLoader.clampAllAsideAdHosts();
+      }, 400);
+      w.setTimeout(function () {
+        w.ApkAdLoader.clampAllAsideAdHosts();
+      }, 1500);
+    }
   }
 
   Object.keys(loaderMap).forEach(function (fnName) {
