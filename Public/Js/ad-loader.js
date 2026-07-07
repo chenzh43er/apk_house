@@ -328,7 +328,9 @@
       el.style.boxSizing = "border-box";
       el.style.overflow = "hidden";
       if (el.tagName === "IFRAME") {
-        el.setAttribute("width", String(containerW));
+        if (el.getAttribute("width") !== String(containerW)) {
+          el.setAttribute("width", String(containerW));
+        }
         el.setAttribute("scrolling", "no");
         scaleWideIframe(el, containerW);
       }
@@ -356,10 +358,12 @@
     }
   }
 
-  function scanAndClampAllMobileAds() {
-    if (!isMobileViewport()) {
-      return;
-    }
+  var clampBusy = false;
+  var clampDebounceTimer = null;
+  var pendingClampIds = Object.create(null);
+  var bodyObserverStarted = false;
+
+  function applyMobileClampAll() {
     var containerW = getMobileAdContainerWidth();
     var hostMax = containerW + "px";
     document
@@ -391,6 +395,59 @@
       });
   }
 
+  function scanAndClampAllMobileAds() {
+    if (!isMobileViewport() || clampBusy) {
+      return;
+    }
+    clampBusy = true;
+    try {
+      applyMobileClampAll();
+    } finally {
+      clampBusy = false;
+    }
+  }
+
+  function flushMobileClampQueue() {
+    clampDebounceTimer = null;
+    if (!isMobileViewport() || clampBusy) {
+      return;
+    }
+    var ids = Object.keys(pendingClampIds);
+    var scanAll = pendingClampIds.__all;
+    pendingClampIds = Object.create(null);
+    if (!ids.length) {
+      return;
+    }
+    clampBusy = true;
+    try {
+      ids.forEach(function (divId) {
+        if (divId !== "__all") {
+          clampMobileAdFrame(divId);
+        }
+      });
+      if (scanAll) {
+        applyMobileClampAll();
+      }
+    } finally {
+      clampBusy = false;
+    }
+  }
+
+  function queueMobileClamp(divId) {
+    if (!isMobileViewport()) {
+      return;
+    }
+    if (divId) {
+      pendingClampIds[divId] = 1;
+    } else {
+      pendingClampIds.__all = 1;
+    }
+    if (clampDebounceTimer) {
+      return;
+    }
+    clampDebounceTimer = w.setTimeout(flushMobileClampQueue, 180);
+  }
+
   var mobileGuardStarted = false;
   function initMobileAdGuard() {
     if (!isMobileViewport() || mobileGuardStarted) {
@@ -398,28 +455,59 @@
     }
     mobileGuardStarted = true;
     ensureMobileAdStyles();
-    scanAndClampAllMobileAds();
-    [0, 80, 200, 500, 1000, 2000, 4000].forEach(function (ms) {
-      w.setTimeout(scanAndClampAllMobileAds, ms);
+    queueMobileClamp();
+    [400, 1200, 3000].forEach(function (ms) {
+      w.setTimeout(function () {
+        queueMobileClamp();
+      }, ms);
     });
-    if (typeof MutationObserver === "undefined" || !document.body) {
+    if (bodyObserverStarted || typeof MutationObserver === "undefined" || !document.body) {
       return;
     }
-    var bodyObserver = new MutationObserver(function () {
-      scanAndClampAllMobileAds();
+    bodyObserverStarted = true;
+    var bodyObserver = new MutationObserver(function (mutations) {
+      var adChanged = false;
+      for (var i = 0; i < mutations.length; i++) {
+        var m = mutations[i];
+        if (m.type !== "childList") {
+          continue;
+        }
+        var nodes = m.addedNodes;
+        for (var j = 0; j < nodes.length; j++) {
+          var n = nodes[j];
+          if (n.nodeType !== 1) {
+            continue;
+          }
+          if (
+            n.tagName === "IFRAME" ||
+            (n.id && String(n.id).indexOf("google_ads_iframe") === 0) ||
+            (n.querySelector && n.querySelector("iframe, [id^='google_ads_iframe_']"))
+          ) {
+            adChanged = true;
+            break;
+          }
+        }
+        if (adChanged) {
+          break;
+        }
+      }
+      if (adChanged) {
+        queueMobileClamp();
+      }
     });
     bodyObserver.observe(document.body, {
       childList: true,
       subtree: true,
-      attributes: true,
-      attributeFilter: ["style", "width", "height"],
     });
     if (document.body.style.display === "none") {
       var visibleObserver = new MutationObserver(function () {
         if (document.body.style.display !== "none") {
-          [0, 100, 400, 1000, 2500].forEach(function (ms) {
-            w.setTimeout(scanAndClampAllMobileAds, ms);
+          [0, 400, 1200].forEach(function (ms) {
+            w.setTimeout(function () {
+              queueMobileClamp();
+            }, ms);
           });
+          visibleObserver.disconnect();
         }
       });
       visibleObserver.observe(document.body, {
@@ -430,20 +518,10 @@
   }
 
   function scheduleMobileClamp(divId) {
-    clampMobileAdFrame(divId);
-    scanAndClampAllMobileAds();
-    if (w.requestAnimationFrame) {
-      w.requestAnimationFrame(function () {
-        clampMobileAdFrame(divId);
-        scanAndClampAllMobileAds();
-      });
-    }
-    [50, 200, 600, 1500].forEach(function (ms) {
-      w.setTimeout(function () {
-        clampMobileAdFrame(divId);
-        scanAndClampAllMobileAds();
-      }, ms);
-    });
+    queueMobileClamp(divId);
+    w.setTimeout(function () {
+      queueMobileClamp(divId);
+    }, 600);
   }
 
   function observeMobileAdClamp(divId) {
@@ -459,14 +537,17 @@
     if (typeof MutationObserver === "undefined") {
       return;
     }
-    var observer = new MutationObserver(function () {
-      scheduleMobileClamp(divId);
+    var observer = new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        if (mutations[i].addedNodes.length) {
+          queueMobileClamp(divId);
+          return;
+        }
+      }
     });
     observer.observe(node, {
       childList: true,
       subtree: true,
-      attributes: true,
-      attributeFilter: ["style", "width", "height"],
     });
   }
 
@@ -721,10 +802,18 @@
   }
 
   if (w.visualViewport) {
+    var viewportTimer = null;
     w.visualViewport.addEventListener("resize", function () {
-      if (isMobileViewport()) {
-        scanAndClampAllMobileAds();
+      if (!isMobileViewport()) {
+        return;
       }
+      if (viewportTimer) {
+        w.clearTimeout(viewportTimer);
+      }
+      viewportTimer = w.setTimeout(function () {
+        viewportTimer = null;
+        queueMobileClamp();
+      }, 200);
     });
   }
 })(window);
