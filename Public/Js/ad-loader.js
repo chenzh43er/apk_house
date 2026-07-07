@@ -136,6 +136,7 @@
     }
     applyAdxPageConfig();
     registerSlotListener();
+    w.googletag.pubads().enableSingleRequest();
     w.googletag.enableServices();
     adxServicesEnabled = true;
     displayOopSlots();
