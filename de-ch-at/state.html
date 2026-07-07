@@ -49,19 +49,11 @@
     <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
-    <script src="/Public/Js/ad-loader.js?v=20250709"></script>
+    <script src="/Public/Js/ad-loader.js?v=20250710"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
-    <script src="/Public/Js/ad-oop.js?v=20250709"></script>
-    <script src="/Public/Js/ad-state-page.js?v=20250709"></script>
+    <script src="/Public/Js/ad-oop.js?v=20250710"></script>
+    <script src="/Public/Js/ad-state-page.js?v=20250710"></script>
     <script>
-        if (
-            window.ApkAdLoader &&
-            window.AD_CONFIG &&
-            window.AD_CONFIG.mode === "adx" &&
-            typeof ApkAdLoader.deferSraBatch === "function"
-        ) {
-            ApkAdLoader.deferSraBatch();
-        }
         if (window.ApkAdStatePage) {
             ApkAdStatePage.preloadGpt();
         }
@@ -462,24 +454,11 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
-            if (typeof ApkAdStatePage.notifyBodyVisible === "function") {
-                ApkAdStatePage.notifyBodyVisible();
-            } else {
-                ApkAdStatePage.loadTopBanner(document.getElementById("state_adv1"));
-                ApkAdStatePage.observeMidContentAd(
-                    document.getElementById("state_adv_mid")
-                );
-                if (window.ApkAdOop && typeof ApkAdOop.initDeferredInterstitial === "function") {
-                    ApkAdOop.initDeferredInterstitial();
-                }
-            }
-        }
-
-        if (window.ApkAdStatePage) {
-            if (!window.AD_CONFIG || window.AD_CONFIG.mode !== "adx") {
-                ApkAdStatePage.loadTopBanner(document.getElementById('state_adv1'));
-                ApkAdStatePage.observeMidContentAd(document.getElementById('state_adv_mid'));
-            }
+            ApkAdStatePage.loadTopBanner(document.getElementById("state_adv1"));
+            ApkAdStatePage.observeMidContentAd(
+                document.getElementById("state_adv_mid")
+            );
+            ApkAdStatePage.notifyBodyVisible();
             requestAnimationFrame(function () {
                 ApkAdStatePage.observeInListAds();
             });
@@ -654,10 +633,7 @@ const lang = getLangFromPath()
 
 <script>
     $(document).ready(function () {
-        if (
-            window.ApkAdStatePage &&
-            (!window.AD_CONFIG || window.AD_CONFIG.mode !== "adx")
-        ) {
+        if (window.ApkAdStatePage) {
             ApkAdStatePage.initTopBannerWhenVisible();
         }
 
