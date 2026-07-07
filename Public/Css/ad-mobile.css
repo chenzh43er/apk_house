@@ -50,7 +50,8 @@
   div[id^="google_ads_iframe_"],
   div[data-google-query-id] {
     max-width: min(300px, calc(100vw - 32px)) !important;
-    width: 100% !important;
+    width: min(300px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
     margin-left: auto !important;
     margin-right: auto !important;
     overflow: hidden !important;
@@ -62,7 +63,8 @@
   [id^="apk-ad-"] iframe,
   div[id^="google_ads_iframe_"] iframe {
     max-width: min(300px, calc(100vw - 32px)) !important;
-    width: 100% !important;
+    width: min(300px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
     display: block !important;
     margin-left: auto !important;
     margin-right: auto !important;

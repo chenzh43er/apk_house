@@ -1,6 +1,7 @@
 node_modules/
 secrets/
 .wrangler/
+.pages-dist/
 dist-worker-bundle/
 dist-no-bundle/
 .dev.vars

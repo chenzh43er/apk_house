@@ -34,10 +34,19 @@
   }
 
   function isMobileViewport() {
-    if (w.innerWidth > 0 && w.innerWidth <= 768) {
+    if (w.matchMedia && w.matchMedia(MOBILE_BREAKPOINT).matches) {
       return true;
     }
-    return w.matchMedia && w.matchMedia(MOBILE_BREAKPOINT).matches;
+    if (w.matchMedia && w.matchMedia("(pointer: coarse)").matches) {
+      var narrow =
+        w.innerWidth > 0
+          ? w.innerWidth <= 768
+          : w.screen && w.screen.width <= 768;
+      if (narrow) {
+        return true;
+      }
+    }
+    return w.innerWidth > 0 && w.innerWidth <= 768;
   }
 
   /** 移动端仅请求宽度 ≤300 的固定尺寸，不请求 728×90，避免 iOS 越界 */
@@ -354,17 +363,23 @@
     return normalizeGptSizes((def && def.sizes) || [[300, 250]]);
   }
 
-  function getSlotSizesForViewport(def) {
+  function getSlotSizesForViewport(slotKey, def) {
     var allSizes = getAllSlotSizes(def);
-    if (isMobileViewport()) {
+    if (!isMobileViewport()) {
       return {
-        requestSizes: filterMobileSizes(allSizes),
+        requestSizes: allSizes,
+        useMapping: true,
+      };
+    }
+    if (def && def.mobileSizes) {
+      return {
+        requestSizes: normalizeGptSizes(def.mobileSizes),
         useMapping: false,
       };
     }
     return {
-      requestSizes: allSizes,
-      useMapping: true,
+      requestSizes: filterMobileSizes(allSizes),
+      useMapping: false,
     };
   }
 
@@ -801,9 +816,15 @@
     w.googletag.pubads().addEventListener("slotRenderEnded", function (event) {
       var divId = event.slot.getSlotElementId();
       if (!event.isEmpty) {
+        if (isMobileViewport()) {
+          clampMobileAdFrame(divId);
+        }
         scheduleMobileClamp(divId);
         observeMobileAdClamp(divId);
         observeAsideAdClamp(divId);
+        if (w.location.search.indexOf("addebug=1") >= 0) {
+          console.info("[ApkAd] filled", divId, event.size);
+        }
         return;
       }
       if (!shouldShowEmptyPlaceholder()) {
@@ -919,11 +940,28 @@
     });
   }
 
+  function clampMobileAdHost(el) {
+    if (!el || !isMobileViewport() || isCardEmbedSlot(el)) {
+      return;
+    }
+    var containerW = getMobileAdContainerWidth();
+    var maxPx = containerW + "px";
+    el.style.maxWidth = maxPx;
+    el.style.width = "100%";
+    el.style.marginLeft = "auto";
+    el.style.marginRight = "auto";
+    el.style.overflow = "hidden";
+    el.style.boxSizing = "border-box";
+    el.style.position = "relative";
+  }
+
   function mountAdSlotDom(slotKey, el) {
     var def = w.ADX_SLOT_DEFS[slotKey];
     var divId = resolveInstanceDivId(slotKey, el);
     var slotStyle = getAdDivInlineStyle(el);
     var clipHtml = "";
+
+    clampMobileAdHost(el);
 
     if (isMobileViewport() && !isCardEmbedSlot(el)) {
       var clipW = getMobileAdContainerWidth();
@@ -951,7 +989,7 @@
       return null;
     }
 
-    var sizePlan = getSlotSizesForViewport(def);
+    var sizePlan = getSlotSizesForViewport(slotKey, def);
     var slot = w.googletag.defineSlot(path, sizePlan.requestSizes, divId);
     if (slot && sizePlan.useMapping) {
       var mapping = buildGptSizeMapping(def);
