@@ -142,7 +142,6 @@
     }
     applyAdxPageConfig();
     registerSlotListener();
-    w.googletag.pubads().enableSingleRequest();
     w.googletag.enableServices();
     adxServicesEnabled = true;
     displayOopSlots();
@@ -151,6 +150,7 @@
   function applyAdxPageConfig() {
     var pageConfig = {
       collapseDiv: shouldShowEmptyPlaceholder() ? "ON_NO_FILL" : "BEFORE_FETCH",
+      singleRequest: true,
     };
     var adsenseAttrs = {};
 
@@ -175,6 +175,7 @@
       w.googletag
         .pubads()
         .collapseEmptyDivs(!shouldShowEmptyPlaceholder());
+      w.googletag.pubads().enableSingleRequest();
       if (adsenseAttrs.adsense_test_mode) {
         w.googletag.pubads().set("adsense_test_mode", "on");
       }
