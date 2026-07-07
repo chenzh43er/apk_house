@@ -10,6 +10,8 @@
   var oopSlots = [];
   var slotListenerRegistered = false;
   var instanceSeq = 0;
+  var MOBILE_MAX_AD_WIDTH = 300;
+  var MOBILE_BREAKPOINT = "(max-width: 768px)";
 
   /** Google 官方 GPT 入门示例广告位 */
   var DEMO_AD_UNIT = "/6355419/Travel/Europe/France/Paris";
@@ -23,6 +25,32 @@
   function isLocalHost() {
     var host = w.location.hostname;
     return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+  }
+
+  function isMobileViewport() {
+    return w.matchMedia && w.matchMedia(MOBILE_BREAKPOINT).matches;
+  }
+
+  /** 移动端仅请求宽度 ≤300 的固定尺寸，不请求 fluid / 728×90，避免 iOS 越界 */
+  function filterMobileSizes(sizes) {
+    var pixel = [];
+    sizes.forEach(function (s) {
+      if (Array.isArray(s) && s.length === 2 && s[0] <= MOBILE_MAX_AD_WIDTH) {
+        pixel.push(s);
+      }
+    });
+    if (!pixel.length) {
+      return [[300, 250]];
+    }
+    var seen = Object.create(null);
+    return pixel.filter(function (s) {
+      var key = s[0] + "x" + s[1];
+      if (seen[key]) {
+        return false;
+      }
+      seen[key] = true;
+      return true;
+    });
   }
 
   function shouldShowEmptyPlaceholder() {
@@ -76,7 +104,11 @@
     if (testMode === "demo") {
       return DEMO_SIZES;
     }
-    return normalizeGptSizes((def && def.sizes) || ["fluid"]);
+    var sizes = normalizeGptSizes((def && def.sizes) || ["fluid"]);
+    if (isMobileViewport()) {
+      sizes = filterMobileSizes(sizes);
+    }
+    return sizes;
   }
 
   function isAdFreePage() {
@@ -169,13 +201,77 @@
       return (
         "width:100%;max-width:100%;height:100%;min-height:0;margin:0;" +
         "display:flex;align-items:center;justify-content:center;" +
-        "box-sizing:border-box;"
+        "box-sizing:border-box;overflow:hidden;"
+      );
+    }
+    if (isMobileViewport()) {
+      return (
+        "width:100%;max-width:" +
+        MOBILE_MAX_AD_WIDTH +
+        "px;min-height:250px;text-align:center;" +
+        "margin:8px auto;display:block;box-sizing:border-box;overflow:hidden;"
       );
     }
     return (
       "width:100%;max-width:100%;min-height:250px;text-align:center;" +
       "margin:8px auto;display:block;box-sizing:border-box;"
     );
+  }
+
+  function clampMobileAdFrame(divId) {
+    if (!isMobileViewport()) {
+      return;
+    }
+    var node = document.getElementById(divId);
+    if (!node) {
+      return;
+    }
+    var maxW = MOBILE_MAX_AD_WIDTH + "px";
+    node.style.maxWidth = maxW;
+    node.style.marginLeft = "auto";
+    node.style.marginRight = "auto";
+    node.style.overflow = "hidden";
+    node.querySelectorAll("iframe").forEach(function (frame) {
+      frame.style.maxWidth = maxW;
+      frame.style.width = "100%";
+      frame.style.marginLeft = "auto";
+      frame.style.marginRight = "auto";
+      frame.style.display = "block";
+      frame.style.boxSizing = "border-box";
+    });
+  }
+
+  function ensureMobileAdStyles() {
+    if (!isMobileViewport() || document.getElementById("apk-ad-mobile-css")) {
+      return;
+    }
+    var style = document.createElement("style");
+    style.id = "apk-ad-mobile-css";
+    style.textContent =
+      "@media " +
+      MOBILE_BREAKPOINT +
+      "{" +
+      ".adswp,.state_advClass,.divider-wrap.state_advClass," +
+      ".teach-ad.adswp,.state-ad.adswp,.home-hero-ad.adswp," +
+      "#adv1,#adv2,#adv3,.ads{" +
+      "max-width:" +
+      MOBILE_MAX_AD_WIDTH +
+      "px!important;margin-left:auto!important;margin-right:auto!important;" +
+      "overflow:hidden!important;box-sizing:border-box!important;}" +
+      ".adswp [id^='apk-ad-'],.state_advClass [id^='apk-ad-']," +
+      "[id^='apk-ad-']{" +
+      "max-width:" +
+      MOBILE_MAX_AD_WIDTH +
+      "px!important;width:100%!important;margin-left:auto!important;" +
+      "margin-right:auto!important;overflow:hidden!important;box-sizing:border-box!important;}" +
+      ".adswp [id^='apk-ad-'] iframe,.state_advClass [id^='apk-ad-'] iframe," +
+      "[id^='apk-ad-'] iframe,.adswp iframe{" +
+      "max-width:" +
+      MOBILE_MAX_AD_WIDTH +
+      "px!important;width:100%!important;margin-left:auto!important;" +
+      "margin-right:auto!important;box-sizing:border-box!important;}" +
+      "}";
+    document.head.appendChild(style);
   }
 
   function showEmptyPlaceholder(divId, path) {
@@ -223,16 +319,15 @@
     slotListenerRegistered = true;
 
     w.googletag.pubads().addEventListener("slotRenderEnded", function (event) {
+      var divId = event.slot.getSlotElementId();
       if (!event.isEmpty) {
+        clampMobileAdFrame(divId);
         return;
       }
       if (!shouldShowEmptyPlaceholder()) {
         return;
       }
-      showEmptyPlaceholder(
-        event.slot.getSlotElementId(),
-        event.slot.getAdUnitPath()
-      );
+      showEmptyPlaceholder(divId, event.slot.getAdUnitPath());
     });
 
     w.googletag.pubads().addEventListener("slotRequested", function (event) {
@@ -311,6 +406,8 @@
       console.warn("[ApkAd] ADX slot not configured:", slotKey);
       return;
     }
+
+    ensureMobileAdStyles();
 
     if (el.getAttribute("data-apk-ad-pending") === "1") {
       return;

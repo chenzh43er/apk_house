@@ -58,6 +58,21 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [
     max-width: 100% !important;
 }
 
+@media screen and (max-width: 768px) {
+    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp {
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"],
+    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] iframe {
+        max-width: 300px !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 /* Contact form card */
 .form-card {
     max-width: 100%;

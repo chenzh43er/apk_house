@@ -20,6 +20,9 @@
 @media (max-width: 768px) {
     .home-hero-ad.adswp {
         padding: 16px 12px;
+        max-width: 300px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 

@@ -42,13 +42,17 @@
     "gam:create-oop-units": "node scripts/ad-manager/create-oop-units.mjs",
     "gam:create-oop-units:dry-run": "node scripts/ad-manager/create-oop-units.mjs --dry-run",
     "gam:list-units": "node scripts/ad-manager/list-units.mjs",
+    "gam:enable-adsense": "node scripts/ad-manager/enable-adsense.mjs",
+    "gam:enable-adsense:dry-run": "node scripts/ad-manager/enable-adsense.mjs --dry-run",
+    "gam:check-adx": "node scripts/ad-manager/check-adx-delivery.mjs",
     "adsense:apply": "node scripts/adsense/apply-slots.mjs",
     "craigslist:scrape": "node scripts/craigslist/scrape.mjs",
     "craigslist:batch-us": "node scripts/craigslist/batch-us.mjs",
     "craigslist:merge-us": "node scripts/craigslist/batch-us.mjs --merge-only",
     "craigslist:import": "node scripts/craigslist/import.mjs",
     "craigslist:upload-images": "node scripts/craigslist/upload-images.mjs",
-    "craigslist:purge-empty-locality": "node scripts/craigslist/purge-empty-locality.mjs"
+    "craigslist:purge-empty-locality": "node scripts/craigslist/purge-empty-locality.mjs",
+    "gam:check-adsense": "node scripts/ad-manager/check-adsense-lineitem.mjs"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",

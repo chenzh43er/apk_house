@@ -1,13 +1,31 @@
 import { getGamAccessToken } from "./auth.mjs";
 import { GAM_API } from "./config.mjs";
 import { curlRequest, resolveProxy } from "./request.mjs";
-import { getApiVersion, serviceUrl, soapNamespace } from "./versions.mjs";
+import { GAM_API_VERSIONS, getApiVersion, serviceUrl, soapNamespace } from "./versions.mjs";
 
-const NS = soapNamespace(getApiVersion());
+export async function soapCall(service, methodBody, version = getApiVersion()) {
+  const versions = version
+    ? [version]
+    : GAM_API_VERSIONS;
+  let lastErr = null;
 
-export async function soapCall(service, methodBody) {
+  for (const apiVersion of versions) {
+    try {
+      return await soapCallOnce(service, methodBody, apiVersion);
+    } catch (err) {
+      lastErr = err;
+      if (!String(err.message).includes("HTTP 404")) {
+        throw err;
+      }
+    }
+  }
+  throw lastErr || new Error("SOAP call failed");
+}
+
+async function soapCallOnce(service, methodBody, apiVersion) {
   const token = await getGamAccessToken();
-  const url = serviceUrl(getApiVersion(), service);
+  const url = serviceUrl(apiVersion, service);
+  const NS = soapNamespace(apiVersion);
 
   const envelope = `<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v="${NS}">
