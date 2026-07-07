@@ -5,6 +5,37 @@
   var LIST_ROOT_MARGIN = "200px";
   var ASIDE_ROOT_MARGIN = "200px";
   var aboveFoldBatchDone = false;
+  var pendingAboveFoldBatch = null;
+
+  function isBodyVisible() {
+    if (!document.body || document.body.style.display === "none") {
+      return false;
+    }
+    return true;
+  }
+
+  function commitAboveFoldBatch(topEl, midEl) {
+    if (aboveFoldBatchDone || !topEl || !w.ApkAdLoader) {
+      return;
+    }
+    w.ApkAdLoader.commitSraBatch();
+    w.ApkAdLoader.displayAdxElement(topEl);
+    if (midEl) {
+      w.ApkAdLoader.displayAdxElement(midEl);
+    }
+    aboveFoldBatchDone = true;
+    pendingAboveFoldBatch = null;
+  }
+
+  function tryCommitAboveFoldBatch() {
+    if (!pendingAboveFoldBatch || !isBodyVisible()) {
+      return;
+    }
+    commitAboveFoldBatch(
+      pendingAboveFoldBatch.topEl,
+      pendingAboveFoldBatch.midEl
+    );
+  }
 
   function isAdxMode() {
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
@@ -90,12 +121,11 @@
         return Promise.all(tasks);
       })
       .then(function () {
-        w.ApkAdLoader.commitSraBatch();
-        w.ApkAdLoader.displayAdxElement(topEl);
-        if (midEl) {
-          w.ApkAdLoader.displayAdxElement(midEl);
+        if (isBodyVisible()) {
+          commitAboveFoldBatch(topEl, midEl);
+        } else {
+          pendingAboveFoldBatch = { topEl: topEl, midEl: midEl };
         }
-        aboveFoldBatchDone = true;
       })
       .catch(function (err) {
         console.error("[ApkAd] state above-fold SRA batch failed:", err);
@@ -162,6 +192,13 @@
 
     observeAsideAd: function (el) {
       observeOnce(el, loadState_adv2, ASIDE_ROOT_MARGIN);
+    },
+
+    notifyBodyVisible: function () {
+      tryCommitAboveFoldBatch();
+      if (w.ApkAdOop && w.ApkAdOop.initDeferredInterstitial) {
+        w.ApkAdOop.initDeferredInterstitial();
+      }
     },
   };
 

@@ -457,6 +457,10 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
+            ApkAdStatePage.notifyBodyVisible();
+        }
+
+        if (window.ApkAdStatePage) {
             if (!window.AD_CONFIG || window.AD_CONFIG.mode !== "adx") {
                 ApkAdStatePage.loadTopBanner(document.getElementById('state_adv1'));
                 ApkAdStatePage.observeMidContentAd(document.getElementById('state_adv_mid'));
