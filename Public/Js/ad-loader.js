@@ -10,6 +10,12 @@
   var oopSlots = [];
   var slotListenerRegistered = false;
   var instanceSeq = 0;
+  var sraBatchDeferred = false;
+  var oopDefined = false;
+  var oopReadyResolve = null;
+  var oopReadyPromise = new Promise(function (resolve) {
+    oopReadyResolve = resolve;
+  });
   var MOBILE_MAX_AD_WIDTH = 300;
   var MOBILE_BREAKPOINT = "(max-width: 768px)";
 
@@ -821,23 +827,39 @@
     return sdkPromise;
   }
 
-  function renderAdx(slotKey, el) {
-    var path = getAdxPath(slotKey);
-    if (!path) {
-      console.warn("[ApkAd] ADX slot not configured:", slotKey);
-      return;
+  function deferSraBatch() {
+    sraBatchDeferred = true;
+  }
+
+  function isSraBatchDeferred() {
+    return sraBatchDeferred;
+  }
+
+  function markOopDefined() {
+    oopDefined = true;
+    if (oopReadyResolve) {
+      oopReadyResolve();
+      oopReadyResolve = null;
     }
+  }
 
-    ensureMobileAdStyles();
-
-    if (el.getAttribute("data-apk-ad-pending") === "1") {
-      return;
+  function whenOopReady() {
+    if (oopDefined || !sraBatchDeferred) {
+      return Promise.resolve();
     }
-    el.setAttribute("data-apk-ad-pending", "1");
+    return oopReadyPromise;
+  }
 
+  function commitSraBatch() {
+    w.googletag = w.googletag || { cmd: [] };
+    w.googletag.cmd.push(function () {
+      ensureAdxServices();
+    });
+  }
+
+  function mountAdSlotDom(slotKey, el) {
     var def = w.ADX_SLOT_DEFS[slotKey];
     var divId = resolveInstanceDivId(slotKey, el);
-    var allSizes = getAllSlotSizes(def);
     var slotStyle = getAdDivInlineStyle(el);
     var clipHtml = "";
 
@@ -858,21 +880,152 @@
       '"></div>' +
       (clipHtml ? "</div>" : "");
 
+    return divId;
+  }
+
+  function defineGptSlot(slotKey, divId, def) {
+    var path = getAdxPath(slotKey);
+    if (!path) {
+      return null;
+    }
+
+    var allSizes = getAllSlotSizes(def);
+    var slot = w.googletag.defineSlot(path, allSizes, divId);
+    var mapping = buildGptSizeMapping(def);
+    if (slot && mapping) {
+      slot = slot.defineSizeMapping(mapping);
+    }
+    if (slot) {
+      slot = slot.addService(w.googletag.pubads());
+    }
+    if (slot) {
+      definedAdxSlots[divId] = slot;
+    }
+    return slot;
+  }
+
+  function markAdElementDisplayed(el, divId) {
+    w.googletag.display(divId);
+    observeMobileAdClamp(divId);
+    observeAsideAdClamp(divId);
+    el.setAttribute("data-apk-ad-loaded", "1");
+    el.removeAttribute("data-apk-ad-pending");
+  }
+
+  function defineAdxSlot(slotKey, el) {
+    if (!el || !isAdxMode() || isAdFreePage()) {
+      return Promise.resolve(null);
+    }
+
+    var path = getAdxPath(slotKey);
+    if (!path) {
+      console.warn("[ApkAd] ADX slot not configured:", slotKey);
+      return Promise.resolve(null);
+    }
+
+    ensureMobileAdStyles();
+
+    if (el.getAttribute("data-apk-ad-loaded") === "1") {
+      return Promise.resolve(el.getAttribute("data-apk-ad-div-id"));
+    }
+
+    if (el.getAttribute("data-apk-ad-pending") === "1") {
+      return Promise.resolve(el.getAttribute("data-apk-ad-div-id"));
+    }
+    el.setAttribute("data-apk-ad-pending", "1");
+
+    var def = w.ADX_SLOT_DEFS[slotKey];
+    var divId = mountAdSlotDom(slotKey, el);
+
+    return ensureGptSdk().then(function () {
+      return new Promise(function (resolve) {
+        w.googletag = w.googletag || { cmd: [] };
+        w.googletag.cmd.push(function () {
+          if (!definedAdxSlots[divId]) {
+            var slot = defineGptSlot(slotKey, divId, def);
+            if (!slot) {
+              console.warn(
+                "[ApkAd] defineSlot 失败:",
+                slotKey,
+                path,
+                getAllSlotSizes(def)
+              );
+              el.removeAttribute("data-apk-ad-pending");
+              if (shouldShowEmptyPlaceholder()) {
+                showEmptyPlaceholder(divId, path);
+              }
+              resolve(null);
+              return;
+            }
+          }
+          resolve(divId);
+        });
+      });
+    });
+  }
+
+  function displayAdxElement(el) {
+    if (!el || el.getAttribute("data-apk-ad-loaded") === "1") {
+      return;
+    }
+
+    var divId = el.getAttribute("data-apk-ad-div-id");
+    if (!divId || !definedAdxSlots[divId]) {
+      return;
+    }
+
+    w.googletag = w.googletag || { cmd: [] };
+    w.googletag.cmd.push(function () {
+      if (!definedAdxSlots[divId]) {
+        return;
+      }
+      markAdElementDisplayed(el, divId);
+    });
+  }
+
+  function renderAdx(slotKey, el) {
+    var path = getAdxPath(slotKey);
+    if (!path) {
+      console.warn("[ApkAd] ADX slot not configured:", slotKey);
+      return;
+    }
+
+    ensureMobileAdStyles();
+
+    if (el.getAttribute("data-apk-ad-loaded") === "1") {
+      return;
+    }
+
+    var existingDivId = el.getAttribute("data-apk-ad-div-id");
+    if (existingDivId && definedAdxSlots[existingDivId]) {
+      w.googletag = w.googletag || { cmd: [] };
+      w.googletag.cmd.push(function () {
+        if (!definedAdxSlots[existingDivId]) {
+          return;
+        }
+        if (!adxServicesEnabled) {
+          ensureAdxServices();
+        }
+        markAdElementDisplayed(el, existingDivId);
+      });
+      return;
+    }
+
+    if (el.getAttribute("data-apk-ad-pending") === "1") {
+      return;
+    }
+    el.setAttribute("data-apk-ad-pending", "1");
+
+    var def = w.ADX_SLOT_DEFS[slotKey];
+    var divId = mountAdSlotDom(slotKey, el);
+    var allSizes = getAllSlotSizes(def);
+
     w.googletag = w.googletag || { cmd: [] };
     w.googletag.cmd.push(function () {
       var slot = definedAdxSlots[divId];
       if (!slot) {
-        slot = w.googletag.defineSlot(path, allSizes, divId);
-        var mapping = buildGptSizeMapping(def);
-        if (slot && mapping) {
-          slot = slot.defineSizeMapping(mapping);
-        }
-        if (slot) {
-          slot = slot.addService(w.googletag.pubads());
-        }
-        if (slot) {
-          definedAdxSlots[divId] = slot;
-        } else {
+        slot = defineGptSlot(slotKey, divId, def);
+        if (!slot) {
           console.warn(
             "[ApkAd] defineSlot 失败:",
             slotKey,
@@ -891,16 +1044,16 @@
         ensureAdxServices();
       }
 
-      w.googletag.display(divId);
-      observeMobileAdClamp(divId);
-      observeAsideAdClamp(divId);
-      el.setAttribute("data-apk-ad-loaded", "1");
-      el.removeAttribute("data-apk-ad-pending");
+      markAdElementDisplayed(el, divId);
     });
   }
 
   function render(slotKey, el) {
     if (!el || !isAdxMode() || isAdFreePage()) {
+      return;
+    }
+
+    if (el.getAttribute("data-apk-ad-loaded") === "1") {
       return;
     }
 
@@ -966,6 +1119,13 @@
     ensureGptSdk: ensureGptSdk,
     ensureAdxServices: ensureAdxServices,
     registerOopSlot: registerOopSlot,
+    deferSraBatch: deferSraBatch,
+    isSraBatchDeferred: isSraBatchDeferred,
+    markOopDefined: markOopDefined,
+    whenOopReady: whenOopReady,
+    defineAdxSlot: defineAdxSlot,
+    displayAdxElement: displayAdxElement,
+    commitSraBatch: commitSraBatch,
     scanAndClampAllMobileAds: scanAndClampAllMobileAds,
     clampAllAsideAdHosts: clampAllAsideAdHosts,
   };

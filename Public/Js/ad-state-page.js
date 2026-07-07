@@ -1,9 +1,25 @@
 /**
- * state.html 广告加载优化：提升首屏 viewability、预加载 GPT、提前触发列表内竞价。
+ * state.html 广告加载优化：提升首屏 viewability、预加载 GPT、SRA 首屏 batch define。
  */
 (function (w) {
   var LIST_ROOT_MARGIN = "200px";
   var ASIDE_ROOT_MARGIN = "200px";
+  var aboveFoldBatchDone = false;
+
+  function isAdxMode() {
+    return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
+  }
+
+  function isAdFreePage() {
+    return (
+      (w.AD_CONFIG && w.AD_CONFIG.adFree) ||
+      (w.ApkAd && w.ApkAd.isAdFreePage && w.ApkAd.isAdFreePage())
+    );
+  }
+
+  function isStatePage() {
+    return w.document.body && w.document.body.classList.contains("page-state");
+  }
 
   function isLoaded(el) {
     return el && el.getAttribute("data-apk-ad-loaded") === "1";
@@ -36,6 +52,56 @@
     });
   }
 
+  function prepareMidContentAd() {
+    var el = document.getElementById("state_adv_mid");
+    if (!el || typeof returnAdvWord !== "function") {
+      return null;
+    }
+    el.innerHTML = returnAdvWord();
+    return el;
+  }
+
+  function initAboveFoldBatch() {
+    if (
+      aboveFoldBatchDone ||
+      !isStatePage() ||
+      isAdFreePage() ||
+      !isAdxMode() ||
+      !w.ApkAdLoader
+    ) {
+      return;
+    }
+
+    var topEl = w.ApkAdStatePage.prepareTopBanner();
+    var midEl = prepareMidContentAd();
+    if (!topEl) {
+      return;
+    }
+
+    w.ApkAdLoader.ensureGptSdk()
+      .then(function () {
+        return w.ApkAdLoader.whenOopReady();
+      })
+      .then(function () {
+        var tasks = [w.ApkAdLoader.defineAdxSlot("state_adv1", topEl)];
+        if (midEl) {
+          tasks.push(w.ApkAdLoader.defineAdxSlot("state_adv3", midEl));
+        }
+        return Promise.all(tasks);
+      })
+      .then(function () {
+        w.ApkAdLoader.commitSraBatch();
+        w.ApkAdLoader.displayAdxElement(topEl);
+        if (midEl) {
+          w.ApkAdLoader.displayAdxElement(midEl);
+        }
+        aboveFoldBatchDone = true;
+      })
+      .catch(function (err) {
+        console.error("[ApkAd] state above-fold SRA batch failed:", err);
+      });
+  }
+
   w.ApkAdStatePage = {
     preloadGpt: function () {
       if (w.ApkAdLoader && w.ApkAdLoader.ensureGptSdk) {
@@ -61,6 +127,9 @@
     },
 
     initTopBannerWhenVisible: function () {
+      if (aboveFoldBatchDone) {
+        return;
+      }
       var el = this.prepareTopBanner();
       if (!el) {
         return;
@@ -70,11 +139,20 @@
       }
     },
 
+    initAboveFoldBatch: initAboveFoldBatch,
+
+    isAboveFoldBatchDone: function () {
+      return aboveFoldBatchDone;
+    },
+
     observeInListAds: function () {
       observeAll(".state_advClass", loadState_adv3, LIST_ROOT_MARGIN);
     },
 
     observeMidContentAd: function (el) {
+      if (aboveFoldBatchDone) {
+        return;
+      }
       if (!el || typeof returnAdvWord !== "function") {
         return;
       }
@@ -86,4 +164,14 @@
       observeOnce(el, loadState_adv2, ASIDE_ROOT_MARGIN);
     },
   };
+
+  function onDomReady() {
+    initAboveFoldBatch();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onDomReady);
+  } else {
+    onDomReady();
+  }
 })(window);

@@ -90,6 +90,9 @@
     w.ApkAdLoader.ensureGptSdk()
       .then(function () {
         w.googletag = w.googletag || { cmd: [] };
+        var deferred =
+          w.ApkAdLoader.isSraBatchDeferred &&
+          w.ApkAdLoader.isSraBatchDeferred();
         w.googletag.cmd.push(function () {
           Object.keys(defs).forEach(function (key) {
             if (!shouldEnableOop(key, oopConfig)) {
@@ -128,8 +131,13 @@
             w.ApkAdLoader.registerOopSlot(key, slot);
           });
 
-          w.ApkAdLoader.ensureAdxServices();
+          if (!deferred) {
+            w.ApkAdLoader.ensureAdxServices();
+          }
         });
+        if (deferred) {
+          w.ApkAdLoader.markOopDefined();
+        }
       })
       .catch(function (err) {
         console.error("[ApkAd] OOP init failed:", err);

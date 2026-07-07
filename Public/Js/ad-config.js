@@ -85,6 +85,17 @@
     return;
   }
 
+  /** ADX 模式预连接 GPT CDN，缩短 gpt.js 与首屏竞价延迟 */
+  if (w.AD_CONFIG.mode === "adx") {
+    var gptOrigin = "https://securepubads.g.doubleclick.net";
+    ["preconnect", "dns-prefetch"].forEach(function (rel) {
+      var link = document.createElement("link");
+      link.rel = rel;
+      link.href = gptOrigin;
+      document.head.appendChild(link);
+    });
+  }
+
   if (w.AD_CONFIG.mode !== "adx") {
     var client = w.AD_CONFIG.adsense && w.AD_CONFIG.adsense.client;
     if (client) {

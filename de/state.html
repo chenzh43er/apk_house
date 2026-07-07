@@ -54,6 +54,9 @@
     <script src="/Public/Js/ad-oop.js"></script>
     <script src="/Public/Js/ad-state-page.js"></script>
     <script>
+        if (window.ApkAdLoader && window.AD_CONFIG && window.AD_CONFIG.mode === "adx") {
+            ApkAdLoader.deferSraBatch();
+        }
         if (window.ApkAdStatePage) {
             ApkAdStatePage.preloadGpt();
         }
@@ -454,8 +457,10 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
-            ApkAdStatePage.loadTopBanner(document.getElementById('state_adv1'));
-            ApkAdStatePage.observeMidContentAd(document.getElementById('state_adv_mid'));
+            if (!window.AD_CONFIG || window.AD_CONFIG.mode !== "adx") {
+                ApkAdStatePage.loadTopBanner(document.getElementById('state_adv1'));
+                ApkAdStatePage.observeMidContentAd(document.getElementById('state_adv_mid'));
+            }
             requestAnimationFrame(function () {
                 ApkAdStatePage.observeInListAds();
             });
@@ -630,7 +635,10 @@ const lang = getLangFromPath()
 
 <script>
     $(document).ready(function () {
-        if (window.ApkAdStatePage) {
+        if (
+            window.ApkAdStatePage &&
+            (!window.AD_CONFIG || window.AD_CONFIG.mode !== "adx")
+        ) {
             ApkAdStatePage.initTopBannerWhenVisible();
         }
 
