@@ -28,6 +28,9 @@
   }
 
   function isMobileViewport() {
+    if (w.innerWidth > 0 && w.innerWidth <= 768) {
+      return true;
+    }
     return w.matchMedia && w.matchMedia(MOBILE_BREAKPOINT).matches;
   }
 
@@ -218,6 +221,36 @@
     );
   }
 
+  function clampMobileAdNode(node) {
+    if (!node) {
+      return;
+    }
+    var maxW = MOBILE_MAX_AD_WIDTH + "px";
+    var maxVw = "min(" + MOBILE_MAX_AD_WIDTH + "px, 100vw)";
+    node.style.maxWidth = maxW;
+    node.style.width = "100%";
+    node.style.marginLeft = "auto";
+    node.style.marginRight = "auto";
+    node.style.overflow = "hidden";
+    node.style.boxSizing = "border-box";
+
+    node.querySelectorAll(
+      "iframe, div[id^='google_ads_iframe'], div[data-google-query-id]"
+    ).forEach(function (el) {
+      el.style.maxWidth = maxVw;
+      el.style.width = "100%";
+      el.style.marginLeft = "auto";
+      el.style.marginRight = "auto";
+      el.style.display = "block";
+      el.style.boxSizing = "border-box";
+      el.style.overflow = "hidden";
+      if (el.tagName === "IFRAME") {
+        el.setAttribute("width", String(MOBILE_MAX_AD_WIDTH));
+        el.setAttribute("scrolling", "no");
+      }
+    });
+  }
+
   function clampMobileAdFrame(divId) {
     if (!isMobileViewport()) {
       return;
@@ -226,18 +259,53 @@
     if (!node) {
       return;
     }
-    var maxW = MOBILE_MAX_AD_WIDTH + "px";
-    node.style.maxWidth = maxW;
-    node.style.marginLeft = "auto";
-    node.style.marginRight = "auto";
-    node.style.overflow = "hidden";
-    node.querySelectorAll("iframe").forEach(function (frame) {
-      frame.style.maxWidth = maxW;
-      frame.style.width = "100%";
-      frame.style.marginLeft = "auto";
-      frame.style.marginRight = "auto";
-      frame.style.display = "block";
-      frame.style.boxSizing = "border-box";
+    clampMobileAdNode(node);
+    var host = node.closest && node.closest(".adswp, .state_advClass, .divider-wrap");
+    if (host) {
+      host.style.maxWidth = MOBILE_MAX_AD_WIDTH + "px";
+      host.style.width = "100%";
+      host.style.marginLeft = "auto";
+      host.style.marginRight = "auto";
+      host.style.overflow = "hidden";
+      host.style.boxSizing = "border-box";
+    }
+  }
+
+  function scheduleMobileClamp(divId) {
+    clampMobileAdFrame(divId);
+    if (w.requestAnimationFrame) {
+      w.requestAnimationFrame(function () {
+        clampMobileAdFrame(divId);
+      });
+    }
+    [50, 200, 600].forEach(function (ms) {
+      w.setTimeout(function () {
+        clampMobileAdFrame(divId);
+      }, ms);
+    });
+  }
+
+  function observeMobileAdClamp(divId) {
+    if (!isMobileViewport()) {
+      return;
+    }
+    var node = document.getElementById(divId);
+    if (!node || node.getAttribute("data-apk-ad-clamp-obs") === "1") {
+      return;
+    }
+    node.setAttribute("data-apk-ad-clamp-obs", "1");
+    scheduleMobileClamp(divId);
+    if (typeof MutationObserver === "undefined") {
+      return;
+    }
+    var observer = new MutationObserver(function () {
+      scheduleMobileClamp(divId);
+    });
+    observer.observe(node, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "width", "height"],
     });
   }
 
@@ -251,25 +319,29 @@
       "@media " +
       MOBILE_BREAKPOINT +
       "{" +
+      "body.page-form,body.page-result,body.page-list,body.page-teach,body.page-state{" +
+      "overflow-x:clip!important;max-width:100vw;}" +
+      ".contents,.detail-left,.state-content{" +
+      "overflow-x:clip!important;max-width:100%!important;min-width:0!important;}" +
       ".adswp,.state_advClass,.divider-wrap.state_advClass," +
       ".teach-ad.adswp,.state-ad.adswp,.home-hero-ad.adswp," +
       "#adv1,#adv2,#adv3,.ads{" +
       "max-width:" +
       MOBILE_MAX_AD_WIDTH +
-      "px!important;margin-left:auto!important;margin-right:auto!important;" +
+      "px!important;width:100%!important;margin-left:auto!important;margin-right:auto!important;" +
       "overflow:hidden!important;box-sizing:border-box!important;}" +
       ".adswp [id^='apk-ad-'],.state_advClass [id^='apk-ad-']," +
-      "[id^='apk-ad-']{" +
-      "max-width:" +
+      "[id^='apk-ad-'],div[id^='google_ads_iframe_']{" +
+      "max-width:min(" +
       MOBILE_MAX_AD_WIDTH +
-      "px!important;width:100%!important;margin-left:auto!important;" +
+      "px,100vw)!important;width:100%!important;margin-left:auto!important;" +
       "margin-right:auto!important;overflow:hidden!important;box-sizing:border-box!important;}" +
       ".adswp [id^='apk-ad-'] iframe,.state_advClass [id^='apk-ad-'] iframe," +
-      "[id^='apk-ad-'] iframe,.adswp iframe{" +
-      "max-width:" +
+      "[id^='apk-ad-'] iframe,.adswp iframe,div[id^='google_ads_iframe_'] iframe{" +
+      "max-width:min(" +
       MOBILE_MAX_AD_WIDTH +
-      "px!important;width:100%!important;margin-left:auto!important;" +
-      "margin-right:auto!important;box-sizing:border-box!important;}" +
+      "px,100vw)!important;width:100%!important;margin-left:auto!important;" +
+      "margin-right:auto!important;box-sizing:border-box!important;display:block!important;}" +
       "}";
     document.head.appendChild(style);
   }
@@ -321,7 +393,8 @@
     w.googletag.pubads().addEventListener("slotRenderEnded", function (event) {
       var divId = event.slot.getSlotElementId();
       if (!event.isEmpty) {
-        clampMobileAdFrame(divId);
+        scheduleMobileClamp(divId);
+        observeMobileAdClamp(divId);
         return;
       }
       if (!shouldShowEmptyPlaceholder()) {
@@ -454,6 +527,7 @@
       }
 
       w.googletag.display(divId);
+      observeMobileAdClamp(divId);
       el.setAttribute("data-apk-ad-loaded", "1");
       el.removeAttribute("data-apk-ad-pending");
     });
