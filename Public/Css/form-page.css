@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@import url("/Public/Css/ad-mobile.css");
+
 /* Form / result pages — shared layout (matches detail-page design language) */
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) {

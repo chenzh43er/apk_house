@@ -354,6 +354,20 @@
     return normalizeGptSizes((def && def.sizes) || [[300, 250]]);
   }
 
+  function getSlotSizesForViewport(def) {
+    var allSizes = getAllSlotSizes(def);
+    if (isMobileViewport()) {
+      return {
+        requestSizes: filterMobileSizes(allSizes),
+        useMapping: false,
+      };
+    }
+    return {
+      requestSizes: allSizes,
+      useMapping: true,
+    };
+  }
+
   function buildGptSizeMapping(def) {
     if (!w.googletag.sizeMapping) {
       return null;
@@ -397,6 +411,8 @@
       frame.style.maxWidth = containerW + "px";
       if (frame.parentElement) {
         frame.parentElement.style.height = "";
+        frame.parentElement.style.maxWidth = containerW + "px";
+        frame.parentElement.style.overflow = "hidden";
       }
       return;
     }
@@ -414,13 +430,34 @@
     frame.style.marginRight = "auto";
     frame.style.display = "block";
     var parent = frame.parentElement;
-    if (parent) {
-      parent.style.width = containerW + "px";
-      parent.style.maxWidth = "100%";
-      parent.style.marginLeft = "auto";
-      parent.style.marginRight = "auto";
-      parent.style.overflow = "hidden";
-      parent.style.height = Math.ceil(frameH * scale) + "px";
+    var host = frame.closest && frame.closest(".adswp, .apk-ad-clip, .state_advClass");
+    var chain = [];
+    while (parent && parent !== host && chain.length < 4) {
+      chain.push(parent);
+      parent = parent.parentElement;
+    }
+    chain.forEach(function (node) {
+      node.style.maxWidth = containerW + "px";
+      node.style.width = "100%";
+      node.style.overflow = "hidden";
+      node.style.marginLeft = "auto";
+      node.style.marginRight = "auto";
+      node.style.boxSizing = "border-box";
+    });
+    if (frame.parentElement) {
+      frame.parentElement.style.width = containerW + "px";
+      frame.parentElement.style.maxWidth = "100%";
+      frame.parentElement.style.marginLeft = "auto";
+      frame.parentElement.style.marginRight = "auto";
+      frame.parentElement.style.overflow = "hidden";
+      frame.parentElement.style.height = Math.ceil(frameH * scale) + "px";
+    }
+    if (host && isMobileViewport()) {
+      host.style.maxWidth = containerW + "px";
+      host.style.width = "100%";
+      host.style.overflow = "hidden";
+      host.style.marginLeft = "auto";
+      host.style.marginRight = "auto";
     }
   }
 
@@ -914,11 +951,13 @@
       return null;
     }
 
-    var allSizes = getAllSlotSizes(def);
-    var slot = w.googletag.defineSlot(path, allSizes, divId);
-    var mapping = buildGptSizeMapping(def);
-    if (slot && mapping) {
-      slot = slot.defineSizeMapping(mapping);
+    var sizePlan = getSlotSizesForViewport(def);
+    var slot = w.googletag.defineSlot(path, sizePlan.requestSizes, divId);
+    if (slot && sizePlan.useMapping) {
+      var mapping = buildGptSizeMapping(def);
+      if (mapping) {
+        slot = slot.defineSizeMapping(mapping);
+      }
     }
     if (slot) {
       slot = slot.addService(w.googletag.pubads());

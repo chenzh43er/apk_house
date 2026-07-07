@@ -2,7 +2,7 @@
 
 /**
  * 移动端广告越界修复（仅 ≤768px，不影响 PC）
- * 由 ad-loader.js 在移动端动态加载
+ * 由 form-page.css @import 静态加载，避免 JS 异步注入过晚
  */
 
 @media screen and (max-width: 768px) {
@@ -12,6 +12,16 @@
     max-width: 100%;
   }
 
+  body.page-state .wrapper.contents,
+  body.page-state .detail-left,
+  body.page-state .state-content,
+  body.page-city .detail-left,
+  body.page-list .detail-left {
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
   .apk-ad-clip,
   .adswp,
   .state_advClass,
@@ -19,6 +29,9 @@
   .teach-ad.adswp,
   .state-ad.adswp,
   .home-hero-ad.adswp,
+  #state_adv1,
+  #state_adv_mid,
+  #aside_adv,
   #adv1,
   #adv2,
   #adv3,
