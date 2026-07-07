@@ -122,17 +122,41 @@
 
   function displayOopSlots() {
     oopSlots.forEach(function (item) {
+      if (item.autoDisplay === false || item.displayed) {
+        return;
+      }
       w.googletag.display(item.slot);
+      item.displayed = true;
     });
   }
 
-  function registerOopSlot(slotKey, slot) {
+  function displayOopSlotByKey(slotKey) {
+    for (var i = 0; i < oopSlots.length; i++) {
+      var item = oopSlots[i];
+      if (item.slotKey !== slotKey || item.displayed) {
+        continue;
+      }
+      w.googletag.display(item.slot);
+      item.displayed = true;
+      return true;
+    }
+    return false;
+  }
+
+  function registerOopSlot(slotKey, slot, options) {
     if (!slot) {
       return;
     }
-    oopSlots.push({ slotKey: slotKey, slot: slot });
-    if (adxServicesEnabled) {
+    var autoDisplay = !options || options.autoDisplay !== false;
+    oopSlots.push({
+      slotKey: slotKey,
+      slot: slot,
+      autoDisplay: autoDisplay,
+      displayed: false,
+    });
+    if (adxServicesEnabled && autoDisplay) {
       w.googletag.display(slot);
+      oopSlots[oopSlots.length - 1].displayed = true;
     }
   }
 
@@ -1120,6 +1144,7 @@
     ensureGptSdk: ensureGptSdk,
     ensureAdxServices: ensureAdxServices,
     registerOopSlot: registerOopSlot,
+    displayOopSlotByKey: displayOopSlotByKey,
     deferSraBatch: deferSraBatch,
     isSraBatchDeferred: isSraBatchDeferred,
     markOopDefined: markOopDefined,

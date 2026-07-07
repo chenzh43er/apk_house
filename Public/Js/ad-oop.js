@@ -5,7 +5,6 @@
  */
 (function (w) {
   var DEMO_AD_UNIT = "/6355419/Travel/Europe/France/Paris";
-  var interstitialInitialized = false;
 
   function isAdxMode() {
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
@@ -61,7 +60,6 @@
       if (oopConfig.interstitial === false) {
         return false;
       }
-      // 移动端默认关闭全屏穿插：体验差，且 body display:none→block 会误触发 unhideWindow
       if (isMobileViewport() && oopConfig.interstitialOnMobile !== true) {
         return false;
       }
@@ -85,6 +83,10 @@
       return false;
     }
     return document.body.offsetParent !== null || document.body.offsetWidth > 0;
+  }
+
+  function shouldDeferInterstitialDisplay() {
+    return !isBodyVisible();
   }
 
   function defineOopSlot(key, def, oopConfig) {
@@ -116,45 +118,54 @@
     }
 
     slot.addService(w.googletag.pubads());
-    w.ApkAdLoader.registerOopSlot(key, slot);
+
+    var registerOptions = null;
+    if (key === "interstitial" && shouldDeferInterstitialDisplay()) {
+      // 提前 define 注册 interstitial API，避免 banner 收到 vignette 创意时报错
+      registerOptions = { autoDisplay: false };
+    }
+
+    w.ApkAdLoader.registerOopSlot(key, slot, registerOptions);
     return slot;
   }
 
-  function initInterstitialSlot() {
-    if (
-      interstitialInitialized ||
-      !isAdxMode() ||
-      isAdFreePage() ||
-      !w.ApkAdLoader ||
-      !w.ADX_OOP_DEFS
-    ) {
+  function initDeferredInterstitial() {
+    if (!isBodyVisible() || !w.ApkAdLoader) {
       return Promise.resolve();
     }
-
-    var oopConfig = (w.AD_CONFIG.adx && w.AD_CONFIG.adx.oop) || {};
-    if (!shouldEnableOop("interstitial", oopConfig)) {
-      return Promise.resolve();
-    }
-
-    interstitialInitialized = true;
 
     return w.ApkAdLoader.ensureGptSdk().then(function () {
       return new Promise(function (resolve) {
         w.googletag = w.googletag || { cmd: [] };
         w.googletag.cmd.push(function () {
+          if (
+            w.ApkAdLoader.displayOopSlotByKey &&
+            w.ApkAdLoader.displayOopSlotByKey("interstitial")
+          ) {
+            resolve();
+            return;
+          }
+
+          if (!w.ADX_OOP_DEFS || !w.ADX_OOP_DEFS.interstitial) {
+            resolve();
+            return;
+          }
+
+          var oopConfig = (w.AD_CONFIG.adx && w.AD_CONFIG.adx.oop) || {};
+          if (!shouldEnableOop("interstitial", oopConfig)) {
+            resolve();
+            return;
+          }
+
           defineOopSlot("interstitial", w.ADX_OOP_DEFS.interstitial, oopConfig);
+          if (w.ApkAdLoader.displayOopSlotByKey) {
+            w.ApkAdLoader.displayOopSlotByKey("interstitial");
+          }
           resolve();
         });
       });
-    });
-  }
-
-  function initDeferredInterstitial() {
-    if (!isBodyVisible()) {
-      return Promise.resolve();
-    }
-    return initInterstitialSlot().catch(function (err) {
-      console.error("[ApkAd] deferred interstitial init failed:", err);
+    }).catch(function (err) {
+      console.error("[ApkAd] deferred interstitial display failed:", err);
     });
   }
 
@@ -178,17 +189,6 @@
           Object.keys(defs).forEach(function (key) {
             if (!shouldEnableOop(key, oopConfig)) {
               return;
-            }
-            // SRA batch 页 body 初始隐藏：interstitial 须等页面可见后再 define/display
-            if (deferred && key === "interstitial") {
-              return;
-            }
-            // 非 batch 页也等 body 可见再加载 interstitial，避免 vignette API 报错
-            if (key === "interstitial" && !isBodyVisible()) {
-              return;
-            }
-            if (key === "interstitial") {
-              interstitialInitialized = true;
             }
             defineOopSlot(key, defs[key], oopConfig);
           });
