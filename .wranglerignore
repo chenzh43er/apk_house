@@ -1,0 +1,9 @@
+# Wrangler Pages deploy 排除（单文件上限 25 MiB）
+*.log
+scripts/r2-migrate/
+data/
+secrets/
+node_modules/
+.git/
+.agent/
+terminals/

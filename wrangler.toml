@@ -1,5 +1,5 @@
 # Cloudflare Pages 静态站点（Git 集成读取此文件）
-# 账户：Ubeator@foxmail.com（Pages Git 部署不支持 account_id，由 Dashboard 项目绑定）
+# 账户：Ubeator@foxmail.com（CLI 部署用 CLOUDFLARE_ACCOUNT_ID，见 package.json deploy:pages）
 name = "apk-house"
 pages_build_output_dir = "."
 compatibility_date = "2026-03-17"
