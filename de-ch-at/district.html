@@ -1054,9 +1054,6 @@ const lang = getLangFromPath()
 
         document.getElementById('select-state').innerHTML = innerStr;
         document.body.style.display = "block";
-        if (window.ApkAdLoader && window.ApkAdLoader.scanAndClampAllMobileAds) {
-            window.ApkAdLoader.scanAndClampAllMobileAds();
-        }
 
         attachDistrictHouseCounts(display_state, display_city, items).then(function (dataWithCounts) {
             dataWithCounts.forEach(function (item) {

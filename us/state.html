@@ -452,9 +452,6 @@ const lang = getLangFromPath()
         });
 
         document.body.style.display = "block";
-        if (window.ApkAdLoader && window.ApkAdLoader.scanAndClampAllMobileAds) {
-            window.ApkAdLoader.scanAndClampAllMobileAds();
-        }
 
         if (window.ApkAdStatePage) {
             ApkAdStatePage.loadTopBanner(document.getElementById('state_adv1'));

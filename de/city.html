@@ -1026,9 +1026,6 @@ if(lang == "de" || lang == "de-ch-at"){
         });
         document.getElementById('select-state').innerHTML = innerStr;
         document.body.style.display = "block";
-        if (window.ApkAdLoader && window.ApkAdLoader.scanAndClampAllMobileAds) {
-            window.ApkAdLoader.scanAndClampAllMobileAds();
-        }
 
         attachCityHouseCounts(display_state, items).then(function (dataWithCounts) {
             dataWithCounts.forEach(function (item) {

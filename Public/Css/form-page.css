@@ -18,8 +18,6 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .content
     margin-left: auto;
     margin-right: auto;
     padding: 0 16px;
-    overflow-x: hidden;
-    box-sizing: border-box;
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-left {
@@ -41,92 +39,6 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp {
     margin-bottom: 20px;
     text-align: center;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-/* GPT 注入的 iframe 常有固定像素宽高，需限制在容器内（主内容区 state_adv1 等） */
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] iframe,
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp div[id^="google_ads_iframe_"],
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp div[id^="google_ads_iframe_"] iframe {
-    max-width: 100% !important;
-    width: 100% !important;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-}
-
-body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp .apk-ad-clip {
-    width: min(300px, calc(100vw - 32px));
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-    position: relative;
-    box-sizing: border-box;
-}
-
-@media screen and (max-width: 1024px) {
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .wrapper,
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .wrapper.contents,
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-left {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        box-sizing: border-box !important;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    html {
-        overflow-x: hidden !important;
-        width: 100%;
-    }
-
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) {
-        overflow-x: hidden !important;
-        max-width: 100%;
-        width: 100%;
-    }
-
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp {
-        max-width: min(300px, calc(100vw - 32px));
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"],
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp [id^="apk-ad-"] iframe,
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp div[id^="google_ads_iframe_"],
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp div[id^="google_ads_iframe_"] iframe,
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .adswp .apk-ad-clip {
-        max-width: min(300px, calc(100vw - 32px)) !important;
-        width: 100% !important;
-        margin-left: auto;
-        margin-right: auto;
-        overflow: hidden !important;
-    }
-
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .state_advClass,
-    body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .divider-wrap.state_advClass {
-        max-width: min(300px, calc(100vw - 32px));
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        overflow: hidden;
-    }
 }
 
 /* Contact form card */
@@ -298,7 +210,10 @@ body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .detail-
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) #right_adv [id^="apk-ad-"] {
-    border-radius: 12px;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
 }
 
 body:is(.page-form, .page-result, .page-list, .page-teach, .page-state) .statelists-imgli {

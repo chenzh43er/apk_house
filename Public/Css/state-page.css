@@ -9,18 +9,10 @@ body.page-state .state-main.contents {
     margin-bottom: 48px;
     height: auto !important;
     min-height: 0 !important;
-    overflow-x: hidden;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
 }
 
 body.page-state .state-content.detail-left {
     height: auto !important;
-    overflow-x: hidden;
-    max-width: 100%;
-    min-width: 0;
-    width: 100% !important;
 }
 
 /* Page header — eye-catching hero banner */
@@ -312,8 +304,6 @@ body.page-state .state-steps-card .teach-steps-flow {
 body.page-state .state-ad.adswp {
     margin-bottom: 20px;
     min-height: 250px;
-    max-width: 100%;
-    overflow: hidden;
 }
 
 body.page-state .state-ad--mid.adswp {
