@@ -5,6 +5,7 @@
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
   }
   var sdkPromise = null;
+  var gptLoadErrorLogged = false;
   var adxServicesEnabled = false;
   var definedAdxSlots = Object.create(null);
   var oopSlots = [];
@@ -866,25 +867,84 @@
     return divId;
   }
 
-  function loadScript(src, id) {
+  function getGptSdkUrl() {
+    if (w.ApkAd && w.ApkAd.getGptSdkUrl) {
+      return w.ApkAd.getGptSdkUrl();
+    }
+    return "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
+  }
+
+  function getGptSdkUrls() {
+    if (w.ApkAd && w.ApkAd.getGptSdkUrls) {
+      return w.ApkAd.getGptSdkUrls();
+    }
+    return [getGptSdkUrl()];
+  }
+
+  function logGptLoadError(err) {
+    if (gptLoadErrorLogged) {
+      return;
+    }
+    gptLoadErrorLogged = true;
+    console.error("[ApkAd] GPT load failed:", err);
+    console.warn(
+      "[ApkAd] 无法加载 Google Publisher Tag（已尝试 securepubads 与 googletagservices）。" +
+        "常见原因：VPN 未代理 doubleclick.net、广告拦截、浏览器跟踪防护。" +
+        "可单独测试：https://www.googletagservices.com/tag/js/gpt.js"
+    );
+  }
+
+  function loadScript(src, id, retryCount) {
+    retryCount = retryCount || 0;
+
     return new Promise(function (resolve, reject) {
-      if (id && document.getElementById(id)) {
-        resolve();
-        return;
-      }
-      var existing = document.querySelector('script[src="' + src + '"]');
-      if (existing) {
-        if (existing.getAttribute("data-loaded") === "1") {
+      function attachListeners(script) {
+        if (script.getAttribute("data-loaded") === "1") {
           resolve();
           return;
         }
-        existing.addEventListener("load", resolve, { once: true });
-        existing.addEventListener("error", reject, { once: true });
+        if (script.getAttribute("data-failed") === "1") {
+          if (retryCount < 1) {
+            script.remove();
+            loadScript(src, id, retryCount + 1).then(resolve, reject);
+            return;
+          }
+          reject(new Error("Script failed to load: " + src));
+          return;
+        }
+        script.addEventListener(
+          "load",
+          function () {
+            script.setAttribute("data-loaded", "1");
+            resolve();
+          },
+          { once: true }
+        );
+        script.addEventListener(
+          "error",
+          function (ev) {
+            script.setAttribute("data-failed", "1");
+            reject(ev || new Error("Script failed to load: " + src));
+          },
+          { once: true }
+        );
+      }
+
+      var script = null;
+      if (id) {
+        script = document.getElementById(id);
+      }
+      if (!script) {
+        script = document.querySelector('script[src="' + src + '"]');
+      }
+      if (script) {
+        attachListeners(script);
         return;
       }
 
-      var script = document.createElement("script");
+      script = document.createElement("script");
       script.async = true;
+      script.crossOrigin = "anonymous";
       script.src = src;
       if (id) {
         script.id = id;
@@ -893,8 +953,36 @@
         script.setAttribute("data-loaded", "1");
         resolve();
       };
-      script.onerror = reject;
+      script.onerror = function (ev) {
+        script.setAttribute("data-failed", "1");
+        reject(ev || new Error("Script failed to load: " + src));
+      };
       document.head.appendChild(script);
+    });
+  }
+
+  function loadGptSdkWithFallback(urls, id, index) {
+    index = index || 0;
+    if (index >= urls.length) {
+      return Promise.reject(new Error("All GPT SDK URLs failed"));
+    }
+    var src = urls[index];
+    var existing = document.getElementById(id);
+    if (existing && existing.src !== src) {
+      existing.remove();
+    }
+    return loadScript(src, id, 0).catch(function (err) {
+      if (index + 1 < urls.length) {
+        console.warn(
+          "[ApkAd] GPT CDN 不可用 (" + src + ")，尝试备用：" + urls[index + 1]
+        );
+        var failed = document.getElementById(id);
+        if (failed) {
+          failed.remove();
+        }
+        return loadGptSdkWithFallback(urls, id, index + 1);
+      }
+      throw err;
     });
   }
 
@@ -903,9 +991,11 @@
       return sdkPromise;
     }
     w.googletag = w.googletag || { cmd: [] };
-    sdkPromise = loadScript(
-      "https://securepubads.g.doubleclick.net/tag/js/gpt.js",
-      "apk-adx-sdk"
+    sdkPromise = loadGptSdkWithFallback(getGptSdkUrls(), "apk-adx-sdk").catch(
+      function (err) {
+        logGptLoadError(err);
+        return Promise.reject(err);
+      }
     );
     return sdkPromise;
   }
@@ -1159,13 +1249,9 @@
       return;
     }
 
-    ensureGptSdk()
-      .then(function () {
-        renderAdx(slotKey, el);
-      })
-      .catch(function (err) {
-        console.error("[ApkAd] GPT load failed:", err);
-      });
+    ensureGptSdk().then(function () {
+      renderAdx(slotKey, el);
+    });
   }
 
   var asideGuardStarted = false;

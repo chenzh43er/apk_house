@@ -61,6 +61,21 @@
 
   w.ApkAd = w.ApkAd || {};
   w.ApkAd.isAdFreePage = isLangIndexLandingPage;
+  w.ApkAd.getGptSdkUrls = function () {
+    var nc = w.AD_CONFIG.adx && w.AD_CONFIG.adx.networkCode;
+    var urls = [];
+    var primary = "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
+    if (nc) {
+      primary += "?network-code=" + encodeURIComponent(nc);
+    }
+    urls.push(primary);
+    /** Google 官方旧 CDN，库相同；securepubads 被 VPN/网络拦截时可 fallback */
+    urls.push("https://www.googletagservices.com/tag/js/gpt.js");
+    return urls;
+  };
+  w.ApkAd.getGptSdkUrl = function () {
+    return w.ApkAd.getGptSdkUrls()[0];
+  };
   w.AD_CONFIG.adFree = isLangIndexLandingPage();
 
   var params = new URLSearchParams(w.location.search);
@@ -85,15 +100,34 @@
     return;
   }
 
-  /** ADX 模式预连接 GPT CDN，缩短 gpt.js 与首屏竞价延迟 */
+  /** ADX 模式预连接并尽早加载 GPT SDK（与 AdSense 的 adsbygoogle.js 同理） */
   if (w.AD_CONFIG.mode === "adx") {
-    var gptOrigin = "https://securepubads.g.doubleclick.net";
-    ["preconnect", "dns-prefetch"].forEach(function (rel) {
-      var link = document.createElement("link");
-      link.rel = rel;
-      link.href = gptOrigin;
-      document.head.appendChild(link);
+    [
+      "https://securepubads.g.doubleclick.net",
+      "https://www.googletagservices.com",
+    ].forEach(function (gptOrigin) {
+      ["preconnect", "dns-prefetch"].forEach(function (rel) {
+        var link = document.createElement("link");
+        link.rel = rel;
+        link.href = gptOrigin;
+        document.head.appendChild(link);
+      });
     });
+    if (!document.getElementById("apk-adx-sdk")) {
+      w.googletag = w.googletag || { cmd: [] };
+      var gptScript = document.createElement("script");
+      gptScript.async = true;
+      gptScript.id = "apk-adx-sdk";
+      gptScript.src = w.ApkAd.getGptSdkUrl();
+      gptScript.crossOrigin = "anonymous";
+      gptScript.onerror = function () {
+        gptScript.setAttribute("data-failed", "1");
+      };
+      gptScript.onload = function () {
+        gptScript.setAttribute("data-loaded", "1");
+      };
+      document.head.appendChild(gptScript);
+    }
   }
 
   if (w.AD_CONFIG.mode !== "adx") {

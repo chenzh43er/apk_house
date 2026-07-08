@@ -130,18 +130,40 @@ export function sizesToRest(sizes) {
   if (!sizes || !sizes.length) {
     return [];
   }
-  return sizes.map((s) => {
-    if (s === "fluid") {
+  return sizes
+    .filter((s) => s !== "fluid")
+    .map((s) => {
+      if (!Array.isArray(s) || s.length !== 2) {
+        return null;
+      }
       return {
-        size: { width: 1, height: 1, sizeType: "FLUID" },
+        size: { width: s[0], height: s[1], sizeType: "PIXEL" },
         environmentType: "BROWSER",
       };
-    }
-    return {
-      size: { width: s[0], height: s[1], sizeType: "PIXEL" },
-      environmentType: "BROWSER",
-    };
+    })
+    .filter(Boolean);
+}
+
+/** 从 GAM 返回的 adUnitSizes 去掉 FLUID / IGNORED（保留 PIXEL） */
+export function pixelSizesFromRest(adUnitSizes) {
+  if (!adUnitSizes?.length) {
+    return [];
+  }
+  return adUnitSizes.filter((entry) => {
+    const type = entry?.size?.sizeType;
+    return type === "PIXEL" && entry.size.width > 0 && entry.size.height > 0;
   });
+}
+
+export function hasFluidSize(adUnitSizes) {
+  return (adUnitSizes || []).some((entry) => entry?.size?.sizeType === "FLUID");
+}
+
+export async function patchAdUnit(adUnitName, body, updateMask) {
+  const query = updateMask
+    ? `?updateMask=${encodeURIComponent(updateMask)}`
+    : "";
+  return gamRequest("PATCH", `/${adUnitName}${query}`, body);
 }
 
 /** Out-of-Page 广告单元尺寸（GAM REST API SizeType） */

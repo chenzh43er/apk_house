@@ -164,8 +164,8 @@
           resolve();
         });
       });
-    }).catch(function (err) {
-      console.error("[ApkAd] deferred interstitial display failed:", err);
+    }).catch(function () {
+      /* GPT load errors are logged once in ad-loader ensureGptSdk */
     });
   }
 
@@ -201,8 +201,8 @@
           w.ApkAdLoader.markOopDefined();
         }
       })
-      .catch(function (err) {
-        console.error("[ApkAd] OOP init failed:", err);
+      .catch(function () {
+        /* GPT load errors are logged once in ad-loader ensureGptSdk */
       });
   }
 

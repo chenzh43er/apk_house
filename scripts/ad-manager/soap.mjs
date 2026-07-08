@@ -86,10 +86,9 @@ export function sizesToXml(sizes) {
   const blocks = [];
   for (const s of sizes) {
     if (s === "fluid") {
-      blocks.push(
-        "<v:adUnitSizes><v:size><v:width>-1</v:width><v:height>-1</v:height></v:size></v:adUnitSizes>"
-      );
-    } else if (Array.isArray(s) && s.length === 2) {
+      continue;
+    }
+    if (Array.isArray(s) && s.length === 2) {
       blocks.push(
         `<v:adUnitSizes><v:size><v:width>${s[0]}</v:width><v:height>${s[1]}</v:height></v:size></v:adUnitSizes>`
       );

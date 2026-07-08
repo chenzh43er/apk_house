@@ -41,6 +41,8 @@
     "gam:checklist": "node scripts/ad-manager/generate-checklist.mjs",
     "gam:create-units": "node scripts/ad-manager/create-ad-units.mjs",
     "gam:create-units:dry-run": "node scripts/ad-manager/create-ad-units.mjs --dry-run",
+    "gam:strip-fluid": "node scripts/ad-manager/strip-fluid-ad-units.mjs",
+    "gam:strip-fluid:dry-run": "node scripts/ad-manager/strip-fluid-ad-units.mjs --dry-run",
     "gam:create-oop-units": "node scripts/ad-manager/create-oop-units.mjs",
     "gam:create-oop-units:dry-run": "node scripts/ad-manager/create-oop-units.mjs --dry-run",
     "gam:list-units": "node scripts/ad-manager/list-units.mjs",
