@@ -40,7 +40,7 @@ const rateState = {
 
 /** 可信爬虫 User-Agent 白名单（含 Google 广告/搜索/验证爬虫） */
 const GOOD_BOT_UA =
-  /googlebot|adsbot-google|mediapartners-google|google-inspectiontool|storebot-google|googleother|feedfetcher-google|google-safety|bingbot|applebot|duckduckbot|yandexbot|facebookexternalhit|twitterbot|linkedinbot|slackbot|discordbot|whatsapp|telegrambot/i;
+  /googlebot|adsbot-google|mediapartners-google|google-inspectiontool|storebot-google|googleother|feedfetcher-google|google-safety|google-adwords|google-ads|adsquality|bingbot|applebot|duckduckbot|yandexbot|facebookexternalhit|twitterbot|linkedinbot|slackbot|discordbot|whatsapp|telegrambot/i;
 
 /** 已知恶意 / 自动化工具 User-Agent 黑名单 */
 const BAD_BOT_UA =
@@ -172,10 +172,17 @@ function isBadBot(request) {
 function hasSuspiciousSignals(request, pathname) {
   if (!isAdPage(pathname)) return false;
 
+  // 政策/可用性检测常用 HEAD，且常不带 Accept: text/html
+  if (request.method === "HEAD") return false;
+
   const accept = request.headers.get("Accept") || "";
   const ua = getUserAgent(request);
+  const acceptsHtml =
+    accept.includes("text/html") ||
+    accept.includes("application/xhtml+xml") ||
+    accept.includes("*/*");
 
-  if (!accept.includes("text/html") && !accept.includes("application/xhtml+xml")) {
+  if (!acceptsHtml) {
     return true;
   }
   if (/bot|crawl|spider/i.test(ua) && !isGoodBot(request)) {
