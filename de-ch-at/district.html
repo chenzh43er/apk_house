@@ -1022,7 +1022,7 @@ const lang = getLangFromPath()
     applyDistrictPageCopy(lang, display_state, display_city);
     applyStateStepImages(lang, country);
 
-    const {data, error} = await fetchDistrictsByCity(display_city);
+    const {data, error} = await fetchDistrictsByCity(display_state, display_city);
     const items = data || [];
 
     $(document).ready(function () {

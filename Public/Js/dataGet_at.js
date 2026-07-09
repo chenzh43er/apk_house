@@ -124,9 +124,38 @@ export async function fetchCitiesByState(state) {
     }
 }
 
-// 通过 RPC 获取某个城市的所有区
-export async function fetchDistrictsByCity(city) {
+// 通过 state + city 获取某个城市的所有区（同名 city 可能跨州重复，必须带 state）
+export async function fetchDistrictsByCity(state, city) {
+    if (city === undefined) {
+        city = state;
+        state = null;
+    }
+
     try {
+        if (state) {
+            const { data, error } = await supabase
+                .from('house_ger')
+                .select('display_district')
+                .eq('display_state', state)
+                .eq('display_city', city);
+
+            if (error) {
+                throw new Error(`获取区时发生错误: ${error.message}`);
+            }
+
+            const seen = new Set();
+            const unique = [];
+            for (const row of data || []) {
+                const district = row.display_district;
+                if (district && !seen.has(district)) {
+                    seen.add(district);
+                    unique.push({ display_district: district });
+                }
+            }
+            unique.sort((a, b) => a.display_district.localeCompare(b.display_district));
+            return { data: unique, error: null };
+        }
+
         const { data, error } = await supabase.rpc('get_districts_by_city', { input_city: city });
         if (error) {
             throw new Error(`获取区时发生错误: ${error.message}`);
