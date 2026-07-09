@@ -1,4 +1,4 @@
-# Cloudflare Worker：identityinsight.org 统一入口（流量清洗 + 路由 + R2 + Supabase）
+# Cloudflare Worker：identityinsight.org 统一入口（路由 + R2 + Supabase）
 # 账户：Ubeator@foxmail.com
 name = "houseworker"
 main = "worker/worker.js"

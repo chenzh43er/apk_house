@@ -31,6 +31,8 @@ const SKIP_FILES = new Set([
   "wrangler.worker.toml",
   ".wranglerignore",
   ".assetsignore",
+  // Pages 仅托管静态 HTML；identityinsight.org 由 wrangler.worker.toml 的 Zone Worker 处理
+  "_worker.js",
 ]);
 
 function shouldSkip(relPath, isDir) {
