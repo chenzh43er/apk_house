@@ -92,6 +92,21 @@ const tests = [
   { name: "us/form HTML", url: `https://${ZONE_NAME}/us/form` },
   { name: "static CSS", url: `https://${ZONE_NAME}/Public/Css/layout-shell.css` },
   { name: "Googlebot form", url: `https://${ZONE_NAME}/us/form`, ua: "Mozilla/5.0 (compatible; Googlebot/2.1)" },
+  {
+    name: "iPhone Safari",
+    url: `https://${ZONE_NAME}/us/list`,
+    ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1",
+  },
+  {
+    name: "微信 WebView（无 Sec-Fetch）",
+    url: `https://${ZONE_NAME}/us/list`,
+    ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.49 NetType/WIFI Language/zh_CN",
+  },
+  {
+    name: "Android Chrome",
+    url: `https://${ZONE_NAME}/us/list`,
+    ua: "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
+  },
 ];
 for (const t of tests) {
   try {

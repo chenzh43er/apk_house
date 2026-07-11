@@ -292,13 +292,251 @@ body.page-state .state-crumb li[aria-current='page'] {
     }
 }
 
-/* Steps card without inner teach header */
+/* Steps card — header + progress + foot (aligned with teach.html) */
 body.page-state .state-steps-card.teach-steps-card {
-    padding: 24px 24px 24px;
+    padding: 0 24px 24px;
+    overflow: hidden;
+}
+
+body.page-state .state-steps-card .teach-steps-head {
+    margin: 0 -24px 20px;
 }
 
 body.page-state .state-steps-card .teach-steps-flow {
     margin: 0;
+}
+
+/* Progress bar */
+body.page-state .state-steps-progress {
+    margin-bottom: 20px;
+}
+
+body.page-state .state-steps-progress__track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(20, 33, 68, 0.08);
+    overflow: hidden;
+}
+
+body.page-state .state-steps-progress__fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #1173eb 0%, #3d9bff 100%);
+    transition: width 0.35s ease;
+}
+
+body.page-state .state-steps-card[data-current-step="1"] .state-steps-progress__fill {
+    width: 25%;
+}
+
+body.page-state .state-steps-card[data-current-step="2"] .state-steps-progress__fill {
+    width: 50%;
+}
+
+body.page-state .state-steps-card[data-current-step="3"] .state-steps-progress__fill {
+    width: 75%;
+}
+
+body.page-state .state-steps-card[data-current-step="4"] .state-steps-progress__fill {
+    width: 100%;
+}
+
+body.page-state .state-steps-progress__meta {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+body.page-state .state-steps-card .teach-steps-foot {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(20, 33, 68, 0.07);
+}
+
+body.page-state .state-steps-card .teach-steps-foot__btn--static {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+}
+
+body.page-state .state-steps-card .teach-steps-foot__btn--static:hover {
+    transform: none;
+}
+
+/* Completed step */
+body.page-state .state-steps-card .select-done .teach-step__num.prog::before {
+    content: '\2713' !important;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3) !important;
+    font-size: 14px;
+}
+
+body.page-state .state-steps-card .select-done .teach-step__card.step_box {
+    border-color: rgba(16, 185, 129, 0.25);
+    background: linear-gradient(180deg, #fff 0%, #f0fdf8 100%);
+}
+
+body.page-state .state-steps-card .select-done .teach-step__text.h4 {
+    color: #047857;
+    font-weight: 600;
+}
+
+body.page-state .state-steps-card .select-done .teach-step__hint {
+    color: #059669;
+}
+
+/* Current step detail — mobile: inside card; PC: bar below grid */
+body.page-state .state-steps-card .state-steps-current-detail {
+    display: none;
+}
+
+body.page-state .state-steps-card .state-steps-current-detail:empty {
+    display: none !important;
+}
+
+body.page-state .state-steps-card .teach-step__detail {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #5a6478;
+}
+
+body.page-state .state-steps-card .select-now .teach-step__card.step_box {
+    animation: state-step-pulse 3s ease-in-out infinite;
+}
+
+@keyframes state-step-pulse {
+    0%,
+    100% {
+        box-shadow: 0 8px 28px rgba(17, 115, 235, 0.12);
+    }
+
+    50% {
+        box-shadow: 0 8px 32px rgba(17, 115, 235, 0.22);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.page-state .state-steps-card .select-now .teach-step__card.step_box {
+        animation: none;
+    }
+}
+
+/* PC: equal-height step cards, readable vertical layout */
+@media (min-width: 901px) {
+    body.page-state .state-steps-card .teach-steps-flow.select-text {
+        align-items: stretch;
+    }
+
+    body.page-state .state-steps-card .select-box.teach-step {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    body.page-state .state-steps-card .teach-step__card.step_box {
+        flex: 1;
+        flex-direction: column;
+        align-items: stretch;
+        height: 100%;
+        min-height: 168px;
+        padding: 18px 16px 16px;
+    }
+
+    body.page-state .state-steps-card .teach-step__head {
+        position: static;
+        margin-bottom: 14px;
+        min-height: 28px;
+        flex-shrink: 0;
+    }
+
+    body.page-state .state-steps-card .teach-step__pill {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    body.page-state .state-steps-card .teach-step__icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 12px;
+        flex-shrink: 0;
+    }
+
+    body.page-state .state-steps-card .teach-step__icon img.teach-step__img {
+        width: 52px;
+        height: 52px;
+    }
+
+    body.page-state .state-steps-card .teach-step__icon img.teach-step__img--svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    body.page-state .state-steps-card .teach-step__copy {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-top: 0;
+        gap: 5px;
+    }
+
+    body.page-state .state-steps-card .teach-step__text.h4 {
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    body.page-state .state-steps-card .teach-step__hint {
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    body.page-state .state-steps-card .teach-step:not(:last-child)::after {
+        top: 50%;
+        right: -2px;
+        width: 10px;
+        height: 10px;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    body.page-state .state-steps-card .select-now .teach-step__detail {
+        display: none;
+    }
+
+    body.page-state .state-steps-card .state-steps-current-detail {
+        display: block;
+        margin: 18px 0 2px;
+        padding: 16px 20px;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #f8fbff 0%, #f0f6ff 100%);
+        border: 1px solid rgba(17, 115, 235, 0.12);
+        border-left: 4px solid #1173eb;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #3d4659;
+    }
+
+    body.page-state .state-steps-card .teach-steps-foot {
+        margin-top: 18px;
+        padding-top: 18px;
+    }
+
+    body.page-state .state-steps-card .teach-steps-foot__note {
+        font-size: 14px;
+    }
+
+    body.page-state .state-steps-card .teach-steps-foot__btn--static {
+        min-height: 44px;
+        padding: 0 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 900px) {
+    body.page-state .state-steps-card .state-steps-current-detail {
+        display: none;
+    }
 }
 
 body.page-state .state-ad.adswp {
@@ -635,7 +873,12 @@ body.page-state .detail-right {
     }
 
     body.page-state .state-steps-card.teach-steps-card {
-        padding: 16px 16px 18px;
+        padding: 0 16px 18px;
+    }
+
+    body.page-state .state-steps-card .teach-steps-head {
+        margin: 0 -16px 16px;
+        padding: 18px 16px 16px;
     }
 }
 

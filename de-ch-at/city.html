@@ -637,9 +637,22 @@
 
         <div class="adswp state-ad" id="state_adv1">Advertise</div>
 
-        <div class="teach-steps-card state-steps-card">
+        <div class="teach-steps-card state-steps-card" data-current-step="2">
+            <header class="teach-steps-head">
+                <div class="teach-steps-head__body">
+                    <span class="teach-steps-label" id="lang_steps_label">Step 2 of 4</span>
+                    <h2 class="teach-steps-title" id="lang_steps_title"></h2>
+                    <p class="teach-steps-lead" id="lang_steps_lead"></p>
+                </div>
+            </header>
+            <div class="state-steps-progress" id="lang_steps_progress" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="2" aria-labelledby="lang_steps_label">
+                <div class="state-steps-progress__track">
+                    <div class="state-steps-progress__fill"></div>
+                </div>
+                <p class="state-steps-progress__meta" id="lang_steps_progress_meta"></p>
+            </div>
             <ol class="select-text teach-steps teach-steps-flow" role="list">
-                <li class="select-box select-after teach-step" role="listitem">
+                <li class="select-box select-done select-after teach-step" role="listitem">
                     <article class="step_box teach-step__card">
                         <div class="teach-step__head">
                             <span class="prog teach-step__num" aria-hidden="true"></span>
@@ -665,6 +678,7 @@
                         <div class="teach-step__copy">
                             <p class="h4 teach-step__text" id="lang_city"></p>
                             <span class="teach-step__hint" id="lang_city_hint"></span>
+                            <p class="teach-step__detail" id="lang_step_detail"></p>
                         </div>
                     </article>
                 </li>
@@ -697,9 +711,17 @@
                     </article>
                 </li>
             </ol>
+            <p class="state-steps-current-detail" id="lang_step_detail_bar"></p>
+            <div class="teach-steps-foot">
+                <p class="teach-steps-foot__note" id="lang_steps_foot"></p>
+                <span class="teach-steps-foot__btn teach-steps-foot__btn--static" id="state_steps_cta">
+                    <span id="lang_steps_cta"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                </span>
+            </div>
         </div>
 
-        <div class="state-picker-card">
+        <div class="state-picker-card" id="state-picker-card">
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by city</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a city below to see available housing programs.</p>
@@ -862,7 +884,15 @@ if(lang == "de" || lang == "de-ch-at"){
                 headChip1: 'Schritt 2 von 4',
                 headChip2: 'Programme & Angebote',
                 headChip3: 'Ohne Anmeldung',
+                stepsLabel: 'Schritt 2 von 4',
+                stepsTitle: 'Stadt auswählen',
+                stepsLead: 'Wählen Sie eine Stadt, um lokale Programme und Angebote zu sehen.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Städte unten durchsuchen',
+                stepsProgressMeta: 'Noch ca. 1 Min.',
+                stepDetail: 'Wählen Sie eine Stadt, um Angebote in Ihrer Region zu filtern.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Stadt suchen',
                 pickerLead: 'Tippen Sie auf eine Stadt – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -882,14 +912,22 @@ if(lang == "de" || lang == "de-ch-at"){
                 headChip1: 'Step 2 of 4',
                 headChip2: 'Programs & listings',
                 headChip3: 'No sign-up required',
+                stepsLabel: 'Step 2 of 4',
+                stepsTitle: 'Select your city',
+                stepsLead: 'Choose a city to see local housing programs and listings.',
+                stepsFoot: 'Free · No sign-up · About 2 minutes',
+                stepsCta: 'Browse cities below',
+                stepsProgressMeta: '~1 min left',
+                stepDetail: 'Pick a city to filter programs and listings in your area.',
                 stepPill: 'You are here',
+
                 pickerTitle: 'Browse by city',
                 pickerLead: 'Tap a city below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
                 how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
                 stateHint: 'Selected',
-                city: 'Select city', cityHint: 'Pick a city nearby',
+                city: 'Select city', cityHint: 'Tap below — badges show listing counts',
                 district: 'Select district', districtHint: 'Narrow your area',
                 apartment: 'Select apartment', apartmentHint: 'Browse matching listings',
                 title: 'Find affordable housing'
@@ -902,7 +940,15 @@ if(lang == "de" || lang == "de-ch-at"){
                 headChip1: 'Schritt 2 von 4',
                 headChip2: 'Programme & Angebote',
                 headChip3: 'Ohne Anmeldung',
+                stepsLabel: 'Schritt 2 von 4',
+                stepsTitle: 'Gemeinde auswählen',
+                stepsLead: 'Wählen Sie eine Gemeinde, um lokale Programme und Angebote zu sehen.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Gemeinden unten durchsuchen',
+                stepsProgressMeta: 'Noch ca. 1 Min.',
+                stepDetail: 'Wählen Sie eine Gemeinde, um Angebote in Ihrer Region zu filtern.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Gemeinde suchen',
                 pickerLead: 'Tippen Sie auf eine Gemeinde – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -943,6 +989,7 @@ if(lang == "de" || lang == "de-ch-at"){
         set('lang_district_hint', copy.districtHint);
         set('lang_apartment', copy.apartment);
         set('lang_apartment_hint', copy.apartmentHint);
+        applyPickerStepsChrome(2, copy);
         var parent = document.getElementById('state_crumb_parent');
         var parentLink = document.getElementById('state_crumb_parent_link');
         if (parent && stateName) parent.textContent = stateName;
@@ -1025,6 +1072,7 @@ if(lang == "de" || lang == "de-ch-at"){
             }
         });
         document.getElementById('select-state').innerHTML = innerStr;
+        updatePickerStepsCta(lang, 2, (data || []).length);
         document.body.style.display = "block";
 
         attachCityHouseCounts(display_state, items).then(function (dataWithCounts) {

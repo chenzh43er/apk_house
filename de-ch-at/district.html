@@ -640,9 +640,22 @@
 
         <div class="adswp state-ad" id="state_adv1">Advertise</div>
 
-        <div class="teach-steps-card state-steps-card">
+        <div class="teach-steps-card state-steps-card" data-current-step="3">
+            <header class="teach-steps-head">
+                <div class="teach-steps-head__body">
+                    <span class="teach-steps-label" id="lang_steps_label">Step 3 of 4</span>
+                    <h2 class="teach-steps-title" id="lang_steps_title"></h2>
+                    <p class="teach-steps-lead" id="lang_steps_lead"></p>
+                </div>
+            </header>
+            <div class="state-steps-progress" id="lang_steps_progress" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="3" aria-labelledby="lang_steps_label">
+                <div class="state-steps-progress__track">
+                    <div class="state-steps-progress__fill"></div>
+                </div>
+                <p class="state-steps-progress__meta" id="lang_steps_progress_meta"></p>
+            </div>
             <ol class="select-text teach-steps teach-steps-flow" role="list">
-                <li class="select-box select-after teach-step" role="listitem">
+                <li class="select-box select-done select-after teach-step" role="listitem">
                     <article class="step_box teach-step__card">
                         <div class="teach-step__head">
                             <span class="prog teach-step__num" aria-hidden="true"></span>
@@ -656,7 +669,7 @@
                         </div>
                     </article>
                 </li>
-                <li class="select-box select-after teach-step" role="listitem">
+                <li class="select-box select-done select-after teach-step" role="listitem">
                     <article class="step_box teach-step__card">
                         <div class="teach-step__head">
                             <span class="prog teach-step__num" aria-hidden="true"></span>
@@ -682,6 +695,7 @@
                         <div class="teach-step__copy">
                             <p class="h4 teach-step__text" id="lang_district"></p>
                             <span class="teach-step__hint" id="lang_district_hint"></span>
+                            <p class="teach-step__detail" id="lang_step_detail"></p>
                         </div>
                     </article>
                 </li>
@@ -700,9 +714,17 @@
                     </article>
                 </li>
             </ol>
+            <p class="state-steps-current-detail" id="lang_step_detail_bar"></p>
+            <div class="teach-steps-foot">
+                <p class="teach-steps-foot__note" id="lang_steps_foot"></p>
+                <span class="teach-steps-foot__btn teach-steps-foot__btn--static" id="state_steps_cta">
+                    <span id="lang_steps_cta"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                </span>
+            </div>
         </div>
 
-        <div class="state-picker-card">
+        <div class="state-picker-card" id="state-picker-card">
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by district</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a district below to see available listings.</p>
@@ -883,7 +905,15 @@ const lang = getLangFromPath()
                 headChip1: 'Schritt 3 von 4',
                 headChip2: 'Lokale Angebote',
                 headChip3: 'Kostenlos browsen',
+                stepsLabel: 'Schritt 3 von 4',
+                stepsTitle: 'Bezirk auswählen',
+                stepsLead: 'Wählen Sie einen Bezirk, um passende Wohnangebote einzugrenzen.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Bezirke unten durchsuchen',
+                stepsProgressMeta: 'Fast geschafft',
+                stepDetail: 'Grenzen Sie Ihre Suche auf den passenden Stadtteil ein.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Bezirk suchen',
                 pickerLead: 'Tippen Sie auf einen Bezirk – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -903,7 +933,15 @@ const lang = getLangFromPath()
                 headChip1: 'Step 3 of 4',
                 headChip2: 'Local listings',
                 headChip3: 'Free to browse',
+                stepsLabel: 'Step 3 of 4',
+                stepsTitle: 'Select your district',
+                stepsLead: 'Choose a district to browse matching affordable housing listings.',
+                stepsFoot: 'Free · No sign-up · About 2 minutes',
+                stepsCta: 'Browse districts below',
+                stepsProgressMeta: 'Almost there',
+                stepDetail: 'Narrow your search to the neighborhood that fits you best.',
                 stepPill: 'You are here',
+
                 pickerTitle: 'Browse by district',
                 pickerLead: 'Tap a district below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
@@ -911,7 +949,7 @@ const lang = getLangFromPath()
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
                 stateHint: 'Selected',
                 cityHint: 'Selected',
-                district: 'Select district', districtHint: 'Narrow your area',
+                district: 'Select district', districtHint: 'Filter by neighborhood',
                 apartment: 'Select apartment', apartmentHint: 'Browse matching listings',
                 title: 'Find affordable housing'
             },
@@ -923,7 +961,15 @@ const lang = getLangFromPath()
                 headChip1: 'Schritt 3 von 4',
                 headChip2: 'Lokale Angebote',
                 headChip3: 'Kostenlos browsen',
+                stepsLabel: 'Schritt 3 von 4',
+                stepsTitle: 'Quartier auswählen',
+                stepsLead: 'Wählen Sie ein Quartier, um passende Wohnangebote einzugrenzen.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Quartiere unten durchsuchen',
+                stepsProgressMeta: 'Fast geschafft',
+                stepDetail: 'Grenzen Sie Ihre Suche auf die passende Umgebung ein.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Quartier suchen',
                 pickerLead: 'Tippen Sie auf ein Quartier – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -964,6 +1010,7 @@ const lang = getLangFromPath()
         set('lang_district_hint', copy.districtHint);
         set('lang_apartment', copy.apartment);
         set('lang_apartment_hint', copy.apartmentHint);
+        applyPickerStepsChrome(3, copy);
         var stateCrumb = document.getElementById('state_crumb_state');
         var stateLink = document.getElementById('state_crumb_state_link');
         var cityCrumb = document.getElementById('state_crumb_city');
@@ -1053,6 +1100,7 @@ const lang = getLangFromPath()
         });
 
         document.getElementById('select-state').innerHTML = innerStr;
+        updatePickerStepsCta(lang, 3, (data || []).length);
         document.body.style.display = "block";
 
         attachDistrictHouseCounts(display_state, display_city, items).then(function (dataWithCounts) {

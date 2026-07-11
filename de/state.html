@@ -177,7 +177,20 @@
             </div>
         </div>
 
-        <div class="teach-steps-card state-steps-card">
+        <div class="teach-steps-card state-steps-card" data-current-step="1">
+            <header class="teach-steps-head">
+                <div class="teach-steps-head__body">
+                    <span class="teach-steps-label" id="lang_steps_label">Step 1 of 4</span>
+                    <h2 class="teach-steps-title" id="lang_steps_title"></h2>
+                    <p class="teach-steps-lead" id="lang_steps_lead"></p>
+                </div>
+            </header>
+            <div class="state-steps-progress" id="lang_steps_progress" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-labelledby="lang_steps_label">
+                <div class="state-steps-progress__track">
+                    <div class="state-steps-progress__fill"></div>
+                </div>
+                <p class="state-steps-progress__meta" id="lang_steps_progress_meta"></p>
+            </div>
             <ol class="select-text teach-steps teach-steps-flow" role="list">
                 <li class="select-box select-now teach-step" role="listitem">
                     <article class="step_box teach-step__card">
@@ -191,6 +204,7 @@
                         <div class="teach-step__copy">
                             <p class="h4 teach-step__text" id="lang_state"></p>
                             <span class="teach-step__hint" id="lang_state_hint"></span>
+                            <p class="teach-step__detail" id="lang_step_detail"></p>
                         </div>
                     </article>
                 </li>
@@ -237,11 +251,19 @@
                     </article>
                 </li>
             </ol>
+            <p class="state-steps-current-detail" id="lang_step_detail_bar"></p>
+            <div class="teach-steps-foot">
+                <p class="teach-steps-foot__note" id="lang_steps_foot"></p>
+                <span class="teach-steps-foot__btn teach-steps-foot__btn--static" id="state_steps_cta">
+                    <span id="lang_steps_cta"></span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                </span>
+            </div>
         </div>
 
         <div class="adswp state-ad state-ad--mid" id="state_adv_mid"></div>
 
-        <div class="state-picker-card">
+        <div class="state-picker-card" id="state-picker-card">
             <div class="state-picker-head">
                 <h2 class="state-picker-title" id="state_picker_title">Browse by state</h2>
                 <p class="state-picker-lead" id="state_picker_lead">Tap a state below to see available housing programs.</p>
@@ -471,6 +493,7 @@ const lang = getLangFromPath()
                 updatePickerTileCount(link, item.house_count, lang);
             });
             applyPickerCountLegend(lang, sumHouseCounts(dataWithCounts));
+            updatePickerStepsCta(lang, 1, (data || []).length);
         });
         });
     });
@@ -513,7 +536,12 @@ const lang = getLangFromPath()
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Bundesland auswählen',
                 stepsLead: 'Wählen Sie ein Bundesland, um mit Städten und Angeboten fortzufahren.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Bundesländer unten durchsuchen',
+                stepsProgressMeta: 'Noch ca. 2 Min.',
+                stepDetail: 'Wir zeigen Ihnen Programme und Angebote für bezahlbaren Wohnraum in Ihrem Bundesland.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Bundesland suchen',
                 pickerLead: 'Tippen Sie auf ein Bundesland – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -536,16 +564,21 @@ const lang = getLangFromPath()
                 stepsLabel: 'Step 1 of 4',
                 stepsTitle: 'Select your state',
                 stepsLead: 'Choose a state to continue to cities and listings.',
+                stepsFoot: 'Free · No sign-up · About 2 minutes',
+                stepsCta: 'Browse states below',
+                stepsProgressMeta: '~2 min left',
+                stepDetail: 'We\'ll show subsidized housing programs and listings available in your state.',
                 stepPill: 'You are here',
+
                 pickerTitle: 'Browse by state',
                 pickerLead: 'Tap a state below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
                 how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
-                state: 'Select state', stateHint: 'Choose your region',
-                city: 'Select city', cityHint: 'Pick a city nearby',
-                district: 'Select district', districtHint: 'Narrow your area',
-                apartment: 'Select apartment', apartmentHint: 'Browse matching listings',
+                state: 'Select state', stateHint: 'Programs from $300/mo',
+                city: 'Select city', cityHint: 'Tap below — badges show listing counts',
+                district: 'Select district', districtHint: 'Filter by neighborhood',
+                apartment: 'Select apartment', apartmentHint: 'Section 8 · LIHTC · Public housing',
                 title: 'Find affordable housing'
             },
             'de-ch-at': {
@@ -559,7 +592,12 @@ const lang = getLangFromPath()
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Kanton auswählen',
                 stepsLead: 'Wählen Sie einen Kanton, um mit Gemeinden und Angeboten fortzufahren.',
+                stepsFoot: 'Kostenlos · Ohne Anmeldung · Ca. 2 Minuten',
+                stepsCta: 'Kantone unten durchsuchen',
+                stepsProgressMeta: 'Noch ca. 2 Min.',
+                stepDetail: 'Wir zeigen Ihnen Programme und Angebote für bezahlbaren Wohnraum in Ihrem Kanton.',
                 stepPill: 'Aktueller Schritt',
+
                 pickerTitle: 'Nach Kanton suchen',
                 pickerLead: 'Tippen Sie auf einen Kanton – die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
@@ -600,6 +638,7 @@ const lang = getLangFromPath()
         set('lang_district_hint', copy.districtHint);
         set('lang_apartment', copy.apartment);
         set('lang_apartment_hint', copy.apartmentHint);
+        applyPickerStepsChrome(1, copy);
     }
 
     function selectCountry(el) {

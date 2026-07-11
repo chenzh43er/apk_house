@@ -533,3 +533,53 @@ function applyPickerCountLegend(lang, count) {
     el.innerHTML = "";
     el.setAttribute("aria-hidden", "true");
 }
+
+/** Picker steps card: header, progress bar, foot CTA (state/city/district pages). */
+function applyPickerStepsChrome(step, copy) {
+    if (!copy) return;
+    var stepNum = step || 1;
+    var set = function (id, text) {
+        var el = document.getElementById(id);
+        if (el && text != null) el.textContent = text;
+    };
+    set("lang_steps_label", copy.stepsLabel);
+    set("lang_steps_title", copy.stepsTitle);
+    set("lang_steps_lead", copy.stepsLead);
+    set("lang_steps_foot", copy.stepsFoot);
+    set("lang_steps_cta", copy.stepsCta);
+    set("lang_steps_progress_meta", copy.stepsProgressMeta);
+    set("lang_step_detail", copy.stepDetail);
+    set("lang_step_detail_bar", copy.stepDetail);
+
+    var card = document.querySelector(".state-steps-card");
+    if (card) card.setAttribute("data-current-step", String(stepNum));
+
+    var progress = document.getElementById("lang_steps_progress");
+    if (progress) progress.setAttribute("aria-valuenow", String(stepNum));
+}
+
+/** After picker data loads, refresh foot CTA with item count. */
+function updatePickerStepsCta(lang, step, itemCount) {
+    var el = document.getElementById("lang_steps_cta");
+    if (!el || !itemCount) return;
+
+    var typeByStep = {
+        1: { us: "states", de: "Bundesländer", "de-ch-at": "Kantone" },
+        2: { us: "cities", de: "Städte", "de-ch-at": "Gemeinden" },
+        3: { us: "districts", de: "Bezirke", "de-ch-at": "Quartiere" },
+    };
+    var browseByStep = {
+        1: { us: "Browse", de: "Durchsuchen:", "de-ch-at": "Durchsuchen:" },
+        2: { us: "Browse", de: "Durchsuchen:", "de-ch-at": "Durchsuchen:" },
+        3: { us: "Browse", de: "Durchsuchen:", "de-ch-at": "Durchsuchen:" },
+    };
+    var belowByLang = { us: "below", de: "unten", "de-ch-at": "unten" };
+
+    var types = typeByStep[step] || typeByStep[1];
+    var browse = browseByStep[step] || browseByStep[1];
+    var typeLabel = (types[lang] || types.us);
+    var browseLabel = (browse[lang] || browse.us);
+    var belowLabel = belowByLang[lang] || belowByLang.us;
+
+    el.textContent = browseLabel + " " + itemCount + " " + typeLabel + " " + belowLabel;
+}

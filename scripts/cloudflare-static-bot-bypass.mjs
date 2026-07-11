@@ -17,19 +17,26 @@
  */
 
 import fs from "node:fs";
+import {
+  BROWSER_NAV_EXPR,
+  isMobileRequestExpr,
+  realUserBypassExpr,
+} from "./cloudflare-mobile-expr.mjs";
 
 const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
 const API = "https://api.cloudflare.com/client/v4";
 
-/** 真实浏览器打开页面（含 iOS Safari / Android Chrome） */
-const BROWSER_NAV_BYPASS =
-  '(http.sec_fetch_mode eq "navigate" and http.sec_fetch_dest eq "document")';
+/** 真实浏览器打开页面（含 iOS Safari / Android Chrome / 应用内 WebView） */
+const BROWSER_NAV_BYPASS = BROWSER_NAV_EXPR;
+
+/** 移动端 UA / Client Hints（弥补缺 Sec-Fetch 的应用内浏览器） */
+const MOBILE_BYPASS = isMobileRequestExpr();
 
 /** Pro WAF 仅支持 eq / contains（不支持 starts_with / matches） */
 const BYPASS_EXPR = [
   "cf.client.bot",
-  BROWSER_NAV_BYPASS,
+  realUserBypassExpr(),
   '(http.request.uri.path eq "/ads.txt")',
   '(http.request.uri.path eq "/robots.txt")',
   '(http.request.uri.path contains "/Public/")',
@@ -250,6 +257,21 @@ async function verifyUrls() {
       expect: (s) => s === 200 || s === 301 || s === 302,
     },
     {
+      name: "微信 WebView（无 Sec-Fetch）",
+      url: `https://${ZONE_NAME}/us/list`,
+      ua: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.49(0x18003137) NetType/WIFI Language/zh_CN",
+      expect: (s) => s === 200 || s === 301 || s === 302,
+    },
+    {
+      name: "Android Client Hints",
+      url: `https://${ZONE_NAME}/us/list`,
+      ua: "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36",
+      headers: {
+        "Sec-CH-UA-Mobile": "?1",
+      },
+      expect: (s) => s === 200 || s === 301 || s === 302,
+    },
+    {
       name: "普通用户 HTML（可能仍 Challenge）",
       url: `https://${ZONE_NAME}/us/list`,
       ua: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/136.0.0.0",
@@ -322,7 +344,7 @@ async function main() {
   await upsertPhaseRule(zoneId, "http_config_settings", {
     ref: "browser_nav_low_security",
     description: "Lower security for real browser page loads (mobile/desktop Safari/Chrome)",
-    expression: BROWSER_NAV_BYPASS,
+    expression: `(${BROWSER_NAV_BYPASS} or ${MOBILE_BYPASS})`,
     action: "set_config",
     action_parameters: {
       bic: false,

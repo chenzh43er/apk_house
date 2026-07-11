@@ -8,8 +8,9 @@
  * Enterprise（--enterprise）：
  *   规则 2：$cf.anonymizer + $cf.open_proxies → Managed Challenge
  *
- * 注意：「非移动端 UA → Challenge」会误杀全部桌面用户，已默认关闭。
- * 若确需启用：--challenge-non-mobile（不推荐）
+ * 注意：「非移动端 UA → Challenge」会误杀桌面用户，且旧版仅匹配 Mobile/Android/iPhone，
+ * 会把 iPad、应用内 WebView 等移动端当成非移动端。已默认关闭。
+ * 若确需启用：--challenge-non-mobile（不推荐，已改用扩展 UA + Client Hints 识别）
  *
  * 所需权限：Zone WAF Edit + Zone Read
  *
@@ -20,6 +21,10 @@
  */
 
 import fs from "node:fs";
+import {
+  isLegacyNonMobileChallengeRule,
+  nonMobileChallengeExpr,
+} from "./cloudflare-mobile-expr.mjs";
 
 const ZONE_NAME = "identityinsight.org";
 const dryRun = process.argv.includes("--dry-run");
@@ -54,12 +59,7 @@ const RULE_PRO_SCRIPT_UA = {
 const RULE_NON_MOBILE = {
   ref: "challenge_non_mobile_ua",
   description: "Challenge non-mobile User-Agent",
-  expression: [
-    '(not http.user_agent contains "Mobile")',
-    'and (not http.user_agent contains "Android")',
-    'and (not http.user_agent contains "iPhone")',
-    "and (not cf.client.bot)",
-  ].join(" "),
+  expression: nonMobileChallengeExpr(),
   action: "managed_challenge",
 };
 
@@ -147,7 +147,7 @@ async function getZoneId() {
 function pruneIncompatibleRules(rules) {
   const keepRefs = new Set(buildTrafficRules().map((r) => r.ref));
   return rules.filter((r) => {
-    if (r.ref === "challenge_non_mobile_ua" && !challengeNonMobile) {
+    if (isLegacyNonMobileChallengeRule(r) && !challengeNonMobile) {
       console.log(`→ 移除误杀规则: ${r.description}`);
       return false;
     }

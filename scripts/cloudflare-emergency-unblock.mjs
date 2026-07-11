@@ -13,6 +13,7 @@
  */
 
 import fs from "node:fs";
+import { isLegacyNonMobileChallengeRule } from "./cloudflare-mobile-expr.mjs";
 
 const ZONE_NAME = "identityinsight.org";
 const API = "https://api.cloudflare.com/client/v4";
@@ -80,12 +81,7 @@ async function main() {
 
   const ruleset = await cf(`/zones/${zoneId}/rulesets/phases/http_request_firewall_custom/entrypoint`);
   const rules = (ruleset.rules || []).filter((r) => {
-    const drop =
-      r.ref === "challenge_non_mobile_ua" ||
-      r.description === "Challenge non-mobile User-Agent" ||
-      (r.action === "managed_challenge" &&
-        r.expression?.includes("not http.user_agent contains") &&
-        r.expression?.includes("Mobile"));
+    const drop = isLegacyNonMobileChallengeRule(r);
     if (drop) console.log(`→ 删除规则: ${r.description}`);
     return !drop;
   });
