@@ -481,7 +481,7 @@
   }
 
   function clampMobileAdNode(node) {
-    if (!node) {
+    if (!node || isInsideGptOopAnchor(node)) {
       return;
     }
     var containerW = getMobileAdContainerWidth();
@@ -519,7 +519,7 @@
       return;
     }
     var node = document.getElementById(divId);
-    if (!node) {
+    if (!node || isInsideGptOopAnchor(node)) {
       return;
     }
     clampMobileAdNode(node);
@@ -540,6 +540,17 @@
   var pendingClampIds = Object.create(null);
   var bodyObserverStarted = false;
 
+  function isInsideGptOopAnchor(el) {
+    if (!el || !el.closest) {
+      return false;
+    }
+    return !!(
+      el.closest("#google_bottom_anchor") ||
+      el.closest("#google_top_anchor") ||
+      el.closest("[data-anchor-status]")
+    );
+  }
+
   function applyMobileClampAll() {
     var containerW = getMobileAdContainerWidth();
     var hostMax = containerW + "px";
@@ -548,6 +559,9 @@
         ".adswp, .state_advClass, .divider-wrap.state_advClass, .apk-ad-clip"
       )
       .forEach(function (host) {
+        if (isInsideGptOopAnchor(host)) {
+          return;
+        }
         host.style.maxWidth = hostMax;
         host.style.width = "100%";
         host.style.marginLeft = "auto";
@@ -557,9 +571,12 @@
       });
     document
       .querySelectorAll(
-        "div[id^='google_ads_iframe_'], .adswp iframe, .state_advClass iframe"
+        ".adswp div[id^='google_ads_iframe_'], .state_advClass div[id^='google_ads_iframe_'], .apk-ad-clip div[id^='google_ads_iframe_'], .adswp iframe, .state_advClass iframe, .apk-ad-clip iframe"
       )
       .forEach(function (el) {
+        if (isInsideGptOopAnchor(el)) {
+          return;
+        }
         if (el.tagName === "IFRAME") {
           scaleWideIframe(el, containerW);
           return;
@@ -653,6 +670,10 @@
         for (var j = 0; j < nodes.length; j++) {
           var n = nodes[j];
           if (n.nodeType !== 1) {
+            continue;
+          }
+          // 锚定 OOP 由 GPT 自管，不要触发 banner 裁剪
+          if (isInsideGptOopAnchor(n) || n.id === "google_bottom_anchor" || n.id === "google_top_anchor") {
             continue;
           }
           if (

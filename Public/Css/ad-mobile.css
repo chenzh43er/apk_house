@@ -3,6 +3,9 @@
 /**
  * 移动端广告越界修复（仅 ≤768px，不影响 PC）
  * 由 form-page.css @import 静态加载，避免 JS 异步注入过晚
+ *
+ * 注意：不要用全局 [id^=google_ads_iframe_] 选择器——会误伤 GPT
+ * 底部锚定 (#google_bottom_anchor)，导致锚定条被压成 300px 并像被关掉。
  */
 
 @media screen and (max-width: 768px) {
@@ -44,11 +47,16 @@
     box-sizing: border-box !important;
   }
 
+  /* 仅裁剪页面内 banner 槽位，绝不碰 GPT 底部/顶部锚定 OOP */
   .adswp [id^="apk-ad-"],
   .state_advClass [id^="apk-ad-"],
-  [id^="apk-ad-"],
-  div[id^="google_ads_iframe_"],
-  div[data-google-query-id] {
+  .apk-ad-clip [id^="apk-ad-"],
+  .adswp div[id^="google_ads_iframe_"],
+  .state_advClass div[id^="google_ads_iframe_"],
+  .apk-ad-clip div[id^="google_ads_iframe_"],
+  .adswp div[data-google-query-id],
+  .state_advClass div[data-google-query-id],
+  .apk-ad-clip div[data-google-query-id] {
     max-width: min(300px, calc(100vw - 32px)) !important;
     width: min(300px, calc(100vw - 32px)) !important;
     min-width: 0 !important;
@@ -60,8 +68,8 @@
 
   .adswp iframe,
   .state_advClass iframe,
-  [id^="apk-ad-"] iframe,
-  div[id^="google_ads_iframe_"] iframe {
+  .apk-ad-clip iframe,
+  [id^="apk-ad-"] iframe {
     max-width: min(300px, calc(100vw - 32px)) !important;
     width: min(300px, calc(100vw - 32px)) !important;
     min-width: 0 !important;
@@ -71,6 +79,31 @@
     box-sizing: border-box !important;
   }
 
-  /* 不约束 #google_bottom_anchor：GPT OOP 自管布局，裁剪会干扰 Active View 测量 */
-}
+  /**
+   * 保护 GPT 锚定条：禁止被广告裁剪规则压成 300px。
+   * 否则正式手机上锚定会出现后立刻变形/像被关掉。
+   */
+  #google_bottom_anchor,
+  #google_top_anchor,
+  div[data-anchor-status] {
+    max-width: none !important;
+    width: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
 
+  #google_bottom_anchor iframe,
+  #google_top_anchor iframe,
+  #google_bottom_anchor div[id^="google_ads_iframe_"],
+  #google_top_anchor div[id^="google_ads_iframe_"],
+  #google_bottom_anchor div[data-google-query-id],
+  #google_top_anchor div[data-google-query-id] {
+    max-width: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+}
