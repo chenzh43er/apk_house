@@ -42,7 +42,7 @@
           content="Identity Insight helps you find affordable housing programs and rental resources near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css">
-    <link rel="stylesheet" href="/Public/Css/form-page.css">
+    <link rel="stylesheet" href="/Public/Css/form-page.css?v=20250718i">
     <link rel="stylesheet" href="/Public/Css/teach-page.css">
     <link rel="stylesheet" href="/Public/Css/state-page.css">
     <script src="./Public/Js/utlParam.js"></script>
@@ -50,9 +50,9 @@
     <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
-    <script src="/Public/Js/ad-loader.js?v=20250718e"></script>
+    <script src="/Public/Js/ad-loader.js?v=20250718g"></script>
     <script src="/Public/Js/ad-runtime.js"></script>
-    <script src="/Public/Js/ad-oop.js?v=20250718d"></script>
+    <script src="/Public/Js/ad-oop.js?v=20250718i"></script>
     <script src="/Public/Js/ad-state-page.js?v=20250718"></script>
     <script>
         if (window.ApkAdStatePage) {
@@ -477,11 +477,12 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
+            // 先通知 OOP（锚定），再 display banner，避免 SRA 首包时锚定尚未 display
+            ApkAdStatePage.notifyBodyVisible();
             ApkAdStatePage.loadTopBanner(document.getElementById("state_adv1"));
             ApkAdStatePage.observeMidContentAd(
                 document.getElementById("state_adv_mid")
             );
-            ApkAdStatePage.notifyBodyVisible();
             requestAnimationFrame(function () {
                 ApkAdStatePage.observeInListAds();
             });

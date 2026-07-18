@@ -35,7 +35,8 @@
       productionOrigin: "https://identityinsight.org",
       /**
        * GPT Out-of-Page（仅 ADX，且非 ad-free 页面）
-       * - bottomAnchor：底部锚定（保留）
+       * - bottomAnchor：底部锚定（GPT OOP；竖屏且宽 320–1000px）
+       * - bottomAnchorDesktopFallback：宽屏 PC 用不了 OOP 时，用底部 sticky banner 兜底
        * - 锚定必须等 body 可见后才 define+display（防 SRA 过早请求 / display:none 计印象）
        * - bottomAnchorMobileDelayMs：body 可见后手机再延迟毫秒数（默认 1200；与上面两问题无关时可调）
        * - interstitial：全屏穿插；移动端默认关闭（见 ad-oop.js），避免每次进页都弹
@@ -43,6 +44,7 @@
        */
       oop: {
         bottomAnchor: true,
+        bottomAnchorDesktopFallback: true,
         bottomAnchorMobileDelayMs: 1200,
         interstitial: true,
         interstitialOnMobile: false,

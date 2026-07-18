@@ -59,6 +59,16 @@
     post_adv1: { unit: "house_post/post_adv1", sizes: rectSizes },
     post_adv2: bannerSlot("house_post/post_adv2"),
     post_adv3: bannerSlot("house_post/post_adv3"),
+
+    /**
+     * 宽屏 PC 底部 sticky（GPT BOTTOM_ANCHOR 仅支持宽 ≤1000px 竖屏）。
+     * GAM 建「展示广告」单元（非 Out-of-page），尺寸含 728×90 / 970×90。
+     */
+    desktop_bottom_sticky: {
+      unit: "house_site/desktop_bottom_sticky",
+      sizes: [[728, 90], [970, 90], [970, 250]],
+      mobileSizes: [[300, 250], [320, 50]],
+    },
   };
 
   /** Out-of-Page：锚定 / 穿插（GAM 需建 Out-of-page 类型广告单元） */

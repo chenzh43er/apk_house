@@ -6,12 +6,14 @@
  * - 本地 / adtest=demo：可提前 define、body 可见后再 display（方便验证）
  *
  * GPT 限制：BOTTOM_ANCHOR 仅在顶层窗口 + 竖屏 + 宽度约 320–1000px 时
- * defineOutOfPageSlot 才会成功；常见 PC 最大化窗口会返回 null。
+ * defineOutOfPageSlot 才会成功；宽屏 PC 改走 desktop sticky banner 兜底。
  */
 (function (w) {
   var DEMO_AD_UNIT = "/6355419/Travel";
+  var DESKTOP_STICKY_SLOT = "desktop_bottom_sticky";
   var bottomAnchorDefined = false;
   var bottomAnchorDisplayed = false;
+  var desktopStickyShown = false;
   var bottomAnchorTimer = null;
   var bodyWatchStarted = false;
   var resizeWatchStarted = false;
@@ -129,6 +131,96 @@
     return width >= 320 && width <= 1000 && portrait;
   }
 
+  function getAnchorTestTip() {
+    var base =
+      w.location.origin +
+      w.location.pathname +
+      "?adtest=demo#gamBottomAnchorDemo";
+    return (
+      "GPT 官方 BOTTOM_ANCHOR 仅：顶层 + 竖屏 + 宽 320–1000px。" +
+      "宽屏 PC 会自动用底部 sticky banner 兜底。" +
+      "测官方 OOP：DevTools 设备模式后刷新，或：" +
+      base
+    );
+  }
+
+  function shouldUseDesktopStickyFallback() {
+    var oopConfig = getOopConfig();
+    if (oopConfig.bottomAnchor === false) {
+      return false;
+    }
+    if (oopConfig.bottomAnchorDesktopFallback === false) {
+      return false;
+    }
+    if (bottomAnchorDisplayed || desktopStickyShown) {
+      return false;
+    }
+    // 仅宽屏 PC：窄屏留给 GPT OOP（含横屏手机也不挂 sticky，避免叠两层）
+    return !isAnchorViewportSupported() && (w.innerWidth || 0) > 1000;
+  }
+
+  function destroyDesktopSticky() {
+    var host = document.getElementById("apk-desktop-bottom-sticky");
+    if (host && host.parentNode) {
+      host.parentNode.removeChild(host);
+    }
+    if (document.documentElement) {
+      document.documentElement.classList.remove("apk-has-desktop-sticky");
+    }
+    desktopStickyShown = false;
+  }
+
+  function tryDesktopBottomSticky() {
+    if (!shouldUseDesktopStickyFallback()) {
+      return false;
+    }
+    if (!isBodyVisible() || !w.ApkAdLoader || !w.ApkAdLoader.render) {
+      return false;
+    }
+    if (!w.ADX_SLOT_DEFS || !w.ADX_SLOT_DEFS[DESKTOP_STICKY_SLOT]) {
+      warnAnchor("desktop_bottom_sticky slot missing in ADX_SLOT_DEFS");
+      return false;
+    }
+
+    destroyDesktopSticky();
+
+    var host = document.createElement("div");
+    host.id = "apk-desktop-bottom-sticky";
+    host.className = "apk-desktop-bottom-sticky";
+    host.setAttribute("role", "complementary");
+    host.setAttribute("aria-label", "Advertisement");
+
+    var closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "apk-desktop-bottom-sticky__close";
+    closeBtn.setAttribute("aria-label", "Close ad");
+    closeBtn.innerHTML = "&times;";
+    closeBtn.addEventListener("click", function () {
+      destroyDesktopSticky();
+    });
+
+    var adHost = document.createElement("div");
+    adHost.id = "apk-desktop-bottom-sticky-ad";
+    adHost.className = "apk-desktop-bottom-sticky__ad";
+
+    host.appendChild(closeBtn);
+    host.appendChild(adHost);
+    document.body.appendChild(host);
+    if (document.documentElement) {
+      document.documentElement.classList.add("apk-has-desktop-sticky");
+    }
+
+    desktopStickyShown = true;
+    w.ApkAdLoader.render(DESKTOP_STICKY_SLOT, adHost);
+    logAnchor("desktop sticky fallback displayed", {
+      width: w.innerWidth,
+      height: w.innerHeight,
+      slot: DESKTOP_STICKY_SLOT,
+    });
+    watchAnchorViewport();
+    return true;
+  }
+
   function shouldDeferInterstitialDisplay() {
     return !isBodyVisible();
   }
@@ -189,12 +281,19 @@
           path: path,
           width: w.innerWidth,
           height: w.innerHeight,
-          tip:
-            "需要竖屏且宽度约 320–1000px。PC 请开 DevTools 设备模式后【刷新】，或把窗口缩到 ≤1000px。" +
-            "也可试 #gamBottomAnchorDemo",
+          tip: getAnchorTestTip(),
         }
       );
       return null;
+    }
+
+    // Google 官方 Travel demo 锚定需 test=anchor 才会出创意
+    if (
+      isDemoMode() &&
+      def.format === "BOTTOM_ANCHOR" &&
+      typeof slot.setTargeting === "function"
+    ) {
+      slot.setTargeting("test", "anchor");
     }
 
     if (def.format === "INTERSTITIAL" && slot.setConfig) {
@@ -223,8 +322,98 @@
     return slot;
   }
 
+  function centerBottomAnchorCreative() {
+    var root = document.getElementById("google_bottom_anchor");
+    if (!root) {
+      return false;
+    }
+
+    function centerEl(el) {
+      if (!el || !el.getBoundingClientRect) {
+        return;
+      }
+      var width = el.offsetWidth || 0;
+      if (width <= 0) {
+        return;
+      }
+      var viewW = w.innerWidth || document.documentElement.clientWidth || 0;
+      if (viewW > 0 && width >= viewW - 4) {
+        return;
+      }
+      var cs = w.getComputedStyle(el);
+      var pos = cs.position;
+      el.style.setProperty("float", "none", "important");
+      if (pos === "absolute" || pos === "fixed") {
+        el.style.setProperty(
+          "left",
+          "calc(50% - " + width / 2 + "px)",
+          "important"
+        );
+        el.style.setProperty("right", "auto", "important");
+        el.style.setProperty("margin-left", "0", "important");
+        el.style.setProperty("margin-right", "0", "important");
+      } else {
+        el.style.setProperty("display", "block", "important");
+        el.style.setProperty("margin-left", "auto", "important");
+        el.style.setProperty("margin-right", "auto", "important");
+      }
+    }
+
+    var kids = root.children;
+    for (var i = 0; i < kids.length; i++) {
+      centerEl(kids[i]);
+    }
+
+    var nodes = root.querySelectorAll(
+      "iframe, div[id^='google_ads_iframe_'], div[data-google-query-id]"
+    );
+    for (var j = 0; j < nodes.length; j++) {
+      centerEl(nodes[j]);
+    }
+    return nodes.length > 0 || kids.length > 0;
+  }
+
+  var anchorCenterWatchStarted = false;
+  function watchAndCenterBottomAnchor() {
+    centerBottomAnchorCreative();
+    [200, 600, 1200, 2500].forEach(function (ms) {
+      w.setTimeout(centerBottomAnchorCreative, ms);
+    });
+    if (anchorCenterWatchStarted || typeof MutationObserver === "undefined") {
+      return;
+    }
+    anchorCenterWatchStarted = true;
+    var obs = new MutationObserver(function () {
+      centerBottomAnchorCreative();
+    });
+    function attach() {
+      var root = document.getElementById("google_bottom_anchor");
+      if (!root) {
+        return false;
+      }
+      obs.observe(root, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["style", "class"],
+      });
+      centerBottomAnchorCreative();
+      return true;
+    }
+    if (!attach()) {
+      var bodyObs = new MutationObserver(function () {
+        if (attach()) {
+          bodyObs.disconnect();
+        }
+      });
+      if (document.body) {
+        bodyObs.observe(document.body, { childList: true, subtree: true });
+      }
+    }
+  }
+
   function displayBottomAnchor() {
-    if (bottomAnchorDisplayed || !w.ApkAdLoader) {
+    if (bottomAnchorDisplayed || desktopStickyShown || !w.ApkAdLoader) {
       return false;
     }
     if (!isBodyVisible()) {
@@ -238,6 +427,8 @@
       w.ApkAdLoader.displayOopSlotByKey("bottom_anchor")
     ) {
       bottomAnchorDisplayed = true;
+      destroyDesktopSticky();
+      watchAndCenterBottomAnchor();
       logAnchor("displayed");
       return true;
     }
@@ -258,11 +449,13 @@
     }
 
     if (!isAnchorViewportSupported()) {
-      warnAnchor("当前视口不满足 GPT 锚定条件，跳过 define", {
+      logAnchor("GPT OOP ineligible → try desktop sticky", {
         width: w.innerWidth,
         height: w.innerHeight,
       });
+      tryDesktopBottomSticky();
       watchAnchorViewport();
+      armLocalAnchorRetries();
       return false;
     }
 
@@ -270,13 +463,16 @@
       autoDisplay: autoDisplay === true,
     });
     if (!slot) {
+      tryDesktopBottomSticky();
       watchAnchorViewport();
       return false;
     }
 
     bottomAnchorDefined = true;
+    destroyDesktopSticky();
     if (autoDisplay === true) {
       bottomAnchorDisplayed = true;
+      watchAndCenterBottomAnchor();
     }
     logAnchor("defined", { autoDisplay: !!autoDisplay, path: getOopPath(def) });
     return true;
@@ -291,9 +487,13 @@
         return;
       }
 
+      if (desktopStickyShown && !isAnchorViewportSupported()) {
+        return;
+      }
+
       if (!bottomAnchorDefined) {
-        // 生产：此时才 define；本地/demo：通常已 early define
         if (!defineBottomAnchorNow(false)) {
+          tryDesktopBottomSticky();
           return;
         }
       }
@@ -306,7 +506,7 @@
   }
 
   function scheduleBottomAnchorDisplay() {
-    if (bottomAnchorDisplayed) {
+    if (bottomAnchorDisplayed || desktopStickyShown) {
       return;
     }
     if (bottomAnchorTimer != null) {
@@ -324,11 +524,52 @@
       height: w.innerHeight,
       earlyDefine: useEarlyDefineForTest(),
       defined: bottomAnchorDefined,
+      viewportOk: isAnchorViewportSupported(),
+      desktopFallback: shouldUseDesktopStickyFallback(),
     });
+    if (delay <= 0) {
+      runAnchorWhenReady();
+      armLocalAnchorRetries();
+      return;
+    }
     bottomAnchorTimer = w.setTimeout(function () {
       bottomAnchorTimer = null;
       runAnchorWhenReady();
+      armLocalAnchorRetries();
     }, delay);
+  }
+
+  /** DevTools 设备模式常在首屏之后才稳定 innerWidth，本地补几次重试 */
+  var localRetryArmed = false;
+  function armLocalAnchorRetries() {
+    if (localRetryArmed || bottomAnchorDisplayed) {
+      return;
+    }
+    if (!isLocalHost() && !isDemoMode()) {
+      return;
+    }
+    localRetryArmed = true;
+    [400, 1200, 2500].forEach(function (ms) {
+      w.setTimeout(function () {
+        if (bottomAnchorDisplayed || !isBodyVisible()) {
+          return;
+        }
+        if (!isAnchorViewportSupported()) {
+          if (!desktopStickyShown) {
+            tryDesktopBottomSticky();
+          }
+          return;
+        }
+        logAnchor("local retry @" + ms + "ms");
+        if (desktopStickyShown) {
+          destroyDesktopSticky();
+        }
+        if (!bottomAnchorDefined) {
+          defineBottomAnchorNow(false);
+        }
+        displayBottomAnchor();
+      }, ms);
+    });
   }
 
   function watchBodyVisibleForOop() {
@@ -378,10 +619,15 @@
           return;
         }
         if (!isAnchorViewportSupported()) {
+          if (!desktopStickyShown) {
+            tryDesktopBottomSticky();
+          }
           return;
         }
-        logAnchor("viewport became eligible, retry");
-        // 允许重新 define（之前可能因视口失败）
+        logAnchor("viewport became eligible, retry OOP anchor");
+        if (desktopStickyShown) {
+          destroyDesktopSticky();
+        }
         if (!bottomAnchorDefined) {
           scheduleBottomAnchorDisplay();
         } else {
@@ -395,7 +641,11 @@
 
   function watchDocumentVisibility() {
     document.addEventListener("visibilitychange", function () {
-      if (document.visibilityState !== "visible" || bottomAnchorDisplayed) {
+      if (
+        document.visibilityState !== "visible" ||
+        bottomAnchorDisplayed ||
+        desktopStickyShown
+      ) {
         return;
       }
       scheduleBottomAnchorDisplay();

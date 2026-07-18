@@ -547,7 +547,8 @@
     return !!(
       el.closest("#google_bottom_anchor") ||
       el.closest("#google_top_anchor") ||
-      el.closest("[data-anchor-status]")
+      el.closest("[data-anchor-status]") ||
+      el.closest("#apk-desktop-bottom-sticky")
     );
   }
 

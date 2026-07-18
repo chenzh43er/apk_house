@@ -5,22 +5,26 @@
  * 由 form-page.css @import 静态加载，避免 JS 异步注入过晚
  *
  * 注意：不要用全局 [id^=google_ads_iframe_] 选择器——会误伤 GPT
- * 底部锚定 (#google_bottom_anchor)，导致锚定条被压成 300px 并像被关掉。
+ * 底部锚定 (#google_bottom_anchor)。也不要对锚定强设 width/transform，
+ * 否则会压成 320px 小条或打断 GPT 收起动画。
  */
 
 @media screen and (max-width: 768px) {
+  /* 横向裁剪只加在内容壳，不要加在 html/body（会裁切 position:fixed 锚定） */
   html,
   body {
-    overflow-x: hidden;
     max-width: 100%;
   }
 
   body.page-state .wrapper.contents,
   body.page-state .detail-left,
   body.page-state .state-content,
+  body.page-state .state-main.contents,
   body.page-city .detail-left,
-  body.page-list .detail-left {
-    overflow-x: hidden !important;
+  body.page-list .detail-left,
+  body.page-teach .teach-main.contents,
+  body.page-teach .teach-content.detail-left {
+    overflow-x: clip;
     max-width: 100% !important;
     min-width: 0 !important;
   }
@@ -80,17 +84,34 @@
   }
 
   /**
-   * 保护 GPT 锚定条：禁止被广告裁剪规则压成 300px。
-   * 否则正式手机上锚定会出现后立刻变形/像被关掉。
+   * 保护 GPT 锚定：只解除我们的 max-width 裁剪，不覆盖 GPT 的收起 transform。
+   * 400px 等宽屏上创意常为 320×50，用 flex 水平居中，避免贴左大块留白。
    */
   #google_bottom_anchor,
   #google_top_anchor,
   div[data-anchor-status] {
     max-width: none !important;
-    width: auto !important;
     overflow: visible !important;
-    margin: 0 !important;
-    transform: none !important;
+  }
+
+  #google_bottom_anchor,
+  #google_top_anchor {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    text-align: center !important;
+  }
+
+  #google_bottom_anchor > div,
+  #google_top_anchor > div {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    flex: 0 0 auto;
   }
 
   #google_bottom_anchor iframe,
@@ -100,10 +121,81 @@
   #google_bottom_anchor div[data-google-query-id],
   #google_top_anchor div[data-google-query-id] {
     max-width: none !important;
-    width: auto !important;
     min-width: 0 !important;
-    margin: 0 !important;
     overflow: visible !important;
-    transform: none !important;
+    display: block !important;
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/**
+ * 宽屏 PC 底部 sticky 兜底（GPT BOTTOM_ANCHOR 在宽 >1000px 时无法 define）
+ */
+.apk-desktop-bottom-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  padding: 8px 40px 8px 12px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.apk-desktop-bottom-sticky__ad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 970px;
+  width: 100%;
+  min-height: 90px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.apk-desktop-bottom-sticky__close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #5a6478;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.apk-desktop-bottom-sticky__close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #141414;
+}
+
+html.apk-has-desktop-sticky {
+  scroll-padding-bottom: 110px;
+}
+
+html.apk-has-desktop-sticky body {
+  padding-bottom: 110px;
+}
+
+/* 窄屏由 GPT OOP 负责，隐藏 PC sticky 兜底 */
+@media screen and (max-width: 1000px) {
+  .apk-desktop-bottom-sticky {
+    display: none !important;
+  }
+  html.apk-has-desktop-sticky body {
+    padding-bottom: 0;
   }
 }
