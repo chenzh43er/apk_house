@@ -846,6 +846,9 @@ const lang = getLangFromPath()
         // 插入 DOM
         $('.statelists').html(html);
         document.body.style.display = "block";
+        if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
+            ApkAdOop.notifyBodyVisible();
+        }
         if (window.ApkAdLoader && window.ApkAdLoader.scanAndClampAllMobileAds) {
             window.ApkAdLoader.scanAndClampAllMobileAds();
         }

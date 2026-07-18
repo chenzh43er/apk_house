@@ -8,19 +8,19 @@
         }
         if(getLangFromPath() == "de"){
             const base = document.querySelector('base');
-            base.href = '/de'; // 绝对路径形式
+            base.href = '/de/' // 绝对路径形式
             // 或者使用相对路径
-            base.setAttribute('href', '/de');
+            base.setAttribute('href', '/de/');
         }else if(getLangFromPath() == "us"){
             const base = document.querySelector('base');
-            base.href = '/us'; // 绝对路径形式
+            base.href = '/us/' // 绝对路径形式
             // 或者使用相对路径
-            base.setAttribute('href', '/us');
+            base.setAttribute('href', '/us/');
         }else if(getLangFromPath() == "de-ch-at"){
             const base = document.querySelector('base');
-            base.href = '/us'; // 绝对路径形式
+            base.href = '/de-ch-at/' // 绝对路径形式
             // 或者使用相对路径
-            base.setAttribute('href', '/de-ch-at');
+            base.setAttribute('href', '/de-ch-at/');
         }else{
             const base = document.querySelector('base');
             base.href = '/'; // 绝对路径形式
@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="/Public/Css/teach-page.css">
     <link rel="stylesheet" href="/Public/Css/state-page.css">
     <script src="./Public/Js/utlParam.js"></script>
-    <script src="./Public/Js/common.js"></script>
+    <script src="./Public/Js/common.js?v=20250718"></script>
     <script src="/Public/Js/ad-config.js"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
@@ -1073,6 +1073,9 @@ if(lang == "de" || lang == "de-ch-at"){
         document.getElementById('select-state').innerHTML = innerStr;
         updatePickerStepsCta(lang, 2, (data || []).length);
         document.body.style.display = "block";
+        if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
+            ApkAdOop.notifyBodyVisible();
+        }
 
         attachCityHouseCounts(display_state, items).then(function (dataWithCounts) {
             dataWithCounts.forEach(function (item) {

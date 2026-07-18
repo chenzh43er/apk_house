@@ -146,6 +146,9 @@
       if (item.slotKey !== slotKey || item.displayed) {
         continue;
       }
+      if (!adxServicesEnabled) {
+        ensureAdxServices();
+      }
       w.googletag.display(item.slot);
       item.displayed = true;
       return true;

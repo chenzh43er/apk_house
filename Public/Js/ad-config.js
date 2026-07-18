@@ -35,9 +35,9 @@
       productionOrigin: "https://identityinsight.org",
       /**
        * GPT Out-of-Page（仅 ADX，且非 ad-free 页面）
-       * - bottomAnchor：底部锚定条（保留；不因可见率关掉）
-       * - bottomAnchorMobileDelayMs：手机在 body 可见后再延迟 display（默认 1200ms），
-       *   避免 display:none / 秒退时先计印象导致 Active View 偏低
+       * - bottomAnchor：底部锚定（保留）
+       * - 锚定必须等 body 可见后才 define+display（防 SRA 过早请求 / display:none 计印象）
+       * - bottomAnchorMobileDelayMs：body 可见后手机再延迟毫秒数（默认 1200；与上面两问题无关时可调）
        * - interstitial：全屏穿插；移动端默认关闭（见 ad-oop.js），避免每次进页都弹
        * - interstitialOnMobile: true 可强制在移动端也开穿插（不推荐）
        */

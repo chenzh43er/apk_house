@@ -769,6 +769,9 @@ const lang = getLangFromPath()
             }
 
             document.body.style.display = "block";
+            if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
+                ApkAdOop.notifyBodyVisible();
+            }
         });
     });
 </script>
