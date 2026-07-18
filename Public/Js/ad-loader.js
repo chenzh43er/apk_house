@@ -542,7 +542,7 @@
     var hostMax = containerW + "px";
     document
       .querySelectorAll(
-        ".adswp, .state_advClass, .divider-wrap.state_advClass, .apk-ad-clip, #google_bottom_anchor"
+        ".adswp, .state_advClass, .divider-wrap.state_advClass, .apk-ad-clip"
       )
       .forEach(function (host) {
         host.style.maxWidth = hostMax;

@@ -35,12 +35,15 @@
       productionOrigin: "https://identityinsight.org",
       /**
        * GPT Out-of-Page（仅 ADX，且非 ad-free 页面）
-       * - bottomAnchor：底部锚定条（移动端保留）
+       * - bottomAnchor：底部锚定条（保留；不因可见率关掉）
+       * - bottomAnchorMobileDelayMs：手机在 body 可见后再延迟 display（默认 1200ms），
+       *   避免 display:none / 秒退时先计印象导致 Active View 偏低
        * - interstitial：全屏穿插；移动端默认关闭（见 ad-oop.js），避免每次进页都弹
        * - interstitialOnMobile: true 可强制在移动端也开穿插（不推荐）
        */
       oop: {
         bottomAnchor: true,
+        bottomAnchorMobileDelayMs: 1200,
         interstitial: true,
         interstitialOnMobile: false,
         rightRail: false,

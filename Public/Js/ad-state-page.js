@@ -87,10 +87,19 @@
       observeOnce(el, loadState_adv2, ASIDE_ROOT_MARGIN);
     },
 
-    /** body 从 display:none 变为可见后调用（interstitial 延迟展示） */
+    /** body 从 display:none 变为可见后调用（OOP 延迟展示） */
     notifyBodyVisible: function () {
-      if (w.ApkAdOop && typeof w.ApkAdOop.initDeferredInterstitial === "function") {
-        w.ApkAdOop.initDeferredInterstitial();
+      if (w.ApkAdOop) {
+        if (typeof w.ApkAdOop.notifyBodyVisible === "function") {
+          w.ApkAdOop.notifyBodyVisible();
+          return;
+        }
+        if (typeof w.ApkAdOop.initDeferredInterstitial === "function") {
+          w.ApkAdOop.initDeferredInterstitial();
+        }
+        if (typeof w.ApkAdOop.scheduleBottomAnchorDisplay === "function") {
+          w.ApkAdOop.scheduleBottomAnchorDisplay();
+        }
       }
     },
   };
