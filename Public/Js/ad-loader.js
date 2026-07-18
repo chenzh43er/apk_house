@@ -544,12 +544,27 @@
     if (!el || !el.closest) {
       return false;
     }
-    return !!(
+    if (
       el.closest("#google_bottom_anchor") ||
       el.closest("#google_top_anchor") ||
       el.closest("[data-anchor-status]") ||
       el.closest("#apk-desktop-bottom-sticky")
-    );
+    ) {
+      return true;
+    }
+    // GPT 内部常为 ins#gpt_unit_/.../bottom_anchor_0，可能被 clamp 误伤
+    var id = el.id || "";
+    if (/bottom_anchor|top_anchor|google_bottom_anchor|google_top_anchor/i.test(id)) {
+      return true;
+    }
+    if (
+      el.closest(
+        "[id*='bottom_anchor'], [id*='top_anchor'], [id^='google_ads_iframe_'][id*='bottom_anchor']"
+      )
+    ) {
+      return true;
+    }
+    return false;
   }
 
   function applyMobileClampAll() {
@@ -841,6 +856,21 @@
 
     w.googletag.pubads().addEventListener("slotRenderEnded", function (event) {
       var divId = event.slot.getSlotElementId();
+      var unitPath = "";
+      try {
+        unitPath = event.slot.getAdUnitPath() || "";
+      } catch (e) {}
+      var isOopAnchor =
+        /bottom_anchor|top_anchor/i.test(unitPath) ||
+        /bottom_anchor|top_anchor/i.test(divId || "") ||
+        (event.slot.getOutOfPageFormat &&
+          !!event.slot.getOutOfPageFormat());
+      if (isOopAnchor) {
+        if (w.ApkAdOop && typeof w.ApkAdOop.ensureBottomAnchorFixed === "function") {
+          w.ApkAdOop.ensureBottomAnchorFixed();
+        }
+        return;
+      }
       if (!event.isEmpty) {
         if (isMobileViewport()) {
           clampMobileAdFrame(divId);

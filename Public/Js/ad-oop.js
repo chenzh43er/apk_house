@@ -322,69 +322,40 @@
     return slot;
   }
 
-  function centerBottomAnchorCreative() {
+  /** 若锚定被挤进文档流，强制拉回视口底部（不改内部创意布局） */
+  function ensureBottomAnchorFixed() {
     var root = document.getElementById("google_bottom_anchor");
     if (!root) {
       return false;
     }
-
-    function centerEl(el) {
-      if (!el || !el.getBoundingClientRect) {
-        return;
-      }
-      var width = el.offsetWidth || 0;
-      if (width <= 0) {
-        return;
-      }
-      var viewW = w.innerWidth || document.documentElement.clientWidth || 0;
-      if (viewW > 0 && width >= viewW - 4) {
-        return;
-      }
-      var cs = w.getComputedStyle(el);
-      var pos = cs.position;
-      el.style.setProperty("float", "none", "important");
-      if (pos === "absolute" || pos === "fixed") {
-        el.style.setProperty(
-          "left",
-          "calc(50% - " + width / 2 + "px)",
-          "important"
-        );
-        el.style.setProperty("right", "auto", "important");
-        el.style.setProperty("margin-left", "0", "important");
-        el.style.setProperty("margin-right", "0", "important");
-      } else {
-        el.style.setProperty("display", "block", "important");
-        el.style.setProperty("margin-left", "auto", "important");
-        el.style.setProperty("margin-right", "auto", "important");
-      }
+    root.style.setProperty("position", "fixed", "important");
+    root.style.setProperty("bottom", "0", "important");
+    root.style.setProperty("top", "auto", "important");
+    root.style.setProperty("left", "0", "important");
+    root.style.setProperty("right", "0", "important");
+    root.style.setProperty("width", "100%", "important");
+    root.style.setProperty("max-width", "none", "important");
+    root.style.setProperty("z-index", "2147483646", "important");
+    root.style.setProperty("margin", "0", "important");
+    // 若误挂到非 body 节点，挪回 body，避免被 overflow 祖先裁切
+    if (root.parentNode && root.parentNode !== document.body) {
+      document.body.appendChild(root);
     }
-
-    var kids = root.children;
-    for (var i = 0; i < kids.length; i++) {
-      centerEl(kids[i]);
-    }
-
-    var nodes = root.querySelectorAll(
-      "iframe, div[id^='google_ads_iframe_'], div[data-google-query-id]"
-    );
-    for (var j = 0; j < nodes.length; j++) {
-      centerEl(nodes[j]);
-    }
-    return nodes.length > 0 || kids.length > 0;
+    return true;
   }
 
-  var anchorCenterWatchStarted = false;
-  function watchAndCenterBottomAnchor() {
-    centerBottomAnchorCreative();
-    [200, 600, 1200, 2500].forEach(function (ms) {
-      w.setTimeout(centerBottomAnchorCreative, ms);
+  var anchorFixedWatchStarted = false;
+  function watchAndFixBottomAnchor() {
+    ensureBottomAnchorFixed();
+    [100, 400, 1000, 2000].forEach(function (ms) {
+      w.setTimeout(ensureBottomAnchorFixed, ms);
     });
-    if (anchorCenterWatchStarted || typeof MutationObserver === "undefined") {
+    if (anchorFixedWatchStarted || typeof MutationObserver === "undefined") {
       return;
     }
-    anchorCenterWatchStarted = true;
+    anchorFixedWatchStarted = true;
     var obs = new MutationObserver(function () {
-      centerBottomAnchorCreative();
+      ensureBottomAnchorFixed();
     });
     function attach() {
       var root = document.getElementById("google_bottom_anchor");
@@ -392,12 +363,10 @@
         return false;
       }
       obs.observe(root, {
-        childList: true,
-        subtree: true,
         attributes: true,
         attributeFilter: ["style", "class"],
       });
-      centerBottomAnchorCreative();
+      ensureBottomAnchorFixed();
       return true;
     }
     if (!attach()) {
@@ -428,7 +397,7 @@
     ) {
       bottomAnchorDisplayed = true;
       destroyDesktopSticky();
-      watchAndCenterBottomAnchor();
+      watchAndFixBottomAnchor();
       logAnchor("displayed");
       return true;
     }
@@ -472,7 +441,7 @@
     destroyDesktopSticky();
     if (autoDisplay === true) {
       bottomAnchorDisplayed = true;
-      watchAndCenterBottomAnchor();
+      watchAndFixBottomAnchor();
     }
     logAnchor("defined", { autoDisplay: !!autoDisplay, path: getOopPath(def) });
     return true;
@@ -769,6 +738,7 @@
     initDeferredInterstitial: initDeferredInterstitial,
     notifyBodyVisible: notifyBodyVisible,
     scheduleBottomAnchorDisplay: scheduleBottomAnchorDisplay,
+    ensureBottomAnchorFixed: ensureBottomAnchorFixed,
   };
 
   if (document.readyState === "loading") {
