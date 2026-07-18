@@ -107,6 +107,13 @@
 
   /** ADX 模式预连接并尽早加载 GPT SDK（与 AdSense 的 adsbygoogle.js 同理） */
   if (w.AD_CONFIG.mode === "adx") {
+    /**
+     * ADX 模式：用代码挡住可能被 GTM/历史标签拉起的 AdSense 页级/锚定，
+     * 避免与 GPT BOTTOM_ANCHOR 叠两层。无需改 AdSense 后台。
+     */
+    w.adsbygoogle = w.adsbygoogle || [];
+    w.adsbygoogle.pauseAdRequests = 1;
+
     [
       "https://securepubads.g.doubleclick.net",
       "https://www.googletagservices.com",

@@ -1,13 +1,52 @@
 @charset "UTF-8";
 
 /**
- * 移动端广告越界修复（仅 ≤768px，不影响 PC）
- * 由 form-page.css @import 静态加载，避免 JS 异步注入过晚
+ * 广告移动端裁剪 + GPT 锚定保护
+ * 由 form-page.css @import 静态加载
  *
- * 注意：不要用全局 [id^=google_ads_iframe_] 选择器——会误伤 GPT
- * 底部锚定 (#google_bottom_anchor)。也不要对锚定强设 width/transform，
- * 否则会压成 320px 小条或打断 GPT 收起动画。
+ * 关键：#google_bottom_anchor 的 position:fixed 必须全局生效（勿放进 max-width 媒体查询），
+ * 否则锚定会掉进文档流、出现在页脚下方，Active View 可见率暴跌。
  */
+
+/**
+ * GPT 底部/顶部锚定：全视口强制 fixed（移动端 + PC）
+ */
+#google_bottom_anchor,
+#google_top_anchor {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  z-index: 2147483646 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+#google_bottom_anchor {
+  bottom: 0 !important;
+  top: auto !important;
+}
+
+#google_top_anchor {
+  top: 0 !important;
+  bottom: auto !important;
+}
+
+#google_bottom_anchor iframe,
+#google_top_anchor iframe,
+#google_bottom_anchor div[id^="google_ads_iframe_"],
+#google_top_anchor div[id^="google_ads_iframe_"],
+#google_bottom_anchor div[data-google-query-id],
+#google_top_anchor div[data-google-query-id],
+#google_bottom_anchor ins,
+#google_top_anchor ins {
+  max-width: none !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
 
 @media screen and (max-width: 768px) {
   /* 横向裁剪只加在内容壳，不要加在 html/body（会裁切 position:fixed 锚定） */
@@ -81,50 +120,6 @@
     margin-left: auto !important;
     margin-right: auto !important;
     box-sizing: border-box !important;
-  }
-
-  /**
-   * 保护 GPT 锚定：必须保持 position:fixed 贴视口，绝不能进文档流。
-   * 进文档流会出现在页脚下方 → Active View 可见率暴跌。
-   * 禁止对根节点设 display:flex / 改 transform，以免打掉 GPT 固定层。
-   */
-  #google_bottom_anchor,
-  #google_top_anchor {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    z-index: 2147483646 !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-    pointer-events: auto !important;
-  }
-
-  #google_bottom_anchor,
-  div[data-anchor-status="displayed"][id*="bottom"],
-  div[data-anchor-status][style*="bottom"] {
-    bottom: 0 !important;
-    top: auto !important;
-  }
-
-  #google_top_anchor {
-    top: 0 !important;
-    bottom: auto !important;
-  }
-
-  #google_bottom_anchor iframe,
-  #google_top_anchor iframe,
-  #google_bottom_anchor div[id^="google_ads_iframe_"],
-  #google_top_anchor div[id^="google_ads_iframe_"],
-  #google_bottom_anchor div[data-google-query-id],
-  #google_top_anchor div[data-google-query-id],
-  #google_bottom_anchor ins,
-  #google_top_anchor ins {
-    max-width: none !important;
-    min-width: 0 !important;
-    overflow: visible !important;
   }
 }
 

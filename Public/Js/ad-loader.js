@@ -160,6 +160,12 @@
     if (!slot) {
       return;
     }
+    // 同一 OOP key 只登记一次，防止竞态双 display 叠两层
+    for (var i = 0; i < oopSlots.length; i++) {
+      if (oopSlots[i].slotKey === slotKey) {
+        return;
+      }
+    }
     var autoDisplay = !options || options.autoDisplay !== false;
     oopSlots.push({
       slotKey: slotKey,

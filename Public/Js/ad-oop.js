@@ -12,6 +12,7 @@
   var DEMO_AD_UNIT = "/6355419/Travel";
   var DESKTOP_STICKY_SLOT = "desktop_bottom_sticky";
   var bottomAnchorDefined = false;
+  var bottomAnchorDefining = false;
   var bottomAnchorDisplayed = false;
   var desktopStickyShown = false;
   var bottomAnchorTimer = null;
@@ -212,6 +213,7 @@
 
     desktopStickyShown = true;
     w.ApkAdLoader.render(DESKTOP_STICKY_SLOT, adHost);
+    suppressForeignBottomAnchors(host);
     logAnchor("desktop sticky fallback displayed", {
       width: w.innerWidth,
       height: w.innerHeight,
@@ -341,13 +343,75 @@
     if (root.parentNode && root.parentNode !== document.body) {
       document.body.appendChild(root);
     }
+    suppressForeignBottomAnchors(root);
     return true;
+  }
+
+  /**
+   * 隐藏非 GPT 的底部锚定（常见：AdSense Auto ads），避免 PC/手机叠两层。
+   * 保留 #google_bottom_anchor 与我们的 desktop sticky。
+   */
+  function suppressForeignBottomAnchors(keepRoot) {
+    var keep = keepRoot || document.getElementById("google_bottom_anchor");
+    var nodes = document.querySelectorAll(
+      ".google-auto-placed, ins.adsbygoogle, [id^='google_ads_iframe_']"
+    );
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (!el || (keep && (el === keep || (keep.contains && keep.contains(el))))) {
+        continue;
+      }
+      if (el.closest && el.closest("#apk-desktop-bottom-sticky")) {
+        continue;
+      }
+      if (el.closest && el.closest("#google_bottom_anchor, #google_top_anchor")) {
+        continue;
+      }
+      var cs = w.getComputedStyle(el);
+      if (cs.position !== "fixed" && cs.position !== "sticky") {
+        // 再看父级是否 fixed 贴底
+        var p = el.parentElement;
+        var parentFixed = false;
+        while (p && p !== document.body) {
+          var pcs = w.getComputedStyle(p);
+          if (pcs.position === "fixed") {
+            var bottom = pcs.bottom;
+            if (bottom === "0px" || bottom === "0") {
+              parentFixed = true;
+              el = p;
+              cs = pcs;
+              break;
+            }
+          }
+          p = p.parentElement;
+        }
+        if (!parentFixed) {
+          continue;
+        }
+      }
+      var bottom = cs.bottom;
+      var top = cs.top;
+      var nearBottom =
+        bottom === "0px" ||
+        bottom === "0" ||
+        (parseInt(bottom, 10) >= 0 && parseInt(bottom, 10) < 80);
+      var notTopAnchor = top === "auto" || top === "" || parseInt(top, 10) > 100;
+      if (!nearBottom || !notTopAnchor) {
+        continue;
+      }
+      // 疑似第二套底部锚定
+      if (el.id === "google_bottom_anchor" || el.id === "apk-desktop-bottom-sticky") {
+        continue;
+      }
+      el.style.setProperty("display", "none", "important");
+      el.setAttribute("data-apk-suppressed-anchor", "1");
+    }
   }
 
   var anchorFixedWatchStarted = false;
   function watchAndFixBottomAnchor() {
     ensureBottomAnchorFixed();
-    [100, 400, 1000, 2000].forEach(function (ms) {
+    [100, 400, 1000, 2000, 4000].forEach(function (ms) {
       w.setTimeout(ensureBottomAnchorFixed, ms);
     });
     if (anchorFixedWatchStarted || typeof MutationObserver === "undefined") {
@@ -366,6 +430,9 @@
         attributes: true,
         attributeFilter: ["style", "class"],
       });
+      if (document.body) {
+        obs.observe(document.body, { childList: true, subtree: true });
+      }
       ensureBottomAnchorFixed();
       return true;
     }
@@ -405,7 +472,12 @@
   }
 
   function defineBottomAnchorNow(autoDisplay) {
-    if (bottomAnchorDefined || !w.ApkAdLoader || !w.ADX_OOP_DEFS) {
+    if (
+      bottomAnchorDefined ||
+      bottomAnchorDefining ||
+      !w.ApkAdLoader ||
+      !w.ADX_OOP_DEFS
+    ) {
       return false;
     }
     var oopConfig = getOopConfig();
@@ -428,9 +500,11 @@
       return false;
     }
 
+    bottomAnchorDefining = true;
     var slot = defineOopSlot("bottom_anchor", def, oopConfig, {
       autoDisplay: autoDisplay === true,
     });
+    bottomAnchorDefining = false;
     if (!slot) {
       tryDesktopBottomSticky();
       watchAnchorViewport();
