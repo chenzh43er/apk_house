@@ -56,7 +56,8 @@
     "craigslist:import": "node scripts/craigslist/import.mjs",
     "craigslist:upload-images": "node scripts/craigslist/upload-images.mjs",
     "craigslist:purge-empty-locality": "node scripts/craigslist/purge-empty-locality.mjs",
-    "gam:check-adsense": "node scripts/ad-manager/check-adsense-lineitem.mjs"
+    "gam:check-adsense": "node scripts/ad-manager/check-adsense-lineitem.mjs",
+    "gam:report-av": "node scripts/ad-manager/report-active-view.mjs"
   },
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",
