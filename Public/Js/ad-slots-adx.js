@@ -73,9 +73,14 @@
 
   /** Out-of-Page：锚定 / 穿插（GAM 需建 Out-of-page 类型广告单元） */
   w.ADX_OOP_DEFS = {
-    bottom_anchor: {
+    /**
+     * 移动端顶部锚定（TOP_ANCHOR）。
+     * 复用已有 OOP 单元 house_site/bottom_anchor（格式由 GPT define 决定）。
+     * 若在 GAM 另建了 house_site/top_anchor，可把 unit 改成该名。
+     */
+    top_anchor: {
       unit: "house_site/bottom_anchor",
-      format: "BOTTOM_ANCHOR",
+      format: "TOP_ANCHOR",
     },
     interstitial: {
       unit: "house_site/interstitial",

@@ -35,7 +35,7 @@
       productionOrigin: "https://identityinsight.org",
       /**
        * GPT Out-of-Page（仅 ADX，且非 ad-free 页面）
-       * - bottomAnchor：底部锚定（GPT OOP；竖屏且宽 320–1000px）
+       * - bottomAnchor：移动端锚定开关（现为 TOP_ANCHOR；竖屏且宽 320–1000px）
        * - bottomAnchorDesktopFallback：宽屏 PC 用不了 OOP 时，用底部 sticky banner 兜底
        * - 锚定必须等 body 可见后才 define+display（防 SRA 过早请求 / display:none 计印象）
        * - bottomAnchorMobileDelayMs：body 可见后手机再延迟毫秒数（默认 1200；与上面两问题无关时可调）
@@ -109,7 +109,7 @@
   if (w.AD_CONFIG.mode === "adx") {
     /**
      * ADX 模式：用代码挡住可能被 GTM/历史标签拉起的 AdSense 页级/锚定，
-     * 避免与 GPT BOTTOM_ANCHOR 叠两层。无需改 AdSense 后台。
+     * 避免与 GPT TOP_ANCHOR 叠两层。无需改 AdSense 后台。
      */
     w.adsbygoogle = w.adsbygoogle || [];
     w.adsbygoogle.pauseAdRequests = 1;

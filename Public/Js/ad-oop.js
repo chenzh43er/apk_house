@@ -1,12 +1,12 @@
 /**
- * ADX Out-of-Page：底部锚定 + Web 穿插广告。
+ * ADX Out-of-Page：移动端顶部锚定（TOP_ANCHOR）+ Web 穿插广告。
  *
  * 锚定可见率：
  * - 生产环境：body 可见后才 define（避免 SRA 在 display:none 时一并请求）
  * - 本地 / adtest=demo：可提前 define、body 可见后再 display（方便验证）
  *
- * GPT 限制：BOTTOM_ANCHOR 仅在顶层窗口 + 竖屏 + 宽度约 320–1000px 时
- * defineOutOfPageSlot 才会成功；宽屏 PC 改走 desktop sticky banner 兜底。
+ * GPT 限制：TOP_ANCHOR 仅在顶层窗口 + 竖屏 + 宽度约 320–1000px 时
+ * defineOutOfPageSlot 才会成功；宽屏 PC 仍走 desktop 底部 sticky banner 兜底。
  */
 (function (w) {
   var DEMO_AD_UNIT = "/6355419/Travel";
@@ -18,6 +18,7 @@
   var bottomAnchorTimer = null;
   var bodyWatchStarted = false;
   var resizeWatchStarted = false;
+  var anchorFixing = false;
 
   function isAdxMode() {
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
@@ -84,7 +85,8 @@
   }
 
   function shouldEnableOop(key, oopConfig) {
-    if (key === "bottom_anchor" && oopConfig.bottomAnchor === false) {
+    // bottomAnchor 开关控制移动端 GPT 锚定（现为 TOP_ANCHOR）
+    if (key === "top_anchor" && oopConfig.bottomAnchor === false) {
       return false;
     }
     if (key === "interstitial") {
@@ -136,9 +138,9 @@
     var base =
       w.location.origin +
       w.location.pathname +
-      "?adtest=demo#gamBottomAnchorDemo";
+      "?adtest=demo#gamTopAnchorDemo";
     return (
-      "GPT 官方 BOTTOM_ANCHOR 仅：顶层 + 竖屏 + 宽 320–1000px。" +
+      "GPT 官方 TOP_ANCHOR 仅：顶层 + 竖屏 + 宽 320–1000px。" +
       "宽屏 PC 会自动用底部 sticky banner 兜底。" +
       "测官方 OOP：DevTools 设备模式后刷新，或：" +
       base
@@ -292,7 +294,7 @@
     // Google 官方 Travel demo 锚定需 test=anchor 才会出创意
     if (
       isDemoMode() &&
-      def.format === "BOTTOM_ANCHOR" &&
+      (def.format === "TOP_ANCHOR" || def.format === "BOTTOM_ANCHOR") &&
       typeof slot.setTargeting === "function"
     ) {
       slot.setTargeting("test", "anchor");
@@ -324,35 +326,80 @@
     return slot;
   }
 
-  /** 若锚定被挤进文档流，强制拉回视口底部（不改内部创意布局） */
+  /** 若锚定被挤进文档流，强制拉回视口顶部（不改内部创意布局） */
   function ensureBottomAnchorFixed() {
-    var root = document.getElementById("google_bottom_anchor");
+    if (anchorFixing) {
+      return false;
+    }
+    // GPT 新旧 DOM：#google_top_anchor 或 ins#gpt_unit_*[data-anchor-status]
+    var root =
+      document.getElementById("google_top_anchor") ||
+      document.querySelector(
+        'ins[data-anchor-status][data-anchor-shown="true"]'
+      ) ||
+      document.querySelector("ins[id^='gpt_unit_'][data-anchor-status]");
+    if (!root) {
+      var units = document.querySelectorAll("ins[id^='gpt_unit_']");
+      for (var i = 0; i < units.length; i++) {
+        var el = units[i];
+        var cs = w.getComputedStyle ? w.getComputedStyle(el) : null;
+        if (cs && cs.position === "fixed" && (cs.top === "0px" || cs.top === "0")) {
+          root = el;
+          break;
+        }
+      }
+    }
     if (!root) {
       return false;
     }
-    root.style.setProperty("position", "fixed", "important");
-    root.style.setProperty("bottom", "0", "important");
-    root.style.setProperty("top", "auto", "important");
-    root.style.setProperty("left", "0", "important");
-    root.style.setProperty("right", "0", "important");
-    root.style.setProperty("width", "100%", "important");
-    root.style.setProperty("max-width", "none", "important");
-    root.style.setProperty("z-index", "2147483646", "important");
-    root.style.setProperty("margin", "0", "important");
-    // 若误挂到非 body 节点，挪回 body，避免被 overflow 祖先裁切
-    if (root.parentNode && root.parentNode !== document.body) {
-      document.body.appendChild(root);
+    anchorFixing = true;
+    try {
+      // 清掉移动端 banner 裁剪可能写上的限制
+      root.style.removeProperty("max-width");
+      root.style.removeProperty("width");
+      root.style.removeProperty("position");
+      root.style.setProperty("position", "fixed", "important");
+      root.style.setProperty("top", "0", "important");
+      root.style.setProperty("bottom", "auto", "important");
+      root.style.setProperty("left", "0", "important");
+      root.style.setProperty("right", "0", "important");
+      root.style.setProperty("width", "100%", "important");
+      root.style.setProperty("max-width", "none", "important");
+      root.style.setProperty("z-index", "2147483646", "important");
+      root.style.setProperty("margin", "0", "important");
+      root.style.setProperty("overflow", "visible", "important");
+      // 若误挂到 html 等非 body 节点，挪回 body，避免被 overflow 祖先裁切
+      if (document.body && root.parentNode !== document.body) {
+        document.body.appendChild(root);
+      }
+      // 让 sticky 顶栏躲到锚定下方，避免被盖住
+      var h = root.offsetHeight || 0;
+      if (document.documentElement) {
+        document.documentElement.classList.add("apk-has-top-anchor");
+        if (h > 0) {
+          document.documentElement.style.setProperty(
+            "--apk-top-anchor-h",
+            h + "px"
+          );
+        }
+      }
+      suppressForeignBottomAnchors(root);
+      return true;
+    } finally {
+      anchorFixing = false;
     }
-    suppressForeignBottomAnchors(root);
-    return true;
   }
 
   /**
    * 隐藏非 GPT 的底部锚定（常见：AdSense Auto ads），避免 PC/手机叠两层。
-   * 保留 #google_bottom_anchor 与我们的 desktop sticky。
+   * 保留顶部锚定（#google_top_anchor / ins#gpt_unit_*）与我们的 desktop sticky。
    */
   function suppressForeignBottomAnchors(keepRoot) {
-    var keep = keepRoot || document.getElementById("google_bottom_anchor");
+    var keep =
+      keepRoot ||
+      document.getElementById("google_top_anchor") ||
+      document.querySelector("ins[id^='gpt_unit_'][data-anchor-status]") ||
+      document.getElementById("google_bottom_anchor");
     var nodes = document.querySelectorAll(
       ".google-auto-placed, ins.adsbygoogle, [id^='google_ads_iframe_']"
     );
@@ -364,7 +411,12 @@
       if (el.closest && el.closest("#apk-desktop-bottom-sticky")) {
         continue;
       }
-      if (el.closest && el.closest("#google_bottom_anchor, #google_top_anchor")) {
+      if (
+        el.closest &&
+        el.closest(
+          "#google_bottom_anchor, #google_top_anchor, ins[id^='gpt_unit_'][data-anchor-status]"
+        )
+      ) {
         continue;
       }
       var cs = w.getComputedStyle(el);
@@ -400,7 +452,12 @@
         continue;
       }
       // 疑似第二套底部锚定
-      if (el.id === "google_bottom_anchor" || el.id === "apk-desktop-bottom-sticky") {
+      if (
+        el.id === "google_bottom_anchor" ||
+        el.id === "google_top_anchor" ||
+        el.id === "apk-desktop-bottom-sticky" ||
+        (el.id && String(el.id).indexOf("gpt_unit_") === 0)
+      ) {
         continue;
       }
       el.style.setProperty("display", "none", "important");
@@ -419,19 +476,32 @@
     }
     anchorFixedWatchStarted = true;
     var obs = new MutationObserver(function () {
+      if (anchorFixing) {
+        return;
+      }
       ensureBottomAnchorFixed();
     });
     function attach() {
-      var root = document.getElementById("google_bottom_anchor");
+      var root =
+        document.getElementById("google_top_anchor") ||
+        document.querySelector(
+          'ins[data-anchor-status][data-anchor-shown="true"]'
+        ) ||
+        document.querySelector("ins[id^='gpt_unit_'][data-anchor-status]") ||
+        document.querySelector("ins[id^='gpt_unit_']");
       if (!root) {
         return false;
       }
       obs.observe(root, {
         attributes: true,
-        attributeFilter: ["style", "class"],
+        attributeFilter: ["class", "data-anchor-status", "data-anchor-shown"],
       });
       if (document.body) {
-        obs.observe(document.body, { childList: true, subtree: true });
+        obs.observe(document.body, { childList: true, subtree: false });
+      }
+      // GPT 常把锚定挂到 <html> 下，body 观察不到
+      if (document.documentElement) {
+        obs.observe(document.documentElement, { childList: true });
       }
       ensureBottomAnchorFixed();
       return true;
@@ -442,7 +512,12 @@
           bodyObs.disconnect();
         }
       });
-      if (document.body) {
+      if (document.documentElement) {
+        bodyObs.observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
+      } else if (document.body) {
         bodyObs.observe(document.body, { childList: true, subtree: true });
       }
     }
@@ -460,12 +535,12 @@
     }
     if (
       w.ApkAdLoader.displayOopSlotByKey &&
-      w.ApkAdLoader.displayOopSlotByKey("bottom_anchor")
+      w.ApkAdLoader.displayOopSlotByKey("top_anchor")
     ) {
       bottomAnchorDisplayed = true;
       destroyDesktopSticky();
       watchAndFixBottomAnchor();
-      logAnchor("displayed");
+      logAnchor("displayed (TOP_ANCHOR)");
       return true;
     }
     return false;
@@ -481,10 +556,10 @@
       return false;
     }
     var oopConfig = getOopConfig();
-    if (!shouldEnableOop("bottom_anchor", oopConfig)) {
+    if (!shouldEnableOop("top_anchor", oopConfig)) {
       return false;
     }
-    var def = w.ADX_OOP_DEFS.bottom_anchor;
+    var def = w.ADX_OOP_DEFS.top_anchor;
     if (!def) {
       return false;
     }
@@ -501,7 +576,7 @@
     }
 
     bottomAnchorDefining = true;
-    var slot = defineOopSlot("bottom_anchor", def, oopConfig, {
+    var slot = defineOopSlot("top_anchor", def, oopConfig, {
       autoDisplay: autoDisplay === true,
     });
     bottomAnchorDefining = false;
@@ -517,7 +592,10 @@
       bottomAnchorDisplayed = true;
       watchAndFixBottomAnchor();
     }
-    logAnchor("defined", { autoDisplay: !!autoDisplay, path: getOopPath(def) });
+    logAnchor("defined (TOP_ANCHOR)", {
+      autoDisplay: !!autoDisplay,
+      path: getOopPath(def),
+    });
     return true;
   }
 
@@ -781,7 +859,7 @@
             if (!shouldEnableOop(key, oopConfig)) {
               return;
             }
-            if (key === "bottom_anchor") {
+            if (key === "top_anchor") {
               // 本地/demo：提前 define（autoDisplay=false），body 可见后再 display
               // 生产：不在这里 define，等 body 可见后 define+display
               if (useEarlyDefineForTest()) {

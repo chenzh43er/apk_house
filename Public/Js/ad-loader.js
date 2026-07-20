@@ -554,21 +554,28 @@
       el.closest("#google_bottom_anchor") ||
       el.closest("#google_top_anchor") ||
       el.closest("[data-anchor-status]") ||
+      el.closest("ins[id^='gpt_unit_']") ||
       el.closest("#apk-desktop-bottom-sticky")
     ) {
       return true;
     }
-    // GPT 内部常为 ins#gpt_unit_/.../bottom_anchor_0，可能被 clamp 误伤
+    // GPT 内部常为 ins#gpt_unit_/... ，可能被 clamp 误伤
     var id = el.id || "";
-    if (/bottom_anchor|top_anchor|google_bottom_anchor|google_top_anchor/i.test(id)) {
+    if (
+      /^gpt_unit_/i.test(id) ||
+      /bottom_anchor|top_anchor|google_bottom_anchor|google_top_anchor/i.test(id)
+    ) {
       return true;
     }
     if (
       el.closest(
-        "[id*='bottom_anchor'], [id*='top_anchor'], [id^='google_ads_iframe_'][id*='bottom_anchor']"
+        "[id*='bottom_anchor'], [id*='top_anchor'], [id^='google_ads_iframe_'][id*='bottom_anchor'], [id^='google_ads_iframe_'][id*='Travel']"
       )
     ) {
-      return true;
+      // 仅当处于锚定容器内才保护 Travel iframe；普通 banner 用 Travel demo 路径时仍可裁剪
+      if (el.closest("ins[id^='gpt_unit_'], #google_top_anchor, #google_bottom_anchor, [data-anchor-status]")) {
+        return true;
+      }
     }
     return false;
   }
@@ -695,7 +702,13 @@
             continue;
           }
           // 锚定 OOP 由 GPT 自管，不要触发 banner 裁剪
-          if (isInsideGptOopAnchor(n) || n.id === "google_bottom_anchor" || n.id === "google_top_anchor") {
+          if (
+            isInsideGptOopAnchor(n) ||
+            n.id === "google_bottom_anchor" ||
+            n.id === "google_top_anchor" ||
+            (n.id && String(n.id).indexOf("gpt_unit_") === 0) ||
+            (n.tagName === "INS" && n.getAttribute("data-anchor-status") != null)
+          ) {
             continue;
           }
           if (
@@ -868,12 +881,28 @@
       } catch (e) {}
       var isOopAnchor =
         /bottom_anchor|top_anchor/i.test(unitPath) ||
-        /bottom_anchor|top_anchor/i.test(divId || "") ||
+        /bottom_anchor|top_anchor|google_top_anchor|google_bottom_anchor/i.test(
+          divId || ""
+        ) ||
+        /^gpt_unit_/i.test(divId || "") ||
         (event.slot.getOutOfPageFormat &&
-          !!event.slot.getOutOfPageFormat());
+          event.slot.getOutOfPageFormat() != null);
       if (isOopAnchor) {
         if (w.ApkAdOop && typeof w.ApkAdOop.ensureBottomAnchorFixed === "function") {
           w.ApkAdOop.ensureBottomAnchorFixed();
+          // 创意写入后高度才稳定
+          [50, 200, 800, 2000].forEach(function (ms) {
+            w.setTimeout(function () {
+              w.ApkAdOop.ensureBottomAnchorFixed();
+            }, ms);
+          });
+        }
+        if (w.location.search.indexOf("addebug=1") >= 0) {
+          console.info(
+            "[ApkAd] oop-anchor",
+            divId,
+            event.isEmpty ? "empty" : event.size
+          );
         }
         return;
       }
