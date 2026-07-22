@@ -1,5 +1,6 @@
 /**
- * 校验 AdSense 订单项：Display 类型 / 全站定向 / 尺寸含 300×250 + 728×90 + 300×600
+ * 校验 AdSense 订单项：Display 类型 / 全站定向 /
+ * 尺寸含 300×250 + 728×90 + 300×600 + 320×50 + 320×100（锚定）
  * （AdSense 订单项无 Fluid 选项；fluid 由 AdX「请求中包含的所有尺寸」承接）
  *
  * 用法: node scripts/ad-manager/check-adsense-lineitem.mjs
@@ -13,6 +14,8 @@ const REQUIRED_SIZES = [
   { w: 300, h: 250, label: "300x250" },
   { w: 728, h: 90, label: "728x90" },
   { w: 300, h: 600, label: "300x600" },
+  { w: 320, h: 50, label: "320x50" },
+  { w: 320, h: 100, label: "320x100" },
 ];
 
 const cliId = process.argv.find((a) => a.startsWith("--id="))?.slice(5);
@@ -227,7 +230,9 @@ for (const code of sampleCodes) {
 
 console.log("\n=== 总结果 ===");
 if (allPass) {
-  console.log("✓ AdSense 订单项满足: Display / 全站 / 300×250 + 728×90 + 300×600");
+  console.log(
+    "✓ AdSense 订单项满足: Display / 全站 / 300×250 + 728×90 + 300×600 + 320×50 + 320×100"
+  );
   process.exit(0);
 } else {
   console.log("✗ 校验未通过。请到 GAM → 投放 → 订单项，按上面 ✗ 项修改后重跑:");

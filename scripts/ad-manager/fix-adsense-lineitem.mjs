@@ -1,5 +1,6 @@
 /**
- * Set AdSense line item expected sizes: 300x250 + 728x90 + 300x600 (pixel only).
+ * Set AdSense line item expected sizes:
+ *   300x250 + 728x90 + 300x600（页内）+ 320x50 + 320x100（锚定）
  * AdSense line items in GAM UI have no Fluid option; fluid requests use AdX line item.
  * Usage: node scripts/ad-manager/fix-adsense-lineitem.mjs [lineItemId]
  */
@@ -57,7 +58,14 @@ function placeholdersPlain() {
     <isAmpOnly>false</isAmpOnly>
   </creativePlaceholders>`;
   // AdSense backfill: pixel sizes only (matches gam-backfill-* creatives in GAM UI)
-  return pixel(300, 250) + pixel(728, 90) + pixel(300, 600);
+  // 320x50 / 320x100：便于 GPT TOP/BOTTOM_ANCHOR 吃到 AdSense 非程序需求
+  return (
+    pixel(300, 250) +
+    pixel(728, 90) +
+    pixel(300, 600) +
+    pixel(320, 50) +
+    pixel(320, 100)
+  );
 }
 
 function toUpdatePayload(block) {

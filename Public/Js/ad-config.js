@@ -6,6 +6,9 @@
    *   adx     → GPT (ad-loader / ad-oop / ad-slots-adx)，不加载 adsbygoogle.js
    *   adsense → adsbygoogle.js + googleAds.js 槽位，不加载 gpt.js、不跑 OOP
    *
+   * 锚定（ADX）：GPT TOP_ANCHOR → GAM 单元 house_site/bottom_anchor，
+   * 由网络内 AdSense 订单项 / Ad Exchange 回填；报表在 Ad Manager。
+   *
    * URL 参数会覆盖本文件默认值（不写 localStorage）：
    *   ?ad=adsense → 强制 AdSense
    *   ?ad=adx     → 强制 ADX

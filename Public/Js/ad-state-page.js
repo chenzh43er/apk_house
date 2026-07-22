@@ -2,9 +2,9 @@
  * state.html 广告加载优化：预加载 GPT、首屏可见后加载、列表内懒加载。
  */
 (function (w) {
-  /** state_adv3：近屏再请求，避免提前 display 导致 Active View 可见率偏低 */
-  var LIST_ROOT_MARGIN = "50px";
-  var ASIDE_ROOT_MARGIN = "200px";
+  /** state_adv3：进入视口再请求（rootMargin 0px），避免提前 display 导致 Active View 可见率偏低 */
+  var LIST_ROOT_MARGIN = "0px";
+  var ASIDE_ROOT_MARGIN = "0px";
 
   function isLoaded(el) {
     return el && el.getAttribute("data-apk-ad-loaded") === "1";

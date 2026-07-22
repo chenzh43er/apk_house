@@ -7,6 +7,8 @@
  *
  * GPT 限制：TOP_ANCHOR 仅在顶层窗口 + 竖屏 + 宽度约 320–1000px 时
  * defineOutOfPageSlot 才会成功；宽屏 PC 仍走 desktop 底部 sticky banner 兜底。
+ *
+ * 报表：经 GAM 单元 house_site/bottom_anchor，含 AdSense 订单项 / Ad Exchange。
  */
 (function (w) {
   var DEMO_AD_UNIT = "/6355419/Travel";

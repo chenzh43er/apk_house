@@ -863,7 +863,7 @@ const lang = getLangFromPath()
                             }
                         });
                     }, {
-                        rootMargin: '5px',
+                        rootMargin: '0px',
                     });
                     observer.observe(aside_adv);
                 }
@@ -1119,7 +1119,7 @@ const lang = getLangFromPath()
                     obs.unobserve(entry.target);
                 }
             });
-        }, { rootMargin: '5px' });
+        }, { rootMargin: '0px' });
         document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
     });
     });
@@ -1178,7 +1178,7 @@ const lang = getLangFromPath()
                     }
                 });
             }, {
-                rootMargin: '5px',
+                rootMargin: '0px',
             });
             observer.observe(state_adv1);
         }

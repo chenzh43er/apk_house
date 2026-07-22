@@ -843,7 +843,7 @@ if(lang == "de" || lang == "de-ch-at"){
                                 obs.unobserve(entry.target);
                             }
                         });
-                    }, { rootMargin: '5px' });
+                    }, { rootMargin: '0px' });
                     observer.observe(aside_adv);
                 }
             });
@@ -1092,7 +1092,7 @@ if(lang == "de" || lang == "de-ch-at"){
                     obs.unobserve(entry.target);
                 }
             });
-        }, { rootMargin: '5px' });
+        }, { rootMargin: '0px' });
         document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
     });
     });
@@ -1132,7 +1132,7 @@ if(lang == "de" || lang == "de-ch-at"){
                     }
                 });
             }, {
-                rootMargin: '5px',
+                rootMargin: '0px',
             });
             observer.observe(state_adv1);
         }

@@ -41,7 +41,7 @@ const loadScriptFn = `function setupBottomDivAdObserver() {
         }
       });
     }, {
-      rootMargin: '5px',
+      rootMargin: '0px',
     });
     observer.observe(bottom_div);
   }
