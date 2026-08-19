@@ -11,22 +11,22 @@
                     const base = document.querySelector('base');
                     base.href = '/de'; // 绝对路径形式
                     // 或者使用相对路径
-                    base.setAttribute('href', '/de');
+            base.setAttribute('href', '/de');
                 }else if(getLangFromPath() == "us"){
                     const base = document.querySelector('base');
                     base.href = '/us'; // 绝对路径形式
                     // 或者使用相对路径
-                    base.setAttribute('href', '/us');
+            base.setAttribute('href', '/us');
                 }else if(getLangFromPath() == "de-ch-at"){
                     const base = document.querySelector('base');
                     base.href = '/us'; // 绝对路径形式
                     // 或者使用相对路径
-                    base.setAttribute('href', '/de-ch-at');
+            base.setAttribute('href', '/de-ch-at');
                 }else{
                     const base = document.querySelector('base');
                     base.href = '/'; // 绝对路径形式
                     // 或者使用相对路径
-                    base.setAttribute('href', '/');
+            base.setAttribute('href', '/');
                 }
             </script>
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
@@ -47,12 +47,12 @@
     <script src="./Public/Js/jquery-3.0.0.min.js"></script>
 <!--    <script src="./Public/Js/pagination.min.js"></script>-->
     <script src="./Public/Js/utlParam.js"></script>
-    <script src="./Public/Js/common.js"></script>
-    <script src="/Public/Js/ad-config.js?v=20250718k"></script>
+    <script src="./Public/Js/common.js?v=20260819lock1"></script>
+    <script src="/Public/Js/ad-config.js?v=20260819a"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js?v=20250718k"></script>
-    <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-runtime.js?v=20260819a"></script>
     <script src="/Public/Js/ad-oop.js?v=20250718k"></script>
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -394,7 +394,8 @@ const lang = getLangFromPath()
 // fetch('./asideState.html')
     //     .then(res => res.text())
     //     .then(data => {
-    //         document.getElementById('asidePage').innerHTML = data;
+    //
+            document.getElementById('asidePage').innerHTML = data;
     //     });
 </script>
 
@@ -477,7 +478,7 @@ const lang = getLangFromPath()
             if (segments.length > 0) {
                 const lang = segments[0];
 
-                // 新结构: /{lang}/teach/state/:state/:city/:district/:page/list
+                // 新结�? /{lang}/teach/state/:state/:city/:district/:page/list
                 if (
                     (lang === "us" || deLangs.includes(lang)) &&
                     segments[1] === "teach" &&
@@ -499,7 +500,7 @@ const lang = getLangFromPath()
                         page = parseInt(segments[6], 10);
                     }
                 }
-                // 老结构: /de/:state/:city/:district/:page
+                // 老结�? /de/:state/:city/:district/:page
                 else if (deLangs.includes(lang)) {
                     if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                     if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
@@ -569,7 +570,8 @@ const lang = getLangFromPath()
     }
 
     // function goToPage(page) {
-    //     const url = new URL(window.location.href);
+    //
+            const url = new URL(window.location.href);
     //     url.searchParams.set('page', page);
     //     window.location.href = url.toString();
     // }
@@ -579,18 +581,18 @@ const lang = getLangFromPath()
             // 分解路径
             const parts = url.pathname.split('/').filter(Boolean); // 去掉空字符串
 
-            // 假设原路径最后不是 list
-            // 移除原来的 page/list，如果存在
+            // 假设原路径最后不�?list
+            // 移除原来�?page/list，如果存
             if (parts.length >= 2 && parts[parts.length - 1] === 'list') {
                 parts.pop(); // 移除 list
                 parts.pop(); // 移除 page
             }
 
-            // 添加新的 page 和 list
+            // 添加新的 page 和list
             parts.push(page);
             parts.push('list');
 
-            // 构造新的 pathname
+            // 构造新�?pathname
             url.pathname = '/' + parts.join('/');
             window.location.href = url.toString();
         }
@@ -797,7 +799,7 @@ const lang = getLangFromPath()
             </a>`;
             }
 
-            // ⬇️ 每2个房源插入1条广告
+            // ⬇️ �?个房源插�?条广
             if ((index + 1) % 2 === 0) {
                     html += `
                 <li class="statelists-imgli state_advClass">
@@ -807,7 +809,7 @@ const lang = getLangFromPath()
         });
 
         // 面包屑路径
-        if (display_district && display_city && display_state) {
+            if (display_district && display_city && display_state) {
             const country = new URLSearchParams(window.location.search).get("country");
             let state_root_href = buildTeachStatePath(lang);
             let county_href = buildTeachStatePath(lang, display_state, "city");
@@ -853,7 +855,7 @@ const lang = getLangFromPath()
             window.ApkAdLoader.scanAndClampAllMobileAds();
         }
 
-        // 初始化 observer（只需一次）
+        // 初始�?observer（只需一次）
         initAdObserver();
 
         // 仅第一页监听广告懒加载 + 缓存
@@ -861,8 +863,7 @@ const lang = getLangFromPath()
 
     }
 
-    // 初始化分页
-    $(document).ready(function () {
+    // 初始化分�?    $(document).ready(function () {
         getQueryParams();
         initAdObserver();
 
@@ -915,7 +916,7 @@ const lang = getLangFromPath()
         // 拆分路径
         const segments = url.pathname.split("/").filter(Boolean);
 
-        // ✅ 德语语言集合
+        // �?德语语言集合
         const deLangs = ["de", "de-ch-at"];
 
         if (segments.length > 0) {
@@ -943,7 +944,7 @@ const lang = getLangFromPath()
                     page = parseInt(segments[6], 10);
                 }
             } else if (deLangs.includes(lang)) {
-                // 老格式: /de 或 /de-ch-at /:state/:city/:district/:page
+                // 老格式 /de �?/de-ch-at /:state/:city/:district/:page
                 if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                 if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
 
@@ -1007,16 +1008,15 @@ const lang = getLangFromPath()
             const urlParams = new URLSearchParams(window.location.search);
             // let display_state = urlParams.get('state');
             //
-            // // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
+            // // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             // if (!display_state) {
-            //     display_state = 'Berlin'; // 或你希望的默认值
-            // }
+            //     display_state = 'Berlin'; // 或你希望的默认�?            // }
             const { state: display_state, city: display_city, district: display_district, page: currentPage } = getStateCityDistrictPageFromUrl();
 
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
             if (error) {
-                console.error("数据获取失败：", error.message);
+                console.error("数据获取失败）, error.message);
                 return;
             }
 
@@ -1070,7 +1070,7 @@ const lang = getLangFromPath()
             <p class="most-content" data-eusoft-scrollable-element="1"> ${house.location}
             </p>
           </div>
-          <h5 class="most-tit">${house.price} € Kaltmiete zzgl. NK</h5>
+          <h5 class="most-tit">${house.price} �?Kaltmiete zzgl. NK</h5>
         </div>
       </li>`}
                     else if(lang == "us"){
@@ -1158,8 +1158,7 @@ const lang = getLangFromPath()
             });
         }
 
-        // 调用初始化函数
-        init();
+        // 调用初始化函�?        init();
 
     });
 </script>
@@ -1244,10 +1243,12 @@ const lang = getLangFromPath()
     }
 
     // function updatePageHeight() {
-    //     const viewportHeight = window.innerHeight; // 可视区域高度
-    //     const pageHeight = document.documentElement.scrollHeight; // 整个页面高度
     //
-    //     output.innerHTML = `可视区域高度: ${viewportHeight}px<br>页面总高度: ${pageHeight}px`;
+            const viewportHeight = window.innerHeight; // 可视区域高度
+    //
+            const pageHeight = document.documentElement.scrollHeight; // 整个页面高度
+    //
+    //     output.innerHTML = `可视区域高度: ${viewportHeight}px<br>页面总高�? ${pageHeight}px`;
     // }
 </script>
 

@@ -117,7 +117,7 @@
     <link rel="stylesheet" href="./Public/Css/social-share.css">
     <link rel="stylesheet" href="/Public/Css/detail-page.css">
     <script src="./Public/Js/utlParam.js"></script>
-    <script src="./Public/Js/common.js"></script>
+    <script src="./Public/Js/common.js?v=20260819lock1"></script>
 <script>
     (function () {
         function initDetailShareBar() {
@@ -130,11 +130,11 @@
         }
     })();
 </script>
-    <script src="/Public/Js/ad-config.js?v=20250718k"></script>
+    <script src="/Public/Js/ad-config.js?v=20260819a"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js?v=20250718k"></script>
-    <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-runtime.js?v=20260819a"></script>
     <script src="/Public/Js/ad-oop.js?v=20250718k"></script>
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
     <!-- Google Tag Manager (noscript) -->
@@ -807,15 +807,14 @@ const lang = getLangFromPath()
             display_district = district
 
 
-            // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
+            // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             if (!display_state) {
-                display_state = 'Berlin'; // 或你希望的默认值
-            }
+                display_state = 'Berlin'; // 或你希望的默认�?            }
 
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
             if (error) {
-                console.error("获取房源数据失败：", error.message);
+                console.error("获取房源数据失败）, error.message);
                 return;
             }
 
@@ -974,15 +973,14 @@ const lang = getLangFromPath()
             display_city = city
             display_district = district
 
-            // 设定默认值，如果为 undefined 则默认一个州名，例如 'California'
+            // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             if (!display_state) {
-                display_state = 'Berlin'; // 或你希望的默认值
-            }
+                display_state = 'Berlin'; // 或你希望的默认�?            }
 
             const {data, error} = await fetchRandomHousesByState(display_state, 5);
 
             if (error) {
-                console.error("获取房源数据失败：", error.message);
+                console.error("获取房源数据失败）, error.message);
                 return;
             }
 

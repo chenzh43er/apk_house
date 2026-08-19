@@ -37,13 +37,36 @@ function loadScript(src, callback) {
     document.head.appendChild(script); // 插入到 `head` 中
 }
 
+function patchSupabaseCreateClient() {
+    const lib = globalThis.supabase;
+    if (!lib || typeof lib.createClient !== 'function' || lib.__apkAuthPatched) return;
+    const orig = lib.createClient.bind(lib);
+    lib.createClient = function (url, key, options) {
+        const opts = Object.assign({}, options || {});
+        opts.auth = Object.assign({
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            lock: async (_name, _acquireTimeout, fn) => await fn(),
+        }, opts.auth || {});
+        return orig(url, key, opts);
+    };
+    lib.__apkAuthPatched = true;
+}
+
 function ensureSupabase() {
-    if (globalThis.supabase) return Promise.resolve();
+    if (globalThis.supabase) {
+        patchSupabaseCreateClient();
+        return Promise.resolve();
+    }
     if (!globalThis._supabaseLoading) {
         globalThis._supabaseLoading = new Promise((resolve, reject) => {
             const script = document.createElement('script');
-            script.src = '/Public/Js/supabase.min.js';
-            script.onload = resolve;
+            script.src = '/Public/Js/supabase.min.js?v=20260819lock1';
+            script.onload = () => {
+                patchSupabaseCreateClient();
+                resolve();
+            };
             script.onerror = () => reject(new Error('Failed to load supabase.min.js'));
             document.head.appendChild(script);
         });

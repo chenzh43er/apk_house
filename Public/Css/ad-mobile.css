@@ -7,16 +7,18 @@
  * 关键：#google_top_anchor / #google_bottom_anchor 的 position:fixed
  * 必须全局生效（勿放进 max-width 媒体查询），
  * 否则锚定会掉进文档流、Active View 可见率暴跌。
+ *
+ * GPT 规则只挂 html.apk-ad-adx，避免误伤 AdSense Auto ads 锚定
+ *（否则 PC 上会被拉成整行白条、创意贴左）。
  */
 
 /**
- * GPT 底部/顶部锚定：全视口强制 fixed（移动端 + PC）
+ * GPT 底部/顶部锚定：全视口强制 fixed（仅 ADX）
  * 含新旧 DOM：#google_*_anchor 与 ins#gpt_unit_*[data-anchor-status]
  */
-#google_bottom_anchor,
-#google_top_anchor,
-ins[id^="gpt_unit_"][data-anchor-status],
-ins[data-anchor-status][data-anchor-shown="true"] {
+html.apk-ad-adx #google_bottom_anchor,
+html.apk-ad-adx #google_top_anchor,
+html.apk-ad-adx ins[id^="gpt_unit_"][data-anchor-status] {
   position: fixed !important;
   left: 0 !important;
   right: 0 !important;
@@ -29,29 +31,27 @@ ins[data-anchor-status][data-anchor-shown="true"] {
   pointer-events: auto !important;
 }
 
-#google_bottom_anchor {
+html.apk-ad-adx #google_bottom_anchor {
   bottom: 0 !important;
   top: auto !important;
 }
 
-#google_top_anchor,
-ins[id^="gpt_unit_"][data-anchor-status],
-ins[data-anchor-status][data-anchor-shown="true"] {
+html.apk-ad-adx #google_top_anchor,
+html.apk-ad-adx ins[id^="gpt_unit_"][data-anchor-status] {
   top: 0 !important;
   bottom: auto !important;
 }
 
-#google_bottom_anchor iframe,
-#google_top_anchor iframe,
-ins[id^="gpt_unit_"][data-anchor-status] iframe,
-ins[data-anchor-status][data-anchor-shown="true"] iframe,
-#google_bottom_anchor div[id^="google_ads_iframe_"],
-#google_top_anchor div[id^="google_ads_iframe_"],
-ins[id^="gpt_unit_"][data-anchor-status] div[id^="google_ads_iframe_"],
-#google_bottom_anchor div[data-google-query-id],
-#google_top_anchor div[data-google-query-id],
-#google_bottom_anchor ins,
-#google_top_anchor ins {
+html.apk-ad-adx #google_bottom_anchor iframe,
+html.apk-ad-adx #google_top_anchor iframe,
+html.apk-ad-adx ins[id^="gpt_unit_"][data-anchor-status] iframe,
+html.apk-ad-adx #google_bottom_anchor div[id^="google_ads_iframe_"],
+html.apk-ad-adx #google_top_anchor div[id^="google_ads_iframe_"],
+html.apk-ad-adx ins[id^="gpt_unit_"][data-anchor-status] div[id^="google_ads_iframe_"],
+html.apk-ad-adx #google_bottom_anchor div[data-google-query-id],
+html.apk-ad-adx #google_top_anchor div[data-google-query-id],
+html.apk-ad-adx #google_bottom_anchor ins,
+html.apk-ad-adx #google_top_anchor ins {
   max-width: none !important;
   min-width: 0 !important;
   overflow: visible !important;
@@ -217,5 +217,26 @@ html.apk-has-desktop-sticky body {
   }
   html.apk-has-desktop-sticky body {
     padding-bottom: 0;
+  }
+}
+
+/**
+ * AdSense Auto ads 锚定是移动端格式。
+ * PC 上若仍注入，会被拉成整行空白+小创意贴左；桌面端直接隐藏。
+ * 页内展示广告（普通 ins.adsbygoogle）不受影响。
+ */
+@media screen and (min-width: 769px) {
+  html.apk-ad-adsense ins.adsbygoogle[data-anchor-status],
+  html.apk-ad-adsense ins.adsbygoogle[data-anchor-shown],
+  html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status],
+  html.apk-ad-adsense #google_top_anchor,
+  html.apk-ad-adsense #google_bottom_anchor {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
   }
 }

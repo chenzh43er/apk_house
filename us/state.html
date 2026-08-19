@@ -2,39 +2,26 @@
 <html lang="en" dir="ltr" data-eusoft-scrollable-element="1">
 
 <head>
-    <base href="/de/" />
+    <meta charset="utf-8">
+    <base href="/us/" />
     <script>
         function getLangFromPath() {
             const pathSegments = window.location.pathname.split('/');
-            return pathSegments[1]; // 假设语言代码总是在第一个路径段
+            return pathSegments[1];
         }
-        if(getLangFromPath() == "de"){
+        (function () {
             const base = document.querySelector('base');
-            base.href = '/de/' // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/de/');
-        }else if(getLangFromPath() == "us"){
-            const base = document.querySelector('base');
-            base.href = '/us/' // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/us/');
-        }else if(getLangFromPath() == "de-ch-at"){
-            const base = document.querySelector('base');
-            base.href = '/de-ch-at/' // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/de-ch-at/');
-        }else{
-            const base = document.querySelector('base');
-            base.href = '/'; // 绝对路径形式
-            // 或者使用相对路径
-            base.setAttribute('href', '/');
-        }
+            const lang = getLangFromPath();
+            if (lang === 'de') base.href = '/de/';
+            else if (lang === 'us') base.href = '/us/';
+            else if (lang === 'de-ch-at') base.href = '/de-ch-at/';
+            else base.href = '/';
+        })();
     </script>
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+<link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
     <link rel="preconnect" href="https://tpc.googlesyndication.com">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         identityinsight.org State
     </title>
@@ -46,12 +33,12 @@
     <link rel="stylesheet" href="/Public/Css/teach-page.css">
     <link rel="stylesheet" href="/Public/Css/state-page.css">
     <script src="./Public/Js/utlParam.js"></script>
-    <script src="./Public/Js/common.js?v=20250718"></script>
-    <script src="/Public/Js/ad-config.js?v=20250718k"></script>
+    <script src="./Public/Js/common.js?v=20260819lock1"></script>
+    <script src="/Public/Js/ad-config.js?v=20260819a"></script>
     <script src="./Public/Js/googleAds_Test.js"></script>
     <script src="/Public/Js/ad-slots-adx.js"></script>
     <script src="/Public/Js/ad-loader.js?v=20250718k"></script>
-    <script src="/Public/Js/ad-runtime.js"></script>
+    <script src="/Public/Js/ad-runtime.js?v=20260819a"></script>
     <script src="/Public/Js/ad-oop.js?v=20250718k"></script>
     <script src="/Public/Js/ad-state-page.js?v=20250718"></script>
     <script>
@@ -460,7 +447,7 @@ const lang = getLangFromPath()
         const links = document.querySelectorAll('.state-link');
         links.forEach(link => {
             const textEl = link.querySelector('.text-wrapper');
-            if (!textEl) return; // 防止找不到
+            if (!textEl) return;
             const stateName = textEl.textContent.trim();
             if (stateName) {
                 link.dataset.state = stateName; // 保存州名
@@ -477,7 +464,7 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
-            // 先通知 OOP（锚定），再 display banner，避免 SRA 首包时锚定尚未 display
+            // 先通知 OOP（锚定），再 display banner，避�?SRA 首包时锚定尚�?display
             ApkAdStatePage.notifyBodyVisible();
             ApkAdStatePage.loadTopBanner(document.getElementById("state_adv1"));
             ApkAdStatePage.observeMidContentAd(
@@ -533,7 +520,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie Ihr Bundesland, um Programme und Angebote in Ihrer Region zu sehen.',
                 headChip1: 'Schritt 1 von 4',
                 headChip2: 'Kostenloser Wegweiser',
-                headChip3: 'Ab 300 € / Monat',
+                headChip3: 'Ab 300 �?/ Monat',
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Bundesland auswählen',
                 stepsLead: 'Wählen Sie ein Bundesland, um mit Städten und Angeboten fortzufahren.',
@@ -544,9 +531,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Bundesland suchen',
-                pickerLead: 'Tippen Sie auf ein Bundesland – die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf ein Bundesland �?die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
+                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 �?�?deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
                 state: 'Bundesland auswählen', stateHint: 'Ihre Region festlegen',
                 city: 'Stadt auswählen', cityHint: 'Stadt in der Nähe finden',
@@ -572,12 +559,12 @@ const lang = getLangFromPath()
                 stepPill: 'You are here',
 
                 pickerTitle: 'Browse by state',
-                pickerLead: 'Tap a state below — the badge shows how many listings are available.',
+                pickerLead: 'Tap a state below �?the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
-                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
+                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 �?well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
                 state: 'Select state', stateHint: 'Programs from $300/mo',
-                city: 'Select city', cityHint: 'Tap below — badges show listing counts',
+                city: 'Select city', cityHint: 'Tap below �?badges show listing counts',
                 district: 'Select district', districtHint: 'Filter by neighborhood',
                 apartment: 'Select apartment', apartmentHint: 'Section 8 · LIHTC · Public housing',
                 title: 'Find affordable housing'
@@ -589,7 +576,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie Ihren Kanton, um Programme und Angebote in Ihrer Region zu sehen.',
                 headChip1: 'Schritt 1 von 4',
                 headChip2: 'Kostenloser Wegweiser',
-                headChip3: 'Ab 300 € / Monat',
+                headChip3: 'Ab 300 �?/ Monat',
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Kanton auswählen',
                 stepsLead: 'Wählen Sie einen Kanton, um mit Gemeinden und Angeboten fortzufahren.',
@@ -600,9 +587,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Kanton suchen',
-                pickerLead: 'Tippen Sie auf einen Kanton – die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf einen Kanton �?die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 €.',
+                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 �?',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
                 state: 'Kanton wählen', stateHint: 'Ihre Region festlegen',
                 city: 'Gemeinde wählen', cityHint: 'Ort in der Nähe finden',
@@ -700,16 +687,16 @@ const lang = getLangFromPath()
 <!--        // 已加载就跳过-->
 <!--        if (el.dataset.loaded === '1') return;-->
 
-<!--        // 清空旧内容（确保广告位置干净）-->
+<!--        // 清空旧内容（确保广告位置干净�?->
 <!--        el.innerHTML = '';-->
 
 <!--        // 生成唯一 ID-->
 <!--        el.id = uniqueId;-->
 
-<!--        // 标记已加载-->
+<!--        // 标记已加�?->
 <!--        el.dataset.loaded = '1';-->
 
-<!--        // 定义广告并展示-->
+<!--        // 定义广告并展�?->
 
 
 <!--        });-->

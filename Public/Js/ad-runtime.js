@@ -80,6 +80,19 @@
     );
   }
 
+  function isAdsenseTestMode() {
+    return !!(w.AD_CONFIG && w.AD_CONFIG.adsense && w.AD_CONFIG.adsense.testMode);
+  }
+
+  /** 测试模式只补 data-adtest="on"，不改 auto / 全宽响应式尺寸 */
+  function withAdsenseTestAttr(html) {
+    if (!isAdsenseTestMode() || !html) return html;
+    return html.replace(/<ins\b([^>]*)>/gi, function (tag, attrs) {
+      if (/\bdata-adtest\s*=/i.test(attrs)) return tag;
+      return "<ins" + attrs + ' data-adtest="on">';
+    });
+  }
+
   /** 原有 AdSense 逻辑，不做异步、不依赖 ad-loader */
   function renderAdsense(slotKey, el) {
     var fnName = toAdsenseFnName(slotKey);
@@ -88,7 +101,7 @@
       console.warn("[ApkAd] AdSense slot function missing:", fnName);
       return;
     }
-    el.innerHTML = fn();
+    el.innerHTML = withAdsenseTestAttr(fn());
     try {
       (w.adsbygoogle = w.adsbygoogle || []).push({});
     } catch (e) {

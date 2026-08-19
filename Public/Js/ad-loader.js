@@ -1077,6 +1077,9 @@
   }
 
   function ensureGptSdk() {
+    if (!isAdxMode()) {
+      return Promise.reject(new Error("GPT skipped: not ADX mode"));
+    }
     if (sdkPromise) {
       return sdkPromise;
     }

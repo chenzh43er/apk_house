@@ -66,11 +66,11 @@ Sitemap: https://identityinsight.org/sitemap.xml
 `;
 
 /** Pages 生产回源地址（Zone Worker 无 ASSETS binding 时使用） */
-const PAGES_ORIGIN = "https://apk-house-2nz.pages.dev";
+const PAGES_ORIGIN = "https://apk-house.pages.dev";
 
 /**
  * 静态资源 / HTML 回源 Pages。
- * 本地 dev 使用 ASSETS binding；线上 Zone Worker 回源 apk-house-2nz.pages.dev。
+ * 本地 dev 使用 ASSETS binding；线上 Zone Worker 回源 apk-house.pages.dev。
  */
 async function passThrough(request, env, pathname) {
   if (env.ASSETS) {

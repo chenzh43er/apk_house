@@ -39,6 +39,9 @@
 
   w.ApkAdStatePage = {
     preloadGpt: function () {
+      if (w.AD_CONFIG && w.AD_CONFIG.mode !== "adx") {
+        return;
+      }
       if (w.ApkAdLoader && w.ApkAdLoader.ensureGptSdk) {
         w.ApkAdLoader.ensureGptSdk();
       }
@@ -89,6 +92,9 @@
 
     /** body 从 display:none 变为可见后调用（OOP 延迟展示） */
     notifyBodyVisible: function () {
+      if (w.AD_CONFIG && w.AD_CONFIG.mode !== "adx") {
+        return;
+      }
       if (w.ApkAdOop) {
         if (typeof w.ApkAdOop.notifyBodyVisible === "function") {
           w.ApkAdOop.notifyBodyVisible();

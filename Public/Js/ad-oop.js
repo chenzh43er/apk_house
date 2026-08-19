@@ -33,6 +33,11 @@
     );
   }
 
+  /** OOP / desktop sticky 仅 ADX；AdSense 不得插入 apk-desktop-bottom-sticky */
+  function shouldRunAdxOop() {
+    return isAdxMode() && !isAdFreePage();
+  }
+
   function isDesktopViewport() {
     if (w.innerWidth > 0 && w.innerWidth <= 768) {
       return false;
@@ -176,6 +181,10 @@
   }
 
   function tryDesktopBottomSticky() {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
+      return false;
+    }
     if (!shouldUseDesktopStickyFallback()) {
       return false;
     }
@@ -330,6 +339,9 @@
 
   /** 若锚定被挤进文档流，强制拉回视口顶部（不改内部创意布局） */
   function ensureBottomAnchorFixed() {
+    if (!shouldRunAdxOop()) {
+      return false;
+    }
     if (anchorFixing) {
       return false;
     }
@@ -526,6 +538,9 @@
   }
 
   function displayBottomAnchor() {
+    if (!shouldRunAdxOop()) {
+      return false;
+    }
     if (bottomAnchorDisplayed || desktopStickyShown || !w.ApkAdLoader) {
       return false;
     }
@@ -549,6 +564,10 @@
   }
 
   function defineBottomAnchorNow(autoDisplay) {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
+      return false;
+    }
     if (
       bottomAnchorDefined ||
       bottomAnchorDefining ||
@@ -602,6 +621,10 @@
   }
 
   function runAnchorWhenReady() {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
+      return;
+    }
     w.googletag = w.googletag || { cmd: [] };
     w.googletag.cmd.push(function () {
       if (!isBodyVisible()) {
@@ -629,6 +652,10 @@
   }
 
   function scheduleBottomAnchorDisplay() {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
+      return;
+    }
     if (bottomAnchorDisplayed || desktopStickyShown) {
       return;
     }
@@ -665,7 +692,7 @@
   /** DevTools 设备模式常在首屏之后才稳定 innerWidth，本地补几次重试 */
   var localRetryArmed = false;
   function armLocalAnchorRetries() {
-    if (localRetryArmed || bottomAnchorDisplayed) {
+    if (!shouldRunAdxOop() || localRetryArmed || bottomAnchorDisplayed) {
       return;
     }
     if (!isLocalHost() && !isDemoMode()) {
@@ -731,7 +758,7 @@
     resizeWatchStarted = true;
     var timer = null;
     function onChange() {
-      if (bottomAnchorDisplayed) {
+      if (!shouldRunAdxOop() || bottomAnchorDisplayed) {
         return;
       }
       if (timer) {
@@ -776,7 +803,7 @@
   }
 
   function initDeferredInterstitial() {
-    if (!isBodyVisible() || !w.ApkAdLoader) {
+    if (!shouldRunAdxOop() || !isBodyVisible() || !w.ApkAdLoader) {
       return Promise.resolve();
     }
 
@@ -821,6 +848,10 @@
   }
 
   function notifyBodyVisible() {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
+      return Promise.resolve();
+    }
     logAnchor("notifyBodyVisible");
     if (bottomAnchorTimer != null) {
       w.clearTimeout(bottomAnchorTimer);
@@ -831,7 +862,8 @@
   }
 
   function initOop() {
-    if (!isAdxMode() || isAdFreePage()) {
+    if (!shouldRunAdxOop()) {
+      destroyDesktopSticky();
       return;
     }
     if (!w.ApkAdLoader || !w.ADX_OOP_DEFS) {

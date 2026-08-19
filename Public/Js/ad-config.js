@@ -12,12 +12,19 @@
    * URL 参数会覆盖本文件默认值（不写 localStorage）：
    *   ?ad=adsense → 强制 AdSense
    *   ?ad=adx     → 强制 ADX
+   *   ?adtest=on|1|true  → AdSense/ADX 测试模式
+   *   ?adtest=off|0|false → 关闭 AdSense 测试广告
    * 改 mode 后若未生效：去掉 URL 中的 ad 参数，并硬刷新（见 _headers 广告 JS 缓存）。
    */
   w.AD_CONFIG = {
     mode: "adx",
     adsense: {
       client: "ca-pub-3481735481590354",
+      /**
+       * AdSense 测试广告（data-adtest="on"，不计费）：
+       * 默认 true；URL ?adtest=off 可关掉；?adtest=on|1|true 强制开。
+       */
+      testMode: true,
     },
 
     adx: {
@@ -95,11 +102,66 @@
   }
 
   var adtest = params.get("adtest");
-  if (w.AD_CONFIG.mode === "adx" && adtest) {
-    if (adtest === "demo") {
-      w.AD_CONFIG.adx.testMode = "demo";
-    } else if (adtest === "1" || adtest === "on" || adtest === "true") {
-      w.AD_CONFIG.adx.testMode = true;
+  if (adtest) {
+    var adtestOn =
+      adtest === "1" || adtest === "on" || adtest === "true";
+    var adtestOff =
+      adtest === "0" || adtest === "off" || adtest === "false";
+
+    if (w.AD_CONFIG.mode === "adx") {
+      if (adtest === "demo") {
+        w.AD_CONFIG.adx.testMode = "demo";
+      } else if (adtestOn) {
+        w.AD_CONFIG.adx.testMode = true;
+      }
+    }
+
+    if (w.AD_CONFIG.mode === "adsense" && w.AD_CONFIG.adsense) {
+      if (adtestOn) {
+        w.AD_CONFIG.adsense.testMode = true;
+      } else if (adtestOff) {
+        w.AD_CONFIG.adsense.testMode = false;
+      }
+    }
+  }
+
+  function markAdModeClass() {
+    var root = document.documentElement;
+    if (!root || !root.classList) {
+      return;
+    }
+    root.classList.remove("apk-ad-adx", "apk-ad-adsense");
+    root.classList.add(
+      w.AD_CONFIG.mode === "adx" ? "apk-ad-adx" : "apk-ad-adsense"
+    );
+  }
+  markAdModeClass();
+
+  /** PC 上 AdSense Auto ads 锚定是移动端格式，隐藏以免占文档流 */
+  function hideAdsenseDesktopAnchors() {
+    if (w.AD_CONFIG.mode === "adx") {
+      return;
+    }
+    if (!(w.matchMedia && w.matchMedia("(min-width: 769px)").matches)) {
+      return;
+    }
+    var nodes = document.querySelectorAll(
+      "ins.adsbygoogle[data-anchor-status], ins.adsbygoogle-noablate[data-anchor-status], #google_top_anchor, #google_bottom_anchor"
+    );
+    for (var i = 0; i < nodes.length; i++) {
+      nodes[i].style.setProperty("display", "none", "important");
+    }
+  }
+  hideAdsenseDesktopAnchors();
+  if (w.AD_CONFIG.mode !== "adx" && document.documentElement) {
+    if (typeof MutationObserver !== "undefined") {
+      var adSenseAnchorObs = new MutationObserver(hideAdsenseDesktopAnchors);
+      adSenseAnchorObs.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-anchor-status", "data-anchor-shown", "class"],
+      });
     }
   }
 

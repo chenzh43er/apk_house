@@ -391,7 +391,8 @@ function returnTeach_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1945174812"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnTeach_adv2_ADS(){
@@ -401,7 +402,8 @@ function returnTeach_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="2080922090"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnTeach_adv3_ADS(){
@@ -411,7 +413,8 @@ function returnTeach_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="9173762296"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnState_adv1_ADS(){
@@ -421,7 +424,8 @@ function returnState_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3888009540"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnState_adv2_ADS(){
@@ -431,7 +435,8 @@ function returnState_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1845936619"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnState_adv3_ADS(){
@@ -441,7 +446,8 @@ function returnState_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="9720557207"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnCity_adv1_ADS(){
@@ -451,7 +457,8 @@ function returnCity_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3888009540"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnCity_adv2_ADS(){
@@ -461,7 +468,8 @@ function returnCity_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5589740502"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnCity_adv3_ADS(){
@@ -471,7 +479,8 @@ function returnCity_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="7852123526"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDistrict_adv1_ADS(){
@@ -481,7 +490,8 @@ function returnDistrict_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="6605123482"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDistrict_adv2_ADS(){
@@ -491,7 +501,8 @@ function returnDistrict_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1596339386"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDistrict_adv3_ADS(){
@@ -501,7 +512,8 @@ function returnDistrict_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="4609515531"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnList_adv1_ADS(){
@@ -511,7 +523,8 @@ function returnList_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3256889501"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnList_adv2_ADS(){
@@ -521,7 +534,8 @@ function returnList_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="8174174268"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnList_adv3_ADS(){
@@ -531,7 +545,8 @@ function returnList_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5164867544"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnList_adv4_ADS(){
@@ -541,7 +556,8 @@ function returnList_adv4_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="7279910901"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDetail_adv1_ADS(){
@@ -551,7 +567,8 @@ function returnDetail_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3305006873"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDetail_adv2_ADS(){
@@ -561,7 +578,8 @@ function returnDetail_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="9946420936"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDetail_adv3_ADS(){
@@ -571,7 +589,8 @@ function returnDetail_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="6349154372"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDetail_adv4_ADS(){
@@ -581,7 +600,8 @@ function returnDetail_adv4_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5432460858"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnDetail_adv5_ADS(){
@@ -591,7 +611,8 @@ function returnDetail_adv5_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="8529413395"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnForm_adv1_ADS(){
@@ -601,7 +622,8 @@ function returnForm_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="8692246683"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnForm_adv2_ADS(){
@@ -611,7 +633,8 @@ function returnForm_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5173440555"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnForm_adv3_ADS(){
@@ -621,7 +644,8 @@ function returnForm_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1042623852"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnForm_adv4_ADS(){
@@ -631,7 +655,8 @@ function returnForm_adv4_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3795143229"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnForm_adv5_ADS(){
@@ -641,7 +666,8 @@ function returnForm_adv5_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5986192295"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnResult_adv1_ADS(){
@@ -651,7 +677,8 @@ function returnResult_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="2881516800"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnResult_adv2_ADS(){
@@ -661,7 +688,8 @@ function returnResult_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3640882947"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnResult_adv3_ADS(){
@@ -671,7 +699,8 @@ function returnResult_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1944657892"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnResult_adv4_ADS(){
@@ -681,7 +710,8 @@ function returnResult_adv4_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="1729019564"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnResult_adv5_ADS(){
@@ -691,7 +721,8 @@ function returnResult_adv5_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="2244024884"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnPost_adv1_ADS(){
@@ -701,7 +732,8 @@ function returnPost_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="3898606078"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnPost_adv2_ADS(){
@@ -711,7 +743,8 @@ function returnPost_adv2_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="5008507760"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnPost_adv3_ADS(){
@@ -721,7 +754,8 @@ function returnPost_adv3_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="6948792317"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }
 
 function returnIndex_adv1_ADS(){
@@ -731,5 +765,6 @@ function returnIndex_adv1_ADS(){
      data-ad-client="ca-pub-3481735481590354"
      data-ad-slot="7281633109"
      data-ad-format="auto"
-     data-full-width-responsive="true"></ins>`
+     data-full-width-responsive="true"
+     data-adtest="on"></ins>`
 }

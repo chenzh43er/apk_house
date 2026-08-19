@@ -2,7 +2,15 @@
 
 const supabase = createClient(
     'https://uoxzcftzwemdrmcmhuhb.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVveHpjZnR6d2VtZHJtY21odWhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMjkwNDMsImV4cCI6MjA2OTcwNTA0M30.0IVKS1y4dgjgQbNPTonITxki8btCAREEF2VPjL_0jvc'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVveHpjZnR6d2VtZHJtY21odWhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMjkwNDMsImV4cCI6MjA2OTcwNTA0M30.0IVKS1y4dgjgQbNPTonITxki8btCAREEF2VPjL_0jvc',
+    {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            lock: async (_name, _acquireTimeout, fn) => await fn(),
+        },
+    }
 );
 
 // 根据过滤条件（state, city, district）获取分页数据

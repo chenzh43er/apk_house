@@ -2,7 +2,15 @@
 
 const supabase = createClient(
     'https://zxvflhunzznslxzqreih.supabase.co',
-    'sb_publishable_rR8k81Y-lslto8ZIME11Hg_iorubIcG'
+    'sb_publishable_rR8k81Y-lslto8ZIME11Hg_iorubIcG',
+    {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            lock: async (_name, _acquireTimeout, fn) => await fn(),
+        },
+    }
 );
 
 // 根据过滤条件（state, city, district）获取分页数据
