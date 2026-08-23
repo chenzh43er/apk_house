@@ -53,7 +53,7 @@
     <style>
         .select-state {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 默认移动�?�?*/
+            grid-template-columns: repeat(2, 1fr); /* 默认移动端2列?*/
             gap: 20px;
             padding: 0;
             margin: 0;
@@ -62,7 +62,7 @@
 
         @media screen and (min-width: 900px) {
             .select-state {
-                grid-template-columns: repeat(4, 1fr); /* 桌面4�?*/
+                grid-template-columns: repeat(4, 1fr); /* 桌面4列*/
             }
         }
 
@@ -77,7 +77,7 @@
             color: inherit;
         }
 
-        /* 外部容器：实现居�?+ 基础样式 */
+        /* 外部容器：实现居中 + 基础样式 */
         .selectLidiv {
             border: 1px solid #eee;
             border-radius: 10px;
@@ -91,7 +91,7 @@
             background-color: #00000005;
             color: #333;
 
-            min-width: 0;  /* �?关键，允许在 grid/flex 中压�?*/
+            min-width: 0;  /* ★ 关键，允许在 grid/flex 中压缩*/
             cursor: pointer;
             transition: border-color 0.3s, color 0.3s;
         }
@@ -107,7 +107,7 @@
             word-break: break-word;
 
             max-width: 100%;
-            min-width: 0; /* �?防止被撑�?*/
+            min-width: 0; /* ★ 防止被撑开*/
         }
 
         /* 悬停高亮效果 */
@@ -120,7 +120,7 @@
             color: #1174eb;
         }
 
-        /* 分割�?li，占满整�?*/
+        /* 分割线 li，占满整行*/
         .divider-wrap {
             grid-column: 1 / -1;
             text-align: center;
@@ -900,9 +900,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Bezirk suchen',
-                pickerLead: 'Tippen Sie auf einen Bezirk �?die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf einen Bezirk — die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 �?�?deutlich unter dem üblichen Marktpreis.',
+                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
                 stateHint: 'Ausgewählt',
                 cityHint: 'Ausgewählt',
@@ -928,9 +928,9 @@ const lang = getLangFromPath()
                 stepPill: 'You are here',
 
                 pickerTitle: 'Browse by district',
-                pickerLead: 'Tap a district below �?the badge shows how many listings are available.',
+                pickerLead: 'Tap a district below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
-                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 �?well below market rates.',
+                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
                 stateHint: 'Selected',
                 cityHint: 'Selected',
@@ -956,9 +956,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Quartier suchen',
-                pickerLead: 'Tippen Sie auf ein Quartier �?die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf ein Quartier — die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 �?',
+                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
                 stateHint: 'Ausgewählt',
                 cityHint: 'Ausgewählt',
@@ -1118,15 +1118,15 @@ const lang = getLangFromPath()
         let state = null;
         let city = null;
 
-        // 1️⃣ 优先�?query 参数
+        // 1️⃣ 优先读 query 参数
         if (params.has("state")) state = decodeURIComponent(params.get("state"));
         if (params.has("city"))  city  = decodeURIComponent(params.get("city"));
 
-        // 2️⃣ 如果 query 没给，再从路径提�?
+        // 2️⃣ 如果 query 没给，再从路径提取
         if (!state || !city) {
             const path = url.pathname;
 
-            // 支持�?
+            // 支持：
             // - /de/:state/:city
             // - /de-ch-at/:state/:city
             // - /de/teach/state/:state/:city

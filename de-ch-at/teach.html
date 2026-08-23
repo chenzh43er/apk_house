@@ -628,7 +628,7 @@
 <div class="teach-sticky-cta" id="teach_sticky_bar" aria-hidden="true">
     <div class="teach-sticky-cta__inner">
         <span class="teach-sticky-cta__label" id="lang_sticky_label">Step 1 of 4</span>
-        <a class="teach-sticky-cta__btn" id="lang_sticky_cta" href="#">Select state �?/a>
+        <a class="teach-sticky-cta__btn" id="lang_sticky_cta" href="#">Select state →</a>
     </div>
 </div>
 
@@ -777,8 +777,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
             stepsCta: 'Bundesland wählen',
             stickyLabel: 'Schritt 1 von 4',
-            stickyCta: 'Bundesland wählen �?,
-            introLink: 'Mit Bundesland starten �?
+            stickyCta: 'Bundesland wählen →',
+            introLink: 'Mit Bundesland starten →'
         },
         us: {
             heroCta: 'Start step 1 —select your state',
@@ -786,8 +786,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Free · No sign-up · About 2 minutes',
             stepsCta: 'Select your state',
             stickyLabel: 'Step 1 of 4',
-            stickyCta: 'Select state �?,
-            introLink: 'Start with your state �?
+            stickyCta: 'Select state →',
+            introLink: 'Start with your state →'
         },
         'de-ch-at': {
             heroCta: 'Schritt 1 —Kanton wählen',
@@ -795,8 +795,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
             stepsCta: 'Kanton wählen',
             stickyLabel: 'Schritt 1 von 4',
-            stickyCta: 'Kanton wählen �?,
-            introLink: 'Mit Kanton starten �?
+            stickyCta: 'Kanton wählen →',
+            introLink: 'Mit Kanton starten →'
         }
     };
 
@@ -1007,13 +1007,13 @@ const lang = getLangFromPath()
         if (lang === 'de' || lang === 'de-ch-at') {
             document.getElementById("lang_locate").innerText = "Aktuellen Standort ermitteln";
             document.getElementById("lang_find").innerText = "Bezahlbaren Wohnraum finden";
-            document.getElementById("lang_price").innerText = "Schon ab 300�?Monat";
+            document.getElementById("lang_price").innerText = "Schon ab 300 €/Monat";
         } else {
             document.getElementById("lang_locate").innerText = "Detect current location";
             document.getElementById("lang_find").innerText = "Find affordable housing";
             document.getElementById("lang_price").innerText = lang === 'us'
                 ? "Starting from $300/month"
-                : "Starting from �?00/month";
+                : "Starting from $300/month";
         }
     });
 

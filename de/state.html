@@ -464,7 +464,7 @@ const lang = getLangFromPath()
         document.body.style.display = "block";
 
         if (window.ApkAdStatePage) {
-            // 先通知 OOP（锚定），再 display banner，避�?SRA 首包时锚定尚�?display
+            // 先通知 OOP（锚定），再 display banner，避免 SRA 首包时锚定尚未 display
             ApkAdStatePage.notifyBodyVisible();
             ApkAdStatePage.loadTopBanner(document.getElementById("state_adv1"));
             ApkAdStatePage.observeMidContentAd(
@@ -520,7 +520,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie Ihr Bundesland, um Programme und Angebote in Ihrer Region zu sehen.',
                 headChip1: 'Schritt 1 von 4',
                 headChip2: 'Kostenloser Wegweiser',
-                headChip3: 'Ab 300 �?/ Monat',
+                headChip3: 'Ab 300 €/ Monat',
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Bundesland auswählen',
                 stepsLead: 'Wählen Sie ein Bundesland, um mit Städten und Angeboten fortzufahren.',
@@ -531,9 +531,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Bundesland suchen',
-                pickerLead: 'Tippen Sie auf ein Bundesland �?die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf ein Bundesland — die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 �?�?deutlich unter dem üblichen Marktpreis.',
+                how1: 'Bezahlbarer Wohnraum ist dank staatlicher Fördermittel für einkommensschwache Haushalte zu subventionierten Preisen verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Menschen mit Behinderung · Familien mit geringem Einkommen · Alleinerziehende · Erstbewerber. Angebote: Sozialwohnungen · WBS-Wohnungen · geförderter Mietwohnraum · Wartelisten-Infos.',
                 state: 'Bundesland auswählen', stateHint: 'Ihre Region festlegen',
                 city: 'Stadt auswählen', cityHint: 'Stadt in der Nähe finden',
@@ -559,12 +559,12 @@ const lang = getLangFromPath()
                 stepPill: 'You are here',
 
                 pickerTitle: 'Browse by state',
-                pickerLead: 'Tap a state below �?the badge shows how many listings are available.',
+                pickerLead: 'Tap a state below — the badge shows how many listings are available.',
                 how1Title: 'Your free guide to affordable housing',
-                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 �?well below market rates.',
+                how1: 'Affordable housing is available at subsidized rates thanks to government funding for low-income households. Monthly rent can be as low as $300 — well below market rates.',
                 how2: 'Who it helps: seniors · people with disabilities · low-income families · single parents · first-time applicants. What you\'ll find: Section 8 · public housing · LIHTC apartments · waiting-list updates.',
                 state: 'Select state', stateHint: 'Programs from $300/mo',
-                city: 'Select city', cityHint: 'Tap below �?badges show listing counts',
+                city: 'Select city', cityHint: 'Tap below — badges show listing counts',
                 district: 'Select district', districtHint: 'Filter by neighborhood',
                 apartment: 'Select apartment', apartmentHint: 'Section 8 · LIHTC · Public housing',
                 title: 'Find affordable housing'
@@ -576,7 +576,7 @@ const lang = getLangFromPath()
                 pageLead: 'Wählen Sie Ihren Kanton, um Programme und Angebote in Ihrer Region zu sehen.',
                 headChip1: 'Schritt 1 von 4',
                 headChip2: 'Kostenloser Wegweiser',
-                headChip3: 'Ab 300 �?/ Monat',
+                headChip3: 'Ab 300 €/ Monat',
                 stepsLabel: 'Schritt 1 von 4',
                 stepsTitle: 'Kanton auswählen',
                 stepsLead: 'Wählen Sie einen Kanton, um mit Gemeinden und Angeboten fortzufahren.',
@@ -587,9 +587,9 @@ const lang = getLangFromPath()
                 stepPill: 'Aktueller Schritt',
 
                 pickerTitle: 'Nach Kanton suchen',
-                pickerLead: 'Tippen Sie auf einen Kanton �?die Badge zeigt die Anzahl verfügbarer Angebote.',
+                pickerLead: 'Tippen Sie auf einen Kanton — die Badge zeigt die Anzahl verfügbarer Angebote.',
                 how1Title: 'Ihr kostenloser Wegweiser zum bezahlbaren Wohnraum',
-                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 �?',
+                how1: 'Subventionierter Wohnraum ist dank staatlicher und kantonaler Förderung für einkommensschwache Haushalte verfügbar. Die monatliche Miete beginnt bereits bei 300 € — deutlich unter dem üblichen Marktpreis.',
                 how2: 'Geeignet für: Senioren · Familien · Neue Bewerber · Alle mit begrenztem Einkommen. Angebote: gemeinnütziger Wohnbau · subventionierte Wohnungen · Wartelisten-Updates.',
                 state: 'Kanton wählen', stateHint: 'Ihre Region festlegen',
                 city: 'Gemeinde wählen', cityHint: 'Ort in der Nähe finden',
@@ -687,16 +687,16 @@ const lang = getLangFromPath()
 <!--        // 已加载就跳过-->
 <!--        if (el.dataset.loaded === '1') return;-->
 
-<!--        // 清空旧内容（确保广告位置干净�?->
+<!--        // 清空旧内容（确保广告位置干净）-->
 <!--        el.innerHTML = '';-->
 
 <!--        // 生成唯一 ID-->
 <!--        el.id = uniqueId;-->
 
-<!--        // 标记已加�?->
+<!--        // 标记已加载-->
 <!--        el.dataset.loaded = '1';-->
 
-<!--        // 定义广告并展�?->
+<!--        // 定义广告并展示-->
 
 
 <!--        });-->

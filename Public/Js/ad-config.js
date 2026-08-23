@@ -17,7 +17,7 @@
    * 改 mode 后若未生效：去掉 URL 中的 ad 参数，并硬刷新（见 _headers 广告 JS 缓存）。
    */
   w.AD_CONFIG = {
-    mode: "adx",
+    mode: "adsense",
     adsense: {
       client: "ca-pub-3481735481590354",
       /**

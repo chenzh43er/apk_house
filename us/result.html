@@ -159,7 +159,7 @@
 
         <div class="result-card">
             <div class="result-card__success">
-                <div class="result-card__icon" aria-hidden="true">�?/div>
+                <div class="result-card__icon" aria-hidden="true">✓</div>
                 <h1 class="result-card__title" id="lang_succeed">Successfully submitted</h1>
                 <p class="result-card__subtitle" id="lang_result_subtitle">Thank you for your inquiry.</p>
                 <button type="button" class="result-card__back" onclick="returnToList()" id="lang_back">Back to homepage</button>
@@ -266,7 +266,8 @@ const lang = getLangFromPath()
 
             // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             if (!display_state) {
-                display_state = 'Berlin'; // 或你希望的默认�?            }
+                display_state = 'Berlin'; // 或你希望的默认值
+            }
 
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
@@ -408,7 +409,8 @@ const lang = getLangFromPath()
 
             // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             if (!display_state) {
-                display_state = 'Berlin'; // 或你希望的默认�?            }
+                display_state = 'Berlin'; // 或你希望的默认值
+            }
 
             const {data, error} = await fetchRandomHousesByState(display_state, 9);
 

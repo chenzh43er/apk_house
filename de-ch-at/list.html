@@ -478,7 +478,7 @@ const lang = getLangFromPath()
             if (segments.length > 0) {
                 const lang = segments[0];
 
-                // 新结�? /{lang}/teach/state/:state/:city/:district/:page/list
+                // 新结构 /{lang}/teach/state/:state/:city/:district/:page/list
                 if (
                     (lang === "us" || deLangs.includes(lang)) &&
                     segments[1] === "teach" &&
@@ -500,7 +500,7 @@ const lang = getLangFromPath()
                         page = parseInt(segments[6], 10);
                     }
                 }
-                // 老结�? /de/:state/:city/:district/:page
+                // 老结构 /de/:state/:city/:district/:page
                 else if (deLangs.includes(lang)) {
                     if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                     if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
@@ -581,8 +581,8 @@ const lang = getLangFromPath()
             // 分解路径
             const parts = url.pathname.split('/').filter(Boolean); // 去掉空字符串
 
-            // 假设原路径最后不�?list
-            // 移除原来�?page/list，如果存
+            // 假设原路径最后不是 /list
+            // 移除原来的 page/list，如果存
             if (parts.length >= 2 && parts[parts.length - 1] === 'list') {
                 parts.pop(); // 移除 list
                 parts.pop(); // 移除 page
@@ -592,7 +592,7 @@ const lang = getLangFromPath()
             parts.push(page);
             parts.push('list');
 
-            // 构造新�?pathname
+            // 构造新的 pathname
             url.pathname = '/' + parts.join('/');
             window.location.href = url.toString();
         }
@@ -799,7 +799,7 @@ const lang = getLangFromPath()
             </a>`;
             }
 
-            // ⬇️ �?个房源插�?条广
+            // ⬇️ 每 2 个房源插入 1 条广告
             if ((index + 1) % 2 === 0) {
                     html += `
                 <li class="statelists-imgli state_advClass">
@@ -855,7 +855,7 @@ const lang = getLangFromPath()
             window.ApkAdLoader.scanAndClampAllMobileAds();
         }
 
-        // 初始�?observer（只需一次）
+        // 初始化 observer（只需一次）
         initAdObserver();
 
         // 仅第一页监听广告懒加载 + 缓存
@@ -863,7 +863,8 @@ const lang = getLangFromPath()
 
     }
 
-    // 初始化分�?    $(document).ready(function () {
+    // 初始化分页
+    $(document).ready(function () {
         getQueryParams();
         initAdObserver();
 
@@ -916,7 +917,7 @@ const lang = getLangFromPath()
         // 拆分路径
         const segments = url.pathname.split("/").filter(Boolean);
 
-        // �?德语语言集合
+        // 德语文语言集合
         const deLangs = ["de", "de-ch-at"];
 
         if (segments.length > 0) {
@@ -944,7 +945,7 @@ const lang = getLangFromPath()
                     page = parseInt(segments[6], 10);
                 }
             } else if (deLangs.includes(lang)) {
-                // 老格式 /de �?/de-ch-at /:state/:city/:district/:page
+                // 老格式 /de 与 /de-ch-at /:state/:city/:district/:page
                 if (!state && segments.length >= 2) state = decodeURIComponent(segments[1]);
                 if (!city && segments.length >= 3) city = decodeURIComponent(segments[2]);
 
@@ -1010,7 +1011,8 @@ const lang = getLangFromPath()
             //
             // // 设定默认值，如果为undefined 则默认一个州名，例如 'California'
             // if (!display_state) {
-            //     display_state = 'Berlin'; // 或你希望的默认�?            // }
+            //     display_state = 'Berlin'; // 或你希望的默认值
+            // }
             const { state: display_state, city: display_city, district: display_district, page: currentPage } = getStateCityDistrictPageFromUrl();
 
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
@@ -1070,7 +1072,7 @@ const lang = getLangFromPath()
             <p class="most-content" data-eusoft-scrollable-element="1"> ${house.location}
             </p>
           </div>
-          <h5 class="most-tit">${house.price} �?Kaltmiete zzgl. NK</h5>
+          <h5 class="most-tit">${house.price} € Kaltmiete zzgl. NK</h5>
         </div>
       </li>`}
                     else if(lang == "us"){
@@ -1158,7 +1160,8 @@ const lang = getLangFromPath()
             });
         }
 
-        // 调用初始化函�?        init();
+        // 调用初始化函数
+        init();
 
     });
 </script>
@@ -1248,7 +1251,7 @@ const lang = getLangFromPath()
     //
             const pageHeight = document.documentElement.scrollHeight; // 整个页面高度
     //
-    //     output.innerHTML = `可视区域高度: ${viewportHeight}px<br>页面总高�? ${pageHeight}px`;
+    //     output.innerHTML = `可视区域高度: ${viewportHeight}px<br>页面总高度 ${pageHeight}px`;
     // }
 </script>
 
