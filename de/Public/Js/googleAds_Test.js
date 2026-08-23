@@ -389,10 +389,9 @@ function returnTeach_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1945174812"
+     data-ad-slot="5558641488"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnTeach_adv2_ADS(){
@@ -400,10 +399,9 @@ function returnTeach_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="2080922090"
+     data-ad-slot="8919301993"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnTeach_adv3_ADS(){
@@ -411,10 +409,9 @@ function returnTeach_adv3_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="9173762296"
+     data-ad-slot="8536158610"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnState_adv1_ADS(){
@@ -422,10 +419,9 @@ function returnState_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3888009540"
+     data-ad-slot="9162844573"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnState_adv2_ADS(){
@@ -433,10 +429,9 @@ function returnState_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1845936619"
+     data-ad-slot="2099732455"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnState_adv3_ADS(){
@@ -444,21 +439,19 @@ function returnState_adv3_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="9720557207"
+     data-ad-slot="2410673310"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnCity_adv1_ADS(){
-    return `<!-- state_adv1 -->
+    return `<!-- city_adv1 -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3888009540"
+     data-ad-slot="3707443113"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnCity_adv2_ADS(){
@@ -466,10 +459,9 @@ function returnCity_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5589740502"
+     data-ad-slot="5894517551"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnCity_adv3_ADS(){
@@ -477,10 +469,9 @@ function returnCity_adv3_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="7852123526"
+     data-ad-slot="9794339318"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDistrict_adv1_ADS(){
@@ -488,10 +479,9 @@ function returnDistrict_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="6605123482"
+     data-ad-slot="9602767627"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDistrict_adv2_ADS(){
@@ -499,10 +489,9 @@ function returnDistrict_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1596339386"
+     data-ad-slot="6657040080"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDistrict_adv3_ADS(){
@@ -510,54 +499,49 @@ function returnDistrict_adv3_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="4609515531"
+     data-ad-slot="5176437458"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnList_adv1_ADS(){
-    return `<!-- list_adv1 -->
+    return `<!-- list_adv1_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3256889501"
+     data-ad-slot="1512524613"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnList_adv2_ADS(){
-    return `<!-- list_adv2 -->
+    return `<!-- list_adv2_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="8174174268"
+     data-ad-slot="2654215891"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnList_adv3_ADS(){
-    return `<!-- list_adv3 -->
+    return `<!-- list_adv3_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5164867544"
+     data-ad-slot="2310495765"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnList_adv4_ADS(){
-    return `<!-- list_adv4 -->
+    return `<!-- list_adv4_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="7279910901"
+     data-ad-slot="6960187214"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDetail_adv1_ADS(){
@@ -565,10 +549,9 @@ function returnDetail_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3305006873"
+     data-ad-slot="1927352387"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDetail_adv2_ADS(){
@@ -576,10 +559,9 @@ function returnDetail_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="9946420936"
+     data-ad-slot="7586978377"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDetail_adv3_ADS(){
@@ -587,10 +569,9 @@ function returnDetail_adv3_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="6349154372"
+     data-ad-slot="6106375743"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDetail_adv4_ADS(){
@@ -598,10 +579,9 @@ function returnDetail_adv4_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5432460858"
+     data-ad-slot="9698031190"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnDetail_adv5_ADS(){
@@ -620,10 +600,9 @@ function returnForm_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="8692246683"
+     data-ad-slot="2857290677"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnForm_adv2_ADS(){
@@ -631,32 +610,29 @@ function returnForm_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5173440555"
+     data-ad-slot="1544209006"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnForm_adv3_ADS(){
     return `<!-- form_adv3 -->
 <ins class="adsbygoogle"
-     style="display:inline-block;min-height: 250px;width: auto !important;"
+     style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1042623852"
+     data-ad-slot="9957990849"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnForm_adv4_ADS(){
     return `<!-- form_adv4 -->
 <ins class="adsbygoogle"
-     style="display:inline-block;min-height: 250px;width: auto !important;"
+     style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3795143229"
+     data-ad-slot="6604963998"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnForm_adv5_ADS(){
@@ -664,65 +640,59 @@ function returnForm_adv5_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5986192295"
+     data-ad-slot="4705664169"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnResult_adv1_ADS(){
-    return `<!-- result_adv1 -->
+    return `<!-- result_adv1_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="2881516800"
+     data-ad-slot="4601722385"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnResult_adv2_ADS(){
-    return `<!-- result_adv2 -->
+    return `<!-- result_adv2_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3640882947"
+     data-ad-slot="4514092470"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnResult_adv3_ADS(){
-    return `<!-- result_adv3 x-->
+    return `<!-- result_adv3_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1944657892"
+     data-ad-slot="6413392300"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnResult_adv4_ADS(){
-    return `<!-- result_adv4 -->
+    return `<!-- result_adv4_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="1729019564"
+     data-ad-slot="8847983959"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnResult_adv5_ADS(){
-    return `<!-- result_adv5 -->
+    return `<!-- result_adv5_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="2244024884"
+     data-ad-slot="6221820616"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnPost_adv1_ADS(){
@@ -730,10 +700,9 @@ function returnPost_adv1_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="3898606078"
+     data-ad-slot="7000655019"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnPost_adv2_ADS(){
@@ -741,30 +710,27 @@ function returnPost_adv2_ADS(){
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="5008507760"
+     data-ad-slot="2011218063"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnPost_adv3_ADS(){
     return `<!-- post_adv3 -->
 <ins class="adsbygoogle"
-     style="display:inline-block;min-height: 250px;width: auto !important;"
+     style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="6948792317"
+     data-ad-slot="9698136390"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
 
 function returnIndex_adv1_ADS(){
-    return `<!-- index_adv1 -->
+    return `<!-- index_adv1_housing -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3481735481590354"
-     data-ad-slot="7281633109"
+     data-ad-slot="6381707916"
      data-ad-format="auto"
-     data-full-width-responsive="true"
-     data-adtest="on"></ins>`
+     data-full-width-responsive="true"></ins>`
 }
