@@ -22,9 +22,16 @@
       client: "ca-pub-3481735481590354",
       /**
        * AdSense 测试广告（data-adtest="on"，不计费）：
-       * 默认 true；URL ?adtest=off 可关掉；?adtest=on|1|true 强制开。
+       * 正式环境默认 false；URL ?adtest=on|1|true 可临时开测试。
        */
-      testMode: true,
+      testMode: false,
+      /**
+       * Auto ads 锚定（Overlay）：
+       * - true：加载 SDK 时加 data-overlays="bottom"，并允许页面显示锚定
+       * - hideAnchorOnDesktop：true 时仅桌面隐藏；false = 桌面也显示
+       */
+      anchorAds: true,
+      hideAnchorOnDesktop: false,
     },
 
     adx: {
@@ -137,9 +144,13 @@
   }
   markAdModeClass();
 
-  /** PC 上 AdSense Auto ads 锚定是移动端格式，隐藏以免占文档流 */
+  /** 可选：仅桌面隐藏 AdSense Auto ads 锚定（默认关闭，允许锚定出现） */
   function hideAdsenseDesktopAnchors() {
     if (w.AD_CONFIG.mode === "adx") {
+      return;
+    }
+    var ads = w.AD_CONFIG.adsense || {};
+    if (!ads.hideAnchorOnDesktop) {
       return;
     }
     if (!(w.matchMedia && w.matchMedia("(min-width: 769px)").matches)) {
@@ -153,7 +164,12 @@
     }
   }
   hideAdsenseDesktopAnchors();
-  if (w.AD_CONFIG.mode !== "adx" && document.documentElement) {
+  if (
+    w.AD_CONFIG.mode !== "adx" &&
+    w.AD_CONFIG.adsense &&
+    w.AD_CONFIG.adsense.hideAnchorOnDesktop &&
+    document.documentElement
+  ) {
     if (typeof MutationObserver !== "undefined") {
       var adSenseAnchorObs = new MutationObserver(hideAdsenseDesktopAnchors);
       adSenseAnchorObs.observe(document.documentElement, {
@@ -208,7 +224,8 @@
   }
 
   if (w.AD_CONFIG.mode !== "adx") {
-    var client = w.AD_CONFIG.adsense && w.AD_CONFIG.adsense.client;
+    var adsenseCfg = w.AD_CONFIG.adsense || {};
+    var client = adsenseCfg.client;
     if (client) {
       var s = document.createElement("script");
       s.async = true;
@@ -216,6 +233,14 @@
         "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" +
         encodeURIComponent(client);
       s.crossOrigin = "anonymous";
+      /**
+       * 官方支持的 Auto ads 锚定覆盖：强制底部锚定。
+       * 见 https://support.google.com/adsense/answer/7478225
+       * （即使后台 Overlay 未开，也可通过 data-overlays 请求锚定）
+       */
+      if (adsenseCfg.anchorAds !== false) {
+        s.setAttribute("data-overlays", "bottom");
+      }
       document.head.appendChild(s);
     }
   }

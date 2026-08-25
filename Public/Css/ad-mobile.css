@@ -221,16 +221,17 @@ html.apk-has-desktop-sticky body {
 }
 
 /**
- * AdSense Auto ads 锚定是移动端格式。
- * PC 上若仍注入，会被拉成整行空白+小创意贴左；桌面端直接隐藏。
- * 页内展示广告（普通 ins.adsbygoogle）不受影响。
+ * AdSense Auto ads 锚定：默认允许显示（含桌面）。
+ * 若需恢复「仅隐藏桌面锚定」，在 ad-config.js 设 hideAnchorOnDesktop: true，
+ * 并取消下面注释。
  */
+/*
 @media screen and (min-width: 769px) {
-  html.apk-ad-adsense ins.adsbygoogle[data-anchor-status],
-  html.apk-ad-adsense ins.adsbygoogle[data-anchor-shown],
-  html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status],
-  html.apk-ad-adsense #google_top_anchor,
-  html.apk-ad-adsense #google_bottom_anchor {
+  html.apk-ad-adsense.apk-hide-adsense-anchor-desktop ins.adsbygoogle[data-anchor-status],
+  html.apk-ad-adsense.apk-hide-adsense-anchor-desktop ins.adsbygoogle[data-anchor-shown],
+  html.apk-ad-adsense.apk-hide-adsense-anchor-desktop ins.adsbygoogle-noablate[data-anchor-status],
+  html.apk-ad-adsense.apk-hide-adsense-anchor-desktop #google_top_anchor,
+  html.apk-ad-adsense.apk-hide-adsense-anchor-desktop #google_bottom_anchor {
     display: none !important;
     visibility: hidden !important;
     height: 0 !important;
@@ -240,3 +241,4 @@ html.apk-has-desktop-sticky body {
     pointer-events: none !important;
   }
 }
+*/
