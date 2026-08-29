@@ -174,8 +174,7 @@ html.apk-has-top-anchor header .headshade {
   }
 
   /**
-   * AdSense：容器吃满可用宽，禁止 overflow 裁创意；
-   * 不强制 iframe 宽高，交给 adsbygoogle 响应式计算。
+   * AdSense：禁止 overflow 裁创意；不强制 iframe/ins 宽高（交给 adsbygoogle）。
    */
   html.apk-ad-adsense .apk-ad-clip,
   html.apk-ad-adsense .adswp,
@@ -213,15 +212,7 @@ html.apk-has-top-anchor header .headshade {
   html.apk-ad-adsense #adv1 ins.adsbygoogle,
   html.apk-ad-adsense #adv2 ins.adsbygoogle,
   html.apk-ad-adsense #adv3 ins.adsbygoogle,
-  html.apk-ad-adsense .ads ins.adsbygoogle {
-    display: block !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    overflow: visible !important;
-    box-sizing: border-box !important;
-  }
-
+  html.apk-ad-adsense .ads ins.adsbygoogle,
   html.apk-ad-adsense .adswp iframe,
   html.apk-ad-adsense .state_advClass iframe,
   html.apk-ad-adsense .apk-ad-clip iframe,
@@ -231,10 +222,8 @@ html.apk-has-top-anchor header .headshade {
   html.apk-ad-adsense #adv3 iframe,
   html.apk-ad-adsense .ads iframe {
     max-width: 100% !important;
-    min-width: 0 !important;
-    display: block !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    transform: none !important;
+    overflow: visible !important;
     box-sizing: border-box !important;
   }
 

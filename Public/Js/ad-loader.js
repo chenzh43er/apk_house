@@ -426,7 +426,8 @@
   }
 
   function scaleWideIframe(frame, containerW) {
-    if (!frame) {
+    /* AdSense 响应式单元禁止 scale/overflow 裁剪，否则移动端只剩一条缝 */
+    if (!isAdxMode() || !frame) {
       return;
     }
     var frameW = getIframeNaturalWidth(frame);
@@ -487,7 +488,7 @@
   }
 
   function clampMobileAdNode(node) {
-    if (!node || isInsideGptOopAnchor(node)) {
+    if (!isAdxMode() || !node || isInsideGptOopAnchor(node)) {
       return;
     }
     var containerW = getMobileAdContainerWidth();
@@ -521,7 +522,7 @@
   }
 
   function clampMobileAdFrame(divId) {
-    if (!isMobileViewport()) {
+    if (!isAdxMode() || !isMobileViewport()) {
       return;
     }
     var node = document.getElementById(divId);
@@ -581,6 +582,9 @@
   }
 
   function applyMobileClampAll() {
+    if (!isAdxMode()) {
+      return;
+    }
     var containerW = getMobileAdContainerWidth();
     var hostMax = containerW + "px";
     document
@@ -619,7 +623,7 @@
   }
 
   function scanAndClampAllMobileAds() {
-    if (!isMobileViewport() || clampBusy) {
+    if (!isAdxMode() || !isMobileViewport() || clampBusy) {
       return;
     }
     clampBusy = true;
@@ -657,7 +661,7 @@
   }
 
   function queueMobileClamp(divId) {
-    if (!isMobileViewport()) {
+    if (!isAdxMode() || !isMobileViewport()) {
       return;
     }
     if (divId) {
@@ -673,7 +677,8 @@
 
   var mobileGuardStarted = false;
   function initMobileAdGuard() {
-    if (!isMobileViewport() || mobileGuardStarted) {
+    /* 仅 ADX：AdSense auto/full-width 被 clamp 后会左右裁字、上下只剩一条缝 */
+    if (!isAdxMode() || !isMobileViewport() || mobileGuardStarted) {
       return;
     }
     mobileGuardStarted = true;
@@ -1349,7 +1354,7 @@
 
   var asideGuardStarted = false;
   function initAsideAdGuard() {
-    if (isMobileViewport() || asideGuardStarted) {
+    if (!isAdxMode() || isMobileViewport() || asideGuardStarted) {
       return;
     }
     asideGuardStarted = true;
@@ -1425,7 +1430,7 @@
   if (w.visualViewport) {
     var viewportTimer = null;
     w.visualViewport.addEventListener("resize", function () {
-      if (!isMobileViewport()) {
+      if (!isAdxMode() || !isMobileViewport()) {
         return;
       }
       if (viewportTimer) {

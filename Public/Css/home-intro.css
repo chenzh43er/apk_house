@@ -20,9 +20,13 @@
 @media (max-width: 768px) {
     .home-hero-ad.adswp {
         padding: 16px 12px;
-        max-width: 300px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    /* ADX 定宽；AdSense 全宽响应式勿锁 300px */
+    html.apk-ad-adx .home-hero-ad.adswp {
+        max-width: 300px;
     }
 }
 
