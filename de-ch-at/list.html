@@ -391,12 +391,7 @@ const lang = getLangFromPath()
                 (function(_e,_t){var _n=_e&&_e.querySelector(".nav-item-text");if(_n){_n.textContent=_t}else if(_e){_e.innerText=_t}})(document.getElementById("lang_index"),"Startseite")
             }
 
-// fetch('./asideState.html')
-    //     .then(res => res.text())
-    //     .then(data => {
-    //
-            document.getElementById('asidePage').innerHTML = data;
-    //     });
+// Aside markup is already inlined in #asidePage (aside_list filled by module below).
 </script>
 
 <script type="module">
@@ -1018,7 +1013,7 @@ const lang = getLangFromPath()
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
             if (error) {
-                console.error("数据获取失败）, error.message);
+                console.error("数据获取失败", error.message);
                 return;
             }
 

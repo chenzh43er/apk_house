@@ -301,7 +301,7 @@ const lang = getLangFromPath()
             const {data, error} = await fetchRandomHousesByState(display_state, 3);
 
             if (error) {
-                console.error("获取房源数据失败）, error.message);
+                console.error("获取房源数据失败", error.message);
                 return;
             }
 
@@ -502,7 +502,7 @@ const lang = getLangFromPath()
             const {data, error} = await fetchRandomHousesByState(display_state, 9);
 
             if (error) {
-                console.error("获取房源数据失败）, error.message);
+                console.error("获取房源数据失败", error.message);
                 return;
             }
 
