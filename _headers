@@ -35,6 +35,9 @@
 /Public/Css/list-page.css
   Cache-Control: public, max-age=0, must-revalidate
 
+/Public/Css/home-intro.css
+  Cache-Control: public, max-age=0, must-revalidate
+
 /Public/Fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
