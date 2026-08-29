@@ -4,12 +4,16 @@
  * 广告移动端裁剪 + GPT 锚定保护
  * 由 form-page.css @import 静态加载
  *
- * 关键：#google_top_anchor / #google_bottom_anchor 的 position:fixed
+ * 注意：#google_top_anchor / #google_bottom_anchor 的 position:fixed
  * 必须全局生效（勿放进 max-width 媒体查询），
  * 否则锚定会掉进文档流、Active View 可见率暴跌。
  *
  * GPT 规则只挂 html.apk-ad-adx，避免误伤 AdSense Auto ads 锚定
  *（否则 PC 上会被拉成整行白条、创意贴左）。
+ *
+ * 移动端「强制 300px + overflow:hidden」仅用于 ADX 定宽创意；
+ * AdSense（auto / full-width-responsive）必须自行量宽量高，
+ * 否则会左右裁字、上下只剩一条缝。
  */
 
 /**
@@ -95,20 +99,40 @@ html.apk-has-top-anchor header .headshade {
     min-width: 0 !important;
   }
 
-  .apk-ad-clip,
-  .adswp,
-  .state_advClass,
-  .divider-wrap.state_advClass,
-  .teach-ad.adswp,
-  .state-ad.adswp,
-  .home-hero-ad.adswp,
-  #state_adv1,
-  #state_adv_mid,
-  #aside_adv,
-  #adv1,
-  #adv2,
-  #adv3,
-  .ads {
+  /* AdSense 全宽响应式会略超出内容壳，clip 会左右裁字 */
+  html.apk-ad-adsense body.page-state .wrapper.contents,
+  html.apk-ad-adsense body.page-state .detail-left,
+  html.apk-ad-adsense body.page-state .state-content,
+  html.apk-ad-adsense body.page-state .state-main.contents,
+  html.apk-ad-adsense body.page-city .detail-left,
+  html.apk-ad-adsense body.page-list .detail-left,
+  html.apk-ad-adsense body.page-teach .teach-main.contents,
+  html.apk-ad-adsense body.page-teach .teach-content.detail-left,
+  html.apk-ad-adsense body:is(.page-form, .page-result, .page-list, .page-teach, .page-state)
+    .detail-left,
+  html.apk-ad-adsense body:is(.page-form, .page-result, .page-list, .page-teach, .page-state)
+    .contents {
+    overflow-x: visible !important;
+  }
+
+  /**
+   * ADX only：定宽 banner 防横向撑破布局
+   * AdSense 模式勿套用（见下方 html.apk-ad-adsense）
+   */
+  html.apk-ad-adx .apk-ad-clip,
+  html.apk-ad-adx .adswp,
+  html.apk-ad-adx .state_advClass,
+  html.apk-ad-adx .divider-wrap.state_advClass,
+  html.apk-ad-adx .teach-ad.adswp,
+  html.apk-ad-adx .state-ad.adswp,
+  html.apk-ad-adx .home-hero-ad.adswp,
+  html.apk-ad-adx #state_adv1,
+  html.apk-ad-adx #state_adv_mid,
+  html.apk-ad-adx #aside_adv,
+  html.apk-ad-adx #adv1,
+  html.apk-ad-adx #adv2,
+  html.apk-ad-adx #adv3,
+  html.apk-ad-adx .ads {
     max-width: min(300px, calc(100vw - 32px)) !important;
     width: 100% !important;
     margin-left: auto !important;
@@ -117,16 +141,16 @@ html.apk-has-top-anchor header .headshade {
     box-sizing: border-box !important;
   }
 
-  /* 仅裁剪页面内 banner 槽位，绝不碰 GPT 底部/顶部锚定 OOP */
-  .adswp [id^="apk-ad-"],
-  .state_advClass [id^="apk-ad-"],
-  .apk-ad-clip [id^="apk-ad-"],
-  .adswp div[id^="google_ads_iframe_"],
-  .state_advClass div[id^="google_ads_iframe_"],
-  .apk-ad-clip div[id^="google_ads_iframe_"],
-  .adswp div[data-google-query-id],
-  .state_advClass div[data-google-query-id],
-  .apk-ad-clip div[data-google-query-id] {
+  /* 仅裁剪页面内 ADX banner 槽位，绝不碰 GPT 底部/顶部锚定 OOP */
+  html.apk-ad-adx .adswp [id^="apk-ad-"],
+  html.apk-ad-adx .state_advClass [id^="apk-ad-"],
+  html.apk-ad-adx .apk-ad-clip [id^="apk-ad-"],
+  html.apk-ad-adx .adswp div[id^="google_ads_iframe_"],
+  html.apk-ad-adx .state_advClass div[id^="google_ads_iframe_"],
+  html.apk-ad-adx .apk-ad-clip div[id^="google_ads_iframe_"],
+  html.apk-ad-adx .adswp div[data-google-query-id],
+  html.apk-ad-adx .state_advClass div[data-google-query-id],
+  html.apk-ad-adx .apk-ad-clip div[data-google-query-id] {
     max-width: min(300px, calc(100vw - 32px)) !important;
     width: min(300px, calc(100vw - 32px)) !important;
     min-width: 0 !important;
@@ -136,10 +160,10 @@ html.apk-has-top-anchor header .headshade {
     box-sizing: border-box !important;
   }
 
-  .adswp iframe,
-  .state_advClass iframe,
-  .apk-ad-clip iframe,
-  [id^="apk-ad-"] iframe {
+  html.apk-ad-adx .adswp iframe,
+  html.apk-ad-adx .state_advClass iframe,
+  html.apk-ad-adx .apk-ad-clip iframe,
+  html.apk-ad-adx [id^="apk-ad-"] iframe {
     max-width: min(300px, calc(100vw - 32px)) !important;
     width: min(300px, calc(100vw - 32px)) !important;
     min-width: 0 !important;
@@ -147,6 +171,79 @@ html.apk-has-top-anchor header .headshade {
     margin-left: auto !important;
     margin-right: auto !important;
     box-sizing: border-box !important;
+  }
+
+  /**
+   * AdSense：容器吃满可用宽，禁止 overflow 裁创意；
+   * 不强制 iframe 宽高，交给 adsbygoogle 响应式计算。
+   */
+  html.apk-ad-adsense .apk-ad-clip,
+  html.apk-ad-adsense .adswp,
+  html.apk-ad-adsense .state_advClass,
+  html.apk-ad-adsense .divider-wrap.state_advClass,
+  html.apk-ad-adsense .teach-ad.adswp,
+  html.apk-ad-adsense .state-ad.adswp,
+  html.apk-ad-adsense .home-hero-ad.adswp,
+  html.apk-ad-adsense #state_adv1,
+  html.apk-ad-adsense #state_adv_mid,
+  html.apk-ad-adsense #aside_adv,
+  html.apk-ad-adsense #right_adv,
+  html.apk-ad-adsense #adv1,
+  html.apk-ad-adsense #adv2,
+  html.apk-ad-adsense #adv3,
+  html.apk-ad-adsense .ads {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  /* sticky 右栏定高会竖向裁切 AdSense */
+  html.apk-ad-adsense .RightBottom_adbox {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  html.apk-ad-adsense .adswp ins.adsbygoogle,
+  html.apk-ad-adsense .state_advClass ins.adsbygoogle,
+  html.apk-ad-adsense #aside_adv ins.adsbygoogle,
+  html.apk-ad-adsense #adv1 ins.adsbygoogle,
+  html.apk-ad-adsense #adv2 ins.adsbygoogle,
+  html.apk-ad-adsense #adv3 ins.adsbygoogle,
+  html.apk-ad-adsense .ads ins.adsbygoogle {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  html.apk-ad-adsense .adswp iframe,
+  html.apk-ad-adsense .state_advClass iframe,
+  html.apk-ad-adsense .apk-ad-clip iframe,
+  html.apk-ad-adsense #aside_adv iframe,
+  html.apk-ad-adsense #adv1 iframe,
+  html.apk-ad-adsense #adv2 iframe,
+  html.apk-ad-adsense #adv3 iframe,
+  html.apk-ad-adsense .ads iframe {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 侧栏壳在 form/teach 上 overflow:hidden 会裁 AdSense 全宽创意 */
+  html.apk-ad-adsense body:is(.page-form, .page-result, .page-list, .page-teach, .page-state)
+    .detail-rightside,
+  html.apk-ad-adsense body.page-teach .detail-rightside,
+  html.apk-ad-adsense body.page-detail .detail-rightside {
+    overflow: visible !important;
   }
 }
 
