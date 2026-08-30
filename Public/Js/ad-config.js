@@ -173,53 +173,81 @@
   /**
    * AdSense 顶部锚定避让：盖住首屏手动广告会直接拉低 Active View。
    * 复用 ADX 的 html.apk-has-top-anchor + --apk-top-anchor-h（见 ad-mobile.css）。
+   *
+   * 注意：禁止对整棵树监听 style/class——本函数会改 html 的 style/class，
+   * 否则 MutationObserver 自触发死循环，页面白屏卡死（如 /us/teach/state）。
    */
+  var adsenseAnchorSyncing = false;
+  var adsenseAnchorTimer = 0;
+  var lastAdsenseAnchorH = -1;
+
   function syncAdsenseTopAnchorOffset() {
     if (w.AD_CONFIG.mode === "adx" || !document.documentElement) {
       return;
     }
-    var root = document.documentElement;
-    var top =
-      document.getElementById("google_top_anchor") ||
-      document.querySelector(
-        'ins.adsbygoogle[data-anchor-status][data-anchor-shown="true"], ins.adsbygoogle-noablate[data-anchor-status][data-anchor-shown="true"]'
-      );
-    var h = 0;
-    if (top) {
-      var cs = w.getComputedStyle(top);
-      var hidden =
-        cs.display === "none" ||
-        cs.visibility === "hidden" ||
-        cs.opacity === "0";
-      if (!hidden) {
-        h = Math.round(top.getBoundingClientRect().height) || 0;
+    if (adsenseAnchorSyncing) {
+      return;
+    }
+    adsenseAnchorSyncing = true;
+    try {
+      var root = document.documentElement;
+      var top =
+        document.getElementById("google_top_anchor") ||
+        document.querySelector(
+          'ins.adsbygoogle[data-anchor-status][data-anchor-shown="true"], ins.adsbygoogle-noablate[data-anchor-status][data-anchor-shown="true"]'
+        );
+      var h = 0;
+      if (top) {
+        var cs = w.getComputedStyle(top);
+        var hidden =
+          cs.display === "none" ||
+          cs.visibility === "hidden" ||
+          cs.opacity === "0";
+        if (!hidden) {
+          h = Math.round(top.getBoundingClientRect().height) || 0;
+        }
       }
+      if (h === lastAdsenseAnchorH) {
+        return;
+      }
+      lastAdsenseAnchorH = h;
+      if (h >= 20) {
+        root.classList.add("apk-has-top-anchor");
+        root.style.setProperty("--apk-top-anchor-h", h + "px");
+      } else {
+        root.classList.remove("apk-has-top-anchor");
+        root.style.removeProperty("--apk-top-anchor-h");
+      }
+    } finally {
+      adsenseAnchorSyncing = false;
     }
-    if (h >= 20) {
-      root.classList.add("apk-has-top-anchor");
-      root.style.setProperty("--apk-top-anchor-h", h + "px");
-    } else {
-      root.classList.remove("apk-has-top-anchor");
-      root.style.removeProperty("--apk-top-anchor-h");
+  }
+
+  function scheduleAdsenseAnchorSync() {
+    if (adsenseAnchorTimer) {
+      return;
     }
+    adsenseAnchorTimer = w.setTimeout(function () {
+      adsenseAnchorTimer = 0;
+      hideAdsenseDesktopAnchors();
+      syncAdsenseTopAnchorOffset();
+    }, 80);
   }
 
   hideAdsenseDesktopAnchors();
   syncAdsenseTopAnchorOffset();
   if (w.AD_CONFIG.mode !== "adx" && document.documentElement) {
     if (typeof MutationObserver !== "undefined") {
-      var adSenseAnchorObs = new MutationObserver(function () {
-        hideAdsenseDesktopAnchors();
-        syncAdsenseTopAnchorOffset();
-      });
+      var adSenseAnchorObs = new MutationObserver(scheduleAdsenseAnchorSync);
       adSenseAnchorObs.observe(document.documentElement, {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ["data-anchor-status", "data-anchor-shown", "class", "style"],
+        // 只盯锚定相关属性；勿含 style/class（会自触发卡死）
+        attributeFilter: ["data-anchor-status", "data-anchor-shown"],
       });
     }
-    w.addEventListener("resize", syncAdsenseTopAnchorOffset);
+    w.addEventListener("resize", scheduleAdsenseAnchorSync);
   }
 
   /** AdSense SDK 仅在 AdSense 模式加载（ad-free 页面跳过） */
