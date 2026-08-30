@@ -36,7 +36,8 @@
        * - hideAnchorOnDesktop：true 时仅桌面隐藏；false = 桌面也显示
        */
       anchorAds: true,
-      anchorOverlays: "top",
+      /** PC/全端底部锚定（data-overlays=bottom）；细条可用 collapsed-bottom */
+      anchorOverlays: "bottom",
       hideAnchorOnDesktop: false,
     },
 
