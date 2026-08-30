@@ -27,10 +27,16 @@
       testMode: false,
       /**
        * Auto ads 锚定（Overlay）：
-       * - true：加载 SDK 时加 data-overlays="bottom"，并允许页面显示锚定
+       * - anchorAds: false 时不请求锚定
+       * - anchorOverlays（官方 data-overlays，见 support.google.com/adsense/answer/7478225）：
+       *   "top"               → 不写 data-overlays（默认偏顶部；勿用 bottom 覆盖）
+       *   "bottom"            → 强制底部（仍可能出可折叠大展开）
+       *   "collapsed-bottom"  → 仅底部细条（官方唯一可代码强制的细条）
+       * 顶部细条：用 "top"，并在 AdSense 后台：位置「仅顶部」+ 取消「允许动态锚定」
        * - hideAnchorOnDesktop：true 时仅桌面隐藏；false = 桌面也显示
        */
       anchorAds: true,
+      anchorOverlays: "top",
       hideAnchorOnDesktop: false,
     },
 
@@ -163,22 +169,57 @@
       nodes[i].style.setProperty("display", "none", "important");
     }
   }
+
+  /**
+   * AdSense 顶部锚定避让：盖住首屏手动广告会直接拉低 Active View。
+   * 复用 ADX 的 html.apk-has-top-anchor + --apk-top-anchor-h（见 ad-mobile.css）。
+   */
+  function syncAdsenseTopAnchorOffset() {
+    if (w.AD_CONFIG.mode === "adx" || !document.documentElement) {
+      return;
+    }
+    var root = document.documentElement;
+    var top =
+      document.getElementById("google_top_anchor") ||
+      document.querySelector(
+        'ins.adsbygoogle[data-anchor-status][data-anchor-shown="true"], ins.adsbygoogle-noablate[data-anchor-status][data-anchor-shown="true"]'
+      );
+    var h = 0;
+    if (top) {
+      var cs = w.getComputedStyle(top);
+      var hidden =
+        cs.display === "none" ||
+        cs.visibility === "hidden" ||
+        cs.opacity === "0";
+      if (!hidden) {
+        h = Math.round(top.getBoundingClientRect().height) || 0;
+      }
+    }
+    if (h >= 20) {
+      root.classList.add("apk-has-top-anchor");
+      root.style.setProperty("--apk-top-anchor-h", h + "px");
+    } else {
+      root.classList.remove("apk-has-top-anchor");
+      root.style.removeProperty("--apk-top-anchor-h");
+    }
+  }
+
   hideAdsenseDesktopAnchors();
-  if (
-    w.AD_CONFIG.mode !== "adx" &&
-    w.AD_CONFIG.adsense &&
-    w.AD_CONFIG.adsense.hideAnchorOnDesktop &&
-    document.documentElement
-  ) {
+  syncAdsenseTopAnchorOffset();
+  if (w.AD_CONFIG.mode !== "adx" && document.documentElement) {
     if (typeof MutationObserver !== "undefined") {
-      var adSenseAnchorObs = new MutationObserver(hideAdsenseDesktopAnchors);
+      var adSenseAnchorObs = new MutationObserver(function () {
+        hideAdsenseDesktopAnchors();
+        syncAdsenseTopAnchorOffset();
+      });
       adSenseAnchorObs.observe(document.documentElement, {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ["data-anchor-status", "data-anchor-shown", "class"],
+        attributeFilter: ["data-anchor-status", "data-anchor-shown", "class", "style"],
       });
     }
+    w.addEventListener("resize", syncAdsenseTopAnchorOffset);
   }
 
   /** AdSense SDK 仅在 AdSense 模式加载（ad-free 页面跳过） */
@@ -234,12 +275,15 @@
         encodeURIComponent(client);
       s.crossOrigin = "anonymous";
       /**
-       * 官方支持的 Auto ads 锚定覆盖：强制底部锚定。
-       * 见 https://support.google.com/adsense/answer/7478225
-       * （即使后台 Overlay 未开，也可通过 data-overlays 请求锚定）
+       * 官方 data-overlays：仅 bottom / collapsed-bottom 有文档。
+       * "top" 或空：不设置属性，避免覆盖后台「仅顶部」；见 ad-config 注释。
+       * https://support.google.com/adsense/answer/7478225
        */
       if (adsenseCfg.anchorAds !== false) {
-        s.setAttribute("data-overlays", "bottom");
+        var overlays = adsenseCfg.anchorOverlays;
+        if (overlays === "bottom" || overlays === "collapsed-bottom") {
+          s.setAttribute("data-overlays", overlays);
+        }
       }
       document.head.appendChild(s);
     }
