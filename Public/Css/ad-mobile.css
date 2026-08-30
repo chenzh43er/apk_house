@@ -243,6 +243,33 @@ html.apk-ad-adsense body.page-detail .detail-rightside {
 }
 
 /**
+ * AdSense Auto ads 锚定壳：隔离站点全局规则（max-width / transform / * box-sizing），
+ * 否则移动端折叠条与「广告」角标会错位、叠成两行。
+ * 不强制改 position/top/bottom（交给 AdSense 自己；PC 上强改会拉成白条）。
+ */
+html.apk-ad-adsense #google_top_anchor,
+html.apk-ad-adsense #google_bottom_anchor,
+html.apk-ad-adsense ins.adsbygoogle[data-anchor-status],
+html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] {
+  max-width: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  overflow: visible !important;
+  box-sizing: content-box !important;
+}
+
+html.apk-ad-adsense #google_top_anchor iframe,
+html.apk-ad-adsense #google_bottom_anchor iframe,
+html.apk-ad-adsense ins.adsbygoogle[data-anchor-status] iframe,
+html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] iframe {
+  max-width: none !important;
+  transform: none !important;
+}
+
+/**
  * 宽屏 PC 底部 sticky 兜底（GPT BOTTOM_ANCHOR 在宽 >1000px 时无法 define）
  */
 .apk-desktop-bottom-sticky {

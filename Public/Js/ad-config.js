@@ -172,8 +172,9 @@
   }
 
   /**
-   * AdSense 顶部锚定避让：盖住首屏手动广告会直接拉低 Active View。
-   * 复用 ADX 的 html.apk-has-top-anchor + --apk-top-anchor-h（见 ad-mobile.css）。
+   * AdSense 顶部锚定避让：仅当「顶部」锚定真正出现时下推站点 header。
+   * 禁止把底部锚定（data-overlays=bottom）当成顶部——否则
+   * --apk-top-anchor-h 会被设成半屏高，sticky header / 广告角标全部异位。
    *
    * 注意：禁止对整棵树监听 style/class——本函数会改 html 的 style/class，
    * 否则 MutationObserver 自触发死循环，页面白屏卡死（如 /us/teach/state）。
@@ -181,6 +182,73 @@
   var adsenseAnchorSyncing = false;
   var adsenseAnchorTimer = 0;
   var lastAdsenseAnchorH = -1;
+
+  function isAdsenseNodeHidden(el) {
+    if (!el || !w.getComputedStyle) {
+      return true;
+    }
+    var cs = w.getComputedStyle(el);
+    return (
+      cs.display === "none" ||
+      cs.visibility === "hidden" ||
+      cs.opacity === "0"
+    );
+  }
+
+  /** 底部锚定：#google_bottom_anchor，或视口下半区的 data-anchor 节点 */
+  function isAdsenseBottomAnchor(el) {
+    if (!el) {
+      return false;
+    }
+    if (el.id === "google_bottom_anchor") {
+      return true;
+    }
+    if (el.id === "google_top_anchor") {
+      return false;
+    }
+    var vh = w.innerHeight || 0;
+    if (vh <= 0) {
+      return false;
+    }
+    var rect = el.getBoundingClientRect();
+    if (rect.height < 8) {
+      return false;
+    }
+    return rect.top > vh * 0.35;
+  }
+
+  function findAdsenseTopAnchor() {
+    var byId = document.getElementById("google_top_anchor");
+    if (byId && !isAdsenseNodeHidden(byId) && !isAdsenseBottomAnchor(byId)) {
+      return byId;
+    }
+    var nodes = document.querySelectorAll(
+      'ins.adsbygoogle[data-anchor-status][data-anchor-shown="true"], ins.adsbygoogle-noablate[data-anchor-status][data-anchor-shown="true"]'
+    );
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (isAdsenseBottomAnchor(el) || isAdsenseNodeHidden(el)) {
+        continue;
+      }
+      var rect = el.getBoundingClientRect();
+      var vh = w.innerHeight || 0;
+      // 顶部锚定贴在视口上方
+      if (rect.height >= 16 && rect.top < 96 && (vh <= 0 || rect.bottom < vh * 0.5)) {
+        return el;
+      }
+    }
+    return null;
+  }
+
+  function clearAdsenseTopAnchorOffset() {
+    var root = document.documentElement;
+    if (!root) {
+      return;
+    }
+    lastAdsenseAnchorH = 0;
+    root.classList.remove("apk-has-top-anchor");
+    root.style.removeProperty("--apk-top-anchor-h");
+  }
 
   function syncAdsenseTopAnchorOffset() {
     if (w.AD_CONFIG.mode === "adx" || !document.documentElement) {
@@ -191,33 +259,31 @@
     }
     adsenseAnchorSyncing = true;
     try {
-      var root = document.documentElement;
-      var top =
-        document.getElementById("google_top_anchor") ||
-        document.querySelector(
-          'ins.adsbygoogle[data-anchor-status][data-anchor-shown="true"], ins.adsbygoogle-noablate[data-anchor-status][data-anchor-shown="true"]'
-        );
+      var overlays =
+        (w.AD_CONFIG.adsense && w.AD_CONFIG.adsense.anchorOverlays) || "";
+      // 代码强制仅底部时，永不给顶栏加偏移
+      if (overlays === "bottom" || overlays === "collapsed-bottom") {
+        if (lastAdsenseAnchorH !== 0) {
+          clearAdsenseTopAnchorOffset();
+        }
+        return;
+      }
+
+      var top = findAdsenseTopAnchor();
       var h = 0;
       if (top) {
-        var cs = w.getComputedStyle(top);
-        var hidden =
-          cs.display === "none" ||
-          cs.visibility === "hidden" ||
-          cs.opacity === "0";
-        if (!hidden) {
-          h = Math.round(top.getBoundingClientRect().height) || 0;
-        }
+        h = Math.round(top.getBoundingClientRect().height) || 0;
       }
       if (h === lastAdsenseAnchorH) {
         return;
       }
       lastAdsenseAnchorH = h;
+      var root = document.documentElement;
       if (h >= 20) {
         root.classList.add("apk-has-top-anchor");
         root.style.setProperty("--apk-top-anchor-h", h + "px");
       } else {
-        root.classList.remove("apk-has-top-anchor");
-        root.style.removeProperty("--apk-top-anchor-h");
+        clearAdsenseTopAnchorOffset();
       }
     } finally {
       adsenseAnchorSyncing = false;
