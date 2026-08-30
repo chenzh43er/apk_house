@@ -1,28 +1,13 @@
 /Public/Css/*
   Cache-Control: public, max-age=31536000, immutable
 
+# 全部 JS 用 must-revalidate。不要再给 /Public/Js/* 写 immutable：
+# CF Pages 会把通配与子路径规则的 Cache-Control 拼成一条，
+# 曾导致 ad-config.js 带 max-age=31536000,immutable，坏版本一年刷不掉。
 /Public/Js/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# 广告层配置会频繁调整，勿长期 immutable 缓存
-/Public/Js/ad-config.js
   Cache-Control: public, max-age=0, must-revalidate
 
-/Public/Js/ad-loader.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-/Public/Js/ad-runtime.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-/Public/Js/ad-oop.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-/Public/Js/ad-slots-adx.js
-  Cache-Control: public, max-age=0, must-revalidate
-
-/Public/Js/ad-state-page.js
-  Cache-Control: public, max-age=0, must-revalidate
-
+# CSS 里广告/布局相关同样勿长期 immutable（与通配合并会出同样问题，故单独路径需先从 Css/* 拆出）
 /Public/Css/ad-mobile.css
   Cache-Control: public, max-age=0, must-revalidate
 
