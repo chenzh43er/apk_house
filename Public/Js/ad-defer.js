@@ -9,7 +9,7 @@
 (function (w) {
   var CORE = [
     "/Public/Js/ad-config.js?v=20260831anchorfix1",
-    "/Public/Js/ad-slots-adx.js",
+    "/Public/Js/ad-slots-adx.js?v=20260916c1",
     "/Public/Js/ad-loader.js?v=20250718k",
     "/Public/Js/ad-runtime.js?v=20260831freeze1",
     "/Public/Js/ad-oop.js?v=20250718k",
@@ -24,11 +24,11 @@
   function googleAdsSrc() {
     try {
       return new URL(
-        "./Public/Js/googleAds_Test.js",
+        "./Public/Js/googleAds_Test.js?v=20260916c1",
         document.baseURI || w.location.href
       ).href;
     } catch (e) {
-      return "/us/Public/Js/googleAds_Test.js";
+      return "/us/Public/Js/googleAds_Test.js?v=20260916c1";
     }
   }
 

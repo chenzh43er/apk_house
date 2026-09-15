@@ -1,4 +1,11 @@
-﻿const { createClient } = globalThis.supabase;
+import {
+    tryStaticList,
+    staticStatesUrl,
+    staticCitiesUrl,
+    staticDistrictsUrl,
+} from './apk-static-lists.js';
+
+const { createClient } = globalThis.supabase;
 
 const supabase = createClient(
     'https://aabogtftiapiwehgmezt.supabase.co',
@@ -12,6 +19,16 @@ const supabase = createClient(
         },
     }
 );
+
+const PICKER_REGION = 'de';
+
+async function resolvePrefetchOrStatic(prefetchPromise, prefetchKey, expectedKey, staticUrl) {
+    if (prefetchPromise && prefetchKey === expectedKey) {
+        const pre = await prefetchPromise;
+        if (pre && pre.length) return pre;
+    }
+    return tryStaticList(staticUrl);
+}
 
 // 根据过滤条件（state, city, district）获取分页数据
 export async function fetchData(state, city, district, pageNumber = 1, pageSize = 20) {
@@ -107,6 +124,16 @@ export async function attachDistrictHouseCounts(state, city, districts) {
 
 export async function fetchDistinctStates() {
     try {
+        const fromPrefetch = globalThis.__apkStatesPrefetch
+            ? await globalThis.__apkStatesPrefetch
+            : null;
+        const list =
+            (fromPrefetch && fromPrefetch.length ? fromPrefetch : null) ||
+            (await tryStaticList(staticStatesUrl(PICKER_REGION)));
+        if (list) {
+            return { data: list, error: null };
+        }
+
         const { data, error } = await supabase.rpc('get_unique_states');
         if (error) {
             throw new Error(`获取州时发生错误: ${error.message}`);
@@ -121,6 +148,17 @@ export async function fetchDistinctStates() {
 // 通过 RPC 获取某个州的所有城市
 export async function fetchCitiesByState(state) {
     try {
+        const expectedKey = PICKER_REGION + '|' + state;
+        const list = await resolvePrefetchOrStatic(
+            globalThis.__apkCitiesPrefetch,
+            globalThis.__apkCitiesPrefetchKey,
+            expectedKey,
+            staticCitiesUrl(PICKER_REGION, state)
+        );
+        if (list) {
+            return { data: list, error: null };
+        }
+
         const { data, error } = await supabase.rpc('get_cities_by_state', { input_state: state });
         if (error) {
             throw new Error(`获取城市时发生错误: ${error.message}`);
@@ -141,6 +179,17 @@ export async function fetchDistrictsByCity(state, city) {
 
     try {
         if (state) {
+            const expectedKey = PICKER_REGION + '|' + state + '|' + city;
+            const list = await resolvePrefetchOrStatic(
+                globalThis.__apkDistrictsPrefetch,
+                globalThis.__apkDistrictsPrefetchKey,
+                expectedKey,
+                staticDistrictsUrl(PICKER_REGION, state, city)
+            );
+            if (list) {
+                return { data: list, error: null };
+            }
+
             const { data, error } = await supabase
                 .from('house_ger')
                 .select('display_district')

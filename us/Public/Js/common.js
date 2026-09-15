@@ -61,8 +61,25 @@ function ensureSupabase() {
     }
     if (!globalThis._supabaseLoading) {
         globalThis._supabaseLoading = new Promise((resolve, reject) => {
+            const src = '/Public/Js/supabase.min.js?v=20260819lock1';
+            const existing = document.querySelector('script[src="' + src + '"]');
+            if (existing) {
+                if (globalThis.supabase) {
+                    patchSupabaseCreateClient();
+                    resolve();
+                    return;
+                }
+                existing.addEventListener('load', () => {
+                    patchSupabaseCreateClient();
+                    resolve();
+                });
+                existing.addEventListener('error', () =>
+                    reject(new Error('Failed to load supabase.min.js'))
+                );
+                return;
+            }
             const script = document.createElement('script');
-            script.src = '/Public/Js/supabase.min.js?v=20260819lock1';
+            script.src = src;
             script.onload = () => {
                 patchSupabaseCreateClient();
                 resolve();

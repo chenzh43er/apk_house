@@ -1,36 +1,67 @@
+# Cloudflare Pages：多条规则匹配同一路径时，会把同名 header 用逗号拼在一起。
+# 因此「目录长缓存 + 个别文件短缓存」时，短缓存规则必须先写：
+#   ! Cache-Control
+# 再写新的 Cache-Control，否则会变成 max-age=31536000,immutable, max-age=0,...
+
+# ── 默认：CSS/JS 长缓存。页面用 ?v= 换链做缓存破坏 ──
 /Public/Css/*
   Cache-Control: public, max-age=31536000, immutable
 
-# 全部 JS 用 must-revalidate。不要再给 /Public/Js/* 写 immutable：
-# CF Pages 会把通配与子路径规则的 Cache-Control 拼成一条，
-# 曾导致 ad-config.js 带 max-age=31536000,immutable，坏版本一年刷不掉。
 /Public/Js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/us/Public/Css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/us/Public/Js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/de/Public/Css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/de/Public/Js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/de-ch-at/Public/Css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/de-ch-at/Public/Js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# ── 热改 / 无稳定 ?v=：先卸掉继承的 Cache-Control 再设短缓存 ──
+/Public/Js/ad-config.js
+  ! Cache-Control
   Cache-Control: public, max-age=0, must-revalidate
 
-# CSS 里广告/布局相关同样勿长期 immutable（与通配合并会出同样问题，故单独路径需先从 Css/* 拆出）
-/Public/Css/ad-mobile.css
-  Cache-Control: public, max-age=0, must-revalidate
+# ES module 动态 import 通常不带 ?v=，避免逻辑更新被锁一年
+/Public/Js/dataGet.js
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
 
-/Public/Css/form-page.css
-  Cache-Control: public, max-age=0, must-revalidate
+/Public/Js/dataGet_us.js
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
 
-/Public/Css/state-page.css
-  Cache-Control: public, max-age=0, must-revalidate
+/Public/Js/dataGet_ch.js
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
 
-/Public/Css/list-page.css
-  Cache-Control: public, max-age=0, must-revalidate
+/Public/Js/dataGet_at.js
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
 
-/Public/Css/home-intro.css
-  Cache-Control: public, max-age=0, must-revalidate
-
-/Public/Css/teach-page.css
-  Cache-Control: public, max-age=0, must-revalidate
+/Public/Js/apk-static-lists.js
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
 
 /Public/Fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
 /Public/svg/*
   Cache-Control: public, max-age=31536000, immutable
+
+/Public/Data/*
+  Cache-Control: public, max-age=300, must-revalidate
 
 /ads.txt
   Cache-Control: public, max-age=86400
