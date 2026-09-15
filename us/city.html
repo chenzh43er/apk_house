@@ -31,12 +31,7 @@
     <link rel="stylesheet" href="/Public/Css/state-page.css">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js?v=20260819lock1"></script>
-    <script src="/Public/Js/ad-config.js?v=20260831anchorfix1"></script>
-    <script src="./Public/Js/googleAds_Test.js"></script>
-    <script src="/Public/Js/ad-slots-adx.js"></script>
-    <script src="/Public/Js/ad-loader.js?v=20250718k"></script>
-    <script src="/Public/Js/ad-runtime.js?v=20260831freeze1"></script>
-    <script src="/Public/Js/ad-oop.js?v=20250718k"></script>
+    <script src="/Public/Js/ad-defer.js?v=20260916"></script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HWJ4KNB"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -822,16 +817,18 @@ if(lang == "de" || lang == "de-ch-at"){
                 document.getElementById("asideTitle").innerHTML = asideStr;
 
                 const aside_adv = document.getElementById('aside_adv');
-                if (aside_adv) {
-                    const observer = new IntersectionObserver((entries, obs) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                loadCity_adv2(entry.target);
-                                obs.unobserve(entry.target);
-                            }
-                        });
-                    }, { rootMargin: '0px' });
-                    observer.observe(aside_adv);
+                if (aside_adv && window.ApkAdDefer) {
+                    ApkAdDefer.whenReady(function () {
+                        const observer = new IntersectionObserver((entries, obs) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    loadCity_adv2(entry.target);
+                                    obs.unobserve(entry.target);
+                                }
+                            });
+                        }, { rootMargin: '0px' });
+                        observer.observe(aside_adv);
+                    });
                 }
             });
         });
@@ -1060,8 +1057,37 @@ if(lang == "de" || lang == "de-ch-at"){
         document.getElementById('select-state').innerHTML = innerStr;
         updatePickerStepsCta(lang, 2, (data || []).length);
         document.body.style.display = "block";
-        if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
-            ApkAdOop.notifyBodyVisible();
+
+        if (window.ApkAdDefer) {
+            ApkAdDefer.load().then(function () {
+                if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
+                    ApkAdOop.notifyBodyVisible();
+                }
+
+                const listObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            loadCity_adv3(entry.target);
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '0px' });
+                document.querySelectorAll('.state_advClass').forEach(el => listObserver.observe(el));
+
+                const state_adv1 = document.getElementById('state_adv1');
+                if (state_adv1) {
+                    state_adv1.innerHTML = returnAdvWord();
+                    const topObserver = new IntersectionObserver((entries, obs) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                loadCity_adv1(entry.target);
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { rootMargin: '0px' });
+                    topObserver.observe(state_adv1);
+                }
+            });
         }
 
         attachCityHouseCounts(display_state, items).then(function (dataWithCounts) {
@@ -1071,16 +1097,6 @@ if(lang == "de" || lang == "de-ch-at"){
             });
             applyPickerCountLegend(lang, sumHouseCounts(dataWithCounts));
         });
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadCity_adv3(entry.target);
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, { rootMargin: '0px' });
-        document.querySelectorAll('.state_advClass').forEach(el => observer.observe(el));
     });
     });
 
@@ -1107,24 +1123,6 @@ if(lang == "de" || lang == "de-ch-at"){
 
 <script>
     $(document).ready(function () {
-        document.getElementById("state_adv1").innerHTML = returnAdvWord()
-
-        const state_adv1 = document.getElementById('state_adv1')
-        if (state_adv1) {
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadCity_adv1(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, {
-                rootMargin: '0px',
-            });
-            observer.observe(state_adv1);
-        }
-
-        //titleReturn
         document.title = `${returnWebStr()} City.`;
     })
 </script>

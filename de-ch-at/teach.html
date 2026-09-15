@@ -18,12 +18,7 @@
     <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260830">
     <script src="./Public/Js/utlParam.js"></script>
     <script src="./Public/Js/common.js?v=20260819lock1"></script>
-    <script src="/Public/Js/ad-config.js?v=20260831anchorfix1"></script>
-    <script src="./Public/Js/googleAds_Test.js"></script>
-    <script src="/Public/Js/ad-slots-adx.js"></script>
-    <script src="/Public/Js/ad-loader.js?v=20250718k"></script>
-    <script src="/Public/Js/ad-runtime.js?v=20260831freeze1"></script>
-    <script src="/Public/Js/ad-oop.js?v=20250718k"></script>
+    <script src="/Public/Js/ad-defer.js?v=20260916"></script>
 <!--    <script src="./Public/Js/post/postName.js"></script>-->
     <link rel="icon" href="./Public/Images/icon.png" type="image/png">
 
@@ -39,17 +34,10 @@
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-5HWJ4KNB');</script>
 
-    <script>
-        window.onload = function() {
-            document.body.style.visibility = "visible";
-        }
-    </script>
-
-
     <!-- End Google Tag Manager -->
 </head>
 
-<body class="page-teach" aria-hidden="false" style="visibility: hidden">
+<body class="page-teach" aria-hidden="false">
 
 
 <defs>
@@ -740,18 +728,20 @@ const lang = getLangFromPath()
                 document.getElementById("asideTitle").innerHTML = asideStr
 
                 const aside_adv = document.getElementById('aside_adv')
-                if (aside_adv) {
-                    const observer = new IntersectionObserver((entries, obs) => {
-                        entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                loadTeach_adv3(entry.target);
-                                obs.unobserve(entry.target);
-                            }
+                if (aside_adv && window.ApkAdDefer) {
+                    ApkAdDefer.whenReady(function () {
+                        const observer = new IntersectionObserver((entries, obs) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    loadTeach_adv3(entry.target);
+                                    obs.unobserve(entry.target);
+                                }
+                            });
+                        }, {
+                            rootMargin: '0px',
                         });
-                    }, {
-                        rootMargin: '0px',
+                        observer.observe(aside_adv);
                     });
-                    observer.observe(aside_adv);
                 }
             });
         });
@@ -1026,42 +1016,43 @@ const lang = getLangFromPath()
 
 <script>
     $(document).ready(function () {
-        document.getElementById("teach_adv1").innerHTML = returnAdvWord()
-        const teach_adv1 = document.getElementById('teach_adv1')
-        if (teach_adv1) {
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadTeach_adv(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, {
-                rootMargin: '0px',
-            });
-            observer.observe(teach_adv1);
-        }
-
-        document.getElementById("teach_adv1").innerHTML = returnAdvWord()
-
-
-        const teach_adv2 = document.getElementById('teach_adv2')
-        if (teach_adv2) {
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadTeach_adv2(entry.target);
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, {
-                rootMargin: '0px',
-            });
-            observer.observe(teach_adv2);
-        }
-
-        //titleReturn
         document.title = `${returnWebStr()} Teach.`;
+
+        // 首屏已可见后再加载广告栈
+        if (!window.ApkAdDefer) return;
+        ApkAdDefer.load().then(function () {
+            if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
+                ApkAdOop.notifyBodyVisible();
+            }
+
+            const teach_adv1 = document.getElementById('teach_adv1');
+            if (teach_adv1) {
+                teach_adv1.innerHTML = returnAdvWord();
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            loadTeach_adv(entry.target);
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '0px' });
+                observer.observe(teach_adv1);
+            }
+
+            const teach_adv2 = document.getElementById('teach_adv2');
+            if (teach_adv2) {
+                teach_adv2.innerHTML = returnAdvWord();
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            loadTeach_adv2(entry.target);
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { rootMargin: '0px' });
+                observer.observe(teach_adv2);
+            }
+        });
     })
 </script>
 
