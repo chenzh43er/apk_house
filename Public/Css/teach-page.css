@@ -252,13 +252,18 @@ body.page-teach .teach-steps-card .teach-step:not(:last-child)::after {
 
 /* Mobile-only: JS may split steps and park teach_adv2 between 2/3 */
 @media (max-width: 900px) {
+    /* AdSense full-width 创意会 breakout；卡内 overflow:hidden 会裁字 */
+    body.page-teach .teach-steps-card {
+        overflow: visible;
+    }
+
     body.page-teach .teach-steps-wrap {
         display: flex;
         flex-direction: column;
         gap: 16px;
         max-width: 100%;
         min-width: 0;
-        overflow-x: clip;
+        overflow: visible;
     }
 
     body.page-teach .teach-steps-card .teach-steps-flow--a.select-text,
@@ -284,27 +289,25 @@ body.page-teach .teach-steps-card .teach-step:not(:last-child)::after {
         content: '4';
     }
 
+    /* 抵消卡片左右 padding，让 full-width 创意按视口居中，避免左右裁切 */
     body.page-teach .teach-adv2-mid {
         display: block;
-        width: 100%;
-        max-width: 100%;
+        width: calc(100% + 32px);
+        max-width: none;
         min-width: 0;
-        overflow-x: clip;
+        margin-left: -16px;
+        margin-right: -16px;
+        overflow: visible;
         box-sizing: border-box;
     }
 
     body.page-teach .teach-adv2-mid .teach-ad.adswp {
         margin-bottom: 0;
-        max-width: 100%;
         width: 100%;
+        max-width: none;
         min-width: 0;
-        overflow-x: clip;
+        overflow: visible;
         box-sizing: border-box;
-    }
-
-    body.page-teach .teach-adv2-mid .teach-ad.adswp iframe,
-    body.page-teach .teach-adv2-mid .teach-ad.adswp ins.adsbygoogle {
-        max-width: 100% !important;
     }
 }
 

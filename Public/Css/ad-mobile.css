@@ -201,6 +201,17 @@ html.apk-ad-adsense .ads {
   box-sizing: border-box !important;
 }
 
+/* teach_adv2 插在步骤卡内：祖先 overflow 与 max-width 会裁全宽创意 */
+html.apk-ad-adsense body.page-teach .teach-steps-card,
+html.apk-ad-adsense body.page-teach .teach-steps-wrap,
+html.apk-ad-adsense body.page-teach .teach-adv2-mid {
+  overflow: visible !important;
+}
+html.apk-ad-adsense body.page-teach .teach-adv2-mid .teach-ad.adswp {
+  max-width: none !important;
+  overflow: visible !important;
+}
+
 /* sticky 右栏定高 600px + overflow:hidden 会竖向裁切 / 压低可见率 */
 html.apk-ad-adsense .RightBottom_adbox {
   height: auto !important;
