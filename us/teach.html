@@ -727,6 +727,9 @@ const lang = getLangFromPath()
                     }
                 }
                 document.getElementById("asideTitle").innerHTML = asideStr
+                if (typeof placeTeachAsideAdvForViewport === 'function') {
+                    placeTeachAsideAdvForViewport();
+                }
 
                 const aside_adv = document.getElementById('aside_adv')
                 if (aside_adv && window.ApkAdDefer) {
@@ -1019,12 +1022,113 @@ const lang = getLangFromPath()
     $(document).ready(function () {
         document.title = `${returnWebStr()} Teach.`;
 
+        // 仅移动端调整广告位；PC DOM/布局保持原样
+        function isTeachMobileViewport() {
+            return window.matchMedia('(max-width: 900px)').matches;
+        }
+
+        function ensureTeachMobileStepSplit(card) {
+            if (card.querySelector('.teach-steps-wrap')) return;
+            var flow = card.querySelector('.teach-steps-flow');
+            if (!flow) return;
+            var steps = flow.querySelectorAll('.teach-step');
+            if (steps.length < 4) return;
+
+            var wrap = document.createElement('div');
+            wrap.className = 'teach-steps-wrap';
+            var flowA = document.createElement('ol');
+            flowA.className = 'select-text teach-steps teach-steps-flow teach-steps-flow--a';
+            flowA.setAttribute('role', 'list');
+            var mid = document.createElement('div');
+            mid.className = 'teach-adv2-mid';
+            mid.id = 'teach_adv2_mid';
+            var flowB = document.createElement('ol');
+            flowB.className = 'select-text teach-steps teach-steps-flow teach-steps-flow--b';
+            flowB.setAttribute('role', 'list');
+
+            flowA.appendChild(steps[0]);
+            flowA.appendChild(steps[1]);
+            flowB.appendChild(steps[2]);
+            flowB.appendChild(steps[3]);
+            wrap.appendChild(flowA);
+            wrap.appendChild(mid);
+            wrap.appendChild(flowB);
+            flow.replaceWith(wrap);
+        }
+
+        function ensureTeachDesktopStepRestore(card) {
+            var wrap = card.querySelector('.teach-steps-wrap');
+            if (!wrap) return;
+            var flowA = wrap.querySelector('.teach-steps-flow--a');
+            var flowB = wrap.querySelector('.teach-steps-flow--b');
+            if (!flowA || !flowB) return;
+
+            var flow = document.createElement('ol');
+            flow.className = 'select-text teach-steps teach-steps-flow';
+            flow.setAttribute('role', 'list');
+            while (flowA.firstElementChild) flow.appendChild(flowA.firstElementChild);
+            while (flowB.firstElementChild) flow.appendChild(flowB.firstElementChild);
+            wrap.replaceWith(flow);
+        }
+
+        function placeTeachAdv2ForViewport() {
+            var ad = document.getElementById('teach_adv2');
+            var card = document.querySelector('.teach-steps-card');
+            if (!ad || !card) return;
+
+            if (isTeachMobileViewport()) {
+                ensureTeachMobileStepSplit(card);
+                var mid = document.getElementById('teach_adv2_mid');
+                if (mid && ad.parentElement !== mid) mid.appendChild(ad);
+            } else {
+                ensureTeachDesktopStepRestore(card);
+                if (ad.previousElementSibling !== card) card.after(ad);
+            }
+        }
+
+        function placeTeachAsideAdvForViewport() {
+            var asideAdv = document.getElementById('aside_adv');
+            var list = document.getElementById('asideTitle');
+            if (!asideAdv || !list) return;
+            var li = asideAdv.closest('li') || asideAdv.parentElement;
+            if (!li || li.parentElement !== list) return;
+
+            if (isTeachMobileViewport()) {
+                if (list.firstElementChild !== li) list.insertBefore(li, list.firstElementChild);
+            } else {
+                var firstPost = list.querySelector('li .most-box');
+                var firstPostLi = firstPost && firstPost.closest('li');
+                if (firstPostLi && firstPostLi.nextElementSibling !== li) {
+                    firstPostLi.after(li);
+                }
+            }
+        }
+
+        placeTeachAdv2ForViewport();
+        window.placeTeachAdv2ForViewport = placeTeachAdv2ForViewport;
+        window.placeTeachAsideAdvForViewport = placeTeachAsideAdvForViewport;
+        placeTeachAsideAdvForViewport();
+        if (window.matchMedia) {
+            var teachMobileMq = window.matchMedia('(max-width: 900px)');
+            var onTeachViewportChange = function () {
+                placeTeachAdv2ForViewport();
+                placeTeachAsideAdvForViewport();
+            };
+            if (teachMobileMq.addEventListener) {
+                teachMobileMq.addEventListener('change', onTeachViewportChange);
+            } else if (teachMobileMq.addListener) {
+                teachMobileMq.addListener(onTeachViewportChange);
+            }
+        }
+
         // 首屏已可见后再加载广告栈
         if (!window.ApkAdDefer) return;
         ApkAdDefer.load().then(function () {
             if (window.ApkAdOop && typeof ApkAdOop.notifyBodyVisible === "function") {
                 ApkAdOop.notifyBodyVisible();
             }
+
+            placeTeachAdv2ForViewport();
 
             const teach_adv1 = document.getElementById('teach_adv1');
             if (teach_adv1) {

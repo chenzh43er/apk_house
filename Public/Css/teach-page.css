@@ -250,6 +250,76 @@ body.page-teach .teach-steps-card .teach-step:not(:last-child)::after {
     pointer-events: none;
 }
 
+/* Mobile-only: JS may split steps and park teach_adv2 between 2/3 */
+@media (max-width: 900px) {
+    body.page-teach .teach-steps-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: clip;
+    }
+
+    body.page-teach .teach-steps-card .teach-steps-flow--a.select-text,
+    body.page-teach .teach-steps-card .teach-steps-flow--b.select-text {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px 12px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    body.page-teach .teach-steps-flow--a .teach-step:nth-child(1) .prog::before {
+        content: '1';
+    }
+    body.page-teach .teach-steps-flow--a .teach-step:nth-child(2) .prog::before {
+        content: '2';
+    }
+    body.page-teach .teach-steps-flow--b .teach-step:nth-child(1) .prog::before {
+        content: '3';
+    }
+    body.page-teach .teach-steps-flow--b .teach-step:nth-child(2) .prog::before {
+        content: '4';
+    }
+
+    body.page-teach .teach-adv2-mid {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: clip;
+        box-sizing: border-box;
+    }
+
+    body.page-teach .teach-adv2-mid .teach-ad.adswp {
+        margin-bottom: 0;
+        max-width: 100%;
+        width: 100%;
+        min-width: 0;
+        overflow-x: clip;
+        box-sizing: border-box;
+    }
+
+    body.page-teach .teach-adv2-mid .teach-ad.adswp iframe,
+    body.page-teach .teach-adv2-mid .teach-ad.adswp ins.adsbygoogle {
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    body.page-teach .teach-steps-card .teach-steps-flow--a.select-text,
+    body.page-teach .teach-steps-card .teach-steps-flow--b.select-text {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    body.page-teach .teach-steps-wrap {
+        gap: 12px;
+    }
+}
+
 body.page-teach .teach-steps-card .select-box .prog::after {
     display: none !important;
 }
