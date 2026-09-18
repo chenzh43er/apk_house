@@ -16,7 +16,7 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css?v=20260916c1">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css?v=20260916c1">
     <link rel="stylesheet" href="/Public/Css/form-page.css?v=20260918pc1">
-    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260830">
+    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260919adv3">
     <script src="./Public/Js/utlParam.js?v=20260916c1"></script>
     <script src="./Public/Js/common.js?v=20260819lock1"></script>
     <script src="/Public/Js/ad-defer.js?v=20260918pc1"></script>
@@ -736,10 +736,10 @@ const lang = getLangFromPath()
                     ApkAdDefer.whenReady(function () {
                         const observer = new IntersectionObserver((entries, obs) => {
                             entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    loadTeach_adv3(entry.target);
-                                    obs.unobserve(entry.target);
-                                }
+                                if (!entry.isIntersecting) return;
+                                if (window.matchMedia('(max-width: 900px)').matches) return;
+                                loadTeach_adv3(entry.target);
+                                obs.unobserve(entry.target);
                             });
                         }, {
                             rootMargin: '0px',
@@ -1094,13 +1094,14 @@ const lang = getLangFromPath()
             if (!li || li.parentElement !== list) return;
 
             if (isTeachMobileViewport()) {
-                if (list.firstElementChild !== li) list.insertBefore(li, list.firstElementChild);
-            } else {
-                var firstPost = list.querySelector('li .most-box');
-                var firstPostLi = firstPost && firstPost.closest('li');
-                if (firstPostLi && firstPostLi.nextElementSibling !== li) {
-                    firstPostLi.after(li);
-                }
+                li.hidden = true;
+                return;
+            }
+            li.hidden = false;
+            var firstPost = list.querySelector('li .most-box');
+            var firstPostLi = firstPost && firstPost.closest('li');
+            if (firstPostLi && firstPostLi.nextElementSibling !== li) {
+                firstPostLi.after(li);
             }
         }
 

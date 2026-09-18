@@ -863,6 +863,11 @@ body.page-teach #aside_adv [id^="apk-ad-"] {
 /* ── Responsive ── */
 
 @media (max-width: 900px) {
+    /* teach_adv3 lives in #aside_adv; hide the slot on phones, keep desktop sidebar. */
+    body.page-teach:not(.page-state) li:has(#aside_adv) {
+        display: none !important;
+    }
+
     body.page-teach .detail-rightside {
         flex: 1 1 100%;
         width: 100%;
