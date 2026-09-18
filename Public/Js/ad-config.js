@@ -148,6 +148,15 @@
     root.classList.add(
       w.AD_CONFIG.mode === "adx" ? "apk-ad-adx" : "apk-ad-adsense"
     );
+    // PC 底部锚定居中 CSS 依赖此 class（见 ad-mobile.css）
+    root.classList.remove("apk-adsense-overlays-bottom");
+    if (w.AD_CONFIG.mode !== "adx") {
+      var overlays =
+        (w.AD_CONFIG.adsense && w.AD_CONFIG.adsense.anchorOverlays) || "";
+      if (overlays === "bottom" || overlays === "collapsed-bottom") {
+        root.classList.add("apk-adsense-overlays-bottom");
+      }
+    }
   }
   markAdModeClass();
 

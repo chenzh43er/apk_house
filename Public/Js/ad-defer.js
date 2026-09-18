@@ -8,9 +8,9 @@
  */
 (function (w) {
   var CORE = [
-    "/Public/Js/ad-config.js?v=20260831anchorfix1",
+    "/Public/Js/ad-config.js?v=20260918pc1",
     "/Public/Js/ad-slots-adx.js?v=20260916c1",
-    "/Public/Js/ad-loader.js?v=20250718k",
+    "/Public/Js/ad-loader.js?v=20260918pc1",
     "/Public/Js/ad-runtime.js?v=20260831freeze1",
     "/Public/Js/ad-oop.js?v=20250718k",
   ];

@@ -33,6 +33,10 @@
   ! Cache-Control
   Cache-Control: public, max-age=0, must-revalidate
 
+/Public/Css/ad-mobile.css
+  ! Cache-Control
+  Cache-Control: public, max-age=300, must-revalidate
+
 # ES module 动态 import 通常不带 ?v=，避免逻辑更新被锁一年
 /Public/Js/dataGet.js
   ! Cache-Control

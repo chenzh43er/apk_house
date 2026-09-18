@@ -254,9 +254,13 @@ html.apk-ad-adsense body.page-detail .detail-rightside {
 }
 
 /**
- * AdSense Auto ads 锚定壳：隔离站点全局规则（max-width / transform / * box-sizing），
+ * AdSense Auto ads 锚定壳：隔离站点全局规则（max-width / * box-sizing），
  * 否则移动端折叠条与「广告」角标会错位、叠成两行。
- * 不强制改 position/top/bottom（交给 AdSense 自己；PC 上强改会拉成白条）。
+ *
+ * 注意：
+ * - 不强制 width:100%（PC 上会拉成整行白条、创意贴左）
+ * - transform:none 仅限窄屏；PC 上会打断 AdSense 的 left:50%+translateX(-50%)，
+ *   创意从视口中线起算贴到右下（锚定异位）
  */
 html.apk-ad-adsense #google_top_anchor,
 html.apk-ad-adsense #google_bottom_anchor,
@@ -266,7 +270,6 @@ html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] {
   width: auto !important;
   min-width: 0 !important;
   margin: 0 !important;
-  transform: none !important;
   filter: none !important;
   overflow: visible !important;
   box-sizing: content-box !important;
@@ -277,7 +280,43 @@ html.apk-ad-adsense #google_bottom_anchor iframe,
 html.apk-ad-adsense ins.adsbygoogle[data-anchor-status] iframe,
 html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] iframe {
   max-width: none !important;
-  transform: none !important;
+}
+
+/* 窄屏：清 transform，避免折叠条 / 「广告」角标错位 */
+@media screen and (max-width: 1000px) {
+  html.apk-ad-adsense #google_top_anchor,
+  html.apk-ad-adsense #google_bottom_anchor,
+  html.apk-ad-adsense ins.adsbygoogle[data-anchor-status],
+  html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] {
+    transform: none !important;
+  }
+
+  html.apk-ad-adsense #google_top_anchor iframe,
+  html.apk-ad-adsense #google_bottom_anchor iframe,
+  html.apk-ad-adsense ins.adsbygoogle[data-anchor-status] iframe,
+  html.apk-ad-adsense ins.adsbygoogle-noablate[data-anchor-status] iframe {
+    transform: none !important;
+  }
+}
+
+/**
+ * PC 底部锚定：贴底并水平居中（保持创意自然宽度，不撑满白条）。
+ * html.apk-adsense-overlays-bottom 由 ad-config 在 data-overlays=bottom|collapsed-bottom 时挂上。
+ */
+@media screen and (min-width: 1001px) {
+  html.apk-ad-adsense.apk-adsense-overlays-bottom #google_bottom_anchor,
+  html.apk-ad-adsense.apk-adsense-overlays-bottom
+    ins.adsbygoogle[data-anchor-status],
+  html.apk-ad-adsense.apk-adsense-overlays-bottom
+    ins.adsbygoogle-noablate[data-anchor-status] {
+    position: fixed !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: 0 !important;
+    top: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 2147483646 !important;
+  }
 }
 
 /**

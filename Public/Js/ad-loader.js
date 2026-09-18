@@ -830,7 +830,7 @@
     var link = document.createElement("link");
     link.id = "apk-ad-mobile-css";
     link.rel = "stylesheet";
-    link.href = "/Public/Css/ad-mobile.css";
+    link.href = "/Public/Css/ad-mobile.css?v=20260918pc1";
     document.head.appendChild(link);
   }
 
