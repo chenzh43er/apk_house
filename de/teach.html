@@ -14,13 +14,15 @@
           content="Identity Insight helps you find affordable housing programs and rental resources near you.">
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css?v=20260916c1">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css?v=20260916c1">
-    <link rel="stylesheet" href="/Public/Css/form-page.css?v=20260918pc1">
     <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260830">
-    <script src="./Public/Js/utlParam.js?v=20260916c1"></script>
-    <script src="./Public/Js/common.js?v=20260819lock1"></script>
-    <script src="/Public/Js/ad-defer.js?v=20260918pc1"></script>
+    <link rel="preload" href="/Public/Css/ad-mobile.css?v=20260919t2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/Public/Css/ad-mobile.css?v=20260919t2"></noscript>
+    <script defer src="./Public/Js/utlParam.js?v=20260916c1"></script>
+    <script defer src="./Public/Js/common.js?v=20260819lock1"></script>
+    <script defer src="/Public/Js/ad-defer.js?v=20260918pc1"></script>
 <!--    <script src="./Public/Js/post/postName.js"></script>-->
-    <link rel="icon" href="./Public/Images/icon.png" type="image/png">
+    <link rel="icon" href="/Public/Images/favicon-32.png?v=20260919t2" sizes="32x32" type="image/png">
+    <link rel="icon" href="/Public/Images/favicon-192.png?v=20260919t2" sizes="192x192" type="image/png">
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HWJ4KNB"
@@ -616,7 +618,7 @@
 <div class="teach-sticky-cta" id="teach_sticky_bar" aria-hidden="true">
     <div class="teach-sticky-cta__inner">
         <span class="teach-sticky-cta__label" id="lang_sticky_label">Step 1 of 4</span>
-        <a class="teach-sticky-cta__btn" id="lang_sticky_cta" href="#">Select state →</a>
+        <a class="teach-sticky-cta__btn" id="lang_sticky_cta" href="#">Select state �?/a>
     </div>
 </div>
 
@@ -642,9 +644,11 @@
 </div>
 </footer>
 
-<script src="./Public/Js/jquery-3.0.0.min.js?v=20260916c1"></script>
+<script defer src="./Public/Js/jquery-3.0.0.min.js?v=20260916c1"></script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
 const lang = getLangFromPath()
             //console.log(lang)
             if(lang == "de"){
@@ -748,9 +752,13 @@ const lang = getLangFromPath()
                 }
             });
         });
+
+});
 </script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
     function getTeachStateHref() {
         return appendParams(buildTeachStatePath(getLangFromPath()));
     }
@@ -770,8 +778,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
             stepsCta: 'Bundesland wählen',
             stickyLabel: 'Schritt 1 von 4',
-            stickyCta: 'Bundesland wählen →',
-            introLink: 'Mit Bundesland starten →'
+            stickyCta: 'Bundesland wählen �?,
+            introLink: 'Mit Bundesland starten �?
         },
         us: {
             heroCta: 'Start step 1 —select your state',
@@ -779,8 +787,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Free · No sign-up · About 2 minutes',
             stepsCta: 'Select your state',
             stickyLabel: 'Step 1 of 4',
-            stickyCta: 'Select state →',
-            introLink: 'Start with your state →'
+            stickyCta: 'Select state �?,
+            introLink: 'Start with your state �?
         },
         'de-ch-at': {
             heroCta: 'Schritt 1 —Kanton wählen',
@@ -788,8 +796,8 @@ const lang = getLangFromPath()
             stepsFoot: 'Kostenlos · Ohne Anmeldung · ca. 2 Minuten',
             stepsCta: 'Kanton wählen',
             stickyLabel: 'Schritt 1 von 4',
-            stickyCta: 'Kanton wählen →',
-            introLink: 'Mit Kanton starten →'
+            stickyCta: 'Kanton wählen �?,
+            introLink: 'Mit Kanton starten �?
         }
     };
 
@@ -1000,7 +1008,7 @@ const lang = getLangFromPath()
         if (lang === 'de' || lang === 'de-ch-at') {
             document.getElementById("lang_locate").innerText = "Aktuellen Standort ermitteln";
             document.getElementById("lang_find").innerText = "Bezahlbaren Wohnraum finden";
-            document.getElementById("lang_price").innerText = "Schon ab 300 €/Monat";
+            document.getElementById("lang_price").innerText = "Schon ab 300 �?Monat";
         } else {
             document.getElementById("lang_locate").innerText = "Detect current location";
             document.getElementById("lang_find").innerText = "Find affordable housing";
@@ -1015,9 +1023,13 @@ const lang = getLangFromPath()
     if (conPic) {
         conPic.onload = function () {};
     }
+
+});
 </script>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
     $(document).ready(function () {
         document.title = `${returnWebStr()} Teach.`;
 
@@ -1158,6 +1170,8 @@ const lang = getLangFromPath()
             }
         });
     })
+
+});
 </script>
 
 </body>
