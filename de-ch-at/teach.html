@@ -757,9 +757,29 @@ const lang = getLangFromPath()
 
     function bindTeachFunnelLinks() {
         var href = getTeachStateHref();
-        ['lang_click', 'lang_clickDiv', 'teach_steps_cta', 'teach_step_link', 'lang_sticky_cta', 'teach_info_go'].forEach(function (id) {
+        ['lang_clickDiv', 'teach_steps_cta', 'lang_sticky_cta', 'teach_info_go'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.href = href;
+        });
+        var stepLink = document.getElementById('teach_step_link');
+        if (stepLink) {
+            stepLink.href = '#';
+            stepLink.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        }
+    }
+
+    function bindTeachHeroScrollToSteps() {
+        var el = document.getElementById('lang_click');
+        if (!el) return;
+        el.href = '#';
+        el.addEventListener('click', function (e) {
+            e.preventDefault();
+            setTimeout(function () {
+                var card = document.querySelector('.teach-steps-card');
+                if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1000);
         });
     }
 
@@ -995,6 +1015,7 @@ const lang = getLangFromPath()
         applyTeachStepsHeader(lang);
         applyTeachStepImages(lang);
         bindTeachFunnelLinks();
+        bindTeachHeroScrollToSteps();
         initStickyTeachCta();
 
         if (lang === 'de' || lang === 'de-ch-at') {
