@@ -15,7 +15,7 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css?v=20260916c1">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css?v=20260916c1">
     <link rel="stylesheet" href="/Public/Css/form-page.css?v=20260918pc1">
-    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260830">
+    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260927c">
     <script src="./Public/Js/utlParam.js?v=20260916c1"></script>
     <script src="./Public/Js/common.js?v=20260819lock1"></script>
     <script src="/Public/Js/ad-defer.js?v=20260918pc1"></script>
@@ -479,7 +479,7 @@
         <div class="indexitm-banner-l">
             <div class="c-l" data-eusoft-scrollable-element="1" id="lang_locate">Locate current location</div>
             <h1 class="indexitm-banner-tit" data-eusoft-scrollable-element="1" id = "lang_find">Find Affordable Housing</h1>
-            <p class="indexitm-banner-desc" id="lang_price">As low as $300/mo</p>
+            <p class="indexitm-banner-desc" id="lang_price">From just $300/mo</p>
             <ul class="ab-search-wrap">
                 <li><a class="loc-btn" id="lang_click" href="#">
                     <svg class="icon-loc" width="18" height="18">
@@ -1021,13 +1021,11 @@ const lang = getLangFromPath()
         if (lang === 'de' || lang === 'de-ch-at') {
             document.getElementById("lang_locate").innerText = "Aktuellen Standort ermitteln";
             document.getElementById("lang_find").innerText = "Bezahlbaren Wohnraum finden";
-            document.getElementById("lang_price").innerText = "Schon ab 300 €/Monat";
+            document.getElementById("lang_price").innerText = "Ab nur 300 €/Monat";
         } else {
             document.getElementById("lang_locate").innerText = "Detect current location";
             document.getElementById("lang_find").innerText = "Find affordable housing";
-            document.getElementById("lang_price").innerText = lang === 'us'
-                ? "Starting from $300/month"
-                : "Starting from $300/month";
+            document.getElementById("lang_price").innerText = "From just $300/mo";
         }
     });
 
