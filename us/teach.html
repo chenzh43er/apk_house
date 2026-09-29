@@ -16,7 +16,7 @@
     <link type="text/css" rel="stylesheet" href="./Public/Css/hs-style.css?v=20260916c1">
     <link type="text/css" rel="stylesheet" href="./Public/Css/lch-office.css?v=20260916c1">
     <link rel="stylesheet" href="/Public/Css/form-page.css?v=20260918pc1">
-    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260927c">
+    <link rel="stylesheet" href="/Public/Css/teach-page.css?v=20260929adv3">
     <script src="./Public/Js/utlParam.js?v=20260916c1"></script>
     <script src="./Public/Js/common.js?v=20260819lock1"></script>
     <script src="/Public/Js/ad-defer.js?v=20260918pc1"></script>
@@ -734,6 +734,10 @@ const lang = getLangFromPath()
                 const aside_adv = document.getElementById('aside_adv')
                 if (aside_adv && window.ApkAdDefer) {
                     ApkAdDefer.whenReady(function () {
+                        // teach_adv3: do not load on mobile; desktop sidebar unchanged
+                        if (window.matchMedia('(max-width: 900px)').matches) {
+                            return;
+                        }
                         const observer = new IntersectionObserver((entries, obs) => {
                             entries.forEach(entry => {
                                 if (entry.isIntersecting) {
@@ -1113,13 +1117,14 @@ const lang = getLangFromPath()
             if (!li || li.parentElement !== list) return;
 
             if (isTeachMobileViewport()) {
-                if (list.firstElementChild !== li) list.insertBefore(li, list.firstElementChild);
-            } else {
-                var firstPost = list.querySelector('li .most-box');
-                var firstPostLi = firstPost && firstPost.closest('li');
-                if (firstPostLi && firstPostLi.nextElementSibling !== li) {
-                    firstPostLi.after(li);
-                }
+                li.hidden = true;
+                return;
+            }
+            li.hidden = false;
+            var firstPost = list.querySelector('li .most-box');
+            var firstPostLi = firstPost && firstPost.closest('li');
+            if (firstPostLi && firstPostLi.nextElementSibling !== li) {
+                firstPostLi.after(li);
             }
         }
 

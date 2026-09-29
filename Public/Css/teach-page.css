@@ -950,6 +950,11 @@ body.page-teach #aside_adv [id^="apk-ad-"] {
 /* ── Responsive ── */
 
 @media (max-width: 900px) {
+    /* teach_adv3 (#aside_adv): no load + no empty slot on mobile */
+    body.page-teach li:has(#aside_adv) {
+        display: none !important;
+    }
+
     body.page-teach .detail-rightside {
         flex: 1 1 100%;
         width: 100%;
