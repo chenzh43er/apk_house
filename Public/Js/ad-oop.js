@@ -72,6 +72,21 @@
     return (w.AD_CONFIG && w.AD_CONFIG.adx && w.AD_CONFIG.adx.oop) || {};
   }
 
+  /**
+   * 安全地把回调排进 GPT 命令队列。
+   * 生产环境可能已存在一个没有 cmd 的 w.googletag（如 GTM 只初始化了空对象），
+   * 此时 `w.googletag.cmd.push` 会抛错；这里补齐 cmd 再 push。
+   */
+  function pushGoogletagCmd(fn) {
+    if (!w.googletag) {
+      w.googletag = { cmd: [] };
+    }
+    if (!w.googletag.cmd || typeof w.googletag.cmd.push !== "function") {
+      w.googletag.cmd = [];
+    }
+    w.googletag.cmd.push(fn);
+  }
+
   function getOopPath(def) {
     if (isDemoMode()) {
       return DEMO_AD_UNIT;
@@ -625,8 +640,7 @@
       destroyDesktopSticky();
       return;
     }
-    w.googletag = w.googletag || { cmd: [] };
-    w.googletag.cmd.push(function () {
+    pushGoogletagCmd(function () {
       if (!isBodyVisible()) {
         logAnchor("body still hidden in cmd");
         watchBodyVisibleForOop();
@@ -811,8 +825,7 @@
       .ensureGptSdk()
       .then(function () {
         return new Promise(function (resolve) {
-          w.googletag = w.googletag || { cmd: [] };
-          w.googletag.cmd.push(function () {
+          pushGoogletagCmd(function () {
             if (
               w.ApkAdLoader.displayOopSlotByKey &&
               w.ApkAdLoader.displayOopSlotByKey("interstitial")
@@ -887,8 +900,7 @@
 
     w.ApkAdLoader.ensureGptSdk()
       .then(function () {
-        w.googletag = w.googletag || { cmd: [] };
-        w.googletag.cmd.push(function () {
+        pushGoogletagCmd(function () {
           Object.keys(defs).forEach(function (key) {
             if (!shouldEnableOop(key, oopConfig)) {
               return;

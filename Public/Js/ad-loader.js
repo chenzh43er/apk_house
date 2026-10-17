@@ -4,6 +4,20 @@
   function isAdxMode() {
     return w.AD_CONFIG && w.AD_CONFIG.mode === "adx";
   }
+
+  /**
+   * 安全排入 GPT 命令队列。生产环境可能已有一个没有 cmd 的 w.googletag
+   * （如 GTM 仅建了空对象），直接 .cmd.push 会抛错；这里补齐 cmd 再 push。
+   */
+  function pushGoogletagCmd(fn) {
+    if (!w.googletag) {
+      w.googletag = { cmd: [] };
+    }
+    if (!w.googletag.cmd || typeof w.googletag.cmd.push !== "function") {
+      w.googletag.cmd = [];
+    }
+    w.googletag.cmd.push(fn);
+  }
   var sdkPromise = null;
   var gptLoadErrorLogged = false;
   var adxServicesEnabled = false;
@@ -1122,8 +1136,7 @@
   }
 
   function commitSraBatch() {
-    w.googletag = w.googletag || { cmd: [] };
-    w.googletag.cmd.push(function () {
+    pushGoogletagCmd(function () {
       ensureAdxServices();
     });
   }
@@ -1229,8 +1242,7 @@
 
     return ensureGptSdk().then(function () {
       return new Promise(function (resolve) {
-        w.googletag = w.googletag || { cmd: [] };
-        w.googletag.cmd.push(function () {
+        pushGoogletagCmd(function () {
           if (!definedAdxSlots[divId]) {
             var slot = defineGptSlot(slotKey, divId, def);
             if (!slot) {
@@ -1264,8 +1276,7 @@
       return;
     }
 
-    w.googletag = w.googletag || { cmd: [] };
-    w.googletag.cmd.push(function () {
+    pushGoogletagCmd(function () {
       if (!definedAdxSlots[divId]) {
         return;
       }
@@ -1288,8 +1299,7 @@
 
     var existingDivId = el.getAttribute("data-apk-ad-div-id");
     if (existingDivId && definedAdxSlots[existingDivId]) {
-      w.googletag = w.googletag || { cmd: [] };
-      w.googletag.cmd.push(function () {
+      pushGoogletagCmd(function () {
         if (!definedAdxSlots[existingDivId]) {
           return;
         }
@@ -1310,8 +1320,7 @@
     var divId = mountAdSlotDom(slotKey, el);
     var allSizes = getAllSlotSizes(def);
 
-    w.googletag = w.googletag || { cmd: [] };
-    w.googletag.cmd.push(function () {
+    pushGoogletagCmd(function () {
       var slot = definedAdxSlots[divId];
       if (!slot) {
         slot = defineGptSlot(slotKey, divId, def);
