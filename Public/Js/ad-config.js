@@ -24,7 +24,7 @@
        * AdSense 测试广告（data-adtest="on"，不计费）：
        * 正式环境默认 false；URL ?adtest=on|1|true 可临时开测试。
        */
-      testMode: false,
+      testMode: true,
       /**
        * Auto ads 锚定（Overlay）：
        * - anchorAds: false 时不请求锚定
